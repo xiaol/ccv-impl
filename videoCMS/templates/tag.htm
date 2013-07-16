@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>标签  麻花美食</title>
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/tag.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+
+</head>
+<body style="background-color:#CCC;">
+{% include "nav.htm" %}
+    <div class="container">
+        
+        <div class="row-fluid">
+            <div class="span8 paddingWrap" style="background-color:#FFF;">
+                {%for tag in tagList%}
+                <div class="row-fluid topicItem">
+                    <div class="topicImage">
+                        <a href="/tag/update?id={{tag.id}}">
+                        <img src="http://60.28.29.47/huohua_v2/imageinterfacev2/api/interface/image/disk/get/80/80/{{tag.imageUrl}}"/>
+                        </a>
+                    </div>
+                    <div class="span9 topicItemRight">
+                        <div class="row-fluid">
+                            <a href="/tag/update?id={{tag.id}}">{{tag.name}}</a>
+                            <a target="_blank" href="/article?city={{tag.city}}&mongo=%7b%22tagList%22%3a%22{{tag.name}}%22%7d&page=1&len=100" class="label label-warning">搜索</a>
+                            <span class="label label-warning" >{{tag.refNumber}}</span>
+                            {%if admin%}
+                            <span class="label label-error" style="cursor:pointer;" onclick="deleteTag('{{tag.id}}')">删除</span>
+                            {%endif%}
+                        </div>
+                        <div class="row-fluid"></div>
+                        <div class="row-fluid smallFont" >
+                            <div class="span6">创建日期:{{tag.createTime}}</div>
+                            <div class="span6">修改日期:{{tag.modifyTime}}</div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+            <div class="span4 paddingWrap" style="background-color:#FFF;">
+                <form id="form_nav">
+                    <input type="hidden" name="id" value=""/>
+                    <div id="nav_div">
+                    <table>
+                        <tr>
+                            <td>标签名称</td>
+                            <td><input name="name" type="text" style="width:110px" value="{{name}}"/></td>
+                            <td rowspan="3"><input class="btn btn-inverse btn-mini" type="submit" value="搜索" /></td>
+                        </tr>
+                        <tr>
+                            <td>标签ID</td>
+                            <td><input name="id" type="text" style="width:110px" value="{{id}}"/></td>
+                        </tr>
+                        <tr>
+                            <td>城市</td>
+                            <td>
+                                <select name="city"  style="width:110px">
+                                {%for one in cityList%}
+                                    <option {%ifequal one city%}selected{%endifequal%}>{{one}}</option>
+                                {%endfor%}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>mongo</td>
+                            <td><textarea name="mongo" type="text" style="width:110px;height:110px;">{{mongo}}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>第<input type="text" name="page" value="{{page}}"/>页</td>
+                            <td>每页<input type="text" name="len" value="{{len}}"/>条/({{tagNum}})</td>
+                            <td><input class="btn btn-inverse btn-mini" type="submit" value="转到"/></td>
+                        </tr>
+                        <tr>
+                            <td><a onclick="goPage(1)" >首页</a></td>
+                            <td><a onclick="goPage({{prePage}})">上一页</a></td>
+                            <td><a onclick="goPage({{nextPage}})">下一页</a></td>
+                        </tr>
+                    </table>
+                    </div>
+              </form>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>频道详情</title>
+<link href="/static/css/channelUpdate.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/channelUpdate.js"></script>
+
+
+</head>
+<body style="background-color: #CCC;">
+    {%include "nav.htm" %}
+    <div class="container">
+        {% ifnotequal info "" %}
+        <div class="row-fluid">
+            <div class="span10 offset1">
+                <div class="alert {{info_class}}">{{info|safe}}</div>
+            </div>
+        </div>
+        {%endifnotequal%}
+        <div class="row-fluid smallFont">
+            <!--  左部分  -->
+            <div class="span8 offset2 whitepanel">
+                <form enctype="multipart/form-data" method="post" >
+		            <table class="mainTable">
+		                <tr>
+		                    <td>频道ID</td>
+		                    <td>
+		                        <input type="text" name="channelId"  value="{{channelId}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>频道名称</td>
+		                    <td>
+		                        <input type="text" name="channelName"  value="{{channelName}}"/>
+		                        <span>已更新至:{{tvNumber}}</span>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>副标题</td>
+		                    <td>
+		                        <input type="text" name="subtitle"  value="{{subtitle}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>时长</td>
+		                    <td>
+		                        <input type="text" name="duration"  value="{{duration}}"/>
+		                        <input type="text" class="input-small" id="secondBox" /><a class="btn btn-primary" onclick="calcSeconds()">分转秒</a>
+		                        <span class="btn btn-primary" onclick="applyDurationAll({{channelId}},this)">应用所有</span>
+		                    </td>
+		                </tr>
+		                <tr>
+                            <td>类别</td>
+                            <td>
+                                <select name="channelType"  style="width:110px">
+                                {%for one in typeList%}
+                                    <option {%ifequal one channelType %}selected{%endifequal%}>{{one}}</option>
+                                {%endfor%}
+                                </select>
+                            </td>
+                        </tr>
+		                <tr>
+		                    <td>频道封面（160x200）</td>
+		                    <td>
+		                        <img src="{{channelImageUrl}}" style="display:block;" />
+		                        <input type="file"  name="channelImage" onchange="onImageChange(this)"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>视频封面（640x360）</td>
+		                    <td>
+		                        <img src="{{resourceImageUrl}}" style="display:block;" />
+		                        <input type="file"  name="resourceImage" onchange="onImageChange(this)"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>海报封面（640x360）</td>
+		                    <td>
+		                        <img src="{{poster}}" style="display:block;" />
+		                        <input type="file"  name="poster" onchange="onImageChange(this)"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>来源网站</td>
+		                    <td>
+		                        <!-- <img src="{{sourceWebsite}}" style="display:block;" /> -->
+		                        <input type="text"  name="sourceWebsite" value="{{sourceWebsite}}" />
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>频道来源</td>
+		                    <td>
+		                        {%for sourceSearch in sourceSearchList%}
+		                        <div>
+		                          <input type="text" name="sourceList" value="{{sourceSearch.0}}" />
+		                          <input type="text" name="searchHandleList" value="{{sourceSearch.1}}" data-provide="typeahead" data-source="{{searchHandleListAll}}"/>
+		                          <a class="label label-warning" onclick="deleteSourceInput(this)">删除</a>
+		                        </div>
+		                        {%endfor%}
+		                        <div>
+                                  <input type="text" name="sourceList" value="" />
+                                  <input type="text" name="searchHandleList" value=""  data-provide="typeahead" data-source="{{searchHandleListAll}}"/>
+                                  <a class="label label-warning" onclick="deleteSourceInput(this)">删除</a>
+                                </div>
+		                        <input id="addSource" type="button" value="+" onclick="addSourceInput(this)" />
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td><a  href="#" data-content="仅当人人影视资源时填写"  data-title="描述"  data-toggle="popover" >人人影视选项</a></td>
+		                    <td>
+		                    	<table>
+		                    		<tr>
+		                    			<td>第几季:</td>
+		                    			<td><input class="input-small" type="text"  name="yyetsSeason" value="{{yyetsSeason}}" /></td>
+		                    			<td><a href="#" data-content="MP4,HDTV等，注意文件名中要包含'S01E01'剧集信息字样"  data-title="描述"  data-toggle="popover">视频格式:</a></td>
+		                    			<td><input class="input-small" type="text"  name="yyetsEncode" value="{{yyetsEncode}}" /></td>
+		                    		</tr>
+		                    		<tr>
+		                    			<td><a href="#" data-content="目前唯一值：ed2k"  data-title="描述"  data-toggle="popover">下载方式:</a></td>
+		                    			<td><input class="input-small" type="text"  name="yyetsDownMode" value="{{yyetsDownMode}}" /></td>
+		                    			<td></td>
+		                    			<td></td>
+		                    		</tr>
+		                    	</table>
+		                        
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>资源更新时间</td>
+		                    <td>
+		                        <input type="text"  name="updateTime" value="{{updateTime}}" />
+		                    </td>
+		                </tr>
+		                
+                        <tr>
+                                <td style="width: 100px"><a href="#" data-content="废弃"  data-title="描述"  data-toggle="popover">handleName</a></td>
+                                <td>
+                                    <input type="text" name="handleName" value="{{handleName}}"/>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px"><a href="#" data-content="废弃"  data-title="描述"  data-toggle="popover">handleArgs</a></td>
+                                <td>
+                                    <textarea type="text"  name="handleArgs" style="width:500px;" >{{handleArgs}}</textarea>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px"><a href="#" data-content="计划于此时更新，更新程序扫描过程中如果发现当前时间大于此时间，则更新"  data-title="描述"  data-toggle="popover">计划更新时间</a></td>
+                                <td>
+                                    <input type="text" name="nextSearchTime" value="{{nextSearchTime}}"/>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px"><a href="#" data-content="每次更新完成之后，计划更新时间 将加上间隔 成为下次计划更新时间，单位秒"  data-title="描述"  data-toggle="popover">更新间隔</a></td>
+                                <td>
+                                    <input type="text" name="handleFrequents" value="{{handleFrequents}}"/><br/>
+                                    <input type="radio" name="handleFrequentsRadio" onclick="setHandleFrequent(604800)" />一周
+                                    <input type="radio" name="handleFrequentsRadio" onclick="setHandleFrequent(86400)"/>一天
+                                    <input type="text" name="handleFrequentsRadio" class="input-small" onchange="setHandleFrequentHours(this)"/>小时
+                                    <input type="text" name="handleFrequentsRadio" class="input-small" onchange="setHandleFrequentMinutes(this)"/>分钟
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px">标签</td>
+                                <td>
+                                    <textarea name="tagList">{{tagList}}</textarea>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px">权重</td>
+                                <td>
+                                    <input type="text"  name="weight" value="{{weight}}"/>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td style="width: 100px">提前几天</td>
+                                <td>
+                                    <input type="text"  name="daysAhead" value="{{daysAhead}}"/>
+                                </td>
+                        </tr>
+                        <tr>
+                        	<td><a href="#" data-content="已处理则会在线上显示"  data-title="描述"  data-toggle="popover">处理状态</a></td>
+                        	<td>
+                        		<select name="processed"  style="width:90px">
+                        			<option>未处理</option>
+                        			<option {% if processed %}selected="selected"{% endif %}>已处理</option>
+                        		</select>
+                        	</td>
+                        </tr>
+                        <tr>
+                        	<td><a href="#" data-content="还未上线,未来会有的视频"  data-title="描述"  data-toggle="popover">预定视频</a></td>
+                        	<td>
+                        		<select name="isNewest"  style="width:90px">
+                        			<option>否</option>
+                        			<option {% if isNewest %}selected="selected"{% endif %}>是</option>
+                        		</select>
+                        	</td>
+                        </tr>
+                        <tr>
+                        	<td>标志位</td>
+                        	<td>
+                        		<select name="identifer"  style="width:90px">
+                        			<option>0</option>
+                        			<option {% ifequal identifer 1 %}selected="selected"{% endifequal %}>1</option>
+                        			<option {% ifequal identifer 2 %}selected="selected"{% endifequal %}>2</option>
+                        		</select>
+                        		1. 置顶
+                        	</td>
+                        </tr>
+                        <tr>
+                        	<td><a href="#" data-content="此频道自动更新后的资源，是直接上线，还是处于下线状态等待人工审核"  data-title="描述"  data-toggle="popover">自动上线</a></td>
+                        	<td>
+                        		<select name="autoOnline"  style="width:90px">
+                        			<option>是</option>
+                        			<option {% if not autoOnline %}selected="selected"{% endif %}>否</option>
+                        		</select>
+                        	</td>
+                        </tr>
+                        <tr>
+                        	<td>首次订阅</td>
+                        	<td>
+                        		<select name="autoSub"  style="width:90px">
+                        			<option>是</option>
+                        			<option {% if not autoSub %}selected="selected"{% endif %}>否</option>
+                        		</select>
+                        	</td>
+                        </tr>
+                        <tr>
+                        	<td><a href="#" data-content="显示在广场海报相册中"  data-title="描述"  data-toggle="popover">海报频道</a></td>
+                        	<td>
+                        		<select name="onSquare"  style="width:90px">
+                        			<option>是</option>
+                        			<option {% if not onSquare %}selected="selected"{% endif %}>否</option>
+                        		</select>
+                        	</td>
+                        </tr>
+		                <tr>
+		                    <td></td>
+		                    <td>
+		                        <button type="submit" class="btn btn-primary">
+                                {%if update%}保存更改{%else%}创建新频道{%endif%}
+                                </button>
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+            </div>
+
+            <!--  右部分  -->
+            <div class="span3">
+                
+            </div>
+        </div>
+</body>
+</html>

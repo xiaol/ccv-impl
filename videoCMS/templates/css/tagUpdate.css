@@ -1,0 +1,46 @@
+.clear
+{
+	clear:both;
+}
+
+.smallFont
+{
+    font-size:12px;
+}
+.baseinfo td
+{
+	padding-bottom:12px;
+}
+.poi
+{
+	margin-bottom:10px;
+}
+.mainTable
+{
+	width:100%;
+}
+.mainTable tr
+{
+	border-top:dashed 1px #DDD;
+}
+
+.mainTable td
+{
+    padding-top:15px;
+}
+
+.whitepanel
+{
+    padding:10px;
+    background-color: #FFF;
+    border-top:solid 5px rgb(50,151,253);
+    box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0px;
+}
+
+
+
+.dropdown-menu a
+{
+	cursor:pointer;
+}
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>频道详情</title>
+<link href="/static/css/channelUpdate.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/channelDetail.js"></script>
+
+
+</head>
+<body style="background-color: #CCC;">
+    {%include "nav.htm" %}
+    <div class="container">
+        {% ifnotequal info "" %}
+        <div class="row-fluid">
+            <div class="span10 offset1">
+                <div class="alert {{info_class}}">{{info|safe}}</div>
+            </div>
+        </div>
+        {%endifnotequal%}
+        <div class="row-fluid smallFont">
+            <!--  左部分  -->
+            <div class="span8 offset2 whitepanel">
+                <form enctype="multipart/form-data" method="post" >
+		            <table class="mainTable">
+		                <tr>
+		                    <td>频道ID</td>
+		                    <td>
+		                        <input type="text" name="channelId"  value="{{channelId}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>频道名称</td>
+		                    <td>
+		                        <input type="text" name="channelName"  value="{{channelName}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>豆瓣地址</td>
+		                    <td>
+		                        <input type="text"  name="detailDoubanUrl" value="{{detailDoubanUrl}}" />
+		                        <input type="button" value="检测" onclick="extraDouban({{channelId}})"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>导演</td>
+		                    <td>
+		                        <input type="text" name="detailDirecter"  value="{{detailDirecter}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>主演</td>
+		                    <td>
+		                    	<div id="directerItem-hidden" class="labelItem-hidden">
+		                          	<span></span>
+		                          	<input type="hidden" name="detailLeadingRole"  value=""/>
+		                    		<a onclick="removeSelf(this)">x</a>
+	                    		</div>
+		                        {%for role in detailLeadingRole%}
+	                        	<div class="labelItem">
+		                          	<span>{{role}}</span>
+		                          	<input type="hidden" name="detailLeadingRole"  value="{{role}}"/>
+		                    		<a onclick="removeSelf(this)">X</a>
+	                    		</div>
+		                        {%endfor%}
+		                        
+		                        <div class="addBar">
+			                        <input id="detailLeadingRole" type="text" />
+			                        <input type="button" onclick="addRole(this)" value="添加"/>
+		                        </div>
+		                    </td>
+		                </tr>
+		                <tr>
+                            <td>类别</td>
+                            <td>
+                                <div id="movieCategoryItem-hidden" class="labelItem-hidden">
+		                          	<span></span>
+		                          	<input type="hidden" name="detailMovieCategory"  value=""/>
+		                    		<a onclick="removeSelf(this)">x</a>
+	                    		</div>
+		                        {%for movieCategory in detailMovieCategory%}
+	                        	<div class="labelItem">
+		                          	<span>{{movieCategory}}</span>
+		                          	<input type="hidden" name="detailMovieCategory"  value="{{movieCategory}}"/>
+		                    		<a onclick="removeSelf(this)">X</a>
+	                    		</div>
+		                        {%endfor%}
+		                        
+		                        <div class="addBar">
+			                        <input id="detaildetailMovieCategory" type="text" />
+			                        <input type="button" onclick="addMovieCategory(this)" value="添加"/>
+		                        </div>
+                            </td>
+                        </tr>
+		                <tr>
+		                    <td>地区</td>
+		                    <td>
+		                        <input type="text"  name="detailDistrict" value="{{detailDistrict}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>语言</td>
+		                    <td>
+		                        <input type="text"  name="detailLanguage" value="{{detailLanguage}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>上映日期</td>
+		                    <td>
+		                        <input type="text"  name="detailReleaseDate" value="{{detailReleaseDate}}"/>
+		                    </td>
+		                </tr>
+		                
+		                <tr>
+		                    <td>时长</td>
+		                    <td>
+		                        <input type="text"  name="detailDuration" value="{{detailDuration}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>豆瓣评分</td>
+		                    <td>
+		                        <input type="text"  name="detaildoubanScore" value="{{detaildoubanScore}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>影片介绍</td>
+		                    <td>
+		                    	<textarea name="detailDescription" rows="5" cols="30">
+		                    	{{detailDescription}}
+		                    	</textarea>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>预告片地址</td>
+		                    <td>
+		                        <input type="text"  name="detailTrailerUrl" value="{{detailTrailerUrl}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>预告片videoType</td>
+		                    <td>
+		                        <input type="text"  name="detailTrailerVideoType" value="{{detailTrailerVideoType}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>预告片videoId</td>
+		                    <td>
+		                        <input type="text"  name="detailTrailerVideoId" value="{{detailTrailerVideoId}}"/>
+		                    </td>
+		                </tr>
+		                
+		                <tr>
+		                    <td></td>
+		                    <td>
+		                        <button type="submit" class="btn btn-primary">
+                                保存更改
+                                </button>
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+            </div>
+
+            <!--  右部分  -->
+            <div class="span3">
+                
+            </div>
+        </div>
+</body>
+</html>

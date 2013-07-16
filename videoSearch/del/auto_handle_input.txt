@@ -1,0 +1,20 @@
+def main2():
+    #熟男有惑
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z4186475cad6711e2b16f.html',100539)
+    #铁血玫瑰 
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z09b99cc85ac611e296ac.html',100538)
+    #神探高伦布
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_ze9ac2786a3a311e19498.html',100537)
+    #好心作怪
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z95dd9e68434511e2b356.html',100536)
+    #鲨鱼
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_zcece6e64a5a111e2b2ac.html',100535)
+    #爱在春天
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z53c8401cc84411e2b356.html',100534)
+    #当男人恋爱时
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z0a7ac8126f6111e2b16f.html',100533)
+    #听见你的声音
+    #startSearch('handles.handle_youku_tv', 'http://www.youku.com/show_page/id_z494b92cab2fe11e29498.html',100531)
+    
+    #35岁的高中生
+    startSearch('handles.handle_funshion_tv', 'http://www.funshion.com/subject/107354',100532)

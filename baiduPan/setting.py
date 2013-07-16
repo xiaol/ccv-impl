@@ -1,0 +1,12 @@
+#coding=utf-8
+
+APP_ID = '817394'
+
+API_KEY = 'Rxl3ihGPw8W9fzqTg1NFtBEB'
+
+APP_SECRET = 'jnOHK40oyFVk2XwqxHkECaF9xmVBMYV7'
+
+token ='3.c78143e973fa32763959115822e28711.2592000.1371052041.4043312226-817394'
+
+
+UPLOAD_URL = 'https://pcs.baidu.com/rest/2.0/pcs/file'

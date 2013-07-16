@@ -1,0 +1,70 @@
+.clear
+{
+	clear:both;
+}
+
+.smallFont
+{
+    font-size:12px;
+}
+.baseinfo td
+{
+	padding-bottom:12px;
+}
+.poi
+{
+	margin-bottom:10px;
+}
+.mainTable
+{
+	width:100%;
+}
+.mainTable tr
+{
+	border-top:dashed 1px #DDD;
+}
+
+.mainTable td
+{
+    padding-top:15px;
+}
+
+.whitepanel
+{
+    padding:10px;
+    background-color: #FFF;
+    border-top:solid 5px rgb(50,151,253);
+    box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0px;
+}
+
+
+
+.dropdown-menu a
+{
+	cursor:pointer;
+}
+
+
+.labelItem-hidden
+{
+	display:none;
+}
+
+.labelItem
+{
+	display:inline;
+	border:solid 1px #CCC;
+	background-color: #EEE;
+	padding:2px 5px;
+	margin:5px 5px 5px 0px;
+}
+
+.labelItem a
+{
+	cursor:pointer;
+}
+
+.addBar
+{
+	margin-top:20px;
+}

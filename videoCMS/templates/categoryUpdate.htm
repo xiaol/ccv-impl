@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>频道详情</title>
+<link href="/static/css/categoryUpdate.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/categoryUpdate.js"></script>
+
+
+</head>
+<body style="background-color: #CCC;">
+    {%include "nav.htm" %}
+    <div class="container">
+        {% ifnotequal info "" %}
+        <div class="row-fluid">
+            <div class="span10 offset1">
+                <div class="alert {{info_class}}">{{info|safe}}</div>
+            </div>
+        </div>
+        {%endifnotequal%}
+        <div class="row-fluid smallFont">
+            <!--  左部分  -->
+            <div class="span8 offset2 whitepanel">
+                <form enctype="multipart/form-data" method="post" >
+		            <table class="mainTable">
+		                <tr>
+		                    <td>分类ID</td>
+		                    <td>
+		                        <input type="text" name="categoryId"  value="{{categoryId}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>分类名称</td>
+		                    <td>
+		                        <input type="text" name="categoryName"  value="{{categoryName}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>分类类别</td>
+		                    <td>
+		                    	<select name="categoryType" >
+		                    		{% for type in categoryTypeList%}
+		                    		<option {%ifequal type categoryType%}selected="selected"{%endifequal%}>{{type}}</option>
+		                    		{% endfor %}
+		                    	</select>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>分类封面</td>
+		                    <td>
+		                        <img src="{{imageUrl}}"  style="display:block;"/>
+		                        <input type="file"  name="categoryImage" onchange="onImageChange(this)"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>分类Logo</td>
+		                    <td>
+		                        <img src="{{logoUrl}}"  style="display:block;"/>
+		                        <input type="file"  name="logoUrl" onchange="onImageChange(this)"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>子标题</td>
+		                    <td>
+		                        <input type="text" name="subtitle"  value="{{subtitle}}"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>类别</td>
+		                    <td>
+		                        <select name="videoClass">
+		                        	{% for type in videoClassList%}
+		                    		<option {%ifequal type videoClass%}selected="selected"{%endifequal%}>{{type}}</option>
+		                    		{% endfor %}
+
+		                        </select>
+		                    </td>
+		                </tr>
+		                <tr>
+                                <td style="width: 100px">权重</td>
+                                <td>
+                                    <input type="text"  name="weight" value="{{weight}}"/>
+                                </td>
+                        </tr>
+		                <tr>
+		                    <td></td>
+		                    <td>
+		                        <button type="submit" class="btn btn-primary">
+                                {%if update%}保存更改{%else%}创建新频道{%endif%}
+                                </button>
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+            </div>
+
+            <!--  右部分  -->
+            <div class="span3">
+                
+            </div>
+        </div>
+</body>
+</html>

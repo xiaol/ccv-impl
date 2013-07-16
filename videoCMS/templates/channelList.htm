@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>频道列表</title>
+<link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/channelList.js"></script>
+
+
+</head>
+<body style="background-color:#CCC;">
+    {% include "nav.htm" %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span8 paddingWrap" style="background-color:#FFF;">
+			            {%for channel in channelList%}
+			            <div class="row-fluid topicItem">
+		                    <div class="topicImage">
+		                    	<div style="position:absolute;">
+		                    		<span class="label label-info">{{channel.sourceWebsite}}</span>
+		                    		{%if channel.autoSub%}<span class="label label-warning">首订</span>{%endif%}
+		                    		{%ifequal channel.searchStatus "error" %}
+		                    			<a class="label label-warning" title="{{channel.searchMsg}}">更新错误</a>
+		                    		{%endifequal%}
+		                    		
+		                    	</div>
+		                        <img src="{{channel.channelImageUrl}}" />
+		                    </div>
+		                    <div class="span9 topicItemRight">
+		                        <div class="row-fluid">
+		                        	<span>{{channel.channelId}}</span>
+		                            <a  href="/resource/index?channelId={{channel.channelId}}">{{channel.channelName}}</a>
+		                            [{{channel.weight}}]
+		                            <span class="label label-info">{{channel.channelType}}</span>
+		                            
+		                            <span class="label label-info">{{channel.tvNumber}}</span>
+		                            <a class="label label-info" onclick="updateNow({{channel.channelId}})">立即更新</a>
+		                            {% if channel.processed %}
+		                            <span class="label label-info">已处理</span>
+		                            {% else %}
+		                            <span class="label">未处理</span>
+		                            {% endif %}
+		                            {% if channel.isNewest %}
+		                            <span class="label label-warning">最新</span>
+		                            {% endif %}
+		                            {% ifequal channel.identifer 1 %}
+		                            <span class="label label-warning">独播</span>
+		                            {% endifequal %}
+		                            {% ifequal channel.identifer 2 %}
+		                            <span class="label label-warning">最新-</span>
+		                            {% endifequal %}
+		                            <a href="detail?id={{channel.id}}" class="label label-warning">详情</a>
+		                            <a href="update?id={{channel.id}}" class="label label-warning">编辑</a>
+		                        	{%ifequal username "admin"%}<a class="label" onclick="deleteChannel({{channel.channelId}})">删除</a>{%endifequal%}
+		                        </div>
+		                        <div class="row-fluid"></div>
+		                        <div class="row-fluid smallFont">
+		                            <div class="span6">创建时间：{{channel.createTime}}</div>
+		                            <div class="span6">修改时间：{{channel.modifyTime}}</div>
+		                        </div>
+		                        <div class="row-fluid smallFont">
+		                            <div class="span6">更新时间：{{channel.updateTime}}</div>
+		                            <div class="span6">下次时间：{{channel.nextSearchTime}}</div>
+		                        </div>
+		                    </div>
+		                </div>
+			            {%endfor%}
+			</div>
+			
+			<div class="span4 paddingWrap" style="background-color:#FFF;">
+                <form id="form_nav">
+                    <div id="nav_div">
+                    <table>
+                    	<tr>
+                            <td>ObjectId</td>
+                            <td><input name="id" type="text" style="width:110px" value="{{id}}"/></td>
+                        </tr>
+                        <tr>
+                            <td>频道名称</td>
+                            <td><input name="name" type="text" style="width:110px" value="{{name}}"/></td>
+                            <td rowspan="3"><input class="btn btn-inverse btn-mini" type="submit" value="搜索" /></td>
+                        </tr>
+                        <tr>
+                            <td>频道ID</td>
+                            <td><input name="channelId" type="text" style="width:110px" value="{{channelId}}"/></td>
+                        </tr>
+                        <tr>
+                            <td>类别</td>
+                            <td>
+                                <select name="channelType"  style="width:110px">
+                                {%for one in typeList%}
+                                    <option {%ifequal one channelType %}selected{%endifequal%}>{{one}}</option>
+                                {%endfor%}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>状态</td>
+                            <td>
+                             	<input id="processed1" type="radio" name="processed" value=""  {%ifequal processed "" %}checked="checked" {%endifequal%}/>All
+                             	<input id="processed2" type="radio" name="processed" value="true" {%ifequal processed "true" %}checked="checked" {%endifequal%}/>已处理
+                                <input id="processed3" type="radio" name="processed" value="false" {%ifequal processed "false" %}checked="checked" {%endifequal%}/>未处理
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>mongo</td>
+                            <td><textarea name="mongo" type="text" style="width:110px;height:110px;">{{mongo}}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>排序</td>
+                            <td>
+                             	<input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
+                             	<input type="radio" name="sort" value="modifyTime" {%ifequal sort "modifyTime" %}checked="checked" {%endifequal%}/>修改时间
+                             	<br/>
+                             	<input type="radio" name="sort" value="updateTime" {%ifequal sort "updateTime" %}checked="checked" {%endifequal%}/>更新时间
+                             	<input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>第<input type="text" name="page" value="{{page}}"/>页</td>
+                            <td>每页<input type="text" name="len" value="{{len}}"/>条/({{findNum}})</td>
+                            <td><input class="btn btn-inverse btn-mini" type="submit" value="转到"/></td>
+                        </tr>
+                        <tr>
+                            <td><a onclick="goPage(1)" >首页</a></td>
+                            <td><a onclick="goPage({{prePage}})">上一页</a></td>
+                            <td><a onclick="goPage({{nextPage}})">下一页</a></td>
+                        </tr>
+                    </table>
+                    </div>
+              </form>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
