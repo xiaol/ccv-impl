@@ -132,6 +132,19 @@ class Channel(DomainBase):
     detailTrailerVideoType = ''
     detailTrailerVideoId = ''
     detailTotalTvNumber = -1
+    
+    detailTrailerList = []
+    '''
+        [
+         {
+             "url":"",
+             "videoType":"",
+             "videoId","",
+             "title"
+         },
+         ...
+        ]
+    '''
 
 
 class Tag(DomainBase):

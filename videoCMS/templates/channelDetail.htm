@@ -139,27 +139,63 @@
 		                </tr>
 		                <tr>
 		                	<td colspan="3">
+		                		{%for trailer in detailTrailerList%}
 		                		<table class="trailer" >
 		                			<tr>
 					                    <td>预告片地址</td>
 					                    <td>
-					                        <input type="text"  name="detailTrailerUrl" value="{{detailTrailerUrl}}"/>
+					                        <input type="text"  name="detailTrailerUrl" value="{{trailer.url}}"/>
 					                        <input type="button" class="btn btn-primary" value="检测" onclick="queryVideoId(this)"/>
 					                    </td>
 					                </tr>
 					                <tr>
 					                    <td>预告片videoType</td>
 					                    <td>
-					                        <input type="text"  name="detailTrailerVideoType" value="{{detailTrailerVideoType}}"/>
+					                        <input type="text"  name="detailTrailerVideoType" value="{{trailer.videoType}}"/>
 					                    </td>
 					                </tr>
 					                <tr>
 					                    <td>预告片videoId</td>
 					                    <td>
-					                        <input type="text"  name="detailTrailerVideoId" value="{{detailTrailerVideoId}}"/>
+					                        <input type="text"  name="detailTrailerVideoId" value="{{trailer.videoId}}"/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片标题</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerTitle" value="{{trailer.title}}"/>
 					                    </td>
 					                </tr>
 		                		</table>
+		                		{%endfor%}
+		                		<table id="trailerHidden" class="trailer" >
+		                			<tr>
+					                    <td>预告片地址</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerUrl" value=""/>
+					                        <input type="button" class="btn btn-primary" value="检测" onclick="queryVideoId(this)"/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片videoType</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerVideoType" value=""/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片videoId</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerVideoId" value=""/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片标题</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerTitle" value=""/>
+					                    </td>
+					                </tr>
+		                		</table>
+					            <input type="button" class="btn btn-primary" value="新增" onclick="addTrailer()"/>
 		                	</td>
 		                </tr>
 		                

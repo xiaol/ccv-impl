@@ -60,4 +60,4 @@ def buildResource(url,title,number,channelId,videoId):
 if __name__ == '__main__':
     #pprint.pprint(handle('http://so.letv.com/tv/89951.html',100055,-1))
     #pprint.pprint(handle('http://tv.sohu.com/s2013/sdsxsomg/',100055,-1))
-    pprint.pprint(handle('http://tv.sohu.com/s2013/ttyxwsb/',100055,-1))
+    pprint.pprint(handle('http://tv.sohu.com/s2011/6358/s329815619/',100055,-1))
