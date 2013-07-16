@@ -138,23 +138,31 @@
 		                    </td>
 		                </tr>
 		                <tr>
-		                    <td>预告片地址</td>
-		                    <td>
-		                        <input type="text"  name="detailTrailerUrl" value="{{detailTrailerUrl}}"/>
-		                    </td>
+		                	<td colspan="3">
+		                		<table class="trailer" >
+		                			<tr>
+					                    <td>预告片地址</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerUrl" value="{{detailTrailerUrl}}"/>
+					                        <input type="button" class="btn btn-primary" value="检测" onclick="queryVideoId(this)"/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片videoType</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerVideoType" value="{{detailTrailerVideoType}}"/>
+					                    </td>
+					                </tr>
+					                <tr>
+					                    <td>预告片videoId</td>
+					                    <td>
+					                        <input type="text"  name="detailTrailerVideoId" value="{{detailTrailerVideoId}}"/>
+					                    </td>
+					                </tr>
+		                		</table>
+		                	</td>
 		                </tr>
-		                <tr>
-		                    <td>预告片videoType</td>
-		                    <td>
-		                        <input type="text"  name="detailTrailerVideoType" value="{{detailTrailerVideoType}}"/>
-		                    </td>
-		                </tr>
-		                <tr>
-		                    <td>预告片videoId</td>
-		                    <td>
-		                        <input type="text"  name="detailTrailerVideoId" value="{{detailTrailerVideoId}}"/>
-		                    </td>
-		                </tr>
+		                
 		                
 		                <tr>
 		                    <td></td>

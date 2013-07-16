@@ -66,15 +66,19 @@ searchHandleListAll = [
 'search.funshionTv',
 'search.letvTv',
 'search.iqiyiTv',
+'search.sohuTv',
 
 'search.youkuZongyi',
 'search.iqiyiZongyi',
+'search.sohuZongyi',
+'search.funshionZongyi',
 
 'search.youkuDongman',
 'search.tudouDongman',
 'search.sohuDongman',
 'search.iqiyiDongman',
 'search.funshionDongman',
+'search.letvDongman',
 
 'search.youkuJilupian',
 'search.sohuJilupian',
@@ -82,6 +86,7 @@ searchHandleListAll = [
 
 'search.iqiyiSport',
 
-'search.letvDongman',
-'search.sohuZongyi'
+
+
+
 ]
