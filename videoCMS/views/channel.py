@@ -319,6 +319,18 @@ def detail(request):
     channel['detailLeadingRole'] = filter(lambda a:a,request.POST.getlist('detailLeadingRole'))
     channel['detailMovieCategory'] = filter(lambda a:a,request.POST.getlist('detailMovieCategory'))
     
+    '''处理预告片'''
+    trailers = zip(
+    filter(lambda a:a,request.POST.getlist('detailTrailerVideoType')),
+    request.POST.getlist('detailTrailerVideoId'),
+    request.POST.getlist('detailTrailerTitle'),
+    request.POST.getlist('detailTrailerUrl')
+    )
+    channel['detailTrailerList'] = [ {"url":trailer[3], "title":trailer[2] , "videoType":trailer[0], "videoId":trailer[1]}
+                                        for trailer in trailers]
+        
+    
+    
     print channel.getUpdateDict()
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('detail?id='+id)
