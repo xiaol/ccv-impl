@@ -120,8 +120,13 @@ def handle(channelId,handleName,url):
         '''==============  体育游戏 ======================='''
     elif handleName =='iqiyiSport':
         startSearch('handles.handle_iqiyi_list',url ,channelId, snapShot = True)
-        ''''''
-        
+        '''=================  其他 ======================'''
+    elif handleName == 'youkuPlayList':
+        startSearch('handles.handle_youku_playlist',url ,channelId)
+    elif handleName == 'youkuSoku':
+        startSearch('handles.handle_youku_soku',url ,channelId)
+    elif handleName == '56Album':
+        startSearch('handles.handle_56_alnum',url ,channelId)
         
 if __name__ == '__main__':
     pass

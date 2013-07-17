@@ -24,9 +24,13 @@ def handle(url,channelId,tvNumber):
     for video in videos:
         url = video.xpath('./@href')[0]
         title = video.xpath('./text()')[0]
-        number = int(p_number.search(title).groups()[0])
-        if number <= tvNumber:
-            continue
+        try:
+            number = int(p_number.search(title).groups()[0])
+            if number <= tvNumber:
+                continue
+        except:
+            pass
+        
 
         videoId = p_vid.search(url).groups()[0]
         ret.append(buildResource(url,title,number,channelId,videoId))

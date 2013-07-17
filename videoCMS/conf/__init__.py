@@ -87,7 +87,9 @@ searchHandleListAll = [
 
 'search.iqiyiSport',
 
-
+'search.youkuPlayList'
+'search.youkuSoku',
+'search.56Album'
 
 
 ]
