@@ -85,6 +85,9 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sohu_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
     elif handleName == 'funshionZongyi':
         startSearch('handles.handle_funshion_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
+    elif handleName == 'pptvZongyi':
+        startSearch('handles.handle_pptv_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
+        
         '''==============动漫==============='''
     elif handleName == 'youkuDongman':
         startSearch('handles.handle_youku_dongman', url, channelId, updateTvNumber=True)

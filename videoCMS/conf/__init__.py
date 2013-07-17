@@ -73,6 +73,7 @@ searchHandleListAll = [
 'search.iqiyiZongyi',
 'search.sohuZongyi',
 'search.funshionZongyi',
+'search.pptvZongyi',
 
 'search.youkuDongman',
 'search.tudouDongman',
