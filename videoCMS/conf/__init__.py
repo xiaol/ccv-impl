@@ -67,6 +67,7 @@ searchHandleListAll = [
 'search.letvTv',
 'search.iqiyiTv',
 'search.sohuTv',
+'search.pptvTv',
 
 'search.youkuZongyi',
 'search.iqiyiZongyi',

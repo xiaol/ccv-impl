@@ -6,7 +6,7 @@ from common.SingletonProcessDecoration import SingletonProcessDecoration
 from setting import clct_channel
 import sys,time,json,traceback
 from common.common import getCurTime
-
+from pprint import pprint
 
 '''
 def process_channel(channel):
@@ -37,7 +37,8 @@ def process_channel(channel):
 '''
 
 def process_channel(channel):
-    print channel
+    print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
+    pprint(channel)
     try:
         handleFrequents = int(channel['handleFrequents'])
     except:
@@ -69,7 +70,6 @@ def main():
         channels = clct_channel.find({'searchHandleList':{"$ne":[]},"processed":True,\
                                       'nextSearchTime':{'$lte':getCurTime(),"$not":{"$in":["","00000000000000"]}}})
         for channel in channels:
-            print channel
             try:
                 process_channel(channel)
             except:

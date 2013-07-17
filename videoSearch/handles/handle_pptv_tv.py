@@ -2,25 +2,20 @@
 import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
-import re,pprint
+import re,pprint,json
 from common.common import getCurTime
-from pymongo import Connection
 from common.Domain import Resource,Channel
 from common.HttpUtil import get_html
 from setting import clct_channel
 
-
-p_content_vid = re.compile('vid\s*:\s*(\d+),')
 p_number = re.compile('(\d+)')
-
-
+p_vid = re.compile('"vid":(\d+)')
+p_channelId = re.compile('"channel_id":(\d+)')
 
 def handle(url,channelId ,tvNumber):
-    tree = etree.HTML(get_html(url))
+    tree = etree.HTML(getAllEpisodes(url))
     
-    links = tree.xpath('//div[@class="gut"]/div/div[1]/div/dl/dd/p/a')
-    if len(links) == 0:
-        links = tree.xpath('//div[@class="listTAB" or @class="listTab"]//dl/dd/a')
+    links = tree.xpath('//ul/li/span/a')
     ret = []
     
     for link in links:
@@ -31,11 +26,28 @@ def handle(url,channelId ,tvNumber):
             continue
         
         content = get_html(url)
-        videoId = p_content_vid.search(content).groups()[0]
+        videoId = p_vid.search(content).groups()[0]
         
         ret.append(buildResource(url,title,number,channelId,videoId))
     return ret
     
+
+def getAllEpisodes(url):
+    html = get_html(url)
+    channelId = p_channelId.search(html).groups()[0]
+    tree = etree.HTML(html)
+    pages = tree.xpath('//p[@class="fr"]/a[not(@class) or @class="now"]/@data-page')
+    
+    ret = '<html>'
+    for page in pages:
+        url = 'http://api2.v.pptv.com/api/page/episodes.js?page=%s&channel_id=%s'%(page,channelId)
+        print url
+        ret += json.loads(get_html(url)[1:-2])['html']
+    ret += '</html>'
+    
+    print ret
+    return ret
+
 
 def buildResource(url,title,number,channelId,videoId):
     resource = Resource()
@@ -43,7 +55,6 @@ def buildResource(url,title,number,channelId,videoId):
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
-    #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
     resource['videoType'] = 'letv'
     resource['videoId'] =  videoId
@@ -54,8 +65,6 @@ def buildResource(url,title,number,channelId,videoId):
 
 
 if __name__ == '__main__':
-    #pprint.pprint(handle('http://so.letv.com/tv/89951.html',100055,-1))
-    #pprint.pprint(handle('http://tv.letv.com/zt/xlasd/index.shtml',100055,-1))
-    #pprint.pprint(handle('http://tv.letv.com/zt/hxsxd/index.shtml',100055,-1))
-    pprint.pprint(handle('http://so.letv.com/tv/87688.html',100055,-1))
+    #电视剧 两个爸爸
+    pprint.pprint(handle('http://www.pptv.com/page/260049.html',100055,-1))
 
