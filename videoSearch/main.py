@@ -74,10 +74,12 @@ def main():
                 process_channel(channel)
             except:
                 print '=========== process_channel %s error ============='%channel['channelId']
-                clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),"processed":False}})
+                clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),\
+                                                                    "processed":False,'searchTime':getCurTime()}})
                 print traceback.format_exc()
             else:
-                clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1}})
+                clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1},\
+                                                            'set':{'searchTime':getCurTime()}})
         print 'loop'
         time.sleep(60)
         

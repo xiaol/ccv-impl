@@ -86,6 +86,7 @@ class Channel(DomainBase):
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
     nextSearchTime = '00000000000000'
+    searchTime = '00000000000000'
     
     onlineStatus = 0
     description = ''
@@ -132,6 +133,19 @@ class Channel(DomainBase):
     detailTrailerVideoType = ''
     detailTrailerVideoId = ''
     detailTotalTvNumber = -1
+    
+    detailTrailerList = []
+    '''
+        [
+         {
+             "url":"",
+             "videoType":"",
+             "videoId","",
+             "title"
+         },
+         ...
+        ]
+    '''
 
 
 class Tag(DomainBase):

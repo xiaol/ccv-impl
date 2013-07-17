@@ -75,6 +75,7 @@ def index(request):
         one.pop('_id')
         one['channelImageUrl'] = IMG_INTERFACE + one['channelImageUrl']
         one['createTime'] = formatHumanTime(one['createTime'])
+        one['searchTime'] = formatHumanTime(one['searchTime'])
         one['modifyTime'] = formatHumanTime(one['modifyTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['nextSearchTime'] = formatHumanTime(one['nextSearchTime'])
