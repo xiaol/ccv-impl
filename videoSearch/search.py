@@ -27,7 +27,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],mp4box,force=True)
     
 
-def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False):
+def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , **keyParams):
     #获取模块
     __import__(handleName)
     module = sys.modules[handleName]
@@ -35,7 +35,7 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False):
     tvNumber = channel['tvNumber']
     resourceImageUrl = channel['resourceImageUrl']
     #抽取
-    result = module.handle(url, channelId, tvNumber)
+    result = module.handle(url, channelId, tvNumber,**keyParams)
     
     isOver = False
     for one in result:
@@ -130,6 +130,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_youku_soku',url ,channelId)
     elif handleName == '56Album':
         startSearch('handles.handle_56_alnum',url ,channelId)
+    elif handleName == 'tudouAlbum':
+        startSearch('handles.handle_tudou', url,channelId,needNumber = False)
         
 if __name__ == '__main__':
     pass

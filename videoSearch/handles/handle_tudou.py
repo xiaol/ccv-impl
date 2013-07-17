@@ -11,7 +11,7 @@ p_vid = re.compile('/([^/]+)\.html')
 p_number = re.compile('(\d+)')
 p_not_over = re.compile(u'更新至')
 
-def handle(url,channelId,tvNumber):
+def handle(url,channelId,tvNumber, needNumber = True):
     tree = etree.HTML(get_html(url,'gbk'))
     videos = tree.xpath('//div[contains(@class,"playitems")]//h6[@class="caption"]/a')
     print tvNumber
@@ -21,9 +21,12 @@ def handle(url,channelId,tvNumber):
     for video in videos:
         url = video.xpath('./@href')[0]
         title = video.xpath('./@title')[0]
-        number = int(p_number.search(title).groups()[0])
-        if number <= tvNumber:
-            continue
+        if needNumber:
+            number = int(p_number.search(title).groups()[0])
+            if number <= tvNumber:
+                continue
+        else:
+            number = 0
         videoId = p_vid.search(url).groups()[0]
         ret.append(buildResource(url,title,number,channelId,videoId))
 

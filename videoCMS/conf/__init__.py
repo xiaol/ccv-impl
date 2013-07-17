@@ -90,7 +90,8 @@ searchHandleListAll = [
 
 'search.youkuPlayList'
 'search.youkuSoku',
-'search.56Album'
+'search.56Album',
+'search.tudouAlbum'
 
 
 ]
