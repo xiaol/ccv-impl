@@ -1,6 +1,7 @@
 #coding=utf-8
 import time
 import md5
+import os
 
 def getRealTimeStruct():
     days = [31,28,31,30,31,30,31,31,30,31,30,31]
@@ -33,3 +34,7 @@ def formatHumanTime(s):
         return time.strftime("%Y-%m-%d %H:%M:%S",time.strptime(s,"%Y%m%d%H%M%S"))
     except:
         return '00000-00-00 00:00:00'
+    
+
+
+    

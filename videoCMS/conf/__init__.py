@@ -29,7 +29,6 @@ CHANNEL_IMAGE_HEIGHT = 300
 
 
 
-
 from videoCMS.common.db import getCategoryList
 CHANNEL_TYPE_LIST = getCategoryList()
 
@@ -74,6 +73,7 @@ searchHandleListAll = [
 'search.sohuZongyi',
 'search.funshionZongyi',
 'search.pptvZongyi',
+'search.qqZongyi',
 
 'search.youkuDongman',
 'search.tudouDongman',
@@ -88,10 +88,9 @@ searchHandleListAll = [
 
 'search.iqiyiSport',
 
-'search.youkuPlayList'
+'search.youkuPlayList',
 'search.youkuSoku',
 'search.56Album',
 'search.tudouAlbum'
-
 
 ]

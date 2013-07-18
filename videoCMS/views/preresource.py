@@ -1,7 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
-import json,StringIO,re
+import json,StringIO,re,os
 from videoCMS.conf import clct_resource,clct_preresource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT
 from bson import ObjectId
@@ -10,7 +10,7 @@ from videoCMS.common.common import Obj2Str,getCurTime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 import urllib2
-from videoSearch.ed2k.telnet import startEd2k
+from videoSearch.ed2k.telnet import startEd2k,startBT
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -139,7 +139,6 @@ def addEd2k(request):
     if clct_resource.find_one({'resourceUrl':resource['resourceUrl']}) != None:
         msg =  '已下载资源\ndownloaded...exit'
         raise Exception(msg)
-    
     #开始任务
     startEd2k(resource['resourceUrl'].encode('utf-8'))
     #插入
@@ -147,6 +146,69 @@ def addEd2k(request):
     id = str(id)
     return HttpResponseRedirect('update?id='+id)
 
+
+
+def addTorrent(request):
+    if request.method == "GET":
+        DICT = {}
+        DICT['info'] = ''
+        DICT['navPage'] = 'preresource'
+        return render_to_response('preresourceAddBT.htm',DICT)
+    resource  = Resource()
+    resource['resourceName'] = request.POST.get('resourceName')
+    if resource['resourceName'] == '':raise Exception('资源名 不能为空')
+    resource['channelId'] = int(request.POST.get('channelId'))
+    resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
+    resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
+    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
+    for tag in resource['tagList']:
+        if tag == '':continue
+        if clct_tag.find_one({'name':tag}) == None:createTag(tag)
+        addTagRef(tag, 1)
+    
+    resource['createTime'] = getCurTime()
+    #resource['resourceUrl'] = request.POST.get('videoURL')
+    resource['videoType'] = 'torrent'
+    resource['videoId'] = request.POST.get('videoId')
+    resource['type'] = 'video'
+    resource['downloadType'] = 'torrent'
+    
+    if clct_preresource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']}) != None:
+        msg =  '已存在下载队列\nexist in download queue...exit'
+        raise Exception(msg)
+    if clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']}) != None:
+        msg =  '已下载资源\ndownloaded...exit'
+        raise Exception(msg)
+    
+    
+    '''保存BT文件,并且上传到 MLDONKEY服务器'''
+    btFile = request.FILES.get('btFile',None)
+    if not btFile:
+        raise Exception('没有上传文件!!')
+    filename = os.path.dirname(os.path.dirname(__file__)) + '/upload/' + btFile.name
+    with open(filename,'w') as f:
+        f.write(btFile.read())
+    
+    cmd = "scp \"%s\" root@60.28.29.38:/root/.mldonkey/torrents/upload"%filename
+
+    if os.system(cmd):
+        import subprocess
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out = ''
+        for line in p.stdout.readlines():
+            out += line
+        retval = p.wait()
+        raise Exception(out)
+        raise Exception('种子文件拷贝到MLDONKEY服务器失败!!!')
+        #pass
+    os.remove(filename)
+    #开始任务
+    startBT('/root/.mldonkey/torrents/upload/' + btFile.name.encode('utf-8'))
+    
+    #插入
+    id = clct_preresource.insert(resource.getInsertDict())
+    id = str(id)
+    return HttpResponseRedirect('update?id='+id)
 
 
 if __name__ == '__main__':

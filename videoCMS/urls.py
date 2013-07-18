@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^preresource/index$', 'videoCMS.views.preresource.index'),
     url(r'^preresource/update$', 'videoCMS.views.preresource.update'),
     url(r'^preresource/addEd2k$', 'videoCMS.views.preresource.addEd2k'),
+    url(r'^preresource/addBT$', 'videoCMS.views.preresource.addTorrent'),
     
     url(r'^tag/index$', 'videoCMS.views.tag.index'),
     url(r'^tag/add$', 'videoCMS.views.tag.add'),

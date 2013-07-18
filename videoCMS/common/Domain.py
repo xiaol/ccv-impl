@@ -56,6 +56,7 @@ class Resource(DomainBase):
     tagList = []
     videoFileName = ''
     snapshot = ''
+    downloadType = ''
 
 class Category(DomainBase):
     categoryName = ''

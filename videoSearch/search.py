@@ -87,7 +87,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_funshion_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
     elif handleName == 'pptvZongyi':
         startSearch('handles.handle_pptv_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
-        
+    elif handleName == 'qqZongyi':
+        startSearch('handles.handle_qq_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
         '''==============动漫==============='''
     elif handleName == 'youkuDongman':
         startSearch('handles.handle_youku_dongman', url, channelId, updateTvNumber=True)
@@ -129,7 +130,7 @@ def handle(channelId,handleName,url):
     elif handleName == 'youkuSoku':
         startSearch('handles.handle_youku_soku',url ,channelId)
     elif handleName == '56Album':
-        startSearch('handles.handle_56_alnum',url ,channelId)
+        startSearch('handles.handle_56_album',url ,channelId)
     elif handleName == 'tudouAlbum':
         startSearch('handles.handle_tudou', url,channelId,needNumber = False)
         
