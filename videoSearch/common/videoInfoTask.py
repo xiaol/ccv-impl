@@ -30,4 +30,5 @@ def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False,
     if clct_videoInfoTask.find_one({'resourceId':videoInfoTask['resourceId']}):
         clct_videoInfoTask.remove({'resourceId':videoInfoTask['resourceId']},mulit=True)
     clct_videoInfoTask.insert(videoInfoTask.getInsertDict())
+    clct_resource.update({'_id':ObjectId(resourceId)},{'$set':{"snapshot": "doing"}})
     return True

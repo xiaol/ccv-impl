@@ -91,6 +91,11 @@ searchHandleListAll = [
 'search.youkuPlayList',
 'search.youkuSoku',
 'search.56Album',
-'search.tudouAlbum'
+'search.tudouAlbum',
+'search.tudouNewsIndex',
+'search.youkuIndex',
+'search.56fun',
+'search.56list',
+'search.youkuIyouku',
 
 ]

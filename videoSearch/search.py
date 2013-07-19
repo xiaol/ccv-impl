@@ -132,7 +132,17 @@ def handle(channelId,handleName,url):
     elif handleName == '56Album':
         startSearch('handles.handle_56_album',url ,channelId)
     elif handleName == 'tudouAlbum':
-        startSearch('handles.handle_tudou', url,channelId,needNumber = False)
+        startSearch('handles.handle_tudou', url,channelId,)
+    elif handleName == 'youkuIndex':
+        startSearch('handles.handle_youku_index', url,channelId,snapShot = True)
+    elif handleName == 'tudouNewsIndex':
+        startSearch('handles.handle_tudou_index', url,channelId,snapShot = True)
+    elif handleName == '56fun':
+        startSearch('handles.handle_56_fun', url,channelId ,snapShot = True)
+    elif handleName == '56list':
+        startSearch('handles.handle_56_list', url,channelId ,snapShot = True)
+    elif handleName == 'youkuIyouku':
+        startSearch('handles.handle_youku_iyouku', url,channelId ,snapShot = True)
         
 if __name__ == '__main__':
     pass

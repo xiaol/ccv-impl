@@ -368,7 +368,7 @@ def updateSearchNow(request):
     tCur = time.mktime(time.localtime())
     tPreNext = time.mktime(time.strptime(channel['nextSearchTime'],'%Y%m%d%H%M%S'))
     
-    tNext =  tPreNext + (int((0 - tCur + tPreNext) / handleFrequents) - 2) * handleFrequents
+    tNext =  tPreNext + (-int(abs(tCur -tPreNext) / handleFrequents) - 2) * handleFrequents
     t = time.strftime('%Y%m%d%H%M%S',time.localtime(tNext))
     
     clct_channel.update({'channelId':channelId},{'$set':{'nextSearchTime':t}})

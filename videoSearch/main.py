@@ -8,33 +8,7 @@ import sys,time,json,traceback
 from common.common import getCurTime
 from pprint import pprint
 
-'''
-def process_channel(channel):
-    handleName = channel['handleName']
-    __import__(handleName)
-    module = sys.modules[handleName]
-    args = channel['handleArgs']
-    if type(args) == str or type(args) == unicode:
-        args = json.loads(args)
-    print args
-    print SingletonProcessDecoration(handleName+'.lock')(module.startSearch)(*args)
-    
-    #更新下次更新时间
-    print channel
-    try:
-        handleFrequents = int(channel['handleFrequents'])
-    except:
-        print 'Wrong handleFrequents:',channel['handleFrequents']
-        return
-    #计算下次更新时间
-    tCur = time.mktime(time.localtime())
-    tPreNext = time.mktime(time.strptime(channel['nextSearchTime'],'%Y%m%d%H%M%S'))
-    tNext =  tPreNext + ((tCur - tPreNext) / handleFrequents + 1) * handleFrequents
-    t = time.strftime('%Y%m%d%H%M%S',time.localtime(tNext))
-    print 'Next Update Time:',t
-    #更新下次更新时间
-    clct_channel.update({'_id':channel['_id']},{'$set':{'nextSearchTime': t}})
-'''
+
 
 def process_channel(channel):
     print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
@@ -78,8 +52,10 @@ def main():
                                                                     "processed":False,'searchTime':getCurTime()}})
                 print traceback.format_exc()
             else:
-                clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1},\
-                                                            'set':{'searchTime':getCurTime()}})
+                print '=========== process_channel %s success ============='%channel['channelId']
+                clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1}})
+                clct_channel.update({'_id':channel['_id']},{'$set':{'searchTime':getCurTime()}})
+            sys.stdout.flush()
         print 'loop'
         time.sleep(60)
         
@@ -100,7 +76,7 @@ def test():
     process_channel(channel)
 '''
 def test():
-    channel = clct_channel.find_one({"channelId":100102})
+    channel = clct_channel.find_one({"channelId":100050})
     process_channel(channel)
 
 
