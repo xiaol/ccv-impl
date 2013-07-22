@@ -18,13 +18,16 @@ def handle(url,channelId,tvNumber, needNumber = True):
         if not len(videos) > tvNumber:
             return []
     ret = []
-    for video in videos:
+    for i,video in enumerate(videos):
         url = video.xpath('./@href')[0]
         title = video.xpath('./@title')[0]
         if needNumber:
-            number = int(p_number.search(title).groups()[0])
-            if number <= tvNumber:
-                continue
+            try:
+                number = int(p_number.search(title).groups()[0])
+                if number <= tvNumber:
+                    continue
+            except:
+                number = i
         else:
             number = 0
         videoId = p_vid.search(url).groups()[0]
