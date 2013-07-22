@@ -1,5 +1,5 @@
 #coding=utf-8
-from setting import clct_preresource,clct_resource,clct_channel,MLDONKEY_DIR,STORE_DIR,MLDONKEY_D_DIR
+from setting import clct_preresource,clct_resource,clct_channel,MLDONKEY_DIR,STORE_DIR,MLDONKEY_D_DIR,FFMEPG
 import time,os,shutil,re
 from common.common import r_mkdir,getCurTime
 
@@ -17,12 +17,17 @@ def flagDownloadDone(pretask):
             
         elif os.path.exists(os.path.join(MLDONKEY_D_DIR, pretask['videoId'])):
             #目录
+            oldfilename = None
             for root,dirs,files in os.walk(os.path.join(MLDONKEY_D_DIR, pretask['videoId'])):
                 for filespath in files:
                     file =  os.path.join(root,filespath)
                     if p_videoFile.search(file):
                         oldfilename = file
                         break
+            if oldfilename == None:
+                raise Exception('文件夹内无视频文件')
+        else:
+            raise Exception('找不到下载完成的文件')
     else:
         '''ed2k'''
         filename = pretask['transcodeOutputname'] if pretask['transcodeOutputname'] else pretask['videoId']
@@ -40,10 +45,11 @@ def flagDownloadDone(pretask):
         codeRate  = pretask['transcodeCoderate']
         frameRate = pretask['transcodeFramerate']
         dimension = pretask['transcodeDimension']
-        cmd = 'ffmpeg -i %s -target mp4 -b %s -minrate %s -maxrate %S -r %s -s %s %s'%\
-                        (oldfilename,codeRate,codeRate,codeRate,frameRate,dimension,newfilename)
+        cmd = FFMEPG + ' -i %s -b %s  -r %s -s %s -strict -2 -y -ab 64k -ar 22050 %s'%\
+                        (oldfilename,codeRate,frameRate,dimension,newfilename)
         print cmd
-        os.sys(cmd)
+        if os.system(cmd):
+            raise Exception('转码错误')
     else:
         shutil.copy(oldfilename, newfilename)
     #文件尺寸
@@ -66,8 +72,9 @@ def main():
         #print downing
         for task in downing:
             filename = os.path.join(MLDONKEY_DIR,task['videoId'])
+            filename2 = os.path.join(MLDONKEY_D_DIR,task['videoId'])
             #print filename
-            if not  os.path.exists(filename):
+            if not  os.path.exists(filename) and not os.path.exists(filename2):
                 continue
             print task['videoId'],'download done!'
             flagDownloadDone(task)
