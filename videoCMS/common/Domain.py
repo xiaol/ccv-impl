@@ -57,6 +57,10 @@ class Resource(DomainBase):
     videoFileName = ''
     snapshot = ''
     downloadType = ''
+    transcodeCoderate = ''
+    transcodeFramerate = ''
+    transcodeDimension = ''
+    transcodeOutputname = ''
 
 class Category(DomainBase):
     categoryName = ''

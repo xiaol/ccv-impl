@@ -172,6 +172,10 @@ def addTorrent(request):
     resource['videoId'] = request.POST.get('videoId')
     resource['type'] = 'video'
     resource['downloadType'] = 'torrent'
+    resource['transcodeCoderate'] = request.POST.get('transcodeCoderate')
+    resource['transcodeFramerate'] = request.POST.get('transcodeFramerate')
+    resource['transcodeDimension'] = request.POST.get('transcodeDimension')
+    resource['transcodeOutputname'] = request.POST.get('transcodeOutputname')
     
     if clct_preresource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']}) != None:
         msg =  '已存在下载队列\nexist in download queue...exit'

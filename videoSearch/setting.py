@@ -12,4 +12,5 @@ APP_KEY = '3421733539'
 TOKEN = '2.004t5RdCMuAbED17969f330diAZbaC'
 
 MLDONKEY_DIR = '/root/.mldonkey/incoming/files'
+MLDONKEY_D_DIR = '/root/.mldonkey/incoming/directories'
 STORE_DIR = '/data/tiercel'
