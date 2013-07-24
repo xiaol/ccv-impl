@@ -25,6 +25,7 @@ def extractTasks(url,channelId,season=None,format="MP4",type="ed2k"):
         filename = p.search(url).groups()[0]
         filename = urllib.unquote(filename).decode('utf-8')
         name = filename[:filename.find('.')]
+        number = 0
         if season:
             print filename
             try:
@@ -52,4 +53,5 @@ def extractTasks(url,channelId,season=None,format="MP4",type="ed2k"):
     return ans    
     
 if __name__ =='__main__':
-    extractTasks('http://www.yyets.com/resource/10733')
+    #extractTasks('http://www.yyets.com/resource/10733',100866 )
+    print extractTasks('http://www.yyets.com/resource/10220',100866 )

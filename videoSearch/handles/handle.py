@@ -1,20 +1,7 @@
 #coding=utf-8
-from Domain import Resource
-from HttpUtil import get_html
+import sys,os
+sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 
-def handleListPage(url):
-    item = {'title':'','url':''}
-    
-    return [item]
+from common.HttpUtil import get_html
 
-
-
-def handleDetailPage(itemList,channelId):
-    ans = []
-    for item in itemList:
-        resource = Resource()
-        #...
-        
-        #...
-        ans.append(resource.getInsertDict())
-    return ans
+print get_html('http://sports.sina.com.cn/video/g/pl/#104750832','gbk')

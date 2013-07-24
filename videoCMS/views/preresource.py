@@ -161,7 +161,7 @@ def addTorrent(request):
     resource['resourceName'] = request.POST.get('resourceName')
     if resource['resourceName'] == '':raise Exception('资源名 不能为空')
     resource['categoryId'] = channel['channelType']
-    resource['resourceImageUrl'] = channel['channelType']
+    resource['resourceImageUrl'] = channel['resourceImageUrl']
     resource['duration'] = channel['duration']
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
