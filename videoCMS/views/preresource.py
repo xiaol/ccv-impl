@@ -155,10 +155,14 @@ def addTorrent(request):
         DICT['navPage'] = 'preresource'
         return render_to_response('preresourceAddBT.htm',DICT)
     resource  = Resource()
+    resource['channelId'] = int(request.POST.get('channelId'))
+    channel = clct_channel.find_one({'channelId':resource['channelId']})
+    
     resource['resourceName'] = request.POST.get('resourceName')
     if resource['resourceName'] == '':raise Exception('资源名 不能为空')
-    resource['channelId'] = int(request.POST.get('channelId'))
-    resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
+    resource['categoryId'] = channel['channelType']
+    resource['resourceImageUrl'] = channel['channelType']
+    resource['duration'] = channel['duration']
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     for tag in resource['tagList']:

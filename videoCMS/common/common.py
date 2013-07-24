@@ -36,5 +36,9 @@ def formatHumanTime(s):
         return '00000-00-00 00:00:00'
     
 
-
-    
+def validateTimeStr(s):
+    try:
+        time.strptime(s,"%Y%m%d%H%M%S")
+        return True
+    except:
+        return False

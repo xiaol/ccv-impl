@@ -8,7 +8,7 @@ from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,searchHandleL
 from bson import ObjectId
 from videoCMS.common.Domain import Channel
 from videoCMS.common.doubanMovie import extraInfos
-from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime
+from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
@@ -145,6 +145,7 @@ def update(request):
     channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
+    if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
     channel['modifyTime'] = getCurTime()
     channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
     channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
@@ -153,7 +154,8 @@ def update(request):
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     channel['nextSearchTime'] = request.POST.get('nextSearchTime')
-    if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990000000000'
+    if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990101000000'
+    if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
     channel['handleName'] = request.POST.get('handleName')
     channel['handleArgs'] = request.POST.get('handleArgs')
     channel['handleFrequents'] = request.POST.get('handleFrequents')
@@ -210,6 +212,7 @@ def add(request):
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
+    if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
     channel['createTime'] = getCurTime()
     channel['modifyTime'] = getCurTime()
     if channel['channelName'] == '':
@@ -222,6 +225,7 @@ def add(request):
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     channel['nextSearchTime'] = request.POST.get('nextSearchTime')
     if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990000000000'
+    if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
     channel['handleName'] = request.POST.get('handleName')
     channel['handleArgs'] = request.POST.get('handleArgs')
     channel['handleFrequents'] = request.POST.get('handleFrequents')

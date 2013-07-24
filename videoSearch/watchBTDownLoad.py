@@ -8,7 +8,7 @@ p_videoFile = re.compile('\.mp4$|\.rmvb$|\.flv*|\.mkv$|\.avi$')
 def flagDownloadDone(pretask):
     print pretask
     #计算新,老 文件名
-    if pretask['downloadType'] == 'torrent':
+    if 'downloadType' in pretask and  pretask['downloadType'] == 'torrent':
         '''bt任务'''
         filename = pretask['transcodeOutputname']
         if os.path.exists( os.path.join(MLDONKEY_DIR, pretask['videoId']) ):
@@ -30,7 +30,10 @@ def flagDownloadDone(pretask):
             raise Exception('找不到下载完成的文件')
     else:
         '''ed2k'''
-        filename = pretask['transcodeOutputname'] if pretask['transcodeOutputname'] else pretask['videoId']
+        if 'transcodeOutputname' in pretask and pretask['transcodeOutputname']:
+            filename = pretask['transcodeOutputname']
+        else:
+            filename = pretask['videoId']
         oldfilename = os.path.join(MLDONKEY_DIR, pretask['videoId'])
     
     
@@ -41,7 +44,8 @@ def flagDownloadDone(pretask):
     pretask['videoId'] = str(pretask['channelId']) +'/'+ filename
     
     #转码 / 移动文件
-    if pretask['transcodeCoderate'] and pretask['transcodeFramerate'] and pretask['transcodeDimension']:
+    if 'transcodeCoderate' in pretask and \
+            pretask['transcodeCoderate'] and pretask['transcodeFramerate'] and pretask['transcodeDimension']:
         codeRate  = pretask['transcodeCoderate']
         frameRate = pretask['transcodeFramerate']
         dimension = pretask['transcodeDimension']

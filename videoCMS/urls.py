@@ -38,5 +38,9 @@ urlpatterns = patterns('',
     url(r'^tag/add$', 'videoCMS.views.tag.add'),
     url(r'^tag/update$', 'videoCMS.views.tag.update'),
     
-    url(r'^video/play','videoCMS.views.video.play')
+    url(r'^video/play','videoCMS.views.video.play'),
+    
+    
+    url(r'^share/resource$','videoCMS.shareViews.resource.index'),
+    url(r'^share/channel$','videoCMS.shareViews.channel.index'),
 )
