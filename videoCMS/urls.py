@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^resource/update$', 'videoCMS.views.resource.update'),
     url(r'^resource/toggleOnlineStatus$', 'videoCMS.views.resource.toggleOnlineStatus'),
     url(r'^resource/refreshSnapshot$', 'videoCMS.views.resource.refreshSnapshot'),
+    url(r'^resource/delete$', 'videoCMS.views.resource.deleteResource'),
+    url(r'^resource/stopSnapshot$', 'videoCMS.views.resource.stopSnapshot'),
     
     url(r'^preresource/index$', 'videoCMS.views.preresource.index'),
     url(r'^preresource/update$', 'videoCMS.views.preresource.update'),

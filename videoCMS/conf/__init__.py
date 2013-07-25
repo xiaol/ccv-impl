@@ -16,6 +16,7 @@ clct_resource = con.tiercel.resource
 clct_preresource = con.tiercel.preresource
 clct_tag      = con.tiercel.tag
 clct_cdnSync  = con.tiercel.cdnSync
+clct_videoInfoTask = con.tiercel.videoInfoTask
 
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%d/%d/%s'

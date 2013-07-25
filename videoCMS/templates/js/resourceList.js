@@ -1,3 +1,11 @@
+function deleteResource(resourceId)
+{
+	if(confirm("确定删除？"))
+	{
+		window.location = '/resource/delete?resourceId='+resourceId;
+	}
+}
+
 function toggleOnlineStatus(object)
 {
 	var id = $(object).attr('resourceId');
@@ -56,4 +64,11 @@ function refreshSnapshot(object)
 			alert(errorThrown);
 		}
 	});
+}
+
+
+function stopSnapshot(object)
+{
+	var id = $(object).attr('resourceId');
+	window.location = "/resource/stopSnapshot?id=" + id;
 }

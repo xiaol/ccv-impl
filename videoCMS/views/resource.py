@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re
 from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime
@@ -13,6 +13,7 @@ from videoCMS.views.channel import saveResourceImage
 from videoSearch.common.videoInfoTask import addVideoInfoTask
 import urllib2
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
+from videoCMS.views.login import *
 
 
 def getSkipLimit(DICT,skip=0,limit=10):
@@ -36,6 +37,12 @@ def addTagRef(name,addNum):
 def index(request):
     spec = {}
     DICT = {}
+    
+    if checkLogin(request):
+        print ('username:',request.session['username'])
+        DICT['username'] = request.session['username']
+        
+    
     page = int(request.GET['page']) if request.GET.get('page','') != '' else 1
     limit =int(request.GET['len']) if request.GET.get('len','') != '' else 10
     
@@ -206,6 +213,12 @@ def getVideoId(request):
     return HttpResponse(json.dumps(ret))
 
 
+#==============================================================
+
+def deleteResource(request):
+    resourceId = request.GET.get('resourceId')
+    clct_resource.remove({'_id':ObjectId(resourceId)})
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 #==============================================================
 
@@ -219,6 +232,13 @@ def refreshSnapshot(request):
     else:
         return HttpResponse('failed')
     
+#==============================================================
+
+def stopSnapshot(request):
+    id = request.GET.get('id')
+    clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':''}})
+    clct_videoInfoTask.remove({'resourceId':id},mulit=True)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 #==============================================================
 
@@ -228,6 +248,7 @@ def CdnSync(request):
     sync['']
     clct_cdnSync.insert()
     pass
+
 
 
 
