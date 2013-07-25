@@ -10,6 +10,7 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('/([^/]+)\.html')
+p_vid2 = re.compile('/programs/view/(\w+)[/$]')
 p_number = re.compile('(\d+)')
 
 
@@ -24,7 +25,11 @@ def handle(url,channelId,tvNumber):
         if len(title) == 0:
             title = video.xpath('./text()')[0]
         number = 0
-        videoId = p_vid.search(url).groups()[0]
+        print url
+        try:
+            videoId = p_vid.search(url).groups()[0]
+        except:
+            videoId = p_vid2.search(url).groups()[0]
         ret.append(buildResource(url,title,number,channelId,videoId))
 
 
