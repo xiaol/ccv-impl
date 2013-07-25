@@ -12,34 +12,24 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 
-p_vid = re.compile('id_([^\._]+)')
+p_vid = re.compile(r'video/([^/]+)$')
 
-'''
-    根据用户的个人主页url 抽取该用户的共享视频和收藏视频（只抽取第一页）
-'''
+
 def handle(url, channelId, tvNumber):
-    url = url.rstrip('/')
-
-    #抽取该用户的共享视频
-    html = get_html(url+'/videos')
+    html = get_html(url)
     tree = etree.HTML(html)
-    videoList = tree.xpath('//div[@class="items"]/ul[@class="v"]/li[@class="v_title"]/a')
+    videoList = tree.xpath('//div[@class="wf_cell video box "]')
 
-    #抽取该用户的收藏视频
-    html = get_html(url+'/videos')
-    tree = etree.HTML(html)
-    videoList.extend(tree.xpath('//div[@class="items"]/ul[@class="v"]/li[@class="v_title"]/a'))
-    
     ret = []
     for video in videoList:
-        title = video.xpath('./@title')[0]
-        url = video.xpath('./@href')[0]
+        title = video.xpath('//span[@class="desc"]/text()')[0]
+        url = "http://www.weipai.cn" + video.xpath('//a[@class="whole video_link"]/@href')[0]
         videoId = p_vid.search(url).groups()[0]
         item = buildResource(url, title, 0, channelId, videoId)
         ret.append(item)
 
     return ret
-    
+
 
 def buildResource(url,title,number,channelId,videoId):
     resource = Resource()
@@ -48,13 +38,12 @@ def buildResource(url,title,number,channelId,videoId):
     resource['number'] = number
     resource['channelId'] = channelId
     resource['type'] = 'video'
-    resource['videoType'] = 'youku'
+    resource['videoType'] = 'weipai'
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
-    
+
     return resource.getInsertDict()
-    
+
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://i.youku.com/u/UNTMxOTkwNjA0',100527,3))
-    pprint.pprint(handle('http://i.youku.com/u/UODExNDgxNjQ=',100527,3))
+    pprint.pprint(handle('http://www.weipai.cn/square/',100527,3))
