@@ -68,6 +68,7 @@ searchHandleListAll = [
 'search.iqiyiTv',
 'search.sohuTv',
 'search.pptvTv',
+'search.qqTv',
 
 'search.youkuZongyi',
 'search.iqiyiZongyi',
@@ -87,7 +88,11 @@ searchHandleListAll = [
 'search.sohuJilupian',
 'search.iqiyiJilupian',
 
+'search.welfareBaomihua',
+'search.weipaiSquare',
+
 'search.iqiyiSport',
+'search.sinaSport',
 
 'search.youkuPlayList',
 'search.youkuSoku',
@@ -98,5 +103,11 @@ searchHandleListAll = [
 'search.56fun',
 'search.56list',
 'search.youkuIyouku',
-
+'search.youkuTravel',
+'search.youkuLife',
+'search.tudouCate',
+'search.tudouLife',
+'search.ku6Playlist',
+'search.iqiyiSo',
+'search.56So',
 ]
