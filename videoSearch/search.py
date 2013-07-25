@@ -76,6 +76,8 @@ def handle(channelId,handleName,url):
         startSearch("handles.handle_sohu_dongman", url,channelId, updateTvNumber=True)
     elif handleName == 'pptvTv':
         startSearch("handles.handle_pptv_tv", url,channelId, updateTvNumber=True)
+    elif handleName == 'qqTv':
+        startSearch("handles.handle_qq_tv", url, channelId, updateTvNumber=True)
         '''===============综艺=============='''
     elif handleName == 'youkuZongyi':
         startSearch('handles.handle_youku_zongyi', url, channelId ,snapShot=True, updateTvNumber=True)
@@ -121,9 +123,13 @@ def handle(channelId,handleName,url):
         '''============== 福利 ======================='''
     elif handleName =='welfareBaomihua':
         startSearch('handles.handle_baomihua_specialEdition',url ,channelId, snapShot = True)
+    elif handleName =='weipaiSquare':
+        startSearch('handles.handle_weipai_square',url ,channelId, snapShot = True)
         '''==============  体育游戏 ======================='''
     elif handleName =='iqiyiSport':
         startSearch('handles.handle_iqiyi_list',url ,channelId, snapShot = True)
+    elif handleName =='sinaSport':
+        startSearch('handles.handle_sina_sports', url, channelId, snapShot=True, updateTvNumber=False)
         '''=================  其他 ======================'''
     elif handleName == 'youkuPlayList':
         startSearch('handles.handle_youku_playlist',url ,channelId)
@@ -143,7 +149,22 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_list', url,channelId ,snapShot = True)
     elif handleName == 'youkuIyouku':
         startSearch('handles.handle_youku_iyouku', url,channelId ,snapShot = True)
-        
+    elif handleName == 'youkuTravel':
+        startSearch('handles.handle_youku_travel', url, channelId, snapShot=True)
+    elif handleName == 'youkuLife':
+        startSearch('handles.handle_youku_life', url, channelId, snapShot=True)
+    elif handleName == 'tudouCate':
+        startSearch('handles.handle_tudou_cate', url, channelId, snapShot=True)
+    elif handleName == 'tudouLife':
+        startSearch('handles.handle_tudou_life', url, channelId, snapShot=True)
+    elif handleName == 'ku6Playlist':
+        startSearch('handles.handle_ku6_playlist', url, channelId, snapShot=True)
+    elif handleName == 'iqiyiSo':
+        startSearch('handles.handle_iqiyi_so', url, channelId, snapShot = True)
+    elif handleName == '56So':
+        startSearch('handles.handle_56_so', url, channelId, snapShot = True)
+
+
 if __name__ == '__main__':
     pass
 #    pass
