@@ -13,7 +13,7 @@ def index(request):
     DICT['videoType'] = resource['videoType']
     DICT['videoId'] = resource['videoId']
     
-    if resource['videoType'] in [u'huohua', u'bt']:
+    if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
         DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         return render_to_response('share_resource.htm',DICT)
     return HttpResponseRedirect(resource['resourceUrl'])

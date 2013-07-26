@@ -61,6 +61,7 @@ class Resource(DomainBase):
     transcodeFramerate = ''
     transcodeDimension = ''
     transcodeOutputname = ''
+    weight = -1
 
 class Category(DomainBase):
     categoryName = ''

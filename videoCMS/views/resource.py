@@ -114,6 +114,7 @@ def update(request):
     resource['videoType'] = request.POST.get('videoType').strip()
     resource['resourceName'] = request.POST.get('resourceName')
     resource['channelId'] = int(request.POST.get('channelId'))
+    resource['weight'] = float(request.POST.get('weight'))
     resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['duration'] = int(request.POST.get('duration'))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
@@ -143,6 +144,7 @@ def add(request):
     resource['videoType'] = request.POST.get('videoType').strip()
     resource['resourceName'] = request.POST.get('resourceName')
     resource['channelId'] = int(request.POST.get('channelId'))
+    resource['weight'] = float(request.POST.get('weight'))
     resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
