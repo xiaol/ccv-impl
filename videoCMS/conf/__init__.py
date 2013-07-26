@@ -91,6 +91,7 @@ searchHandleListAll = [
 
 'search.welfareBaomihua',
 'search.weipaiSquare',
+'search.chaoku4List',
 
 'search.iqiyiSport',
 'search.sinaSport',

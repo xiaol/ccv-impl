@@ -20,11 +20,16 @@ def handle(url,channelId,tvNumber):
     videos = tree.xpath('//div[@class="list0"]//li//a[2]')
     ret = []
     for video in videos:
-        url = video.xpath('./@href')[0]
-        title = video.xpath('./text()')[0]
-        videoId = p_vid.search(get_html(url)).groups()[0]
-        print videoId
-        ret.append(buildResource(url,title,channelId,videoId))
+        try:
+            url = video.xpath('./@href')[0]
+            title = video.xpath('./text()')[0]
+            videoId = p_vid.search(get_html(url)).groups()[0]
+            print videoId
+            ret.append(buildResource(url,title,channelId,videoId))
+        except:
+            print url
+            continue
+
     return ret
     
 
@@ -48,5 +53,5 @@ if __name__ == '__main__':
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1915-----------2-1-1-1---.html',100129))
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1677-----------2-1-1-1---.html',100130))
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1674-----------2-1-1-1---.html',100095))
-    pprint.pprint(handle('http://list.iqiyi.com/www/17/1711------------2-1-1-1---.html',100128))
+    pprint.pprint(handle('http://list.iqiyi.com/www/17/1688-1690-----------2-1-1-1---.html', 100128, 1))
 

@@ -22,7 +22,7 @@ def handle(url, channelId, tvNumber):
     ret = []
     for video in videos:
         url = video.xpath('./@href')[0]
-        title = video.xpath('./text()')[0]
+        title = video.xpath('./@title')[0]
 
         videoId = None
         for p in p_vid:
@@ -53,3 +53,4 @@ def buildResource(url,title,channelId,videoId):
 
 if __name__ == '__main__':
     pprint.pprint(handle('http://so.56.com/video/%E5%A5%A5%E5%B7%B4%E9%A9%AC/',100055,1))
+    # pprint.pprint(handle('http://so.56.com/video/%E7%A7%91%E6%AF%94/?s=1&c=&t=&l=1&hd=1',100055,1))

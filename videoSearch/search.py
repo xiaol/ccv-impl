@@ -125,6 +125,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_baomihua_specialEdition',url ,channelId, snapShot = True)
     elif handleName =='weipaiSquare':
         startSearch('handles.handle_weipai_square',url ,channelId, snapShot = True)
+    elif handleName =='chaoku4List':
+        startSearch('handles.handle_chaoku4_list', url, channelId, snapShot=True)
         '''==============  体育游戏 ======================='''
     elif handleName =='iqiyiSport':
         startSearch('handles.handle_iqiyi_list',url ,channelId, snapShot = True)
