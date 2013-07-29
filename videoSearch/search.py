@@ -166,6 +166,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_iqiyi_so', url, channelId, snapShot = True)
     elif handleName == '56So':
         startSearch('handles.handle_56_so', url, channelId, snapShot = True)
+    elif handleName == 'weiboHot':
+        startSearch('handles.handle_weibo_hot', url, channelId, snapShot = True)
 
 if __name__ == '__main__':
     pass
