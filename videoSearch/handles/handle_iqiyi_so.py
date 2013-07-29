@@ -12,7 +12,7 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('data-player-videoid="(\w+?)"')
-
+pps_vid = re.compile(r'"video_id":"(\d+)"')
 
 '''
     只抽取第一页
@@ -25,23 +25,29 @@ def handle(url, channelId, tvNumber):
         try:
             url = video.xpath('./@href')[0]
             title = video.xpath('./@title')[0]
-            videoId = p_vid.search(get_html(url)).groups()[0]
-            ret.append(buildResource(url,title,channelId,videoId))
+            #搜索结果里会有pps网站上的视频
+            if url.find("pps.tv/") != -1:
+                videoId = pps_vid.search(get_html(url, "gbk")).groups()[0]
+                video_type = "pps"
+                ret.append(buildResource(url, title, channelId, videoId, video_type))
+            else:
+                videoId = p_vid.search(get_html(url)).groups()[0]
+                ret.append(buildResource(url, title, channelId, videoId))
         except Exception, e:
-            #搜索结果里会有pps网站上的视频 这里选择跳过
             print e
             continue
+
     return ret
 
 
-def buildResource(url,title,channelId,videoId):
+def buildResource(url, title, channelId, videoId, videoType='iqiyi'):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['channelId'] = channelId
     #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
-    resource['videoType'] = 'iqiyi'
+    resource['videoType'] = videoType
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
 
