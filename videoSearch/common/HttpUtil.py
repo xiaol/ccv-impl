@@ -78,7 +78,7 @@ def getVideoIdByUrl(url):
     data = json.dumps(data)
     ret = httpUtil.Post('http://60.28.29.38:9090/api/getVideoId', data)
     
-    return json.loads(ret)['videoId']
+    return json.loads(ret)
 
 if __name__ =='__main__':
     httpUtil = HttpUtil()

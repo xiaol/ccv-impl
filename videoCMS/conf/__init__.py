@@ -112,4 +112,5 @@ searchHandleListAll = [
 'search.ku6Playlist',
 'search.iqiyiSo',
 'search.56So',
+'search.weiboHot',
 ]
