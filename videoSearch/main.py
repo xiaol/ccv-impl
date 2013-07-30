@@ -81,8 +81,8 @@ def test():
 
 
 if __name__ == '__main__':
-    #main()
+    main()
     #main_once()
-    test()
+    #test()
     
 
