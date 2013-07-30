@@ -1,0 +1,89 @@
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+#top img
+{
+    width:100%;
+}
+
+
+a:hover
+{
+    text-decoration: none;
+}
+
+.main-wrap
+{
+    width:80%;
+    margin: 0 auto;
+}
+
+#top-left
+{
+    width: 40%;
+    float: left;
+}
+
+#top-right
+{
+    margin-left: 5%;
+    width: 50%;
+    float: left;
+}
+
+#logo
+{
+    width: 25%;
+    float: left;
+}
+
+#appTitle
+{
+    width:65%;
+    float: left;
+    margin-left: 10%;
+}
+#title
+{
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#subtitle
+{
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+#download-button1
+{
+    border-radius: 3px;
+    background-color: blue;
+    border: solid 1px ;
+    clear: both;
+    display: block;
+    text-align: center;
+    padding-top: 4px ;
+    padding-bottom: 4px;
+    color: #FFF;
+}
+
+
+
+#resourceName
+{
+    font-size: 40px;
+}

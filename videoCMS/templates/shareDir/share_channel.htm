@@ -5,13 +5,13 @@
 <title>口袋视频</title>
 
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="/static/shareDir/css/resource.css" rel="stylesheet" type="text/css" />
+<link href="/static/shareDir/css/channel.css" rel="stylesheet" type="text/css" />
 <link href="/static/shareDir/css/video-js.css" rel="stylesheet">
 
 <script src="/static/js/jquery-1.7.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/shareDir/js/video.js"></script>
-<script src="/static/shareDir/js/resource.js"></script>
+<script src="/static/shareDir/js/channel.js"></script>
 <script>
 	var pageVideoType = "{{videoType}}";
 	var pageVideoId = "{{videoId}}";
@@ -19,28 +19,28 @@
 
 </head>
 <body>
-	<div>
-		<div id="top" >
+	<div class="main-wrap">
+		<div id="top" class="clearfix">
 			<div id="top-left">
 				<img src="/static/shareDir/img/phone.png"/>
 			</div>
 			<div id="top-right">
-				<div>
+				<div class="clearfix">
 					<div id="logo">
-						<img src="/static/shareDir/img/logo.png"/>
+						<img src="/static/shareDir/img/icon.png"/>
 					</div>
 					<div id="appTitle">
 						<div id="title">口袋视频</div>
 						<div id="subtitle">抢片大盗</div>
 					</div>
 				</div>
-				<div>
+				<div class="clearfix">
 					<a id="download-button1" href="">下载应用</a>
 				</div>
 			</div>
 		</div>
-		<div id="content">
-			<div> {{resourceName}}</div>
+		<div id="content" class="clearfix">
+			<div id="resourceName"> {{resourceName}}</div>
 			<div id="video">
 				{% if videoUrl%}
 				<video src="{{videoUrl}}" controls="controls" width="100%">
@@ -60,7 +60,8 @@
 				{{describe}}
 			</div>
 		</div>
-		<div id="botton">
+		<div id="botton" class="clearfix">
+			<span>下载应用查看更多精彩抢先影片</span>
 			<a>
 				<img src="/static/shareDir/img/android.png"/>
 				<span>下载应用</span>

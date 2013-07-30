@@ -10,6 +10,8 @@ def index(request):
     
     id = request.GET.get('id')
     resource = clct_resource.find_one({'_id':ObjectId(id) })
+    if not resource:
+    	pass
     DICT['videoType'] = resource['videoType']
     DICT['videoId'] = resource['videoId']
     
@@ -17,5 +19,4 @@ def index(request):
         DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         return render_to_response('share_resource.htm',DICT)
     return HttpResponseRedirect(resource['resourceUrl'])
-    
     
