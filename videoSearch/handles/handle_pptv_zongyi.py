@@ -56,7 +56,7 @@ def buildResource(url,title,number,channelId,videoId):
     resource['number'] = number
     resource['channelId'] = channelId
     resource['type'] = 'video'
-    resource['videoType'] = 'letv'
+    resource['videoType'] = 'pptv'
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
     
