@@ -42,7 +42,7 @@ def process_channel(channel):
 def main():
     while True:
         channels = clct_channel.find({'searchHandleList':{"$ne":[]},"processed":True,\
-                                      'nextSearchTime':{'$lte':getCurTime(),"$not":{"$in":["","00000000000000"]}}})
+                                      'nextSearchTime':{'$lte':getCurTime(),"$not":{"$in":["","00000000000000"]}}}, timeout=False)
         for channel in channels:
             try:
                 process_channel(channel)
