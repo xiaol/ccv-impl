@@ -1,3 +1,4 @@
+#coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from videoCMS.conf import userList
@@ -11,7 +12,8 @@ def index(request):
     id = request.GET.get('id')
     resource = clct_resource.find_one({'_id':ObjectId(id) })
     if not resource:
-    	pass
+    	return HttpResponse("视频被和谐了唉...")
+    DICT = resource
     DICT['videoType'] = resource['videoType']
     DICT['videoId'] = resource['videoId']
     
