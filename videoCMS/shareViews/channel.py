@@ -10,6 +10,9 @@ def index(request):
     id = request.GET.get('id')
     channel = clct_channel.find_one({'_id':ObjectId(id) })
     resource = clct_resource.find_one({'channelId':str(channel['_id'])})
+
+    channel['detailLeadingRole'] = '/'.join(channel['detailLeadingRole'])
+    channel['detailMovieCategory'] = '/'.join(channel['detailMovieCategory'])
     DICT = channel
     if resource:
         DICT['videoType'] = resource['videoType']

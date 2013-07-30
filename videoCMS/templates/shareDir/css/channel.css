@@ -1,3 +1,15 @@
+body
+{
+    background-color: rgb(238,238,238);
+}
+
+#top,#content,#button
+{
+    border-top: solid 1px #FFF;
+    border-bottom: solid 1px #CCC;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 
 .clearfix {
   *zoom: 1;
@@ -42,6 +54,7 @@ a:hover
     margin-left: 5%;
     width: 50%;
     float: left;
+    position: relative;
 }
 
 #logo
@@ -68,10 +81,18 @@ a:hover
     margin-top: 5px;
 }
 
+#buttondiv
+{
+    position: relative;
+    bottom: 0;
+
+}
+
 #download-button1
 {
-    border-radius: 3px;
-    background-color: blue;
+    margin-top: 30px;
+    border-radius: 6px;
+    background-color: rgb(29,90,123);
     border: solid 1px ;
     clear: both;
     display: block;
@@ -79,6 +100,10 @@ a:hover
     padding-top: 4px ;
     padding-bottom: 4px;
     color: #FFF;
+    min-height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    
 }
 
 
@@ -87,3 +112,27 @@ a:hover
 {
     font-size: 40px;
 }
+
+.indent
+{
+    text-indent: 2em;
+}
+
+#button
+{
+    text-align: center;
+    color: #777;
+}
+
+#button a
+{
+    display: block;
+    border-radius: 8px;
+    background-color: rgb(29,90,123);
+    border: solid 1px ;
+    color: #FFF;
+    
+    font-size: 30px;
+    padding: 10px;
+}
+
