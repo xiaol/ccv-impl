@@ -124,6 +124,8 @@ class Channel(DomainBase):
     
     onSquare = False
     poster = ''
+
+    videoClass = 0
     
     detailDirecter = ''
     detailLeadingRole = []
