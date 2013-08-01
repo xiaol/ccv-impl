@@ -32,7 +32,7 @@ def handle(url,channelId,tvNumber):
         number = p_number.search(url).groups()[0]
         if number < tvNumber:
             continue
-        videoId = getVideoIdByUrl(url)["videoId"]
+        videoId = getVideoIdByUrl(url)
         item = buildResource(url,title,number,channelId,videoId,channelType)
         ret.append(item)
     return ret
