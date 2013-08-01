@@ -56,5 +56,5 @@ def buildResource(url,title,number,channelId,videoId):
     
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://i.youku.com/u/UNTMxOTkwNjA0',100527,3))
-    pprint.pprint(handle('http://i.youku.com/u/UODExNDgxNjQ=',100527,3))
+    #pprint.pprint(handle('http://i.youku.com/u/UNTMxOTkwNjA0',100527,3))
+    pprint.pprint(handle('http://i.youku.com/u/UOTY0MzY0NjQ=/videos',100527,3))
