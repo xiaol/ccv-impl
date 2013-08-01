@@ -58,5 +58,5 @@ def buildResource(url,title,number,channelId,videoId,channelType):
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.funshion.com/subject/107354',100550,3))
     #pprint.pprint(handle('http://www.funshion.com/subject/43280/',100550,700))
-    pprint.pprint(handle('http://www.funshion.com/subject/93314/',100550,700))
+    pprint.pprint(handle('http://www.funshion.com/subject/109045/',100550,30))
 

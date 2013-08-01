@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^category/index$', 'videoCMS.views.category.index'),
     url(r'^category/add$', 'videoCMS.views.category.add'),
     url(r'^category/update$', 'videoCMS.views.category.update'),
+    url(r'^category/resetWeight$', 'videoCMS.views.category.resetWeight'),
     
     url(r'^channel/index$', 'videoCMS.views.channel.index'),
     url(r'^channel/add$', 'videoCMS.views.channel.add'),

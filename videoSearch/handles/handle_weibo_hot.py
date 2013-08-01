@@ -9,7 +9,7 @@ from lxml import etree
 import re, pprint
 from common.common import getCurTime
 from common.Domain import Resource,Channel
-from common.HttpUtil import get_html, HttpUtil, getVideoIdByUrl
+from common.HttpUtil import get_html, HttpUtil, getVideoInfoByUrl
 from setting import TOKEN,APP_KEY
 from setting import clct_channel
 
@@ -31,7 +31,7 @@ def handle(url, channelId, tvNumber):
                 video_type = "pps"
                 ret.append(buildResource(item['full_url'], item['title'], channelId, video_type, videoid))
             else:
-                videoinfo = getVideoIdByUrl(item['full_url'])
+                videoinfo = getVideoInfoByUrl(item['full_url'])
                 video_type = videoinfo['videoType']
                 videoid = videoinfo['videoId']
                 ret.append(buildResource(item['full_url'], item['title'], channelId, video_type, videoid))

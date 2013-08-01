@@ -93,7 +93,7 @@ def update(request):
     #更新
     category = Category()
     if request.POST['categoryId'] == '':
-        category['categoryId'] = getMaxChannelId()
+        raise Exception("categoryId is null")
     else:
         category['categoryId'] = int(request.POST['categoryId'])
     category['categoryName'] = request.POST['categoryName']
@@ -102,6 +102,7 @@ def update(request):
     category['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     category['categoryType'] = CATEGORY_TYPE_MAP[request.POST.get('categoryType')]
     category['videoClass'] = CATEGORY_VIDEO_CLASS_MAP[request.POST.get('videoClass')]
+    clct_channel.update({'channelType':category['categoryId']},{'$set':{'videoClass':category['videoClass']}},multi=True)
     print category['categoryId'],category['categoryType'],
     print {'channelType':category['categoryId']}
     print {'$set':{'categoryType':category['categoryType']}}
@@ -142,6 +143,7 @@ def add(request):
     category['modifyTime'] = getCurTime()
     category['categoryType'] = CATEGORY_TYPE_MAP[request.POST.get('categoryType')]
     category['videoClass'] = CATEGORY_VIDEO_CLASS_MAP[request.POST.get('videoClass')]
+    clct_channel.update({'channelType':category['categoryId']},{'$set':{'videoClass':category['videoClass']}},multi=True)
     if category['categoryName'] == '':
         raise Exception('分类名 不能为空')
     clct_channel.update({'channelType':category['categoryId']},{'$set':{'categoryType':category['categoryType']}},multi=True)
@@ -178,3 +180,11 @@ def saveCategoryImage(img, id):
         f.write(img)
      
     return filename.replace('/', '_')
+
+#===============================================
+
+def resetWeight(request):
+    categoryId = int(request.GET.get("categoryId"))
+    clct_channel.update({"categoryId":categoryId},{"$set":{"weight":0}},multi=True)
+    return HttpResponse("ok")
+
