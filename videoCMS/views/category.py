@@ -185,6 +185,6 @@ def saveCategoryImage(img, id):
 
 def resetWeight(request):
     categoryId = int(request.GET.get("categoryId"))
-    clct_channel.updte({"categoryId":categoryId},{"$set":{"weight":0}},multi=True)
+    clct_channel.update({"categoryId":categoryId},{"$set":{"weight":0}},multi=True)
     return HttpResponse("ok")
-    
+
