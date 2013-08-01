@@ -2,7 +2,7 @@ function resetWeight(categoryId)
 {
     $.ajax({
         type:'get',
-        url:'/categoru/resetWeight',
+        url:'/category/resetWeight',
         data:{'categoryId':categoryId},
         success:function(data,textStatus)
         {
