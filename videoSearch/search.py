@@ -1,4 +1,4 @@
-search#coding=utf-8
+#coding=utf-8
 from setting import clct_channel,clct_resource
 import imp,sys
 from pprint import pprint
