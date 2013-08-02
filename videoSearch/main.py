@@ -11,7 +11,7 @@ from pprint import pprint
 
 
 def process_channel(channel):
-    print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
+    #print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
     pprint(channel)
     try:
         handleFrequents = int(channel['handleFrequents'])
@@ -76,7 +76,7 @@ def test():
     process_channel(channel)
 '''
 def test():
-    channel = clct_channel.find_one({"channelId":100050})
+    channel = clct_channel.find_one({"channelId":100065})
     process_channel(channel)
 
 
