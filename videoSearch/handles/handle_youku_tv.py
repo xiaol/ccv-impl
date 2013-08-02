@@ -19,10 +19,13 @@ p_number = re.compile(u'更新至(\d+)')
 
 
 def handle(url,channelId,tvNumber):
-    html = get_html(url)
+    html = getAllEpisodes(url)
     tree = etree.HTML(html)
-    videoList = tree.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
-    numberList = p_number.search(tree.xpath('//div[@class="basenotice"]/text()')[0])
+
+    treeOrigin = etree.HTML(get_html(url))
+    videoList = tree.xpath('//div//ul/li[not(@class)]/a')
+    numberList = p_number.search(treeOrigin.xpath('//div[@class="basenotice"]/text()')[0])
+    
     if numberList != None:
         number = int(numberList.groups()[0])
     else:
@@ -44,6 +47,24 @@ def handle(url,channelId,tvNumber):
     return ret
     
 
+def getAllEpisodes(url):
+    html = get_html(url)
+    matchs = p_reload.findall(html)
+    if not matchs: 
+        return html
+    ans = '<html><div id="episode">'
+    url = url.replace('show_page','show_episode')
+    for match in matchs:
+        #print match
+        reload = match
+        url_e = url + '?dt=json&divid=%s&__rt=1&__ro=r%s'%(reload,reload)
+        #print url_e
+        html = get_html(url_e)
+        ans += html
+    ans += '</div></html>'
+    #print ans
+    return ans
+
 
 
 def buildResource(url,title,number,channelId,videoId):
@@ -63,5 +84,5 @@ def buildResource(url,title,number,channelId,videoId):
 
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.youku.com/show_page/id_z3f6eb098940f11e196ac.html',1,3))
-    pprint.pprint(handle('http://www.youku.com/show_page/id_zbaceffd8db7111e0a046.html',100527,3))
+    pprint.pprint(handle('http://www.youku.com/show_page/id_z070dfb32799211e2a19e.html',100527,3))
 
