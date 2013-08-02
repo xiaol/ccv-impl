@@ -18,13 +18,18 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     t = getCurTime()
     for resource in resouceList:
         resource['createTime'] = t
-    ret = clct_resource.insert(resouceList)
-    
-    '''新增 截图任务'''
-    if snapShot:
-        for id,resource in zip(ret,resouceList):
-            mp4box = True if resource['videoType'] == 'sohu_url' else False
-            addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],mp4box,force=True)
+        print("insert ",resource['videoType'],resource['videoId'])
+        try:
+            ret = clct_resource.insert(resource , safe=True)
+        except:
+            print("insert Error!")
+        else:
+            print("insert Ok!")
+
+            '''新增 截图任务'''
+            if snapShot:
+                mp4box = True if resource['videoType'] == 'sohu_url' else False
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
     
 
 def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , **keyParams):
