@@ -19,6 +19,8 @@ def index(request):
     
     if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
         DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
-        return render_to_response('share_resource.htm',DICT)
-    return HttpResponseRedirect(resource['resourceUrl'])
+    else:
+        DICT['iframe'] = resource['resourceUrl']
+
+    return render_to_response('share_resource.htm',DICT)
     

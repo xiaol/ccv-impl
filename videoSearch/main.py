@@ -57,7 +57,7 @@ def main():
                 clct_channel.update({'_id':channel['_id']},{'$set':{'searchTime':getCurTime()}})
             sys.stdout.flush()
         print 'loop'
-        time.sleep(60)
+        time.sleep(6)
         
 def main_once():
     channels = clct_channel.find({'handleName':{"$ne":""},"processed":True},timeout=False)

@@ -39,6 +39,7 @@
 				</div>
 			</div>
 		</div>
+		{%if not iframe%}
 		<div id="content" class="clearfix">
 			<div id="resourceName"> {{resourceName}}</div>
 			<div id="video">
@@ -49,6 +50,10 @@
 				{% endif %}
 			</div>
 		</div>
+		{%else%}
+		<iframe src="{{iframe}}" width="100%" height="400" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no">
+		</frame>
+		{%endif%}
 		<div id="button" class="clearfix">
 			<div>下载应用查看更多精彩抢先影片</div>
 			<a>
