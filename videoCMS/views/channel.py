@@ -126,6 +126,7 @@ def update(request):
     #更新
     channel = Channel()
     channel['channelId'] = int(request.POST.get('channelId'))
+    channel['tvNumber'] = int(request.POST.get('tvNumber'))
     channel['identifer'] = int(request.POST.get('identifer'))
     channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
     channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
@@ -194,6 +195,10 @@ def add(request):
         channel['channelId'] = getMaxChannelId()
     else:
         channel['channelId'] = int(request.POST['channelId'])
+    try:
+        channel['tvNumber'] = int(request.POST.get('tvNumber',0))
+    except:
+        channel['tvNumber'] = 0
     channel['identifer'] = int(request.POST.get('identifer'))
     channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
     channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
