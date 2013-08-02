@@ -175,6 +175,7 @@ def update(request):
     oldChannelId = clct_channel.find_one({'_id':ObjectId(id)})['channelId']
     clct_resource.update({'channelId':oldChannelId},{'$set':{'channelId':channel['channelId']}},multi=True)
     
+
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)
 
@@ -235,6 +236,12 @@ def add(request):
     channel['handleArgs'] = request.POST.get('handleArgs')
     channel['handleFrequents'] = request.POST.get('handleFrequents')
     
+
+    #同步类别的视频类型 到 频道
+    categoryId =  channel['channelType']
+    category = clct_category.find_one({'categoryId':categoryId})
+    channel['videoClass'] = category['videoClass']
+
     id = clct_channel.insert(channel.getInsertDict(),safe=True)
     id = str(id)
     
