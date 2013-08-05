@@ -55,6 +55,7 @@
 		                            {% ifequal channel.identifer 2 %}
 		                            <span class="label label-warning">最新-</span>
 		                            {% endifequal %}
+                                    <a class="label label-warning" onclick="resetWeight({{channel.channelId}})" >重置权重</a>
 		                            <a href="detail?id={{channel.id}}" class="label label-warning">详情</a>
 		                            <a href="update?id={{channel.id}}" class="label label-warning">编辑</a>
 		                        	{%ifequal username "admin"%}<a class="label" onclick="deleteChannel({{channel.channelId}})">删除</a>{%endifequal%}

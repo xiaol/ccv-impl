@@ -392,4 +392,10 @@ def updateSearchNow(request):
 
 
     
+
 #===============================================
+
+def resetWeight(request):
+    channelId = int(request.GET.get("channelId"))
+    clct_resource.update({"channelId":channelId},{"$set":{"weight":0}},multi=True)
+    return HttpResponse("ok")

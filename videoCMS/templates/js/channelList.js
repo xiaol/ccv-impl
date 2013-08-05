@@ -22,3 +22,21 @@ function updateNow(channelId)
 		}
 	});
 }
+
+
+function resetWeight(channelId)
+{
+    $.ajax({
+        type:'get',
+        url:'/channel/resetWeight',
+        data:{'channelId':channelId},
+        success:function(data,textStatus)
+        {
+            alert("重置成功!");
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown)
+        {
+            alert(errorThrown);
+        }
+    });
+}
