@@ -18,12 +18,13 @@ def index(request):
     if resource:
         DICT['videoType'] = resource['videoType']
         DICT['videoId'] = resource['videoId']
-        DICT['resourceName'] = resource["resourceName"]
+        DICT['channelName'] = channel["channelName"]
         DICT['resourceImageUrl'] = "http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/" + resource['resourceImageUrl']
         if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         else:
             DICT['videoUrl'] = resource['resourceUrl']
 
+    DICT['apkUrl'] = 'http://www.weiweimeishi.com/static/file/PocketPlayer1.5.1_official_website.apk'
     
     return render_to_response('shareDir/share_channel.htm',DICT)

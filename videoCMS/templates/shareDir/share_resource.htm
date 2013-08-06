@@ -4,67 +4,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>口袋视频</title>
 
-<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
 <link href="/static/shareDir/css/channel.css" rel="stylesheet" type="text/css" />
 <link href="/static/shareDir/css/video-js.css" rel="stylesheet">
 
 <script src="/static/js/jquery-1.7.1.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
+
 <script src="/static/shareDir/js/video.js"></script>
 <script src="/static/shareDir/js/channel.js"></script>
 <script>
-	var pageVideoType = "{{videoType}}";
-	var pageVideoId = "{{videoId}}";
+    var pageVideoType = "{{videoType}}";
+    var pageVideoId = "{{videoId}}";
 </script>
 
 </head>
 <body>
-	<div class="main-wrap">
-		<div id="top" class="clearfix">
-			<div id="top-left">
-				<img src="/static/shareDir/img/phone.png"/>
-			</div>
-			<div id="top-right">
-				<div class="clearfix">
-					<div id="logo">
-						<img src="/static/shareDir/img/icon.png"/>
-					</div>
-					<div id="appTitle">
-						<div id="title">口袋视频</div>
-						<div id="subtitle">抢片大盗</div>
-					</div>
-				</div>
-				<div class="clearfix" id="buttondiv">
-					<a id="download-button1" href="">下载应用</a>
-				</div>
-			</div>
-		</div>
-		{%if not iframe%}
-		<div id="content" class="clearfix">
-			<div id="resourceName"> {{resourceName}}</div>
-			<div id="video">
-				{% if videoUrl%}
-				<video src="{{videoUrl}}" controls="controls" width="100%">
-					您的浏览器不支持 video 标签。
-				</video>
-				{% endif %}
-			</div>
-		</div>
-		{%else%}
-		<div  style="width:100%;">
-			<iframe src="{{iframe}}" width="100%" height="400" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no">
-			</frame>
-		</div>
-		{%endif%}
-		<div id="button" class="clearfix">
-			<div>下载应用查看更多精彩抢先影片</div>
-			<a>
-				<img src="/static/shareDir/img/android.png"/>
-				<span>下载应用</span>
-			</a>
-		</div>
-		
-	</div>
+    <div class="main-wrap">
+        <div id="top" class="clearfix">
+            <div id="top-left">
+                <img src="/static/shareDir/img/phone.png"/>
+            </div>
+
+            <div id="logo">
+                <img src="/static/shareDir/img/logo_name.png"/>
+            </div>
+            <div id="buttondiv">
+                <a id="download-button1"  target="_blank" href="{{apkUrl}}">
+                    <img  id="download_button" src="/static/shareDir/img/download_button.png"/>
+                </a>
+            </div>
+
+        </div>
+        <div id="content" class="clearfix">
+            <div id="resourceName"> {{channelName}}</div>
+            <div id="video">
+                <!--
+                {% if videoUrl%}
+                <video src="{{videoUrl}}" controls="controls" width="100%">
+                    您的浏览器不支持 video 标签。
+                </video>-->
+                {% endif %}
+                <a href="{{videoUrl}}" target="_blank">
+                    <img src="/static/shareDir/img/player_button.png" id="player_button">
+                    <img src="{{resourceImageUrl}}" id="videoSnapshot"/>
+                </a>
+            </div>
+            <div >
+                <table>
+                    {%if detailDirecter%}<tr><td>导演</td><td>{{detailDirecter}}</td></tr> {% endif %}
+                    {%if detailLeadingRole%}<tr><td>主演</td><td>{{detailLeadingRole}}</td></tr> {% endif %}
+                    {%if detailReleaseDate%}<tr><td>年份</td><td>{{detailReleaseDate}}</td></tr> {% endif %}
+                    {%if detailMovieCategory%}<tr><td>影片类型</td><td>{{detailMovieCategory}}</td></tr> {% endif %}
+                    {%if detailDistrict%}<tr><td>地区</td><td>{{detailDistrict}}</td></tr> {% endif %}
+                </table>
+            </div>
+            
+        </div>
+        <div id="indent">
+                {{detailDescription}}
+            </div>
+        <div id="button" class="clearfix">
+            <div>下载应用查看更多精彩抢先影片</div>
+            <a target="_blank" href="{{apkUrl}}">
+                <img src="/static/shareDir/img/android.png"/>
+                <span> 下载应用</span>
+            </a>
+        </div>
+        
+    </div>
 
 </body>
 </html>

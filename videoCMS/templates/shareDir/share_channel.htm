@@ -29,14 +29,14 @@
 				<img src="/static/shareDir/img/logo_name.png"/>
 			</div>
 			<div id="buttondiv">
-				<a id="download-button1" href="">
+				<a id="download-button1" target="_blank" href="{{apkUrl}}">
 					<img  id="download_button" src="/static/shareDir/img/download_button.png"/>
 				</a>
 			</div>
 
 		</div>
 		<div id="content" class="clearfix">
-			<div id="resourceName"> {{resourceName}}</div>
+			<div id="resourceName"> {{channelName}}</div>
 			<div id="video">
 				<!--
 				{% if videoUrl%}
@@ -65,7 +65,7 @@
 			</div>
 		<div id="button" class="clearfix">
 			<div>下载应用查看更多精彩抢先影片</div>
-			<a>
+			<a target="_blank" href="{{apkUrl}}">
 				<img src="/static/shareDir/img/android.png"/>
 				<span>下载应用</span>
 			</a>
