@@ -87,6 +87,20 @@
                             <td><textarea name="mongo" type="text" style="width:110px;height:110px;">{{mongo}}</textarea></td>
                         </tr>
                         <tr>
+                            <td>时间段</td>
+                            <td>
+                                <input type="text" name="startTime" value="{{startTime}}"  style="width:110px"/>至<br/>
+                                <input type="text" name="endTime" value="{{endTime}}" style="width:110px"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>排序</td>
+                            <td>
+                                <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
+                                <input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重
+                            </td>
+                        </tr>
+                        <tr>
                             <td>第<input type="text" name="page" value="{{page}}"/>页</td>
                             <td>每页<input type="text" name="len" value="{{len}}"/>条/({{findNum}})</td>
                             <td><input class="btn btn-inverse btn-mini" type="submit" value="转到"/></td>
