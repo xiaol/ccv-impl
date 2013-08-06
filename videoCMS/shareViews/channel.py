@@ -13,10 +13,13 @@ def index(request):
 
     channel['detailLeadingRole'] = '/'.join(channel['detailLeadingRole'])
     channel['detailMovieCategory'] = '/'.join(channel['detailMovieCategory'])
+
     DICT = channel
     if resource:
         DICT['videoType'] = resource['videoType']
         DICT['videoId'] = resource['videoId']
+        DICT['resourceName'] = resource["resourceName"]
+        DICT['resourceImageUrl'] = "http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/" + resource['resourceImageUrl']
         if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         else:

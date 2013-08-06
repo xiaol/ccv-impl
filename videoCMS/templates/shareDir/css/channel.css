@@ -1,15 +1,16 @@
 body
 {
     background-color: rgb(238,238,238);
-    font-size: 100%;
+    font-size: 200%;
 }
 
-#top,#content,#button
+#top,#content,#button,#indent
 {
     border-top: solid 1px #FFF;
     border-bottom: solid 1px #CCC;
     padding-top: 20px;
     padding-bottom: 20px;
+    position: relative;
 }
 
 .clearfix {
@@ -49,19 +50,21 @@ a:hover
     width: 40%;
     float: left;
 }
-
+/*
 #top-right
 {
     margin-left: 5%;
     width: 50%;
     float: left;
     position: relative;
-}
+}*/
 
 #logo
 {
-    width: 25%;
+    width: 40%;
     float: left;
+    margin-left:5%;
+    margin-top: 5%;
 }
 
 #appTitle
@@ -84,37 +87,45 @@ a:hover
 
 #buttondiv
 {
-    position: relative;
-    bottom: 0;
+    width: 45%;
+    bottom: 20px;
+    right : 10%;
+    position: absolute;
 
 }
 
 #download-button1
 {
-    margin-top: 30px;
-    border-radius: 6px;
-    background-color: rgb(29,90,123);
-    border: solid 1px ;
     clear: both;
     display: block;
-    text-align: center;
-    padding-top: 4px ;
-    padding-bottom: 4px;
-    color: #FFF;
-    min-height: 40px;
-    line-height: 40px;
-    font-size: 200%;
-    
 }
 
 
 
 #resourceName
 {
-    font-size: 400%;
+    font-size: 200%;
 }
 
-.indent
+#video
+{
+    position: relative;
+}
+
+#videoSnapshot
+{
+    width: 100%;
+}
+
+#player_button
+{
+    width:20%;
+    position: absolute;
+    top:40%;
+    left:40%;
+}
+
+#indent
 {
     text-indent: 2em;
 }
@@ -123,17 +134,27 @@ a:hover
 {
     text-align: center;
     color: #777;
+    vertical-align: baseline;
+    font-size: 150%;
+    padding-top: 20px;
 }
 
 #button a
 {
+    margin-top: 20px;
     display: block;
     border-radius: 8px;
     background-color: rgb(29,90,123);
     border: solid 1px ;
     color: #FFF;
     
-    font-size: 300%;
+    font-size: 200%;
     padding: 10px;
+}
+
+#button img
+{
+    /*width: 10%;*/
+    vertical-align: baseline;
 }
 
