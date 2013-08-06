@@ -1,6 +1,7 @@
 body
 {
     background-color: rgb(238,238,238);
+    font-size: 100%;
 }
 
 #top,#content,#button
@@ -39,7 +40,7 @@ a:hover
 
 .main-wrap
 {
-    width:80%;
+    width:95%;
     margin: 0 auto;
 }
 
@@ -71,13 +72,13 @@ a:hover
 }
 #title
 {
-    font-size: 20px;
+    font-size: 200%;
     margin-top: 10px;
 }
 
 #subtitle
 {
-    font-size: 11px;
+    font-size: 100%;
     margin-top: 5px;
 }
 
@@ -102,7 +103,7 @@ a:hover
     color: #FFF;
     min-height: 40px;
     line-height: 40px;
-    font-size: 20px;
+    font-size: 200%;
     
 }
 
@@ -110,7 +111,7 @@ a:hover
 
 #resourceName
 {
-    font-size: 40px;
+    font-size: 400%;
 }
 
 .indent
@@ -132,7 +133,7 @@ a:hover
     border: solid 1px ;
     color: #FFF;
     
-    font-size: 30px;
+    font-size: 300%;
     padding: 10px;
 }
 
