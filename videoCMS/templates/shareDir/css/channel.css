@@ -2,6 +2,8 @@ body
 {
     background-color: rgb(238,238,238);
     font-size: 200%;
+    /* 禁止自动调整*/
+    -webkit-text-size-adjust: none;
 }
 
 #top,#content,#button,#indent
