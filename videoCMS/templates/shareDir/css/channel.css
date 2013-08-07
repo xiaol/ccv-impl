@@ -111,6 +111,10 @@ a:hover
     width: 100%;
 }
 
+#stars{
+    float:right;
+}
+
 #video
 {
     position: relative;
@@ -151,20 +155,11 @@ a:hover
 #button a
 {
     margin-top: 20px;
-    display: block;
-    border-radius: 8px;
-    background-color: rgb(29,90,123);
-    border: solid 1px ;
-    color: #FFF;
-    
-    font-size: 200%;
-    padding: 10px;
-    text-decoration: none;
 }
 
 #button img
 {
-    /*width: 10%;*/
+    width: 100%;
     vertical-align: baseline;
 }
 

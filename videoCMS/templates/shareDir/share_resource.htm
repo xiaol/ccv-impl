@@ -38,7 +38,18 @@
 
         </div>
         <div id="content" class="clearfix">
-            <div id="resourceName"> {{channelName}}</div>
+            <div id="resourceName"> {{channelName}}
+            <div id="stars">
+                    {%for star in starList%}
+                        {%if star%}
+                        <img src="/static/shareDir/img/star1.png"/>
+                        {%else%}
+                        <img src="/static/shareDir/img/star2.png"/>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+
             <div id="video">
                 <!--
                 {% if videoUrl%}
@@ -68,8 +79,7 @@
         <div id="button" class="clearfix">
             <div>下载应用查看更多精彩抢先影片</div>
             <a target="_blank" href="{{apkUrl}}">
-                <img src="/static/shareDir/img/android.png"/>
-                <span> 下载应用</span>
+                <img src="/static/shareDir/img/download_button2.png"/>
             </a>
         </div>
         

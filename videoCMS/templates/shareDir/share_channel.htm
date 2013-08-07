@@ -38,7 +38,17 @@
 
 		</div>
 		<div id="content" class="clearfix">
-			<div id="resourceName"> {{channelName}}</div>
+			<div id="resourceName"> {{channelName}}
+				<div id="stars">
+					{%for star in starList%}
+						{%if star%}
+						<img src="/static/shareDir/img/star1.png"/>
+						{%else%}
+						<img src="/static/shareDir/img/star2.png"/>
+						{%endif%}
+					{%endfor%}
+				</div>
+			</div>
 			<div id="video">
 				<!--
 				{% if videoUrl%}

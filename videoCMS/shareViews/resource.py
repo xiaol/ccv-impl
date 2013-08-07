@@ -21,6 +21,8 @@ def index(request):
 
     DICT = channel
     if resource:
+        DICT['starList'] = [True] * int(channel['detaildoubanScore']/2)
+        DICT['starList'].extend([False] * (5-len(DICT['starList'])))
         DICT['videoType'] = resource['videoType']
         DICT['videoId'] = resource['videoId']
         DICT['channelName'] = channel["channelName"]
