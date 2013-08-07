@@ -1,7 +1,7 @@
 body
 {
     background-color: rgb(238,238,238);
-    font-size: 24px;
+    font-size: 12px;
     /* 禁止自动调整*/
     -webkit-text-size-adjust: none;
 }
