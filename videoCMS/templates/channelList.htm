@@ -36,10 +36,10 @@
 		                        <div class="row-fluid">
 		                        	<span>{{channel.channelId}}</span>
 		                            <a  href="/resource/index?channelId={{channel.channelId}}">{{channel.channelName}}</a>
-		                            [{{channel.weight}}]
+		                            <span class="label label-info">权{{channel.weight}}</span>
 		                            <span class="label label-info">{{channel.channelType}}</span>
 		                            
-		                            <span class="label label-info">{{channel.tvNumber}}</span>
+		                            <span class="label label-info">{{channel.tvNumber}}集</span>
 		                            <a class="label label-info" onclick="updateNow({{channel.channelId}})">立即更新</a>
 		                            {% if channel.processed %}
 		                            <span class="label label-info">已处理</span>
@@ -55,6 +55,10 @@
 		                            {% ifequal channel.identifer 2 %}
 		                            <span class="label label-warning">最新-</span>
 		                            {% endifequal %}
+                                    <br/>
+                                    <span class="label label-info">订{{channel.subscribeNum}}</span>
+                                    
+
                                     <a class="label label-warning" onclick="resetWeight({{channel.channelId}})" >重置权重</a>
 		                            <a href="detail?id={{channel.id}}" class="label label-warning">详情</a>
 		                            <a href="update?id={{channel.id}}" class="label label-warning">编辑</a>
