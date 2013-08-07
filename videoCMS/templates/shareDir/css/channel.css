@@ -159,6 +159,7 @@ a:hover
 
 #button img
 {
+    margin-top:20px;
     width: 100%;
     vertical-align: baseline;
 }
