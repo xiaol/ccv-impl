@@ -113,4 +113,5 @@ searchHandleListAll = [
 'search.iqiyiSo',
 'search.56So',
 'search.weiboHot',
+'search.boosjList',
 ]
