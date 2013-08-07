@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^channel/updateSearchNow$', 'videoCMS.views.channel.updateSearchNow'),
     url(r'^channel/detail$', 'videoCMS.views.channel.detail'),
     url(r'^channel/detail/extraDouban$', 'videoCMS.views.channel.detailExtraDouban'),
+    url(r'^channel/resetWeight$', 'videoCMS.views.channel.resetWeight'),
     
     url(r'^resource/index$', 'videoCMS.views.resource.index'),
     url(r'^resource/add$', 'videoCMS.views.resource.add'),

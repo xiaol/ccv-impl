@@ -52,6 +52,9 @@ def index(request):
     channelId = request.GET.get('channelId','')
     skip = limit * (page - 1)
     channelType = request.GET.get('channelType','')
+    startTime = request.GET.get('startTime','')
+    endTime = request.GET.get('endTime','')
+    sort = request.GET.get('sort','createTime')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -64,10 +67,21 @@ def index(request):
     if channelType != '' and channelType != u'全部':
         spec['categoryId'] = getCategoryIdByName(channelType)
         pass
-    elif mongo != '':
+    if startTime != '':
+        spec['createTime'] = {"$gte":startTime}
+    if endTime != '':
+        spec['createTime'] = {"$lte":endTime}
+    if mongo != '':
         spec = json.loads(mongo)
 
-    resourceList = list(clct_resource.find(spec).sort([('_id',-1)]).skip(skip).limit(limit))
+    if sort == '':
+        sort = 'createTime'
+    if sort == 'weight':
+        sortParams = [('weight',-1),('number',-1),('createTime',-1)]
+    elif sort == 'createTime':
+        sortParams = [('createTime',-1)]
+
+    resourceList = list(clct_resource.find(spec).sort(sortParams).skip(skip).limit(limit))
     for one in resourceList:
         one['id'] = str(one['_id'])
         one.pop('_id')
@@ -92,6 +106,9 @@ def index(request):
     DICT['navPage'] = 'resource'
     DICT['typeList'] = [u'全部'] + getCategoryList()
     DICT['channelType'] = channelType
+    DICT['sort'] = sort
+    DICT['startTime'] = startTime
+    DICT['endTime'] = endTime
     
     return render_to_response('resourceList.htm',DICT)
 

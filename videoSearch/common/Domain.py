@@ -62,6 +62,8 @@ class Resource(DomainBase):
     transcodeDimension = ''
     transcodeOutputname = ''
     weight = -1
+    playNumber = 0
+    downloadNumber = 0
 
 class Category(DomainBase):
     categoryName = ''
