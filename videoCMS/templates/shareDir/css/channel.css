@@ -11,6 +11,7 @@ body
     padding-top: 20px;
     padding-bottom: 20px;
     position: relative;
+    width: 100%;
 }
 
 .clearfix {
@@ -125,6 +126,11 @@ a:hover
     left:40%;
 }
 
+#detailTable
+{
+    width: 100%;
+}
+
 #indent
 {
     text-indent: 2em;
@@ -150,6 +156,7 @@ a:hover
     
     font-size: 200%;
     padding: 10px;
+    text-decoration: none;
 }
 
 #button img
