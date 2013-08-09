@@ -292,14 +292,14 @@ def saveChannelImage(img, id):
     return filename.replace('/', '_')
 
 def saveResourceImage(img, id):
-    filename = 'videoCMS/channel/resource-%s.jpg'%id
+    filename = 'videoCMS/channel/resource-%s.jpg'%(id + getCurTime())
     with open(IMAGE_DIR + '/' + filename, 'wb') as f:
         f.write(img)
      
     return filename.replace('/', '_')
 
 def savePosterImage(img, id):
-    filename = 'videoCMS/channel/poster-%s.jpg'%id
+    filename = 'videoCMS/channel/poster-%s.jpg'%(id + getCurTime())
     with open(IMAGE_DIR + '/' + filename, 'wb') as f:
         f.write(img)
      
