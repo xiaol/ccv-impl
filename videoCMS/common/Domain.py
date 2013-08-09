@@ -65,6 +65,9 @@ class Resource(DomainBase):
     playNumber = 0
     downloadNumber = 0
 
+    gameName = ''
+    gameUrl = ''
+
 class Category(DomainBase):
     categoryName = ''
     categoryId = 0
