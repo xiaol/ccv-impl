@@ -40,3 +40,38 @@ function resetWeight(channelId)
         }
     });
 }
+
+
+function toggleProcessed(object)
+{
+    var channelId = $(object).attr('channelId');
+    var tipText = 'changing..';
+    if($(object).text() == tipText)
+    {
+        alert('请求已经提交，若长时间未响应请刷新页面');
+        return;
+    }
+    $(object).text(tipText);
+    $.ajax({
+        type:'get',
+        url:'/channel/toggleProcessed',
+        data:{'channelId':channelId},
+        success:function(data,textStatus)
+        {
+            var data = JSON.parse(data);
+            if (data.status == true)
+            {
+                $(object).attr('class','label label-info');
+                $(object).text('已处理');
+            }else
+            {
+                $(object).attr('class','label');
+                $(object).text('未处理');
+            }
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown)
+        {
+            alert(errorThrown);
+        }
+    });
+}

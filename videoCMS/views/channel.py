@@ -391,7 +391,16 @@ def updateSearchNow(request):
     return HttpResponse('ok')
 
 
+def toggleProcessed(request):
+    ret = {}
+    channelId = int(request.GET.get('channelId'))
+    channel = clct_channel.find_one({'channelId':channelId})
+
+    clct_channel.update({'channelId':channelId},{'$set':{'processed':not channel['processed']}})
+
+    ret['status'] = not channel['processed']
     
+    return HttpResponse(json.dumps(ret))
 
 #===============================================
 
