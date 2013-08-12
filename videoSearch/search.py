@@ -83,6 +83,8 @@ def handle(channelId,handleName,url):
         startSearch("handles.handle_pptv_tv", url,channelId, updateTvNumber=True)
     elif handleName == 'qqTv':
         startSearch("handles.handle_qq_tv", url, channelId, updateTvNumber=True)
+    elif handleName == 'ppsTv':
+        startSearch("handles.handle_pps_tv", url, channelId, updateTvNumber=True)
         '''===============综艺=============='''
     elif handleName == 'youkuZongyi':
         startSearch('handles.handle_youku_zongyi', url, channelId ,snapShot=False, updateTvNumber=True)
