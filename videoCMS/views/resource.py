@@ -80,6 +80,11 @@ def index(request):
         sortParams = [('weight',-1),('number',-1),('createTime',-1)]
     elif sort == 'createTime':
         sortParams = [('createTime',-1)]
+    elif sort == 'playNumber':
+        sortParams = [('playNumber',-1)]
+    elif sort == 'downloadNumber':
+        sortParams = [('downloadNumber',-1)]
+        
 
     resourceList = list(clct_resource.find(spec).sort(sortParams).skip(skip).limit(limit))
     for one in resourceList:

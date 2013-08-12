@@ -67,6 +67,8 @@ def index(request):
             sortList = [('modifyTime',-1)]
         elif sort == 'weight':
             sortList = [('weight',-1)]
+        elif sort == 'subscribeNum':
+            sortList = [('subscribeNum',-1)]
         
     channelList = list(clct_channel.find(spec).sort(sortList).skip(skip).limit(limit))
     CategoryIdMapName = getCategoryIdMapName()
