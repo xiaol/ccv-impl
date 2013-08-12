@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分类统计</title>
+
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/statisticsCategory.css" rel="stylesheet" type="text/css" />
+
+
+<!--<script src="/static/js/jquery-1.8.3.min.js"></script>-->
+<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/statisticsCategory.js"></script>
+<!-- zencode 快捷键 ctrl opt enter  -->
+</head>
+<body style="background-color:#CCC;">
+    {% include "nav.htm" %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12 paddingWrap" style="background-color:#FFF;">
+                
+			     <div class="row-fluid" id="nav">
+
+                        <form>
+                            <div class="well">
+                            <table>
+                                <tr>
+                                    <td>时间区间:</td>
+                                    <td>
+                                        <span>开始时间</span>
+                                    </td>
+                                    <td>
+                                        <div id="datetimepicker1" class="input-append date" >
+                                            <input data-format="yyyy/MM/dd" name="startDate" type="text"></input>
+                                            <span class="add-on">
+                                                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span>结束时间</span>
+                                    </td>
+                                    <td>
+                                        <div id="datetimepicker2" class="input-append">
+                                            <input data-format="yyyy/MM/dd" name="endDate" type="text"></input>
+                                            <span class="add-on">
+                                                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td rowspan="2">
+                                        <input type="submit" value="查询">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>类别:</td>
+                                    <td></td>
+                                    <td>
+                                        <select name="categoryName" id=""></select>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            </div>
+                        </form>
+                </div>
+                
+                <div class="row-fluid" id="content">
+                    <table>
+                        <tr>
+                        {% for name in categoryNames%}
+                            <th>{{name}}</th>
+                        {% endfor %}
+                        </tr>
+                    {%for row in sortedResult%}
+                        <tr>
+                            <td>{{row.day}}</td>
+                            {%for one in row.data%}
+                            <td> {{one}}</td>
+                            {%endfor%}
+                        </tr>
+                    {%endfor%}
+                    </table>
+                </div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>

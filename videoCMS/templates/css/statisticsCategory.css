@@ -1,0 +1,24 @@
+#nav table
+{
+    width: 100%;
+}
+
+.date 
+{
+    display: inline-block;
+}
+
+#nav 
+{
+    
+}
+
+#nav span
+{
+    line-height: 42px;
+}
+
+#content
+{
+    min-height: 500px;
+}

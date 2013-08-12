@@ -48,4 +48,8 @@ urlpatterns = patterns('',
     
     url(r'^share/resource$','videoCMS.shareViews.resource.index'),
     url(r'^share/channel$','videoCMS.shareViews.channel.index'),
+
+    url(r'^statistics/category','videoCMS.views.statistics.category'),
+    url(r'^statistics/channel','videoCMS.views.statistics.channel'),
+    url(r'^statistics/resource','videoCMS.views.statistics.resource'),
 )
