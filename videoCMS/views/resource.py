@@ -138,6 +138,12 @@ def update(request):
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     resource['modifyTime'] = getCurTime()
+    resource['number'] = request.POST.get('number')
+    try:
+        resource['number'] = int(resource['number'])
+    except:
+        pass
+        
     img = request.FILES.get('resourceImage',None)
     if img:
         resource['resourceImageUrl'] = saveResourceImage(img.read(),id)
@@ -168,6 +174,11 @@ def add(request):
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     resource['createTime'] = getCurTime()
+    resource['number'] = request.POST.get('number')
+    try:
+        resource['number'] = int(resource['number'])
+    except:
+        pass
     
     for tag in resource['tagList']:
         if clct_tag.find_one({'name':tag}) == None:

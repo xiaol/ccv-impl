@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from videoCMS.conf import userList
 from videoCMS.conf import clct_channel,clct_resource
 from bson import ObjectId
+from videoCMS.common.HttpUtil import getVideoUrl
 
 
 def index(request):
@@ -30,6 +31,10 @@ def index(request):
         if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         else:
+            videoUrl = getVideoUrl(resource['videoType'], resource['videoId'])
+            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl.find('.mp4') != -1:
+                DICT['videoUrl'] = videoUrl[0]
+        if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
     DICT['apkUrl'] = 'http://www.weiweimeishi.com/static/file/PocketPlayer1.5.1_official_website.apk'

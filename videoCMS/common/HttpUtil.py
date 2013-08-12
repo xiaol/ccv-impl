@@ -77,6 +77,14 @@ def getVideoIdByUrl(url):
     
     return json.loads(ret)['videoId']
 
+def getVideoUrl(videoType,videoId):
+    httpUtil = HttpUtil()
+    data = {"request-body":{"getVideoUrl":{"videoType":videoType,"videoId":videoId}}}
+    data = json.dumps(data)
+    ret = httpUtil.Post('http://60.28.29.38:9090/api/huohuaId2Url',data)
+    result = json.loads(ret)["response-body"]["getVideoUrl"]
+    return result["list"]
+
 if __name__ =='__main__':
     httpUtil = HttpUtil()
     content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
