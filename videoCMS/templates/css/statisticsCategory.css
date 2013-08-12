@@ -21,4 +21,6 @@
 #content
 {
     min-height: 500px;
+    width: 1440px;
+    overflow: scroll;
 }
