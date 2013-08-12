@@ -75,7 +75,7 @@ def category(request):
     DICT["endDate"] = endTime
 
     t_start = time.mktime(time.strptime(startTime,'%Y/%m/%d'))
-    t_end = time.mktime(time.strptime(endTime,'%Y/%m/%d'))
+    t_end = time.mktime(time.strptime(endTime,'%Y/%m/%d')) + 24*3600
     startTime = time.strftime('%Y%m%d000000', time.localtime(t_start))
     endTime = time.strftime('%Y%m%d000000',time.localtime(t_end))
 
@@ -85,7 +85,7 @@ def category(request):
     for one in categoryList:
         row[one['categoryId']] = [0,0]
     t = t_start
-    while t <= t_end:
+    while t < t_end:
         date = time.strftime('%Y%m%d',time.localtime(t))
         result[date] = copy.deepcopy(row)
         t += 24*3600
