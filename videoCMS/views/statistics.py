@@ -62,8 +62,8 @@ def category(request):
     getCategorylId = _GetCategorylId()
     categoryList = getCategoryList()
 
-    startTime = request.GET.get('startTime','')
-    endTime = request.GET.get('endTime','')
+    startTime = request.GET.get('startDate','')
+    endTime = request.GET.get('endDate','')
 
     if startTime == "":
         startTime = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
@@ -71,8 +71,8 @@ def category(request):
         endTime = time.strftime('%Y/%m/%d',time.localtime())
 
     print startTime,endTime
-    DICT["startTime"] = startTime
-    DICT["endTime"] = endTime
+    DICT["startDate"] = startTime
+    DICT["endDate"] = endTime
 
     t_start = time.mktime(time.strptime(startTime,'%Y/%m/%d'))
     t_end = time.mktime(time.strptime(endTime,'%Y/%m/%d'))
@@ -85,7 +85,7 @@ def category(request):
     for one in categoryList:
         row[one['categoryId']] = [0,0]
     t = t_start
-    while t < t_end:
+    while t <= t_end:
         date = time.strftime('%Y%m%d',time.localtime(t))
         result[date] = copy.deepcopy(row)
         t += 24*3600
