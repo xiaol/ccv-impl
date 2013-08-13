@@ -15,7 +15,7 @@ import urllib2,copy
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 
-
+'''
 def _GetCategorylId():
     channel2categoryMap= {}
     def _getCategorylId(channelId):
@@ -26,29 +26,54 @@ def _GetCategorylId():
             channel2categoryMap[channelId] = categoryId
             return categoryId
     return _getCategorylId
+'''
 
-def _GetChannelId(resourceIdList):
+def CacheResources(resourceIdList):
     '''预先缓存resourceIdList'''
     resource2channelMap = {}
     begin = 0
-    while begin + 100 <= len(resourceIdList):
-        ids = resourceIdList[begin : begin+100]
+    print 'resourceIdList len:',len(resourceIdList)
+    resourceIdList = list(set(resourceIdList))
+    print 'uni len:',len(resourceIdList)
+
+
+    while begin < len(resourceIdList):
+        if begin + 100 > len(resourceIdList):
+            ids = resourceIdList[begin:]
+        else:
+            ids = resourceIdList[begin : begin+100]
         obids = []
         for one in ids:
             try:
-                obids.append(ObjectId[one])
+                obids.append(ObjectId(one))
             except:
                 pass
-        for resource in clct_resource.find({'_id':{'$in':obids}}, {'channelId':1}):
-            resource2channelMap[str(resource['_id'])] = resource['channelId']
+        for resource in clct_resource.find({'_id':{'$in':obids}}, {'channelId':1,'categoryId':1}):
+            resource2channelMap[str(resource['_id'])] = (resource['channelId'],resource['categoryId'])
         begin += 100
+
+    print 'map len:',len(resource2channelMap.keys())
 
     def _getChannelId(resourceId):
         if resourceId not in resource2channelMap:
-            resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1})
-            resource2channelMap[resourceId] = resource['channelId']
-        return resource2channelMap[resourceId]
-    return _getChannelId
+            resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
+            resource2channelMap[resourceId] = (resource['channelId'],resource['categoryId'])
+            #print "channelId not hit"
+        return resource2channelMap[resourceId][0]
+
+    def _getCategoryId(resourceId):
+        if resourceId not in resource2channelMap:
+            resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
+            resource2channelMap[resourceId] = (resource['channelId'],resource['categoryId'])
+            print "categoryId not hit",resourceId
+        else:
+            pass
+            #print 'hit'
+        return resource2channelMap[resourceId][1]
+
+
+    return _getChannelId, _getCategoryId
+
 
 
 def getCategoryList():
@@ -59,7 +84,6 @@ def getCategoryList():
 
 def category(request):
     DICT = {}
-    getCategorylId = _GetCategorylId()
     categoryList = getCategoryList()
 
     startTime = request.GET.get('startDate','')
@@ -102,21 +126,23 @@ def category(request):
     print len(logs)
 
     print '初始化getChannelId'
-    getChannelId = _GetChannelId([one['resourceId'] for one in logs])
+    getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
 
     print '开始统计'
-    for log in logs:
+    for i,log in enumerate(logs):
         #下载
+        #print i
         try:
             if log['operationCode'] == 10001:
                 date = log['createTime'][:8]
-                categoryId = getCategorylId(getChannelId(log['resourceId']))
+                categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][0] += 1
             elif log['operationCode'] == 10004:
                 date = log['createTime'][:8]
-                categoryId = getCategorylId(getChannelId(log['resourceId']))
+                categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][1] += 1
         except:
+            #print 'error:',log['resourceId']
             pass
 
     print '得到有序坐标行列'
