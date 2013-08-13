@@ -139,7 +139,6 @@ def update(request):
     resource['weight'] = float(request.POST.get('weight'))
     channel = clct_channel.find_one({'channelId':resource['channelId']})
     resource['categoryId'] = channel['channelType']
-    resource['videoClass'] = channel['videoClass']
     resource['duration'] = int(request.POST.get('duration'))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
@@ -177,7 +176,6 @@ def add(request):
     resource['weight'] = float(request.POST.get('weight'))
     channel = clct_channel.find_one({'channelId':resource['channelId']})
     resource['categoryId'] = channel['channelType']
-    resource['videoClass'] = channel['videoClass']
     resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False

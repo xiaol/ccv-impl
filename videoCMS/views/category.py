@@ -104,12 +104,14 @@ def update(request):
     #更新关联频道 categoryId aka channelType
     if oldCategory['categoryId'] != category['categoryId']:
         clct_channel.update({'channelType':oldCategory['categoryId']},{'$set':{'channelType':category['categoryId']}},multi=True)
+    
+    #更新关联视频的 categoryId aka channelType
+    channelIds = [channel['channelId']  for channel in clct_channel.find({'channelType':category['categoryId']},{'channelId':1})]
+    clct_resource.update({'channelId':{'$in':channelIds}}, {'$set':{'categoryId':category['categoryId']}},multi =True)
 
     #更新频道videoClass
     clct_channel.update({'channelType':category['categoryId']},{'$set':{'videoClass':category['videoClass']}},multi=True)
-    #更新视频的videoClass
-    channelIds = [channel['channelId']  for channel in clct_channel.find({'channelType':category['categoryId']},{'channelId':1})]
-    clct_resource.update({'channelId':{'$in':channelIds}}, {'$set':{'videoClass':category['videoClass']}},multi =True)
+    
 
     #更新categoryType 强兴趣 段兴趣
     clct_channel.update({'channelType':category['categoryId']},{'$set':{'categoryType':category['categoryType']}},multi=True)
