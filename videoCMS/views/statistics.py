@@ -27,6 +27,26 @@ def _GetCategorylId():
             return categoryId
     return _getCategorylId
 '''
+#================================================
+def getStartEndDateTime(request):
+    startDate = request.GET.get('startDate','')
+    endDate = request.GET.get('endDate','')
+    if startDate == "":
+        startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
+    if endDate == "":
+        endDate = time.strftime('%Y/%m/%d',time.localtime())
+    print startDate,endDate
+    #时间戳
+    t_start = time.mktime(time.strptime(startDate,'%Y/%m/%d'))
+    t_end = time.mktime(time.strptime(endDate,'%Y/%m/%d')) + 24*3600
+    #数据库查询
+    startTime = time.strftime('%Y%m%d000000', time.localtime(t_start))
+    endTime = time.strftime('%Y%m%d000000',time.localtime(t_end))
+
+    return startDate,endDate,t_start,t_end,startTime,endTime
+
+#================================================
+
 
 def CacheResources(resourceIdList):
     '''预先缓存resourceIdList'''
@@ -65,7 +85,7 @@ def CacheResources(resourceIdList):
         if resourceId not in resource2channelMap:
             resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
             resource2channelMap[resourceId] = (resource['channelId'],resource['categoryId'])
-            print "categoryId not hit",resourceId
+            #print "categoryId not hit",resourceId
         else:
             pass
             #print 'hit'
@@ -86,22 +106,8 @@ def category(request):
     DICT = {}
     categoryList = getCategoryList()
 
-    startTime = request.GET.get('startDate','')
-    endTime = request.GET.get('endDate','')
 
-    if startTime == "":
-        startTime = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
-    if endTime == "":
-        endTime = time.strftime('%Y/%m/%d',time.localtime())
-
-    print startTime,endTime
-    DICT["startDate"] = startTime
-    DICT["endDate"] = endTime
-
-    t_start = time.mktime(time.strptime(startTime,'%Y/%m/%d'))
-    t_end = time.mktime(time.strptime(endTime,'%Y/%m/%d')) + 24*3600
-    startTime = time.strftime('%Y%m%d000000', time.localtime(t_start))
-    endTime = time.strftime('%Y%m%d000000',time.localtime(t_end))
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
 
     '''初始化 矩阵(其实是字典)''' 
     result = {}
@@ -167,7 +173,10 @@ def category(request):
 
 
 def channel(request):
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
     categoryName = request.GET.get('categoryName',"全部")
+    
+    #
 
     spec = {}
     if categoryName != u"全部":
