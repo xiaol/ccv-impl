@@ -177,6 +177,11 @@ def update(request):
     oldChannelId = clct_channel.find_one({'_id':ObjectId(id)})['channelId']
     clct_resource.update({'channelId':oldChannelId},{'$set':{'channelId':channel['channelId']}},multi=True)
     
+    #更新 videoClass
+    categoryId =  channel['channelType']
+    category = clct_category.find_one({'categoryId':categoryId})
+    channel['videoClass'] = category['videoClass']
+    clct_resource.update({'channelId':channel['channelId']}, {'$set':{'videoClass':channel['videoClass']}},multi=True)
 
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)
