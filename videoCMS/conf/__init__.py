@@ -118,4 +118,5 @@ searchHandleListAll = [
 'search.weiboHot',
 'search.boosjList',
 'search.ppsTv',
+'search.ifengList',
 ]
