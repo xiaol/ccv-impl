@@ -286,11 +286,15 @@ def channelSub(request):
     DICT = {}
     categoryName = request.GET.get('categoryName',"全部")
     limit = int(request.GET.get('limit',20))
+    mongo = request.GET.get('mongo','')
+
 
 
     spec = {}
     if categoryName != u"全部":
         spec['channelType'] = getCategoryIdByName(categoryName)
+    if mongo:
+        spec = json.loads(mongo)
 
     L = list(clct_channel.find(spec).sort([('subscribeNum',-1)]).limit(limit))
     for one in L:
@@ -301,6 +305,7 @@ def channelSub(request):
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
+    DICT['mongo'] = mongo
     return render_to_response('statisticsChannelSub.htm',DICT)
 
 
@@ -327,6 +332,7 @@ def resource(request):
     spec = {}
     spec['createTime'] = {'$gte':startTime, '$lte':endTime}
     spec["operationCode"] = {"$in":[10001, 10004]}
+
 
     #开始统计
     logs = list(clct_operationLog.find(spec))
