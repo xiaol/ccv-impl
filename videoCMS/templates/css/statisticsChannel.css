@@ -21,10 +21,12 @@
 #content
 {
     min-height: 500px;
-    width: 1440px;
-    overflow: scroll;
 }
 
+#content table
+{
+    width: 100%;
+}
 #content td
 {
     font-size: 10px;

@@ -67,14 +67,16 @@
                         <tr>
                         <th>日期\分类</th>
                         {% for name in categoryNames%}
-                            <th>{{name}}</th>
+                            <th>
+                                <a href="/statistics/channel?startDate={{startDate}}&endDate={{endDate}}&categoryName={{name}}">{{name}}</a>
+                            </th>
                         {% endfor %}
                         </tr>
                     {%for row in sortedResult%}
                         <tr>
                             <td>{{row.day}}</td>
                             {%for one in row.data%}
-                            <td> {{one}}</td>
+                            <td> {{one.0}}/{{one.1}}</td>
                             {%endfor%}
                         </tr>
                     {%endfor%}

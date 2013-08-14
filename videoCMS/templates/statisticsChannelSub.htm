@@ -55,6 +55,7 @@
                     <table>
                         <tr>
                         <th>频道\数据</th>
+                        <th>分类</th>
                         <th>订阅</th>
                         </tr>
                     {%for row in result%}
@@ -62,6 +63,8 @@
                             <td>
                                 <a target="_blank" href='/channel/index?channelId={{row.channelId}}'>{{row.channelName}}</a>
                             </td>
+
+                            <td>{{row.categoryName}}</td>
                             <td>{{row.subscribeNum}}</td>
                         </tr>
                     {%endfor%}
