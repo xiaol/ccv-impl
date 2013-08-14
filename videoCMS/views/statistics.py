@@ -343,7 +343,7 @@ def autoResource(request):
     '''
     DICT['result'] = L
 
-    return render_to_response('statisticsAutoResource.htm')
+    return render_to_response('statisticsAutoResource.htm',DICT)
 
 def resource(request):
     DICT = {}
