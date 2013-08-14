@@ -139,6 +139,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_iqiyi_list',url ,channelId, snapShot = True)
     elif handleName =='sinaSport':
         startSearch('handles.handle_sina_sports', url, channelId, snapShot=True, updateTvNumber=False)
+    elif handleName =='aipai':
+        startSearch('handles.handle_aipai', url, channelId, snapShot=True, updateTvNumber=False)
         '''=================  其他 ======================'''
     elif handleName == 'youkuPlayList':
         startSearch('handles.handle_youku_playlist',url ,channelId)
