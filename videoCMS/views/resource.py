@@ -72,7 +72,7 @@ def index(request):
     if endTime != '':
         spec['createTime'] = {"$lte":endTime}
     if mongo != '':
-        spec = json.loads(mongo)
+        spec.update(json.loads(mongo))
 
     if sort == '':
         sort = 'createTime'
