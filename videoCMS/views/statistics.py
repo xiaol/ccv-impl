@@ -287,9 +287,6 @@ def channelSub(request):
     categoryName = request.GET.get('categoryName',"全部")
     limit = int(request.GET.get('limit',20))
     mongo = request.GET.get('mongo','')
-
-
-
     spec = {}
     if categoryName != u"全部":
         spec['channelType'] = getCategoryIdByName(categoryName)
@@ -309,6 +306,44 @@ def channelSub(request):
     return render_to_response('statisticsChannelSub.htm',DICT)
 
 
+def autoResource(request):
+    DICT = {}
+
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+    spec = {}
+    spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    #10011 自动下载启动  10101 自动下载成功
+    spec["operationCode"] = {"$in":[10011, 10101]}
+
+    result = {}
+    #初始化 result
+    t = t_start
+    while t < t_end:
+        date = time.strftime('%Y%m%d',time.localtime(t))
+        result[date] = {"startNum":0,"sucNum":0}
+        t += 24*3600
+    #开始统计
+    logs = list(clct_operationLog.find(spec))
+    for log in logs:
+        date = log['createTime'][:8]
+        if log['operationCode'] == 10011:
+            result[date]['startNum'] += 1
+        elif log['operationCode'] == 10101:
+            result[date]['sucNum'] += 1
+
+    #转换结果到数组
+    L = result.items()
+    L.sort(key=lambda a:a[0])
+
+    '''
+        [
+            (date,{'startNum':0,'sucNum':0}),
+            ...
+        ]
+    '''
+    DICT['result'] = L
+
+    return render_to_response('statisticsAutoResource.htm',DICT)
 
 def resource(request):
     DICT = {}
