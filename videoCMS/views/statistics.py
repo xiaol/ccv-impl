@@ -333,7 +333,7 @@ def autoResource(request):
 
     #转换结果到数组
     L = result.items()
-    L.sort(lambda a:a[0])
+    L.sort(key=lambda a:a[0])
 
     '''
         [
