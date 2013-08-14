@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> {{title}}</title>
+<title>{{title}}</title>
 
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
@@ -67,45 +67,46 @@
                                             {%endfor%}
                                         </select>
                                     </td>
-                                    <td>长度:</td>
+                                    <td>频道ID</td>
                                     <td>
-                                        <input type="text" name="limit" value="{{limit}}"/>
+                                        <input name="channelId" value="{{channelId}}"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>排序</td>
-                                    <td colspan="4">
+                                    <td colspan="2">
                                         <input {%ifequal sort "downloadNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="downloadNum"/>下载数
                                         <input {%ifequal sort "playNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="playNum"/>播放数
                                         <input {%ifequal sort "downplayNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="downplayNum"/>下载+播放
+                                    </td>
+                                    <td>长度:</td>
+                                    <td>
+                                        <input type="text" name="limit" value="{{limit}}"/>
                                     </td>
                                 </tr>
                             </table>
                             </div>
                         </form>
                 </div>
+                
                 <div class="row-fluid" id="content">
                     <table>
                         <tr>
-                        <th width="300px">频道\数据</th>
-                        <th>分类</th>
-                        <th>下载</th>
-                        <th>播放</th>
-                        <th>总计</th>
-                        <th>订阅</th>
+                        <th width="300px"> 视频名称</th>
+                        <th> 频道</th>
+                        <th> 类别</th>
+                        <th> 下载</th>
+                        <th> 播放</th>
+                        <th> 总数</th>
                         </tr>
                     {%for row in result%}
                         <tr>
-                            <td>
-                                <a target="_blank" href='/channel/index?channelId={{row.channelId}}'>{{row.channelName}}</a>
-                            </td>
-                            <td>
-                                {{row.categoryName}}
-                            </td>
-                            <td> {{row.data.0}}</td>
-                            <td> {{row.data.1}}</td>
-                            <td> {{row.data.2}}</td>
-                            <td>{{row.subscribeNum}}</td>
+                            <td><a href="/resource/index?id={{row.resourceId}}">{{row.resourceName}}</a></td>
+                            <td><a href="/statistics/resource?channelId={{row.channelId}}">{{row.channelName}}</a></td>
+                            <td><a href="/statistics/resource?categoryName={{row.categoryName}}" >{{row.categoryName}}</a></td>
+                            <td>{{row.data.0}}</td>
+                            <td>{{row.data.1}}</td>
+                            <td>{{row.data.2}}</td>
                         </tr>
                     {%endfor%}
                     </table>
