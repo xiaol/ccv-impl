@@ -147,7 +147,8 @@ def category(request):
         }
     '''
     '''填充 矩阵'''
-    logs = list(clct_operationLog.find({'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004]}}))
+    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004]}}
+    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     print len(logs)
 
     print '初始化getChannelId'
@@ -210,7 +211,7 @@ def channel(request):
     spec["operationCode"] = {"$in":[10001, 10004]}
 
     #开始统计
-    logs = list(clct_operationLog.find(spec))
+    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
 
     print '初始化getChannelId'
     getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
@@ -323,7 +324,7 @@ def autoResource(request):
         result[date] = {"startNum":0,"sucNum":0}
         t += 24*3600
     #开始统计
-    logs = list(clct_operationLog.find(spec))
+    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     for log in logs:
         date = log['createTime'][:8]
         if log['operationCode'] == 10011:
@@ -354,6 +355,8 @@ def resource(request):
     limit = int(request.GET.get('limit',20))
     sort = request.GET.get('sort','downplayNum')
 
+    DICT['channelId'] = channelId
+
     if channelId != "":
         filterChannelId = int(channelId)
     else:
@@ -370,10 +373,10 @@ def resource(request):
 
 
     #开始统计
-    logs = list(clct_operationLog.find(spec))
+    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
 
     print '初始化getChannelId'
-    getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
+    getChannelId,getCategoryId = CacheResources([one['resourceId'] for one in logs])
 
     print '开始统计'
     result = {}
@@ -387,11 +390,11 @@ def resource(request):
         resourceId = log['resourceId']
         if resourceId == 'default':
             continue
-        categoryId = getCategorylId(resourceId)
+        categoryId = getCategoryId(resourceId)
         if filterCategoryId and filterCategoryId != categoryId:
             continue 
         channelId = getChannelId(resourceId)
-        if filterChannelId and  channelId != channelId:
+        if filterChannelId and  filterChannelId != channelId:
             continue
 
         if resourceId not in result:
@@ -409,9 +412,14 @@ def resource(request):
     L = []
     for key in result:
         item = {}
+        if key == 'default':
+            continue
         item['resourceId'] = key
-        item['channelId'] = getChannelId(resourceId)
-        item['categoryId'] = getCategoryId(resource)
+        item['channelId'] = getChannelId(key)
+        item['categoryId'] = getCategoryId(key)
+        if item['categoryId'] == None or item['channelId'] == None:
+            continue
+        item['categoryName'] = getCategoryNameById(item['categoryId'])
         item['data'] = result[key]
         L.append(item)
     #排序
@@ -428,17 +436,24 @@ def resource(request):
     for one in L:
         channel = clct_channel.find_one({'channelId':one['channelId']})
         if not channel:
-            print 'channelId not exists:',one['channelId']
-            continue
-        one['channelName'] = channel['channelName']
-        one['categoryName'] = getCategoryNameById(channel['channelType'])
+            one['channelName'] = 'channel deleted'
+        else:
+            one['channelName'] = channel['channelName']
+
+        resource = clct_resource.find_one({'_id':ObjectId(one['resourceId'])})
+        if not resource:
+            one['resourceName'] = "deleted resource"
+        else:
+            one['resourceName'] =  resource['resourceName']
+        
 
 
     DICT['result'] = L
     DICT['categoryList'] = [u'全部'] + getCategoryList()
     DICT['categoryName'] = categoryName
+
     DICT['sort'] = sort
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
-    DICT['title'] = '频道下载/播放统计'
-    return render_to_response('statisticsChannel.htm',DICT)
+    DICT['title'] = '视频 下载/播放统计'
+    return render_to_response('statisticsResource.htm',DICT)
