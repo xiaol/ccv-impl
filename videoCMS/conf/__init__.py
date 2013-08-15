@@ -119,4 +119,5 @@ searchHandleListAll = [
 'search.boosjList',
 'search.ppsTv',
 'search.ifengList',
+'search.kankanews',
 ]
