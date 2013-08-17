@@ -14,7 +14,7 @@ from videoSearch.common.videoInfoTask import addVideoInfoTask
 import urllib2
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
-
+from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -84,6 +84,8 @@ def index(request):
         sortParams = [('playNumber',-1)]
     elif sort == 'downloadNumber':
         sortParams = [('downloadNumber',-1)]
+    elif sort == 'invalidTime':
+        sortParams = [('validTime',-1)]
         
 
     resourceList = list(clct_resource.find(spec).sort(sortParams).skip(skip).limit(limit))
@@ -286,7 +288,15 @@ def CdnSync(request):
     clct_cdnSync.insert()
     pass
 
+def prefetchCDN(request):
+    videoId = "/" + request.GET.get("videoId")
+    ret = PrefetchCache(videoId)
+    return HttpResponse(ret)
 
+def queryCDN(request):
+    videoId = "/" + request.GET.get("videoId")
+    ret = GetProgress(videoId)
+    return HttpResponse(ret)
 
 
 

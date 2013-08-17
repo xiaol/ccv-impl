@@ -33,6 +33,8 @@ urlpatterns = patterns('',
     url(r'^resource/refreshSnapshot$', 'videoCMS.views.resource.refreshSnapshot'),
     url(r'^resource/delete$', 'videoCMS.views.resource.deleteResource'),
     url(r'^resource/stopSnapshot$', 'videoCMS.views.resource.stopSnapshot'),
+    url(r'^resource/prefetchCDN$', 'videoCMS.views.resource.prefetchCDN'),
+    url(r'^resource/queryCDN$', 'videoCMS.views.resource.queryCDN'),
     
     url(r'^preresource/index$', 'videoCMS.views.preresource.index'),
     url(r'^preresource/update$', 'videoCMS.views.preresource.update'),
