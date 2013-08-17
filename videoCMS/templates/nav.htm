@@ -34,7 +34,7 @@
                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="/resource/add">添加视频</a></li>
-                            <li><a href="/resource/index?mongo=%7b%22validTime%22%3a%7b%22%24exists%22%3atrue%7d%7d">解析出错视频</a></li>
+                            <li><a href="/resource/index?mongo=%7b%22validTime%22%3a%7b%22%24exists%22%3atrue%7d%7d&sort=invalidTime">解析出错视频</a></li>
                         </ul>
                     </li>
                     <li {%ifequal navPage "preresource"%} class="active" {%endifequal%}><a href="/preresource/index">正在下载</a></li>
