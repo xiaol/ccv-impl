@@ -21,9 +21,10 @@
 #content
 {
     min-height: 500px;
-    width: 1440px;
-    overflow: scroll;
+    min-width: 1440px;
+    overflow: visible;
 }
+
 
 #content td
 {

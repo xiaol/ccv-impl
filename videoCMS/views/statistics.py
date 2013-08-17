@@ -132,7 +132,7 @@ def category(request):
     result = {}
     row = {}
     for one in categoryList:
-        row[one['categoryId']] = [0,0]
+        row[one['categoryId']] = [0,0,0]
     t = t_start
     while t < t_end:
         date = time.strftime('%Y%m%d',time.localtime(t))
@@ -147,7 +147,7 @@ def category(request):
         }
     '''
     '''填充 矩阵'''
-    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004]}}
+    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005]}}
     logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     print len(logs)
 
@@ -159,14 +159,21 @@ def category(request):
         #下载
         #print i
         try:
+            #下载
             if log['operationCode'] == 10001:
                 date = log['createTime'][:8]
                 categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][0] += 1
+            #播放
             elif log['operationCode'] == 10004:
                 date = log['createTime'][:8]
                 categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][1] += 1
+            #播放失败
+            elif log['operationCode'] == 10005:
+                date = log['createTime'][:8]
+                categoryId = getCategorylId(log['resourceId'])
+                result[date][categoryId][2] += 1
         except:
             #print 'error:',log['resourceId']
             pass
@@ -177,7 +184,15 @@ def category(request):
 
     sortedResult = [{"data":[result[day][category] for category in categories],"day":day} for day in days]
 
-
+    #分段
+    '''
+    begin = 0
+    sortedResultSegs = []
+    while begin < len(sortedResult):
+        end = len(sortedResult) if begin+7 > len(sortedResult) else begin + 7
+        sortedResultSegs.append(sortedResult[begin:end])
+        begin += 7
+    '''
     categoryMap = {}
     for one in categoryList:
         categoryMap[one['categoryId']] = one
@@ -185,6 +200,7 @@ def category(request):
     DICT['categories'] = categories
     DICT['categoryNames'] = [categoryMap[id]['categoryName'] for id in categories]
     DICT['sortedResult'] = sortedResult
+    #DICT['sortedResultSegs'] = sortedResultSegs
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
@@ -292,7 +308,7 @@ def channelSub(request):
     if categoryName != u"全部":
         spec['channelType'] = getCategoryIdByName(categoryName)
     if mongo:
-        spec = json.loads(mongo)
+        spec.update(json.loads(mongo))
 
     L = list(clct_channel.find(spec).sort([('subscribeNum',-1)]).limit(limit))
     for one in L:
