@@ -294,6 +294,7 @@ def CdnSync(request):
 def prefetchCDN(request):
     videoId = "/" + request.GET.get("videoId")
     ret = PrefetchCache(videoId)
+    clct_resource.update({'videoId':videoId[1:]},{'$set':{'cdn':'waiting'}})
     return HttpResponse(ret)
 
 def queryCDN(request):

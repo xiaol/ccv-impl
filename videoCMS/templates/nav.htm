@@ -35,6 +35,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/resource/add">添加视频</a></li>
                             <li><a href="/resource/index?mongo=%7B%22scheduleGoOnline%22%3A%7B%22%24ne%22%3A%22%22%7D%7D">定时上线视频</a></li>
+                            <li><a href="/resource/index?mongo=%7B%22cdn%22%3A%22waiting%22%7D">CDN同步中视频</a></li>
                             <li><a href="/resource/index?mongo=%7b%22validTime%22%3a%7b%22%24exists%22%3atrue%7d%7d&sort=invalidTime">解析出错视频</a></li>
                         </ul>
                     </li>
