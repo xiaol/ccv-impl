@@ -55,6 +55,13 @@
 		                            <div class="span6">创建日期:{{resource.createTime}}</div>
 		                            <div class="span6">修改日期:{{resource.modifyTime}}</div>
 		                        </div>
+                                <div class="row-fluid smallFont">
+                                    {% if resource.validTime%}
+                                    <div class="span6">
+                                        <a class="label label-important" title="{{resource.invalidMsg}}">失效日期:{{resource.validTime}}</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
 		                    </div>
 		                </div>
 			            {%endfor%}
@@ -102,7 +109,10 @@
                             <td>排序</td>
                             <td>
                                 <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
-                                <input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重
+                                <input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重<br/>
+                                <input type="radio" name="sort" value="playNumber" {%ifequal sort "playNumber" %}checked="checked" {%endifequal%}/>播放数
+                                <input type="radio" name="sort" value="downloadNumber" {%ifequal sort "downloadNumber" %}checked="checked" {%endifequal%}/>下载数<br/>
+                                <input type="radio" name="sort" value="invalidTime" {%ifequal sort "invalidTime" %}checked="checked" {%endifequal%}/>失效时间
                             </td>
                         </tr>
                         <tr>

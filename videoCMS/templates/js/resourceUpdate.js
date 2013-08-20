@@ -36,3 +36,14 @@ function calcSeconds()
 	var minutes = $("#secondBox").val();
 	$("[name=\"duration\"]").val(minutes *60);
 }
+
+
+
+
+function init()
+{
+	$('#datetimepicker1').datetimepicker({
+      language: 'pt-BR'
+    });
+}
+$(document).ready(init);

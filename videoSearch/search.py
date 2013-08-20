@@ -83,6 +83,8 @@ def handle(channelId,handleName,url):
         startSearch("handles.handle_pptv_tv", url,channelId, updateTvNumber=True)
     elif handleName == 'qqTv':
         startSearch("handles.handle_qq_tv", url, channelId, updateTvNumber=True)
+    elif handleName == 'ppsTv':
+        startSearch("handles.handle_pps_tv", url, channelId, updateTvNumber=True)
         '''===============综艺=============='''
     elif handleName == 'youkuZongyi':
         startSearch('handles.handle_youku_zongyi', url, channelId ,snapShot=False, updateTvNumber=True)
@@ -137,6 +139,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_iqiyi_list',url ,channelId, snapShot = True)
     elif handleName =='sinaSport':
         startSearch('handles.handle_sina_sports', url, channelId, snapShot=True, updateTvNumber=False)
+    elif handleName =='aipai':
+        startSearch('handles.handle_aipai', url, channelId, snapShot=True, updateTvNumber=False)
         '''=================  其他 ======================'''
     elif handleName == 'youkuPlayList':
         startSearch('handles.handle_youku_playlist',url ,channelId)
@@ -175,6 +179,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_weibo_hot', url, channelId, snapShot = True)
     elif handleName == 'boosjList':
         startSearch('handles.handle_boosj_list', url, channelId, snapShot = True)
+    elif handleName == 'ifengList':
+        startSearch('handles.handle_ifeng_list', url, channelId, snapShot = True)
+    elif handleName == 'kankanews':
+        startSearch('handles.handle_kankanews', url, channelId, snapShot = True)
 
 if __name__ == '__main__':
     pass

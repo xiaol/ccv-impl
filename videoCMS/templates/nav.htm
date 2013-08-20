@@ -22,6 +22,7 @@
                             <li><a href="/channel/add">添加频道</a></li>
                             <li><a href="/channel/index?mongo=%7B%22autoSub%22%3Atrue%7D">首次订阅频道</a></li>
                             <li><a href="/channel/index?mongo=%7B%22onSquare%22%3Atrue%7D">广场海报频道</a></li>
+                            <li><a href="/channel/index?mongo=%7b%22isNewest%22%3atrue%7d">预定的频道</a></li>
                             <li><a href="/channel/index?mongo=%7B%22searchStatus%22%3A%22error%22%7D">更新错误频道</a></li>
                             <li><a href="/channel/index?mongo=%7B%22searchHandleList%22%3A%7B%22%24not%22%3A%7B%22%24in%22%3A%5B%22%22%2C%5B%5D%5D%7D%7D%7D">已处理的频道</a></li>
                         </ul>
@@ -33,6 +34,7 @@
                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="/resource/add">添加视频</a></li>
+                            <li><a href="/resource/index?mongo=%7b%22validTime%22%3a%7b%22%24exists%22%3atrue%7d%7d&sort=invalidTime">解析出错视频</a></li>
                         </ul>
                     </li>
                     <li {%ifequal navPage "preresource"%} class="active" {%endifequal%}><a href="/preresource/index">正在下载</a></li>
@@ -52,6 +54,19 @@
                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="/tag/add">添加标签</a></li>
+                        </ul>
+                    </li>
+                    <li {%ifequal navPage "statistics"%} class="active" {%endifequal%}><a href="/statistics/category">分类统计</a></li>
+                    <li style="position: relative;" class="">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <b class="caret"></b>
+                       </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/statistics/channel">频道下载观看</a></li>
+                            <li><a href="/statistics/channelSub">频道订阅统计</a></li>
+                            <li><a href="/statistics/channelSub?mongo=%7B%22isNewest%22%3Atrue%7D">大片预定订阅统计</a></li>
+                            <li><a href="/statistics/autoResource">自动下载统计</a></li>
+                            <li><a href="/statistics/resource">视频统计</a></li>
                         </ul>
                     </li>
 				</ul>

@@ -67,6 +67,8 @@ def index(request):
             sortList = [('modifyTime',-1)]
         elif sort == 'weight':
             sortList = [('weight',-1)]
+        elif sort == 'subscribeNum':
+            sortList = [('subscribeNum',-1)]
         
     channelList = list(clct_channel.find(spec).sort(sortList).skip(skip).limit(limit))
     CategoryIdMapName = getCategoryIdMapName()
@@ -175,6 +177,9 @@ def update(request):
     oldChannelId = clct_channel.find_one({'_id':ObjectId(id)})['channelId']
     clct_resource.update({'channelId':oldChannelId},{'$set':{'channelId':channel['channelId']}},multi=True)
     
+    #更新 cateogoryId
+    categoryId =  channel['channelType']
+    clct_resource.update({'channelId':channel['channelId']}, {'$set':{'categoryId':categoryId}},multi=True)
 
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)

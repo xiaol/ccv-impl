@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> {{title}}</title>
+
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/statisticsCategory.css" rel="stylesheet" type="text/css" />
+
+
+<!--<script src="/static/js/jquery-1.8.3.min.js"></script>-->
+<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/statisticsCategory.js"></script>
+<!-- zencode 快捷键 ctrl opt enter  -->
+</head>
+<body style="background-color:#CCC;">
+    {% include "nav.htm" %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12 paddingWrap" style="background-color:#FFF;">
+                
+			     <div class="row-fluid" id="nav">
+
+                        <form>
+                            <div class="well">
+                            <table>
+                                <tr>
+                                    <td>类别:</td>
+                                    <td></td>
+                                    <td>
+                                        <select name="categoryName" id="">
+                                            {%for category in categoryList%}
+                                            <option {%ifequal category categoryName%}selected="selected"{%endifequal%} > {{category}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </td>
+                                    <td>长度:</td>
+                                    <td>
+                                        <input type="text" name="limit" value="{{limit}}"/>
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="查询"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>mongo</td>
+                                    <td colspan="4">
+                                        <textarea name="mongo">{{mongo}}</textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                            </div>
+                        </form>
+                </div>
+                <div class="row-fluid" id="content">
+                    <table>
+                        <tr>
+                        <th>频道\数据</th>
+                        <th>分类</th>
+                        <th>订阅</th>
+                        </tr>
+                    {%for row in result%}
+                        <tr>
+                            <td>
+                                <a target="_blank" href='/channel/index?channelId={{row.channelId}}'>{{row.channelName}}</a>
+                            </td>
+
+                            <td>{{row.categoryName}}</td>
+                            <td>{{row.subscribeNum}}</td>
+                        </tr>
+                    {%endfor%}
+                    </table>
+                </div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>

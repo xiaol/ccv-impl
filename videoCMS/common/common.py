@@ -31,9 +31,12 @@ def Obj2Str(dic):
 
 def formatHumanTime(s):
     try:
-        return time.strftime("%Y-%m-%d %H:%M:%S",time.strptime(s,"%Y%m%d%H%M%S"))
+        return time.strftime("%Y/%m/%d %H:%M:%S",time.strptime(s,"%Y%m%d%H%M%S"))
     except:
-        return '00000-00-00 00:00:00'
+        return ''
+
+def antiFormatHumanTime(s):
+    return s.replace('/','').replace(':','').replace(' ','')
     
 
 def validateTimeStr(s):

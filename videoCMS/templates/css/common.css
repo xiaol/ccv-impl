@@ -12,3 +12,9 @@
 	cursor:pointer;
 	border-radius:5px;
 }
+
+.paddingWrap {
+padding: 10px;
+box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0px;
+}
+

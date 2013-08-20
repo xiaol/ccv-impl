@@ -65,6 +65,12 @@ class Resource(DomainBase):
     playNumber = 0
     downloadNumber = 0
 
+    gameName = ''
+    gameUrl = ''
+
+    scheduleGoOnline = ''
+
+    
 class Category(DomainBase):
     categoryName = ''
     categoryId = 0

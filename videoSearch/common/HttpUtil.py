@@ -5,6 +5,7 @@ import HTMLParser
 import time
 import traceback
 import gzip
+import StringIO
 import json
 
 
@@ -67,6 +68,23 @@ class HttpUtil():
 def get_html(url,encoding='utf-8'):
     httpUtil = HttpUtil()
     content = httpUtil.Get(url)
+    if content:
+        return content.decode(encoding)
+    else:
+        return ""
+
+def get_gzip_html(url, encoding='utf-8'):
+    httpUtil = HttpUtil()
+    content = httpUtil.Get(url)
+    try:
+        data = StringIO.StringIO(content)
+        gz = gzip.GzipFile(fileobj=data, mode="r")
+        content = gz.read()
+        gz.close()
+    except:
+        content = gz.extrabuf
+        gz.close()
+
     if content:
         return content.decode(encoding)
     else:
