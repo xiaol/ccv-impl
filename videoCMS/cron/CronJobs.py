@@ -21,7 +21,7 @@ class CronJobBase():
         return t
 
 class ResourceGoOnlineCronJob(CronJobBase):
-    RUN_EVERY_MINS = 0.1 
+    RUN_EVERY_MINS = 0.5
 
     def do(self):
         for one in clct_resource.find({'scheduleGoOnline':{'$ne':''}},{'scheduleGoOnline':1},timeout=False):
@@ -35,7 +35,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
 
 
 class CDNWatchCronJob(CronJobBase):
-    RUN_EVERY_MINS = 0.1 
+    RUN_EVERY_MINS = 1
 
     def do(self):
         for one in clct_resource.find({'cdn':'waiting'},{'_id':1, 'videoId':1},timeout=False):
