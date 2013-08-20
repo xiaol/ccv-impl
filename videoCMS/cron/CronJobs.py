@@ -12,7 +12,11 @@ class CronJobBase():
     def run(self):
         while True:
             #print '.'
-            self.do()
+            try:
+                self.do()
+            except:
+                import traceback
+                print traceback.format_exc()
             time.sleep(self.RUN_EVERY_MINS * 60)
 
     def runAsyn(self):
