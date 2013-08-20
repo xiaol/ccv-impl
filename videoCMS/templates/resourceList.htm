@@ -30,7 +30,9 @@
 		                    <div class="span9 topicItemRight">
 		                        <div class="row-fluid">
                                     <a class="label label-info" href="/channel/index?channelId={{resource.channelId}}">频道{{resource.channelId}}</a>
-		                            <a href="{{resource.resourceUrl}}">{{resource.resourceName}}</a><br/>
+    		                        <a href="{{resource.resourceUrl}}">{{resource.resourceName}}</a>
+                                    <a target="_blank" class="label label-warning" href="showJson?id={{resource.id}}">JSON</a>
+                                    <br/>
 		                            {% if resource.isOnline%}
 		                            <a resourceId="{{resource.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
 		                            {% else %}
