@@ -68,6 +68,8 @@ class Resource(DomainBase):
     gameName = ''
     gameUrl = ''
 
+    scheduleGoOnline = ''
+
 class Category(DomainBase):
     categoryName = ''
     categoryId = 0

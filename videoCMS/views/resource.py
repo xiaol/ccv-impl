@@ -6,7 +6,7 @@ from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTE
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
-from videoCMS.common.common import Obj2Str,getCurTime
+from videoCMS.common.common import Obj2Str,getCurTime,antiFormatHumanTime,formatHumanTime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
@@ -126,6 +126,7 @@ def update(request):
         resource = clct_resource.find_one({'_id':ObjectId(id)})
         resource['tagList'] = ','.join(resource.get('tagList',[]))
         resource['resourceImageUrl'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl'])
+        resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
         DICT['info'] = ''
         DICT['update'] = True
@@ -146,6 +147,7 @@ def update(request):
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     resource['modifyTime'] = getCurTime()
+    resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     try:
         resource['number'] = int(resource['number'])
@@ -183,6 +185,7 @@ def add(request):
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
     resource['createTime'] = getCurTime()
+    resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     try:
         resource['number'] = int(resource['number'])
