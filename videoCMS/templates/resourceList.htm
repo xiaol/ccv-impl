@@ -56,6 +56,9 @@
 		                            <div class="span6">修改日期:{{resource.modifyTime}}</div>
 		                        </div>
                                 <div class="row-fluid smallFont">
+                                    <div class="span6">定时上线:{{resource.scheduleGoOnline}}</div>
+                                </div>
+                                <div class="row-fluid smallFont">
                                     {% if resource.validTime%}
                                     <div class="span6">
                                         <a class="label label-important" title="{{resource.invalidMsg}}">失效日期:{{resource.validTime}}</a>
