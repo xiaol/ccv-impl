@@ -7,6 +7,7 @@ from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInf
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime,antiFormatHumanTime,formatHumanTime
+from videoCMS.common.HttpUtil import HttpUtil
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
@@ -307,6 +308,22 @@ def showJson(request):
     one = clct_resource.find_one({'_id':ObjectId(id)})
     one['_id'] = str(one['_id'])
     return HttpResponse(json.dumps(one))
+
+def getVideoUrl(request):
+    videoId = request.GET.get('videoId')
+    videoType = request.GET.get('videoType')
+    
+    data = {"request-body":{"getVideoUrl":{"videoType":videoType,"videoId":videoId}}}
+
+    httpUtil = HttpUtil()
+    result = httpUtil.Post('http://60.28.29.38:9090/api/huohuaId2Url',json.dumps(data))
+
+    return HttpResponse(result)
+
+def unsetInvalid(request):
+    id = request.GET.get('id')
+    clct_resource.update({'_id':ObjectId(id)},{'$unset':{'validTime':1}})
+    return HttpResponse('ok')
 
 #==============================================================
 '''

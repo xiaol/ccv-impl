@@ -38,6 +38,8 @@ urlpatterns = patterns('',
     url(r'^resource/prefetchCDN$', 'videoCMS.views.resource.prefetchCDN'),
     url(r'^resource/queryCDN$', 'videoCMS.views.resource.queryCDN'),
     url(r'^resource/showJson$', 'videoCMS.views.resource.showJson'),
+    url(r'^resource/getVideoUrl$', 'videoCMS.views.resource.getVideoUrl'),
+    url(r'^resource/unsetInvalid$', 'videoCMS.views.resource.unsetInvalid'),
     
     url(r'^preresource/index$', 'videoCMS.views.preresource.index'),
     url(r'^preresource/update$', 'videoCMS.views.preresource.update'),

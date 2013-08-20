@@ -72,3 +72,25 @@ function stopSnapshot(object)
 	var id = $(object).attr('resourceId');
 	window.location = "/resource/stopSnapshot?id=" + id;
 }
+
+
+function unsetInvalid(object,id)
+{
+	$.ajax({
+		type:'get',
+		url:'/resource/unsetInvalid',
+		data:{'id':id},
+		success:function(data,textStatus)
+		{
+			if(data == 'ok')
+			{
+				//alert('请求成功');
+				$(object).parent().remove();
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
+}
