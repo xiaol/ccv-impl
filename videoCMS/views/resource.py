@@ -301,7 +301,11 @@ def queryCDN(request):
     ret = GetProgress(videoId)
     return HttpResponse(ret)
 
-
+def showJson(request):
+    id = request.GET.get('id')
+    one = clct_resource.find_one({'_id':ObjectId(id)})
+    one['_id'] = str(one['_id'])
+    return HttpResponse(json.dumps(one))
 
 #==============================================================
 '''

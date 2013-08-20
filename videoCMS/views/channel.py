@@ -413,3 +413,9 @@ def resetWeight(request):
     channelId = int(request.GET.get("channelId"))
     clct_resource.update({"channelId":channelId},{"$set":{"weight":0}},multi=True)
     return HttpResponse("ok")
+
+def showJson(request):
+    id = request.GET.get('id')
+    one = clct_channel.find_one({'_id':ObjectId(id)})
+    one['_id'] = str(one['_id'])
+    return HttpResponse(json.dumps(one))
