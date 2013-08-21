@@ -43,7 +43,8 @@ function calcSeconds()
 function init()
 {
 	$('#datetimepicker1').datetimepicker({
-      language: 'pt-BR'
+      language: 'pt-BR',
+      pick12HourFormat: false
     });
 }
 $(document).ready(init);
