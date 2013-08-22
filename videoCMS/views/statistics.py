@@ -147,7 +147,7 @@ def category(request):
         }
     '''
     '''填充 矩阵'''
-    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005]}}
+    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005, 100013]}}
     logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     print len(logs)
 
@@ -170,7 +170,7 @@ def category(request):
                 categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][1] += 1
             #播放失败
-            elif log['operationCode'] == 10005:
+            elif log['operationCode'] in [10005, 100013]:
                 date = log['createTime'][:8]
                 categoryId = getCategorylId(log['resourceId'])
                 result[date][categoryId][2] += 1
