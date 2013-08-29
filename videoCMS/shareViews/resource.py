@@ -32,7 +32,7 @@ def index(request):
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         else:
             videoUrl = getVideoUrl(resource['videoType'], resource['videoId'])
-            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl.find('.mp4') != -1:
+            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl[0].find('.mp4') != -1:
                 DICT['videoUrl'] = videoUrl[0]
         if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
