@@ -185,7 +185,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_kankanews', url, channelId, snapShot = True)
     elif handleName == 'asmouList':
         startSearch('handles.handle_asmou_List', url, channelId, snapShot = True)
-
+    elif handleName == 'acfunTag':
+        startSearch('handles.handle_acfun_tag', url, channelId, snapShot = True)
 if __name__ == '__main__':
     pass
 #    pass

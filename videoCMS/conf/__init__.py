@@ -121,4 +121,5 @@ searchHandleListAll = [
 'search.ifengList',
 'search.kankanews',
 "search.asmouList",
+"search.acfunTag",
 ]
