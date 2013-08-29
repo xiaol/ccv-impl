@@ -183,6 +183,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_ifeng_list', url, channelId, snapShot = True)
     elif handleName == 'kankanews':
         startSearch('handles.handle_kankanews', url, channelId, snapShot = True)
+    elif handleName == 'asmouList':
+        startSearch('handles.handle_asmou_List', url, channelId, snapShot = True)
 
 if __name__ == '__main__':
     pass
