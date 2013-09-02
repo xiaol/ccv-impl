@@ -122,4 +122,7 @@ searchHandleListAll = [
 'search.kankanews',
 "search.asmouList",
 "search.acfunTag",
+"search.56I",
+"search.56Opera",
+"search.56Town",
 ]
