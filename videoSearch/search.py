@@ -179,6 +179,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_weibo_hot', url, channelId, snapShot = True)
     elif handleName == 'boosjList':
         startSearch('handles.handle_boosj_list', url, channelId, snapShot = True)
+    elif handleName == 'boosjSubject':
+        startSearch('handles.handle_boosj_subject', url, channelId, snapShot = True)
     elif handleName == 'ifengList':
         startSearch('handles.handle_ifeng_list', url, channelId, snapShot = True)
     elif handleName == 'kankanews':
@@ -193,6 +195,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_opera', url, channelId, snapShot = True)
     elif handleName == '56Town':
         startSearch('handles.handle_56_town', url, channelId, snapShot = True)
+    elif handleName == 'ppsIpd':
+        startSearch('handles.handle_pps_ipd', url, channelId, snapShot = True)
 if __name__ == '__main__':
     pass
 #    pass

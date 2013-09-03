@@ -117,6 +117,7 @@ searchHandleListAll = [
 'search.56So',
 'search.weiboHot',
 'search.boosjList',
+'search.boosjSubject',
 'search.ppsTv',
 'search.ifengList',
 'search.kankanews',
@@ -125,4 +126,5 @@ searchHandleListAll = [
 "search.56I",
 "search.56Opera",
 "search.56Town",
+"search.ppsIpd",
 ]
