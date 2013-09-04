@@ -114,6 +114,7 @@ searchHandleListAll = [
 'search.tudouLife',
 'search.ku6Playlist',
 'search.iqiyiSo',
+'search.iqiyiList',
 'search.56So',
 'search.weiboHot',
 'search.boosjList',

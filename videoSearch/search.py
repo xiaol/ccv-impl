@@ -173,6 +173,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_ku6_playlist', url, channelId, snapShot=True)
     elif handleName == 'iqiyiSo':
         startSearch('handles.handle_iqiyi_so', url, channelId, snapShot = True)
+    elif handleName == 'iqiyiList':
+        startSearch('handles.handle_iqiyi_list', url, channelId, snapShot = True)
     elif handleName == '56So':
         startSearch('handles.handle_56_so', url, channelId, snapShot = True)
     elif handleName == 'weiboHot':
