@@ -153,6 +153,7 @@ def update(request):
     channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
     channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
     channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
+    channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
@@ -220,6 +221,7 @@ def add(request):
     channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
     channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
+    channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
@@ -413,3 +415,9 @@ def resetWeight(request):
     channelId = int(request.GET.get("channelId"))
     clct_resource.update({"channelId":channelId},{"$set":{"weight":0}},multi=True)
     return HttpResponse("ok")
+
+def showJson(request):
+    id = request.GET.get('id')
+    one = clct_channel.find_one({'_id':ObjectId(id)})
+    one['_id'] = str(one['_id'])
+    return HttpResponse(json.dumps(one))

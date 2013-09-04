@@ -179,11 +179,24 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_weibo_hot', url, channelId, snapShot = True)
     elif handleName == 'boosjList':
         startSearch('handles.handle_boosj_list', url, channelId, snapShot = True)
+    elif handleName == 'boosjSubject':
+        startSearch('handles.handle_boosj_subject', url, channelId, snapShot = True)
     elif handleName == 'ifengList':
         startSearch('handles.handle_ifeng_list', url, channelId, snapShot = True)
     elif handleName == 'kankanews':
         startSearch('handles.handle_kankanews', url, channelId, snapShot = True)
-
+    elif handleName == 'asmouList':
+        startSearch('handles.handle_asmou_list', url, channelId, snapShot = True)
+    elif handleName == 'acfunTag':
+        startSearch('handles.handle_acfun_tag', url, channelId, snapShot = True)
+    elif handleName == '56I':
+        startSearch('handles.handle_56_i', url, channelId, snapShot = True)
+    elif handleName == '56Opera':
+        startSearch('handles.handle_56_opera', url, channelId, snapShot = True)
+    elif handleName == '56Town':
+        startSearch('handles.handle_56_town', url, channelId, snapShot = True)
+    elif handleName == 'ppsIpd':
+        startSearch('handles.handle_pps_ipd', url, channelId, snapShot = True)
 if __name__ == '__main__':
     pass
 #    pass

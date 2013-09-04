@@ -101,6 +101,7 @@ class Channel(DomainBase):
     updateTime = '00000000000000'
     nextSearchTime = '00000000000000'
     searchTime = '00000000000000'
+
     
     onlineStatus = 0
     description = ''
@@ -162,6 +163,7 @@ class Channel(DomainBase):
          ...
         ]
     '''
+    isRecommend = False
 
 
 class Tag(DomainBase):

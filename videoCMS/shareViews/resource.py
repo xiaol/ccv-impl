@@ -32,12 +32,12 @@ def index(request):
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
         else:
             videoUrl = getVideoUrl(resource['videoType'], resource['videoId'])
-            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl.find('.mp4') != -1:
+            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl[0].find('.mp4') != -1:
                 DICT['videoUrl'] = videoUrl[0]
         if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
-    DICT['apkUrl'] = 'http://www.weiweimeishi.com/static/file/PocketPlayer1.5.1_official_website.apk'
+    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer1.5.4_official_website.apk'
     
     return render_to_response('share_resource.htm',DICT)
     
