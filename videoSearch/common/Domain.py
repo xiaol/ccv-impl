@@ -163,6 +163,7 @@ class Channel(DomainBase):
          ...
         ]
     '''
+    isRecommend = False
 
 
 class Tag(DomainBase):

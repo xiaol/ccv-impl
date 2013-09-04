@@ -235,6 +235,15 @@
                         	</td>
                         </tr>
                         <tr>
+                            <td>推荐到Feed</td>
+                            <td>
+                                <select name="isRecommend"  style="width:90px">
+                                    <option>是</option>
+                                    <option {% if not isRecommend %}selected="selected"{% endif %}>否</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                         	<td><a href="#" data-content="显示在广场海报相册中"  data-title="描述"  data-toggle="popover">海报频道</a></td>
                         	<td>
                         		<select name="onSquare"  style="width:90px">
