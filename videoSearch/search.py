@@ -199,6 +199,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_town', url, channelId, snapShot = True)
     elif handleName == 'ppsIpd':
         startSearch('handles.handle_pps_ipd', url, channelId, snapShot = True)
+    elif handleName == 'pptvList':
+        startSearch('handles.handle_pptv_list', url, channelId, snapShot = True)
 if __name__ == '__main__':
     pass
 #    pass

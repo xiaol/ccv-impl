@@ -128,4 +128,5 @@ searchHandleListAll = [
 "search.56Opera",
 "search.56Town",
 "search.ppsIpd",
+"search.pptvList",
 ]
