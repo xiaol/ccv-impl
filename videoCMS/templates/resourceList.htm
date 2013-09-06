@@ -46,8 +46,12 @@
 		                        	<a resourceId="{{resource.id}}" class="label label-warning" onclick="refreshSnapshot(this)">更新截图</a>
 		                        	<a resourceId="{{resource.id}}" class="label label-warning" onclick="stopSnapshot(this)">取消截图</a>
 		                        	<a href="#" title="{{resource.snapshotMsg}}">{{resource.snapshot}}</a>
+                                    <% ifequal resource.type "gif" %>
 		                        	<a href="update?id={{resource.id}}" class="label label-warning" target="_blank">编辑</a>
-		                        	{%ifequal username "admin"%}<a class="label" onclick="deleteResource('{{resource.id}}')">删除</a>{%endifequal%}
+		                        	<% else %>
+                                    <a href="/resourceGif/update?id={{resource.id}}" class="label label-warning" target="_blank">编辑</a>
+                                    <% endifequal %>
+                                    {%ifequal username "admin"%}<a class="label" onclick="deleteResource('{{resource.id}}')">删除</a>{%endifequal%}
               
 
 		                        	
