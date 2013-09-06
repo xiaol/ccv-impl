@@ -109,7 +109,7 @@ def add(request):
 
     id = clct_resource.insert(resource.getInsertDict())
 
-    return HttpResponseRedirect('update?id='+id)
+    return HttpResponseRedirect('update?id='+str(id))
 
 
 
