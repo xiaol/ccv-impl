@@ -130,4 +130,5 @@ searchHandleListAll = [
 "search.56Town",
 "search.ppsIpd",
 "search.pptvList",
+"search.embed",
 ]
