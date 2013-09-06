@@ -99,7 +99,7 @@ def add(request):
 
     img = request.FILES.get('gifUrl',None)
     if img:
-        _uuid = uuid.uuid4()
+        _uuid = str(uuid.uuid4())
         imgdata = img.read()
         resource['gifUrl'] = saveGifImage(imgdata,resource['channelId'],_uuid)
         resource['videoId'] = resource['gifUrl']
