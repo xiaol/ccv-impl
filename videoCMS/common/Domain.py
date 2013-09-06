@@ -69,6 +69,8 @@ class Resource(DomainBase):
     gameUrl = ''
 
     scheduleGoOnline = ''
+    gifUrl = ''
+    
 
 class Category(DomainBase):
     categoryName = ''

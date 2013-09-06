@@ -24,6 +24,9 @@ def getRealTimeStruct():
 def getCurTime():
     return time.strftime("%Y%m%d%H%M%S",getRealTimeStruct())
 
+def getCurDate():
+    return time.strftime("%Y%m%d",getRealTimeStruct())
+
 def Obj2Str(dic):
     dic['id'] = str(dic['_id'])
     dic.pop('_id')

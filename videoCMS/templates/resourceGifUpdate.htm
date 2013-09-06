@@ -43,7 +43,13 @@
                                 </td>
 							</tr>
 							<tr>
-		                        <td>视频封面</td>
+                            <td>GIF图</td>
+			                    <td>
+			                        <img src="{{gifUrl}}" style="display:block;" />
+			                        <input type="file"  name="gifUrl" onchange="onImageChange(this)"/>
+			                    </td>
+			                </tr>
+		                    <td>GIF封面</td>
 			                    <td>
 			                        <img src="{{resourceImageUrl}}" style="display:block;" />
 			                        <input type="file"  name="resourceImage" onchange="onImageChange(this)"/>
@@ -58,13 +64,13 @@
 							<tr>
                                 <td style="width: 100px">视频页面地址</td>
                                 <td>
-                                	<input id="videoURL" name="resourceUrl" type="text" class="input-xlarge" value="" />
+                                	<input id="videoURL" type="text" class="input-xlarge" value="" />
                                 	<input type="button" class="btn btn-primary" value="检测" onclick="queryVideoId()"/>
                                 </td>
                             </tr>
 							<tr>
                                 <td style="width: 100px">videoType</td>
-                                <td><input type="text" class="input-xlarge" name="videoType"
+                                <td><input type="text" class="input-xlarge" name="videoType" disabled="disabled"
                                     value="{{videoType}}" /></td>
                             </tr>
                             <tr>
@@ -120,7 +126,7 @@
                                 <td>定时上线</td>
                                 <td>
                                     <div id="datetimepicker1" class="input-append">
-                                            <input data-format="yyyy/MM/dd hh:mm:ss" name="scheduleGoOnline" type="text" value="{{scheduleGoOnline}}"></input>
+                                            <input data-format="yyyy/MM/dd hh:mm:ss" name="scheduleGoOnline" type="text" value="{{scheduleGoOnline}}"/>
                                             <span class="add-on">
                                                 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                             </span>

@@ -53,6 +53,7 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
         one['resourceImageUrl'] = resourceImageUrl
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
+        one['type'] = 'video'
         
     pprint(result)
     result = filter(lambda a:a!="over",result)
@@ -173,6 +174,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_ku6_playlist', url, channelId, snapShot=True)
     elif handleName == 'iqiyiSo':
         startSearch('handles.handle_iqiyi_so', url, channelId, snapShot = True)
+    elif handleName == 'iqiyiList':
+        startSearch('handles.handle_iqiyi_list', url, channelId, snapShot = True)
     elif handleName == '56So':
         startSearch('handles.handle_56_so', url, channelId, snapShot = True)
     elif handleName == 'weiboHot':
@@ -197,6 +200,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_town', url, channelId, snapShot = True)
     elif handleName == 'ppsIpd':
         startSearch('handles.handle_pps_ipd', url, channelId, snapShot = True)
+    elif handleName == 'pptvList':
+        startSearch('handles.handle_pptv_list', url, channelId, snapShot = True)
 if __name__ == '__main__':
     pass
 #    pass

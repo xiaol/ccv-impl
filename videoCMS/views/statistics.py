@@ -6,7 +6,7 @@ from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAG
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
-from videoCMS.common.common import Obj2Str,getCurTime
+from videoCMS.common.common import Obj2Str,getCurTime,getRealTimeStruct
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
@@ -34,7 +34,7 @@ def getStartEndDateTime(request):
     if startDate == "":
         startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
     if endDate == "":
-        endDate = time.strftime('%Y/%m/%d',time.localtime())
+        endDate = time.strftime('%Y/%m/%d',getRealTimeStruct())
     print startDate,endDate
     #时间戳
     t_start = time.mktime(time.strptime(startDate,'%Y/%m/%d'))
@@ -147,7 +147,9 @@ def category(request):
         }
     '''
     '''填充 矩阵'''
+    #10001 手动下载成功,  10004 播放成功,  10005 播放失败, 100012 在线播放成功, 10101 自动下载成功, 100013 在线播放失败
     spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,100012,10101,100013]}}
+    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,10101]}}
     logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     print len(logs)
 
@@ -224,6 +226,7 @@ def channel(request):
         filterCategoryId = None
     print 'filterCategoryId:',filterCategoryId
     spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    #10001 手动下载成功  10004 播放成功
     spec["operationCode"] = {"$in":[10001, 10004]}
 
     #开始统计
@@ -385,6 +388,7 @@ def resource(request):
 
     spec = {}
     spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    #10001 手动下载成功  10004 播放成功
     spec["operationCode"] = {"$in":[10001, 10004]}
 
 

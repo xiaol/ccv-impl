@@ -20,7 +20,7 @@ clct_videoInfoTask = con.tiercel.videoInfoTask
 clct_operationLog = con.tiercel.operationLog
 
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
-IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%d/%d/%s'
+IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
 
 
 IMAGE_DIR = '/data/img'
@@ -50,7 +50,8 @@ CATEGORY_VIDEO_CLASS_MAP = {
     u"电视剧":1,
     u"短视频":2,
     u'综艺':3,
-    u'游戏':4
+    u'游戏':4,
+    u"GIF":5
 }
 
 
@@ -114,6 +115,7 @@ searchHandleListAll = [
 'search.tudouLife',
 'search.ku6Playlist',
 'search.iqiyiSo',
+'search.iqiyiList',
 'search.56So',
 'search.weiboHot',
 'search.boosjList',
@@ -127,4 +129,5 @@ searchHandleListAll = [
 "search.56Opera",
 "search.56Town",
 "search.ppsIpd",
+"search.pptvList",
 ]
