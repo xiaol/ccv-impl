@@ -147,7 +147,9 @@ def category(request):
         }
     '''
     '''填充 矩阵'''
+    #10001 手动下载成功,  10004 播放成功,  10005 播放失败, 100012 在线播放成功, 10101 自动下载成功, 100013 在线播放失败
     spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,100012,10101,100013]}}
+    spec = {'createTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,10101]}}
     logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
     print len(logs)
 
@@ -224,6 +226,7 @@ def channel(request):
         filterCategoryId = None
     print 'filterCategoryId:',filterCategoryId
     spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    #10001 手动下载成功  10004 播放成功
     spec["operationCode"] = {"$in":[10001, 10004]}
 
     #开始统计
@@ -385,6 +388,7 @@ def resource(request):
 
     spec = {}
     spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    #10001 手动下载成功  10004 播放成功
     spec["operationCode"] = {"$in":[10001, 10004]}
 
 

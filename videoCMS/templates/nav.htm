@@ -59,10 +59,11 @@
                             <li><a href="/tag/add">添加标签</a></li>
                         </ul>
                     </li>
-                    <li {%ifequal navPage "statistics"%} class="active" {%endifequal%}><a>统计</a></li>
+
                     <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
+                       <a href="#" class="dropdown-toggle {%ifequal navPage "statistics"%} active {%endifequal%}" data-toggle="dropdown">
+                        统计
+                       <b class="caret"></b>
                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="/statistics/category">分类统计</a></li>
