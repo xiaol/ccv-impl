@@ -40,6 +40,9 @@ urlpatterns = patterns('',
     url(r'^resource/showJson$', 'videoCMS.views.resource.showJson'),
     url(r'^resource/getVideoUrl$', 'videoCMS.views.resource.getVideoUrl'),
     url(r'^resource/unsetInvalid$', 'videoCMS.views.resource.unsetInvalid'),
+
+    url(r'^resourceGif/add$', 'videoCMS.views.resource_gif.add'),
+    url(r'^resourceGif/update$', 'videoCMS.views.resource_gif.update'),
     
     url(r'^preresource/index$', 'videoCMS.views.preresource.index'),
     url(r'^preresource/update$', 'videoCMS.views.preresource.update'),

@@ -10,7 +10,7 @@ from videoCMS.common.common import Obj2Str,getCurTime,antiFormatHumanTime,format
 from videoCMS.common.HttpUtil import HttpUtil
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
-from videoCMS.views.channel import saveResourceImage
+#from videoCMS.views.channel import saveResourceImage
 from videoSearch.common.videoInfoTask import addVideoInfoTask
 import urllib2
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
@@ -121,6 +121,32 @@ def index(request):
     return render_to_response('resourceList.htm',DICT)
 
 
+def POST2Resource(request):
+    resource  = Resource()
+    resource['videoId'] = request.POST.get('videoId').strip()
+    resource['videoType'] = request.POST.get('videoType').strip()
+    resource['resourceName'] = request.POST.get('resourceName')
+    resource['channelId'] = int(request.POST.get('channelId'))
+    resource['weight'] = float(request.POST.get('weight'))
+    channel = clct_channel.find_one({'channelId':resource['channelId']})
+    resource['categoryId'] = channel['channelType']
+    resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
+    resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
+    resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
+    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
+    resource['createTime'] = getCurTime()
+    resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
+    resource['number'] = request.POST.get('number')
+    resource['resourceUrl'] = request.POST.get('resourceUrl')
+
+    try:
+        resource['number'] = int(resource['number'])
+    except:
+        pass
+
+    return resource
+
+
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -135,25 +161,7 @@ def update(request):
         return render_to_response('resourceUpdate.htm',DICT)
     
     #更新
-    resource = Resource()
-    resource['videoId'] = request.POST.get('videoId').strip()
-    resource['videoType'] = request.POST.get('videoType').strip()
-    resource['resourceName'] = request.POST.get('resourceName')
-    resource['channelId'] = int(request.POST.get('channelId'))
-    resource['weight'] = float(request.POST.get('weight'))
-    channel = clct_channel.find_one({'channelId':resource['channelId']})
-    resource['categoryId'] = channel['channelType']
-    resource['duration'] = int(float(request.POST.get('duration')))
-    resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
-    resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
-    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    resource['modifyTime'] = getCurTime()
-    resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
-    resource['number'] = request.POST.get('number')
-    try:
-        resource['number'] = int(resource['number'])
-    except:
-        pass
+    resource = POST2Resource(request)
         
     img = request.FILES.get('resourceImage',None)
     if img:
@@ -173,25 +181,7 @@ def add(request):
         DICT['navPage'] = 'resource'
         return render_to_response('resourceUpdate.htm',DICT)
     
-    resource  = Resource()
-    resource['videoId'] = request.POST.get('videoId').strip()
-    resource['videoType'] = request.POST.get('videoType').strip()
-    resource['resourceName'] = request.POST.get('resourceName')
-    resource['channelId'] = int(request.POST.get('channelId'))
-    resource['weight'] = float(request.POST.get('weight'))
-    channel = clct_channel.find_one({'channelId':resource['channelId']})
-    resource['categoryId'] = channel['channelType']
-    resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
-    resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
-    resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
-    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    resource['createTime'] = getCurTime()
-    resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
-    resource['number'] = request.POST.get('number')
-    try:
-        resource['number'] = int(resource['number'])
-    except:
-        pass
+    resource = POST2Resource(request)
     
     for tag in resource['tagList']:
         if clct_tag.find_one({'name':tag}) == None:
@@ -218,6 +208,7 @@ def add(request):
             clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':'doing'}})
     return HttpResponseRedirect('update?id='+id)
 
+'''
 def saveChannelImage(img, id):
 
     #裁剪
@@ -229,7 +220,12 @@ def saveChannelImage(img, id):
         f.write(outimg.getvalue())
         
     return filename.replace('/', '_')
-
+'''
+def saveResourceImage(img, id):
+    filename = 'videoCMS/resource/%s.jpg'%(id + getCurTime())
+    with open(IMAGE_DIR + '/' + filename, 'wb') as f:
+        f.write(img)
+    return filename.replace('/', '_')
 
 #==============================================================
 def toggleOnlineStatus(request):
