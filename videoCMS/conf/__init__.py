@@ -50,7 +50,8 @@ CATEGORY_VIDEO_CLASS_MAP = {
     u"电视剧":1,
     u"短视频":2,
     u'综艺':3,
-    u'游戏':4
+    u'游戏':4,
+    u"GIF":5
 }
 
 

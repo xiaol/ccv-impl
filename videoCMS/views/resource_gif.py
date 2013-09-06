@@ -32,6 +32,7 @@ def POST2Resource(request):
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
+    resource['type'] = 'gif'
 
     try:
         resource['number'] = int(resource['number'])
@@ -48,6 +49,7 @@ def update(request):
         resource['resourceImageUrl'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl'])
         resource['gifUrl'] = IMG_INTERFACE_FF%('*','*',resource['gifUrl'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
+
         DICT = Obj2Str(resource)
         DICT['info'] = ''
         DICT['update'] = True

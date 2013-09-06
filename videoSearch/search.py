@@ -53,6 +53,7 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
         one['resourceImageUrl'] = resourceImageUrl
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
+        one['type'] = 'video'
         
     pprint(result)
     result = filter(lambda a:a!="over",result)
