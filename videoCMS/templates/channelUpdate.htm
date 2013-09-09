@@ -69,6 +69,15 @@
                             </td>
                         </tr>
 		                <tr>
+                            <td>内容类别</td>
+                            <td>
+                                <select name="type"  style="width:110px">
+                                    <option {%ifequal type "video" %}selected{%endifequal%}>video</option>
+                                    <option {%ifequal type "gif" %}selected{%endifequal%}>gif</option>
+                                </select>
+                            </td>
+                        </tr>
+		                <tr>
 		                    <td>频道封面（160x200）</td>
 		                    <td>
 		                        <img src="{{channelImageUrl}}" style="display:block;" />

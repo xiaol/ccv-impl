@@ -154,6 +154,7 @@ def update(request):
     channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
     channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
     channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
+    channel['type'] = request.POST.get('type')
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
@@ -222,6 +223,7 @@ def add(request):
     channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
     channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
+    channel['type'] = request.POST.get('type')
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
