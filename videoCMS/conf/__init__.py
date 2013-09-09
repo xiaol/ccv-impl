@@ -17,7 +17,10 @@ clct_preresource = con.tiercel.preresource
 clct_tag      = con.tiercel.tag
 clct_cdnSync  = con.tiercel.cdnSync
 clct_videoInfoTask = con.tiercel.videoInfoTask
-clct_operationLog = con.tiercel.operationLog
+
+
+con39 = Connection('60.28.29.39:20010')
+clct_operationLog = con39.tiercel.operationLog
 
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
