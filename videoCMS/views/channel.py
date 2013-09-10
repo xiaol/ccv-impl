@@ -157,6 +157,7 @@ def update(request):
     channel['type'] = request.POST.get('type')
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
+    channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     channel['nextSearchTime'] = request.POST.get('nextSearchTime')
     if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990101000000'
@@ -225,6 +226,7 @@ def add(request):
     channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
     channel['type'] = request.POST.get('type')
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
+    channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
     if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')

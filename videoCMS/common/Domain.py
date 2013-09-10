@@ -165,6 +165,7 @@ class Channel(DomainBase):
     '''
     isRecommend = False
     type = ''
+    snapShot = False
 
 
 class Tag(DomainBase):

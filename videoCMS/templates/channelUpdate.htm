@@ -253,6 +253,15 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>自动截图</td>
+                            <td>
+                                <select name="snapShot"  style="width:90px">
+                                    <option>是</option>
+                                    <option {% if not snapShot %}selected="selected"{% endif %}>否</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                         	<td><a href="#" data-content="显示在广场海报相册中"  data-title="描述"  data-toggle="popover">海报频道</a></td>
                         	<td>
                         		<select name="onSquare"  style="width:90px">
