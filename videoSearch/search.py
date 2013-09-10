@@ -204,6 +204,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_pptv_list', url, channelId, snapShot = True)
     elif handleName == 'embed':
         startSearch('handles.handle_embed', url, channelId, snapShot = True)
+    elif handleName == 'petweiboList':
+        startSearch('handles.handle_petweibo_list', url, channelId, snapShot = True)
+    elif handleName == 'everyshare':
+        startSearch('handles.handle_everyshare', url, channelId, snapShot = True)
 
 if __name__ == '__main__':
     pass

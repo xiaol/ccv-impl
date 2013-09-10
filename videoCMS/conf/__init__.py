@@ -134,4 +134,6 @@ searchHandleListAll = [
 "search.ppsIpd",
 "search.pptvList",
 "search.embed",
+"search.petweiboList",
+"search.everyshare",
 ]

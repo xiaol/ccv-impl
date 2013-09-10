@@ -11,6 +11,93 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 
+def getVideoInfo(url, html=""):
+    if not html:
+        html = get_html(url)
+    tree = etree.HTML(html)
+    swf_urls = tree.xpath('//embed/@src')
+
+    ret = []
+    for swf_url in swf_urls:
+        try:
+            videoId = None
+            url = None
+            video_type = None
+            if swf_url.find("youku.com") >= 0:
+                video_type = "youku"
+                p_vids = [r'/sid/(\w+)/', r'VideoIDS=(\w+)']
+                for vid in p_vids:
+                    if re.search(vid, swf_url):
+                        videoId = re.search(vid, swf_url).groups()[0]
+                    else:
+                        continue
+                url = "http://v.youku.com/v_show/id_%s.html" %videoId
+
+            elif swf_url.find("svn/trunk/youku/") >= 0:
+                video_type = "youku"
+                videoId = re.search(r'VideoIDS=(\w+)', swf_url).groups()[0]
+                url = "http://v.youku.com/v_show/id_%s.html" %videoId
+
+            elif swf_url.find("opengg.5ihaitao.com/") >= 0:
+                video_type = "youku"
+                videoId = re.search(r'VideoIDS=(\w+)', swf_url).groups()[0]
+                url = "http://v.youku.com/v_show/id_%s.html" %videoId
+
+            elif swf_url.find("tudou.com") >= 0:
+                video_type = "tudou"
+                p_vids = [r'tudou.com/v/(\w+)/', r'tudou.com/l/(\w+)/']
+                for vid in p_vids:
+                    if re.search(vid, swf_url):
+                        videoId = re.search(vid, swf_url).groups()[0]
+                    else:
+                        continue
+                url = "http://www.tudou.com/programs/view/%s/" %videoId
+
+            elif swf_url.find("sina.com.cn") >= 0:
+                video_type = "sina"
+                videoId = re.search(r'/vid=(\d+[_]?\d+)', swf_url).groups()[0].replace('_', '-')
+                url = "http://video.sina.com.cn/v/b/%s.html" %videoId
+
+            elif swf_url.find("56.com") >= 0:
+                video_type = "56"
+                p_vids = [r'/v_(\w+)\.swf', r'/cpm_(\w+)\.swf']
+                for vid in p_vids:
+                    if re.search(vid, swf_url):
+                        videoId = re.search(vid, swf_url).groups()[0]
+                    else:
+                        continue
+                url = "http://www.56.com/u11/v_%s.html" %videoId
+
+            elif swf_url.find("ku6.com") >= 0:
+                video_type = "ku6"
+                videoId = re.search(r'/refer/([\w\.]+)/', swf_url).groups()[0]
+                url = "http://v.ku6.com/show/%s.html" %videoId
+
+            elif swf_url.find("qiyi.com") >= 0:
+                video_type = "iqiyi"
+                videoId = re.search(r'\.com/(\w+)/', swf_url).groups()[0]
+                info_url = 'http://cache.video.qiyi.com/v/%s' % videoId
+                info_xml = get_html(info_url)
+                url = re.search(u'<videoUrl>([^<]+)</videoUrl>', info_xml).groups()[0]
+
+            elif swf_url.find("pps.tv") >= 0:
+                video_type = "pps"
+                videoId = re.search(r'/sid/(\w+)/', swf_url).groups()[0]
+                url = "http://ipd.pps.tv/play_%s.html" %videoId
+
+            if videoId and url and video_type:
+                ret.append({"url": url, "video_type": video_type, "videoId": videoId})
+            else:
+                print(swf_url)
+                continue
+
+        except Exception, e:
+            print(swf_url, e)
+            continue
+
+    return ret
+
+
 def handle(url, channelId, tvNumber):
     tree = etree.HTML(get_html(url))
     swf_urls = tree.xpath('//embed/@src')
