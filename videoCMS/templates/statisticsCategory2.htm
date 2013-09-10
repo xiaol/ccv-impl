@@ -81,15 +81,15 @@
                             {%endfor%}
                         </tr>
                         <tr>
-                            <td rowspan="2">下载观看</td>
-                            <td>手动</td>
+                            <td>手动下载</td>
+                            <td rowspan="2">播放</td>
                             {%for one in row.data%}
                                 <td >{{ one.30005 }}/{{ one.30001 }}/{{ one.30000 }}</td>
                                 <td rowspan="2">{{ one.30007 }}/{{ one.30006 }}</td>
                             {%endfor%}
                         </tr>
                         <tr>
-                            <td>手动</td>
+                            <td>自动下载</td>
                             {%for one in row.data%}
                                 <td >{{ one.30004 }}/{{ one.30003 }}/{{ one.30002 }}</td>
                             {%endfor%}

@@ -187,12 +187,18 @@ def channel(request):
     else:
         filterCategoryId = None
     print 'filterCategoryId:',filterCategoryId
-    spec['createTime'] = {'$gte':startTime, '$lte':endTime}
-    #10001 手动下载成功  10004 播放成功
-    spec["operationCode"] = {"$in":[10001, 10004]}
+    spec['date'] = {'$gte':startTime, '$lte':endTime}
+
+    '''
+    在线播放:      30010 获取地址失败， 30009 播放失败，  30008 播放成功
+    手动下载:      30005 获取地址失败， 30001 下载失败，  30000 下载成功
+    自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
+    本地播放:      30007 播放失败，  30006 播放成功
+    '''
+    spec["operationCode"] = {"$in":[30008,30000]}
 
     #开始统计
-    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
+    logs = list(clct_statisticsLog.find(spec,{'className':0, 'msg':0}))
 
     print '初始化getChannelId'
     getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
@@ -218,13 +224,13 @@ def channel(request):
         if channelId not in result:
             result[channelId] = [0,0,0]
         #下载
-        if log['operationCode'] == 10001:
-            result[channelId][0] += 1
+        if log['operationCode'] in [30000]:
+            result[channelId][0] += log['count']
         #播放
-        if log['operationCode'] == 10004:
-            result[channelId][1] += 1
+        if log['operationCode'] == 30008:
+            result[channelId][1] += log['count']
         #总数
-        result[channelId][2] += 1
+        result[channelId][2] += log['count']
 
     #将结果转化成 数组
     L = []
@@ -349,13 +355,13 @@ def resource(request):
     print 'filterCategoryId:',filterCategoryId
 
     spec = {}
-    spec['createTime'] = {'$gte':startTime, '$lte':endTime}
+    spec['date'] = {'$gte':startTime, '$lte':endTime}
     #10001 手动下载成功  10004 播放成功
-    spec["operationCode"] = {"$in":[10001, 10004]}
+    spec["operationCode"] = {"$in":[30000,30008]}
 
 
     #开始统计
-    logs = list(clct_operationLog.find(spec,{'className':0, 'msg':0}))
+    logs = list(clct_statisticsLog.find(spec,{'className':0, 'msg':0}))
 
     print '初始化getChannelId'
     getChannelId,getCategoryId = CacheResources([one['resourceId'] for one in logs])
@@ -382,13 +388,13 @@ def resource(request):
         if resourceId not in result:
             result[resourceId] = [0,0,0]
         #下载
-        if log['operationCode'] == 10001:
-            result[resourceId][0] += 1
+        if log['operationCode'] == 30000:
+            result[resourceId][0] += log['count']
         #播放
-        if log['operationCode'] == 10004:
-            result[resourceId][1] += 1
+        if log['operationCode'] == 30008:
+            result[resourceId][1] += log['count']
         #总数
-        result[resourceId][2] += 1
+        result[resourceId][2] += log['count']
 
     #将结果转化成 数组
     L = []
