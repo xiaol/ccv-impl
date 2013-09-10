@@ -15,18 +15,7 @@ import urllib2,copy
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 
-'''
-def _GetCategorylId():
-    channel2categoryMap= {}
-    def _getCategorylId(channelId):
-        if channelId in channel2categoryMap:
-            return channel2categoryMap[channelId]
-        else:
-            categoryId = clct_channel.find_one({'channelId':channelId})['channelType']
-            channel2categoryMap[channelId] = categoryId
-            return categoryId
-    return _getCategorylId
-'''
+
 #================================================
 def getStartEndDateTime(request):
     startDate = request.GET.get('startDate','')
@@ -121,18 +110,18 @@ def getCategoryDetailList():
 
 
 
+
+# 使用 statisticLog 标，进行二次统计，大大节约时间
 def category(request):
     DICT = {}
     categoryList = getCategoryDetailList()
-
-
     DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
 
-    '''初始化 矩阵(其实是字典)''' 
+    '''初始化 矩阵(其实是字典)'''
     result = {}
     row = {}
     for one in categoryList:
-        row[one['categoryId']] = [0,0,0]
+        row[one['categoryId']] = {30000:0,30001:0,30002:0,30003:0,30004:0,30005:0,30006:0,30007:0,30008:0,30009:0,30010:0}
     t = t_start
     while t < t_end:
         date = time.strftime('%Y%m%d',time.localtime(t))
@@ -140,17 +129,13 @@ def category(request):
         t += 24*3600
 
     '''
-        {
-            date:{
-                categoryId:(0,0)
-            }
-        }
+    在线播放:      30010 获取地址失败， 30009 播放失败，  30008 播放成功
+    手动下载:      30005 获取地址失败， 30001 下载失败，  30000 下载成功
+    自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
+    本地播放:      30007 播放失败，  30006 播放成功
     '''
-    '''填充 矩阵'''
-    #10001 手动下载成功,  10004 播放成功,  10005 播放失败, 100012 在线播放成功, 10101 自动下载成功, 100013 在线播放失败
-    spec = {'operationTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,100012,10101,100013]}}
-    spec = {'operationTime':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[10001, 10004, 10005,10101]}}
-    logs = list(clct_operationLog.find(spec,{'operationCode':1, 'operationTime':1, 'resourceId':1}))
+    spec = {'date':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[30010, 30009, 30008,30005,30001,30000,30004,30003,30002,30007,30006]}}
+    logs = list(clct_statisticsLog.find(spec,{'operationCode':1, 'date':1, 'resourceId':1, 'count':1}))
     print len(logs)
 
     print '初始化getChannelId'
@@ -159,25 +144,12 @@ def category(request):
     print '开始统计'
     for i,log in enumerate(logs):
         #下载
-        #print i
         try:
-            #下载
-            if log['operationCode'] in [10001,10101]:
-                date = log['operationTime'][:8]
-                categoryId = getCategorylId(log['resourceId'])
-                result[date][categoryId][0] += 1
-            #播放
-            elif log['operationCode'] in [10004, 100012]:
-                date = log['operationTime'][:8]
-                categoryId = getCategorylId(log['resourceId'])
-                result[date][categoryId][1] += 1
-            #播放失败
-            elif log['operationCode'] in [10005, 100013]:
-                date = log['operationTime'][:8]
-                categoryId = getCategorylId(log['resourceId'])
-                result[date][categoryId][2] += 1
+            categoryId = getCategorylId(log['resourceId'])
+            if log['operationCode'] not in result[log['date']][categoryId]:
+                result[log['date']][categoryId][log['operationCode']] = 0
+            result[log['date']][categoryId][log['operationCode']] += log['count']
         except:
-            #print 'error:',log['resourceId']
             pass
 
     print '得到有序坐标行列'
@@ -186,15 +158,6 @@ def category(request):
 
     sortedResult = [{"data":[result[day][category] for category in categories],"day":day} for day in days]
 
-    #分段
-    '''
-    begin = 0
-    sortedResultSegs = []
-    while begin < len(sortedResult):
-        end = len(sortedResult) if begin+7 > len(sortedResult) else begin + 7
-        sortedResultSegs.append(sortedResult[begin:end])
-        begin += 7
-    '''
     categoryMap = {}
     for one in categoryList:
         categoryMap[one['categoryId']] = one
@@ -206,9 +169,7 @@ def category(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
-    return render_to_response("statisticsCategory.htm",DICT)
-
-
+    return render_to_response("statisticsCategory2.htm",DICT)
 
 
 
