@@ -136,4 +136,6 @@ searchHandleListAll = [
 "search.embed",
 "search.petweiboList",
 "search.everyshare",
+"search.kengdie",
+"search.o2gzs",
 ]

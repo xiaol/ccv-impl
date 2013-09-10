@@ -208,6 +208,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_petweibo_list', url, channelId, snapShot = True)
     elif handleName == 'everyshare':
         startSearch('handles.handle_everyshare', url, channelId, snapShot = True)
+    elif handleName == 'kengdie':
+        startSearch('handles.handle_kengdie', url, channelId, snapShot = True)
+    elif handleName == 'o2gzs':
+        startSearch('handles.handle_o2gzs', url, channelId, snapShot = True)
 
 if __name__ == '__main__':
     pass
