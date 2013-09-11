@@ -30,7 +30,8 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
-    
+    #清除 视频权重
+    clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
 
 def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , **keyParams):
     #获取模块

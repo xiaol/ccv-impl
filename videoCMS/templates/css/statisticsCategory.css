@@ -23,12 +23,19 @@
     min-height: 500px;
     min-width: 1440px;
     overflow: visible;
+    margin-left: 20px;
 }
 
 
-#content td
+#content td,th
 {
     font-size: 10px;
     padding: 4px 10px;
     border: 1px solid #BBB;
+}
+
+
+#content tr:hover
+{
+    background-color: rgb(250,250,250);
 }

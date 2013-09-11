@@ -384,7 +384,7 @@ def updateDuration(request):
 def deleteChannel(request):
     channelId = int(request.GET.get('channelId'))
     clct_channel.remove({'channelId':channelId})
-    
+    clct_resource.remove({'channelId':channelId},multi=True)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 

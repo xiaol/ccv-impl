@@ -6,7 +6,8 @@ import os
 
 urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'templates').replace('\\','/')}),
-    
+
+    url(r'^$','videoCMS.views.statistics2.index'),
     url(r'^login$', 'videoCMS.views.login.login'),
     
     url(r'^category/index$', 'videoCMS.views.category.index'),
@@ -66,4 +67,7 @@ urlpatterns = patterns('',
     url(r'^statistics/resource$','videoCMS.views.statistics.resource'),
 
     url(r'^statistics2/category$','videoCMS.views.statistics2.category'),
+    url(r'^statistics2/categoryDetail$','videoCMS.views.statistics2.categoryDetail'),
+    url(r'^statistics2/channel$','videoCMS.views.statistics2.channel'),
+    url(r'^statistics2/resource$','videoCMS.views.statistics2.resource'),
 )
