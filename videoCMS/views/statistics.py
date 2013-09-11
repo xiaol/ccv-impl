@@ -29,12 +29,15 @@ def _GetCategorylId():
 '''
 #================================================
 def getStartEndDateTime(request):
+
     startDate = request.GET.get('startDate','')
     endDate = request.GET.get('endDate','')
     if startDate == "":
         startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
     if endDate == "":
         endDate = time.strftime('%Y/%m/%d',getRealTimeStruct())
+    if request.GET.get('today',None):
+        endDate = startDate
     print startDate,endDate
     #时间戳
     t_start = time.mktime(time.strptime(startDate,'%Y/%m/%d'))

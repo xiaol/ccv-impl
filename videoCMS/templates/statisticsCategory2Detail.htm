@@ -23,7 +23,7 @@
     <div class="">
         <div class="row-fluid">
             <div class="span12" style="background-color:#FFF;">
-                
+
 			     <div class="row-fluid" id="nav">
 
                         <form>
@@ -65,36 +65,31 @@
                 <div class="row-fluid" id="content">
                     <table>
                         <tr>
-                        <th colspan="3" width="20%">~~~~~~~~~~~~~~~~~~~~~~~~~日期\分类</th>
-                        {% for name in categoryNames%}
-                            <th colspan="2">
-                                <a href="/statistics2/channel?startDate={{startDate}}&endDate={{endDate}}&categoryName={{name}}">{{name}}</a>
-                            </th>
-                        {% endfor %}
-                        </tr>
-                    {%for row in sortedResult%}
-                        <tr>
-                            <td rowspan="3"><a href="/statistics2/categoryDetail?startDate={{startDate}}&endDate={{endDate}}&categoryName={{name}}">{{row.day}}</a></td>
-                            <td colspan="2" >在线播放</td>
-                            {%for one in row.data%}
-                                <td colspan="2">{{ one.30010 }}/{{ one.30009 }}/{{ one.30008 }}</td>
-                            {%endfor%}
+                            <th rowspan="4" colspan="1">类别\统计</th>
+                            <th rowspan="3" colspan="3">在线播放</th>
+                            <th rowspan="1" colspan="8">离线播放</th>
                         </tr>
                         <tr>
-                            <td>手动下载</td>
-                            <td rowspan="2">播放</td>
-                            {%for one in row.data%}
-                                <td >{{ one.30005 }}/{{ one.30001 }}/{{ one.30000 }}</td>
-                                <td rowspan="2">{{ one.30007 }}/{{ one.30006 }}</td>
-                            {%endfor%}
+                            <th rowspan="2" colspan="6">下载</th>
+                            <th rowspan="2" colspan="2">本地播放</th>
                         </tr>
                         <tr>
-                            <td>自动下载</td>
-                            {%for one in row.data%}
-                                <td >{{ one.30004 }}/{{ one.30003 }}/{{ one.30002 }}</td>
-                            {%endfor%}
+                            <th rowspan="1" colspan="3">自动下载</th>
+                            <th rowspan="1" colspan="3">手动下载</th>
                         </tr>
-                    {%endfor%}
+                        <tr>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                            <th>30001</th>
+                        </tr>
                     </table>
 
                 </div>

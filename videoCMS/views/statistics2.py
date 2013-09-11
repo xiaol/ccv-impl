@@ -24,6 +24,8 @@ def getStartEndDateTime(request):
         startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
     if endDate == "":
         endDate = time.strftime('%Y/%m/%d',getRealTimeStruct())
+    if request.GET.get('today',None) != None:
+        endDate = startDate
     print startDate,endDate
     #时间戳
     t_start = time.mktime(time.strptime(startDate,'%Y/%m/%d'))
@@ -75,7 +77,10 @@ def CacheResources(resourceIdList):
 
     def _getCategoryId(resourceId):
         if resourceId not in resource2channelMap:
-            resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
+            try:
+                resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
+            except:
+                pass
             if not resource:
                 resource2channelMap[resourceId] = (None, None)
             else:
@@ -109,6 +114,8 @@ def getCategoryDetailList():
     return list(clct_category.find())
 
 
+def index(request):
+    return HttpResponseRedirect('/statistics2/categoryDetail?today=')
 
 
 # 使用 statisticLog 标，进行二次统计，大大节约时间
@@ -171,6 +178,62 @@ def category(request):
 
     return render_to_response("statisticsCategory2.htm",DICT)
 
+
+
+def categoryDetail(request):
+    DICT = {}
+    categoryList = getCategoryDetailList()
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+
+    '''初始化 矩阵(其实是字典)'''
+    result = {}
+    for one in categoryList:
+        result[one['categoryId']] = {}
+        result[one['categoryId']] =  {30000:0,30001:0,30002:0,30003:0,30004:0,30005:0,30006:0,30007:0,30008:0,30009:0,30010:0}
+
+    '''
+    在线播放:      30010 获取地址失败， 30009 播放失败，  30008 播放成功
+    手动下载:      30005 获取地址失败， 30001 下载失败，  30000 下载成功
+    自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
+    本地播放:      30007 播放失败，  30006 播放成功
+    '''
+    spec = {'date':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[30010, 30009, 30008,30005,30001,30000,30004,30003,30002,30007,30006]}}
+    logs = list(clct_statisticsLog.find(spec,{'operationCode':1, 'date':1, 'resourceId':1, 'count':1}))
+    print len(logs)
+
+    print '初始化getChannelId'
+    getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
+
+    print '开始统计'
+    for i,log in enumerate(logs):
+        #下载
+        try:
+            categoryId = getCategorylId(log['resourceId'])
+            if log['operationCode'] not in result[categoryId]:
+                result[categoryId][log['operationCode']] = 0
+            result[categoryId][log['operationCode']] += log['count']
+        except:
+            pass
+
+    print '得到有序坐标行列'
+    categories = sorted(result.keys())
+
+    categoryMap = {}
+    for c in categoryList:
+        categoryMap[c['categoryId']] = c
+
+    sortedResult = [{"data":result[category] ,"category": categoryMap[category]} for category in categories]
+
+    categoryMap = {}
+    for one in categoryList:
+        categoryMap[one['categoryId']] = one
+    DICT['categories'] = categories
+    DICT['categoryNames'] = [categoryMap[id]['categoryName'] for id in categories]
+    DICT['sortedResult'] = sortedResult
+    DICT['navPage'] = 'statistics'
+    DICT['title'] = '分类统计'
+
+    return render_to_response("statisticsCategory2Detail.htm",DICT)
 
 
 def channel(request):
