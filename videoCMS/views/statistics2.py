@@ -77,6 +77,7 @@ def CacheResources(resourceIdList):
 
     def _getCategoryId(resourceId):
         if resourceId not in resource2channelMap:
+            resource = None
             try:
                 resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
             except:
