@@ -70,7 +70,7 @@
                             <th rowspan="1" colspan="8">离线播放</th>
                         </tr>
                         <tr>
-                            <th rowspan="2" colspan="6">下载</th>
+                            <th rowspan="1" colspan="6">下载</th>
                             <th rowspan="2" colspan="2">本地播放</th>
                         </tr>
                         <tr>
@@ -78,18 +78,34 @@
                             <th rowspan="1" colspan="3">手动下载</th>
                         </tr>
                         <tr>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
-                            <th>30001</th>
+                            <th>获取地址失败</th>
+                            <th>播放失败</th>
+                            <th>播放成功</th>
+                            <th>获取地址失败</th>
+                            <th>下载失败</th>
+                            <th>下载成功</th>
+                            <th>获取地址失败</th>
+                            <th>下载失败</th>
+                            <th>下载成功</th>
+                            <th>播放失败</th>
+                            <th>播放成功</th>
                         </tr>
+                        {% for item in sortedResult %}
+                            <tr>
+                                <td>{{ item.category.categoryName }}</td>
+                                <td>{{ item.data.30010 }}</td>
+                                <td>{{ item.data.30009 }}</td>
+                                <td>{{ item.data.30008 }}</td>
+                                <td>{{ item.data.30005 }}</td>
+                                <td>{{ item.data.30001 }}</td>
+                                <td>{{ item.data.30000 }}</td>
+                                <td>{{ item.data.30004 }}</td>
+                                <td>{{ item.data.30003 }}</td>
+                                <td>{{ item.data.30002 }}</td>
+                                <td>{{ item.data.30007 }}</td>
+                                <td>{{ item.data.30006 }}</td>
+                            </tr>
+                        {% endfor %}
                     </table>
 
                 </div>
