@@ -33,12 +33,16 @@ def handle(url,channelId,tvNumber):
 
     ret = []
     for video in videoList:
-        title = video.xpath('./@title')[0]
-        url = video.xpath('./@href')[0]
-        videoId = p_vid.search(get_html(url)).groups()[0]
+        try:
+            title = video.xpath('./@title')[0]
+            url = video.xpath('./@href')[0]
+            videoId = p_vid.search(get_html(url)).groups()[0]
 
-        item = buildResource(url, title, channelId, videoId)
-        ret.append(item)
+            item = buildResource(url, title, channelId, videoId)
+            ret.append(item)
+        except Exception, e:
+            print(e, url)
+            continue
 
     return ret
 
@@ -56,4 +60,4 @@ def buildResource(url, title, channelId, videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://v.qq.com/variety/column/column_1496.html',1,3))
+    pprint.pprint(handle('http://v.qq.com/variety/column/column_1206.html',1,3))

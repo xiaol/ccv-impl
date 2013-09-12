@@ -14,6 +14,7 @@ p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
 p_totalNumber = re.compile(u'共(\d+)集')
+p_title_number = re.compile(u'第(\d+)')
 
 #=========================================================
 
@@ -24,22 +25,27 @@ def handle(url,channelId,tvNumber):
     videoList = videosTree.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
     
     #原始网页
-    tree = etree.HTML(get_html(url))
+    #tree = etree.HTML(get_html(url))
+
     '''判断是否 剧集数 与网站标示一致'''
-    curNumber = None
-    try:
-        curNumber = int(p_number.search(tree.xpath('//div[@class="basenotice"]/text()')[0]).groups()[0])
-    except:
-        pass
-    if curNumber:
-        assert curNumber == len(videoList)
+    #curNumber = None
+    # try:
+    #     curNumber = int(p_number.search(tree.xpath('//div[@class="basenotice"]/text()')[0]).groups()[0])
+    # except:
+    #     pass
+    # if curNumber:
+    #     assert curNumber == len(videoList)
     
     '''抽取'''
     ret = []
-    for i,video in enumerate(videoList):
+    for i, video in enumerate(videoList):
         title = video.xpath('./@title')[0]
         url = video.xpath('./@href')[0]
-        number = i+1
+        number = p_title_number.search(title)
+        if number:
+            number = int(number.groups()[0])
+        else:
+            number = i+1
         if number <= tvNumber:
             continue
         videoId = p_vid.search(url).groups()[0]
