@@ -74,7 +74,7 @@
                         </tr>
                     {%for row in sortedResult%}
                         <tr>
-                            <td rowspan="3"><a href="/statistics2/categoryDetail?startDate={{startDate}}&endDate={{endDate}}&categoryName={{name}}">{{row.day}}</a></td>
+                            <td rowspan="3"><a href="/statistics2/categoryDetail?startDate={{row.date}}&endDate={{row.date}}&categoryName={{name}}">{{row.day}}</a></td>
                             <td colspan="2" >在线播放</td>
                             {%for one in row.data%}
                                 <td colspan="2">{{ one.30010 }}/{{ one.30009 }}/{{ one.30008 }}</td>

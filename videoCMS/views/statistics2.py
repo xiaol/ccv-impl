@@ -77,6 +77,7 @@ def CacheResources(resourceIdList):
 
     def _getCategoryId(resourceId):
         if resourceId not in resource2channelMap:
+            resource = None
             try:
                 resource = clct_resource.find_one({'_id':ObjectId(resourceId)}, {'channelId':1,'categoryId':1})
             except:
@@ -163,7 +164,7 @@ def category(request):
     days = sorted(result.keys())
     categories = sorted(row.keys())
 
-    sortedResult = [{"data":[result[day][category] for category in categories],"day":day} for day in days]
+    sortedResult = [{"data":[result[day][category] for category in categories],"day":day,"date": '/'.join([day[:4],day[4:6],day[6:]]) } for day in days]
 
     categoryMap = {}
     for one in categoryList:
