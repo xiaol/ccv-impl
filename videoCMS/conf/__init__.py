@@ -139,4 +139,9 @@ searchHandleListAll = [
 "search.everyshare",
 "search.kengdie",
 "search.o2gzs",
+"search.tingcd",
+"search.tom61",
+"search.21cnLife",
+"search.766",
+"search.duowan",
 ]

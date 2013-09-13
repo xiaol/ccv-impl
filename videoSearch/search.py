@@ -216,6 +216,16 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_kengdie', url, channelId,snapShot = snapShot)
     elif handleName == 'o2gzs':
         startSearch('handles.handle_o2gzs', url, channelId,snapShot = snapShot)
+    elif handleName == 'tingcd':
+        startSearch('handles.handle_tingcd', url, channelId,snapShot = snapShot)
+    elif handleName == 'tom61':
+        startSearch('handles.handle_tom61', url, channelId,snapShot = snapShot)
+    elif handleName == '21cnLife':
+        startSearch('handles.handle_21cn_life', url, channelId,snapShot = snapShot)
+    elif handleName == 'duowan':
+        startSearch('handles.handle_duowan', url, channelId,snapShot = snapShot)
+    elif handleName == '766':
+        startSearch('handles.handle_766', url, channelId,snapShot = snapShot)
 
 if __name__ == '__main__':
     pass
