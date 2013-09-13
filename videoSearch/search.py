@@ -19,6 +19,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     for resource in resouceList:
         resource['createTime'] = t
         print("insert ",resource['videoType'],resource['videoId'])
+        resource['weight'] = -1
         try:
             ret = clct_resource.insert(resource , safe=True)
         except:

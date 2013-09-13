@@ -28,7 +28,7 @@ def POST2Resource(request):
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    resource['modifyTime'] = getCurTime()
+    #resource['modifyTime'] = getCurTime()
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
@@ -57,7 +57,7 @@ def update(request):
         return render_to_response('resourceGifUpdate.htm',DICT)
 
     resource = POST2Resource(request)
-
+    resource['modifyTime'] = getCurTime()
         
 
     #如果更新了GIF，则封面封面由GIF生成。否则单独更新
@@ -89,6 +89,8 @@ def add(request):
         return render_to_response('resourceGifUpdate.htm',DICT)
 
     resource = POST2Resource(request)
+    resource['createTime'] = getCurTime()
+
 
     for tag in resource['tagList']:
         if clct_tag.find_one({'name':tag}) == None:
