@@ -51,7 +51,29 @@ def handle(url, channelId, tvNumber):
         '''检测完结'''
         if not p_update.search(html):
             ret.append("over")
+    elif url.find("/p/tv/zt/") != -1:
+        html = get_html(url)
+        tree = etree.HTML(html)
+        videos = tree.xpath('//div[@class="mod_video_fragments"]//ul/li/strong/a')
 
+        for video in videos:
+            title = video.xpath('./@title')[0]
+            if title.find(u"预告") != -1:
+                continue
+            number = int(p_number.search(title).groups()[0])
+            if number <= tvNumber:
+                continue
+            url = base_url + video.xpath('./@href')[0]
+            videoId = p_vid.search(url).groups()[0]
+
+            item = buildResource(url, title, number, channelId, videoId)
+            ret.append(item)
+
+        '''检测完结'''
+        total = int(tree.xpath('//span[@class="episodes_sum"]/em/text()')[0])
+        current = int(tree.xpath('//span[@class="episodes_current"]/em/a/text()')[0])
+        if not current < total:
+            ret.append("over")
     else:
         html = get_html(url)
         tree = etree.HTML(html)
@@ -97,5 +119,6 @@ if __name__ == '__main__':
     # pprint.pprint(handle('http://v.qq.com/detail/x/xgnnne5is86cqh2.html',1,0))
     # pprint.pprint(handle('http://v.qq.com/detail/t/t7748cv5nzh74l6.html',1,0))
     # pprint.pprint(handle('http://v.qq.com/detail/n/nndopnljjrwnwck.html',1,0))
-    pprint.pprint(handle('http://v.qq.com/zt/detail/hml/index.html',1,0))
-    pprint.pprint(handle('http://v.qq.com/zt/detail/index.html',1,0))
+    # pprint.pprint(handle('http://v.qq.com/zt/detail/hml/index.html',1,0))
+    # pprint.pprint(handle('http://v.qq.com/zt/detail/index.html',1,0))
+    pprint.pprint(handle('http://v.qq.com/p/tv/zt/lama/index.html',1,0))
