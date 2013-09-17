@@ -11,6 +11,28 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 
+def getVideoUrl(videoId, video_type):
+    url = ""
+    url_map = {
+        "youku" : "http://v.youku.com/v_show/id_%s.html" %videoId,
+        "tudou" : "http://www.tudou.com/programs/view/%s/" %videoId,
+        "sina" : "http://video.sina.com.cn/v/b/%s.html" %videoId,
+        "56" : "http://www.56.com/u11/v_%s.html" %videoId,
+        "ku6" : "http://v.ku6.com/show/%s.html" %videoId,
+        "pps" : "http://ipd.pps.tv/play_%s.html" %videoId
+    }
+
+    if video_type == "iqiyi":
+        info_url = 'http://cache.video.qiyi.com/v/%s' % videoId
+        info_xml = get_html(info_url)
+        url = re.search(u'<videoUrl>([^<]+)</videoUrl>', info_xml).groups()[0]
+
+    else:
+        url = url_map.get(video_type, "")
+
+    return url
+
+
 def getVideoInfo(url, html=""):
     if not html:
         html = get_html(url)
@@ -20,7 +42,7 @@ def getVideoInfo(url, html=""):
     ret = []
     for swf_url in swf_urls:
         try:
-            videoId = None
+            videoId = ""
             url = None
             video_type = None
             if swf_url.find("youku.com") >= 0:
@@ -29,6 +51,7 @@ def getVideoInfo(url, html=""):
                 for vid in p_vids:
                     if re.search(vid, swf_url):
                         videoId = re.search(vid, swf_url).groups()[0]
+                        break
                     else:
                         continue
                 url = "http://v.youku.com/v_show/id_%s.html" %videoId
@@ -45,10 +68,11 @@ def getVideoInfo(url, html=""):
 
             elif swf_url.find("tudou.com") >= 0:
                 video_type = "tudou"
-                p_vids = [r'tudou.com/v/(\w+)/', r'tudou.com/l/(\w+)/']
+                p_vids = [r'tudou.com/v/([\w-]+)/', r'tudou.com/l/(\w+)/']
                 for vid in p_vids:
                     if re.search(vid, swf_url):
                         videoId = re.search(vid, swf_url).groups()[0]
+                        break
                     else:
                         continue
                 url = "http://www.tudou.com/programs/view/%s/" %videoId
@@ -64,6 +88,7 @@ def getVideoInfo(url, html=""):
                 for vid in p_vids:
                     if re.search(vid, swf_url):
                         videoId = re.search(vid, swf_url).groups()[0]
+                        break
                     else:
                         continue
                 url = "http://www.56.com/u11/v_%s.html" %videoId
@@ -117,10 +142,11 @@ def handle(url, channelId, tvNumber):
 
             elif swf_url.find("tudou.com") >= 0:
                 video_type = "tudou"
-                p_vids = [r'tudou.com/v/(\w+)/', r'tudou.com/l/(\w+)/']
+                p_vids = [r'tudou.com/v/([\w-]+)/', r'tudou.com/l/(\w+)/']
                 for vid in p_vids:
                     if re.search(vid, swf_url):
                         videoId = re.search(vid, swf_url).groups()[0]
+                        break
                     else:
                         continue
                 url = "http://www.tudou.com/programs/view/%s/" %videoId
@@ -139,6 +165,7 @@ def handle(url, channelId, tvNumber):
                 for vid in p_vids:
                     if re.search(vid, swf_url):
                         videoId = re.search(vid, swf_url).groups()[0]
+                        break
                     else:
                         continue
                 url = "http://www.56.com/u11/v_%s.html" %videoId

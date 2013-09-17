@@ -20,13 +20,19 @@ def handle(url, channelId, tvNumber):
     base_url = "http://www.asmou.cn/"
     page_num = re.search(r'-(\d+)\.html$', last_page).groups()[0]
     page_url_prefix = last_page[0:last_page.find(page_num+".html")]
+    total = int(tree.xpath('//div[@class="page"]/em/text()')[0])
+    page_num = int((total+12-1)/12)
 
     videos = tree.xpath('//div[@id="video_content"]//div[@class="subject"]/a')
     #除第一页外剩下的页面地址
     for num in range(2, int(page_num)+1):
-        page_url = base_url+ page_url_prefix + str(num) + ".html"
-        tree = etree.HTML(get_html(page_url))
-        videos.extend(tree.xpath('//div[@id="video_content"]//div[@class="subject"]/a'))
+        try:
+            page_url = base_url+ page_url_prefix + str(num) + ".html"
+            tree = etree.HTML(get_html(page_url))
+            videos.extend(tree.xpath('//div[@id="video_content"]//div[@class="subject"]/a'))
+        except Exception, e:
+            print(page_url, e)
+            continue
 
     ret = []
     for video in videos:
