@@ -2,7 +2,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))]
 
 import time,json,threading
-from videoCMS.conf import clct_resource
+from videoCMS.conf import clct_resource,clct_channel
 from videoCMS.common.common import getCurTime
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 
@@ -35,6 +35,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
                 print one['_id'],'goOnline'
                 clct_resource.update({'_id':one['_id']},{'$set':\
                     {'scheduleGoOnline':'','createTime':curTime,'isOnline':True}})
+                clct_channel.update({'channelId':one['channelId']},{'$set':{'updateTime':getCurTime()}})
 
 
 
