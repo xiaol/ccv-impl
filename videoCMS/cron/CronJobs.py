@@ -28,7 +28,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
     RUN_EVERY_MINS = 0.5
 
     def do(self):
-        for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$exists':True}},{'scheduleGoOnline':1},timeout=False):
+        for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$exists':True}},{'scheduleGoOnline':1,'channelId':1},timeout=False):
             curTime = getCurTime()
             print one
             if curTime > one['scheduleGoOnline']:
