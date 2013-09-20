@@ -144,4 +144,5 @@ searchHandleListAll = [
 "search.21cnLife",
 "search.766",
 "search.duowan",
+"search.joyList",
 ]

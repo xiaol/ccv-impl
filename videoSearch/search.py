@@ -226,6 +226,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_duowan', url, channelId,snapShot = snapShot)
     elif handleName == '766':
         startSearch('handles.handle_766', url, channelId,snapShot = snapShot)
+    elif handleName == 'joyList':
+        startSearch('handles.handle_joy_list', url, channelId,snapShot = snapShot)
 
 if __name__ == '__main__':
     pass
