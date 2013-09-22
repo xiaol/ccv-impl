@@ -225,12 +225,19 @@ def categoryDetail(request):
 
     sortedResult = [{"data":result[categoryId] ,"category": categoryMap[categoryId]} for categoryId in categories]
 
+    #累加
+    sumDict = {}
+    for key in sortedResult[0]['data'].keys():
+        sumDict[key] = sum([one['data'][key]  for one in sortedResult])
+
+
     categoryMap = {}
     for one in categoryList:
         categoryMap[one['categoryId']] = one
     DICT['categories'] = categories
     DICT['categoryNames'] = [categoryMap[id]['categoryName'] for id in categories]
     DICT['sortedResult'] = sortedResult
+    DICT['sumDict'] = sumDict
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
