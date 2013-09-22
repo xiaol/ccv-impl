@@ -86,6 +86,7 @@ def add(request):
         DICT['weight'] = -1
         DICT['duration'] = -1
         DICT['resourceSize'] = -1
+        DICT['number'] = -1
         return render_to_response('resourceGifUpdate.htm',DICT)
 
     resource = POST2Resource(request)
