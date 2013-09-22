@@ -25,7 +25,7 @@ def handle(url, channelId, tvNumber):
         title = video.xpath('//span[@class="desc"]/text()')[0]
         url = "http://www.weipai.cn" + video.xpath('//a[@class="whole video_link"]/@href')[0]
         videoId = p_vid.search(url).groups()[0]
-        item = buildResource(url, title, 0, channelId, videoId)
+        item = buildResource(url, title, -1, channelId, videoId)
         ret.append(item)
 
     return ret
