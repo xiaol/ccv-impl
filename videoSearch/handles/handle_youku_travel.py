@@ -23,7 +23,7 @@ def handle(url,channelId,tvNumber):
         url = video.xpath('./@href')[0]
         title = video.xpath('./@title')[0]
         videoId = p_vid.search(url).groups()[0]
-        number = 0
+        number = -1
         ret.append(buildResource(url,title,number,channelId,videoId))
 
     return ret

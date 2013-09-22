@@ -275,6 +275,8 @@ def add(request):
         #更新到所有
         clct_resource.update({'channelId':channel['channelId'],'resourceImageUrl':''},{'$set':{'resourceImageUrl':filename}},multi=True)
     
+    #更新category更新时间
+    clct_category.update({'categoryId':channel['channelType']},{'$set':{'updateTime':getCurTime()}})
     return HttpResponseRedirect('update?id='+id)
 
 def getMaxChannelId():

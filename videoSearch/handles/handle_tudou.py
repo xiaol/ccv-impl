@@ -29,7 +29,7 @@ def handle(url,channelId,tvNumber, needNumber = True):
             except:
                 number = i
         else:
-            number = 0
+            number = -1
         videoId = p_vid.search(url).groups()[0]
         ret.append(buildResource(url,title,number,channelId,videoId))
 

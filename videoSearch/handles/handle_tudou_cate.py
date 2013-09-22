@@ -24,7 +24,7 @@ def handle(url,channelId,tvNumber):
         title = video.xpath('./@title')[0]
         if len(title) == 0:
             title = video.xpath('./text()')[0]
-        number = 0
+        number = -1
         videoId = ""
         for vid in p_vid:
             try:

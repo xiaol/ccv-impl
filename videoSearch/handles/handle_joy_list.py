@@ -4,41 +4,37 @@ __author__ = 'klb3713'
 import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
-import re,pprint
+import re, pprint
 from common.common import getCurTime
-from pymongo import Connection
 from common.Domain import Resource,Channel
 from common.HttpUtil import get_html
 from setting import clct_channel
 
-
-p_vid = re.compile(r'video/([^/]+)$')
-
+# p_vid = re.compile('/([^/]+)\.htm')
 
 def handle(url, channelId, tvNumber):
-    html = get_html(url)
-    tree = etree.HTML(html)
-    videoList = tree.xpath('//div[@class="wf_cell video box "]')
+    tree = etree.HTML(get_html(url))
+    videos = tree.xpath('//div[@class="msglist3"]/dl/dd/h3/a')
 
     ret = []
-    for video in videoList:
-        title = video.xpath('//span[@class="desc"]/text()')[0]
-        url = "http://www.weipai.cn" + video.xpath('//a[@class="whole video_link"]/@href')[0]
-        videoId = p_vid.search(url).groups()[0]
-        item = buildResource(url, title, -1, channelId, videoId)
-        ret.append(item)
+    for video in videos:
+        url = video.xpath('./@href')[0]
+        title = video.xpath('./@title')[0]
+        # videoId = p_vid.search(url).groups()[0]
+        number = -1
+        ret.append(buildResource(url, title, number, channelId, url))
 
     return ret
 
 
-def buildResource(url,title,number,channelId,videoId):
+def buildResource(url, title, number, channelId, videoId):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
     resource['type'] = 'video'
-    resource['videoType'] = 'weipai'
+    resource['videoType'] = 'joy_url'
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
 
@@ -46,4 +42,4 @@ def buildResource(url,title,number,channelId,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.weipai.cn/square/',100527,3))
+    pprint.pprint(handle('http://fashion.joy.cn/videolist/2_0_2/1.htm',1,1))

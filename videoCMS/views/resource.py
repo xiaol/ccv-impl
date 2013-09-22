@@ -179,6 +179,7 @@ def add(request):
         DICT['info'] = ''
         DICT['typeList'] = getCategoryList()
         DICT['navPage'] = 'resource'
+        DICT['number'] = -1
         return render_to_response('resourceUpdate.htm',DICT)
     
     resource = POST2Resource(request)
@@ -206,6 +207,8 @@ def add(request):
         ret = addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],force=True)
         if ret:
             clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':'doing'}})
+    #更新 频道更新时间
+    clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':getCurTime()}})
     return HttpResponseRedirect('update?id='+id)
 
 '''

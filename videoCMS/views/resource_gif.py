@@ -86,6 +86,7 @@ def add(request):
         DICT['weight'] = -1
         DICT['duration'] = -1
         DICT['resourceSize'] = -1
+        DICT['number'] = -1
         return render_to_response('resourceGifUpdate.htm',DICT)
 
     resource = POST2Resource(request)
@@ -110,7 +111,8 @@ def add(request):
         raise Exception('未选择图片')
 
     id = clct_resource.insert(resource.getInsertDict())
-
+    #更新 频道更新时间
+    clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':getCurTime()}})
     return HttpResponseRedirect('update?id='+str(id))
 
 

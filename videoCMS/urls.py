@@ -1,12 +1,12 @@
 from django.conf.urls import patterns, include, url
 import os
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'templates').replace('\\','/')}),
-
+    url(r'^admin/(.*)$','admin.site.root'),
     url(r'^$','videoCMS.views.statistics2.index'),
     url(r'^login$', 'videoCMS.views.login.login'),
     

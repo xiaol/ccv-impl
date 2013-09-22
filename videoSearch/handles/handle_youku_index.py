@@ -35,7 +35,7 @@ def handle(url,channelId,tvNumber):
             videoId = p_vid.search(url).groups()[0]
         except:
             continue
-        item = buildResource(url,title,0,channelId,videoId)
+        item = buildResource(url,title,-1,channelId,videoId)
         ret.append(item)
     return ret
     
