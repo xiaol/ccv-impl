@@ -110,6 +110,11 @@ def getVideoInfo(url, html=""):
                 videoId = re.search(r'/sid/(\w+)/', swf_url).groups()[0]
                 url = "http://ipd.pps.tv/play_%s.html" %videoId
 
+            elif swf_url.find("qq.com") >= 0:
+                video_type = "qq"
+                videoId = re.search(r'vid=(\w+)&', swf_url).groups()[0]
+                url = "http://v.qq.com/play/%s.html" %videoId
+
             if videoId and url and video_type:
                 ret.append({"url": url, "video_type": video_type, "videoId": videoId})
             else:
