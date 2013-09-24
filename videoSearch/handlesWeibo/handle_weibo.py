@@ -8,8 +8,6 @@ from common.common import getCurTime
 from pymongo import Connection
 from common.Domain import Resource,Channel
 from common.HttpUtil import get_html,HttpUtil
-from setting import TOKEN,APP_KEY
-from setting import clct_channel
 
 
 p_1 = re.compile('http://(.*?)/')
@@ -20,10 +18,11 @@ p_56 = re.compile('v_([^\.]+).html')
 
 p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 
-def handle(weibo_uid,channelId,tvNumber,page=1,count=20):
+def handle(channelId,access_token,since_id,page=1,count=20):
     httpUtil = HttpUtil()
     # 列表页
-    url = 'https://api.weibo.com/2/statuses/user_timeline.json?source=%s&access_token=%s&uid=%s&page=%s&count=%s&feature=3'%(APP_KEY,TOKEN,weibo_uid,page,count)
+    url = 'https://api.weibo.com/2/statuses/home_timeline.json?' \
+          'access_token=%s&since_id=%s&page=%s&count=%s&feature=3'%(access_token,since_id,page,count)
     print url
     html = get_html(url)
     videos = json.loads(html)['statuses']
@@ -58,8 +57,6 @@ def handle(weibo_uid,channelId,tvNumber,page=1,count=20):
     return videoList
 
 
-
-
 def buildResource(url,title,channelId,videoType,videoId):
     resource = Resource()
     resource['resourceName'] = title
@@ -75,5 +72,5 @@ def buildResource(url,title,channelId,videoType,videoId):
     
 
 if __name__ == '__main__':
-    pprint.pprint(handle('2281386844',int(13),1))
+    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262'))
 

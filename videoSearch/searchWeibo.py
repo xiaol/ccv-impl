@@ -1,3 +1,4 @@
+#coding=utf-8
 import redis
 from setting import clct_channel,clct_resource
 import imp,sys
@@ -47,7 +48,7 @@ def insertWeibo(weiboList):
     pass
 
 def proccess(item):
-    weiboList = handle(item['sinaId'],)
+    weiboList = handle()
     weiboList = insertResouce(weiboList)
     insertWeibo(weiboList)
 
@@ -55,9 +56,8 @@ def proccess(item):
 
 def main():
     while True:
-        item = redisHost.blpop('xx')
+        #item = redisHost.blpop('xx')
         proccess(item)
-
 
 
 
