@@ -145,4 +145,7 @@ searchHandleListAll = [
 "search.766",
 "search.duowan",
 "search.joyList",
+"search.baomihuaFunny",
+"search.zealer",
+"search.qqList",
 ]

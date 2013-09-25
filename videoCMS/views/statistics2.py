@@ -197,6 +197,7 @@ def categoryDetail(request):
     手动下载:      30005 获取地址失败， 30001 下载失败，  30000 下载成功
     自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
     本地播放:      30007 播放失败，  30006 播放成功
+    GIF:          30012 加载成功，  30013 加载失败
     '''
     spec = {'date':{'$gte':startTime[:8], '$lt':endTime[:8]},"operationCode":{"$in":[30010, 30009, 30008,30005,30001,30000,30004,30003,30002,30007,30006]}}
     logs = list(clct_statisticsLog.find(spec,{'operationCode':1, 'date':1, 'resourceId':1, 'count':1}))
@@ -225,12 +226,19 @@ def categoryDetail(request):
 
     sortedResult = [{"data":result[categoryId] ,"category": categoryMap[categoryId]} for categoryId in categories]
 
+    #累加
+    sumDict = {}
+    for key in sortedResult[0]['data'].keys():
+        sumDict[key] = sum([one['data'][key]  for one in sortedResult])
+
+
     categoryMap = {}
     for one in categoryList:
         categoryMap[one['categoryId']] = one
     DICT['categories'] = categories
     DICT['categoryNames'] = [categoryMap[id]['categoryName'] for id in categories]
     DICT['sortedResult'] = sortedResult
+    DICT['sumDict'] = sumDict
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
