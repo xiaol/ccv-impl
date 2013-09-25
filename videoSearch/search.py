@@ -170,6 +170,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_youku_travel', url, channelId,snapShot = snapShot)
     elif handleName == 'youkuLife':
         startSearch('handles.handle_youku_life', url, channelId,snapShot = snapShot)
+    elif handleName == 'youkuTech':
+        startSearch('handles.handle_youku_tech', url, channelId,snapShot = snapShot)
+    elif handleName == 'youkuList':
+        startSearch('handles.handle_youku_list', url, channelId,snapShot = snapShot)
     elif handleName == 'tudouCate':
         startSearch('handles.handle_tudou_cate', url, channelId,snapShot = snapShot)
     elif handleName == 'tudouLife':
@@ -232,6 +236,12 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_baomihua_funny', url, channelId, snapShot = snapShot)
     elif handleName == 'zealer':
         startSearch('handles.handle_zealer', url, channelId, snapShot = snapShot)
+    elif handleName == 'qqList':
+        startSearch('handles.handle_qq_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'sinaEntList':
+        startSearch('handles.handle_sina_ent_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'letvEntzt':
+        startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
 
 if __name__ == '__main__':
     pass

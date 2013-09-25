@@ -115,6 +115,8 @@ searchHandleListAll = [
 'search.youkuIyouku',
 'search.youkuTravel',
 'search.youkuLife',
+'search.youkuTech',
+'search.youkuList',
 'search.tudouCate',
 'search.tudouLife',
 'search.ku6Playlist',
@@ -147,4 +149,7 @@ searchHandleListAll = [
 "search.joyList",
 "search.baomihuaFunny",
 "search.zealer",
+"search.qqList",
+"search.sinaEntList",
+"search.letvEntzt",
 ]
