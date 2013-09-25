@@ -189,3 +189,29 @@ class CDNSyncTask(DomainBase):
     resourceId = ''
     videoId = ''
     videoType = ''
+
+class UserWeibo(DomainBase):
+    weiboId = -1
+    sinaId = -1
+    sinaName =''
+    title = ''
+    comment = ''
+    friendId = -1
+    friendScreenName = ''
+    friendName = ''
+    friendProfileImageUrl = ''
+    friendCoverImageUrl = ''
+    friendGender = ''
+    retweetedFriendId = -1
+    retweetedFriendScreenName = ''
+    retweetedFriendName = ''
+    retweetedFriendProfileImageUrl = ''
+    retweetedFriendCoverImageUrl = ''
+    retweetedFriendGender = ''
+    repostsCount = 0
+    commentsCount = 0
+    attitudesCount = 0
+    videoScreenshotUrl = ''
+    resourceId = ''
+    createTime = '00000000000000'
+    modifyTime = '00000000000000'

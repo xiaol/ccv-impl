@@ -6,7 +6,7 @@ from lxml import etree
 import re,pprint,json
 from common.common import getCurTime
 from pymongo import Connection
-from common.Domain import Resource,Channel
+from common.Domain import Resource,Channel,UserWeibo
 from common.HttpUtil import get_html,HttpUtil
 
 
@@ -18,7 +18,7 @@ p_56 = re.compile('v_([^\.]+).html')
 
 p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 
-def handle(channelId,access_token,since_id,page=1,count=20):
+def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20):
     httpUtil = HttpUtil()
     # 列表页
     url = 'https://api.weibo.com/2/statuses/home_timeline.json?' \
@@ -31,31 +31,112 @@ def handle(channelId,access_token,since_id,page=1,count=20):
     for video in  videos:
         item = {}
         if 'retweeted_status' in video:
+            comment = video['text']
             text = video['retweeted_status']['text']
         else:
             text = video['text']
+            comment = ''
         #print video['text']
-        try:
-            item['url'] = p_url.search(text).group()
-            item['url'] = httpUtil.real_url(item['url'])
-            print item['url']
+        #try:
+        item['url'] = p_url.findall(text)
+        hit = False
+        for url in item['url']:
+            realUrl = httpUtil.real_url(url)
             for p_video in p_videos:
-                if p_video[1].search(item['url']):
+                if p_video[1].search(realUrl):
                     item['videoType'] = p_video[0]
-                    item['videoId'] = p_video[1].search(item['url']).groups()[0]
+                    item['videoId'] = p_video[1].search(realUrl).groups()[0]
+                    hit = True
                     break
                 else:
                     continue
-            if 'videoType' not in item:
-                continue
-            item['title'] = text
-        except:
+            if hit:
+                break
+            else:
+                response = httpUtil.Post('http://60.28.29.38:9090/api/getVideoId',
+                                             json.dumps({"url":'%s'%realUrl}))
+                if response:
+                    content = response.decode()
+                    result = json.loads(content)
+                    if result.get('videoId',None) is None:
+                        continue
+
+                    item['videoType'] = result['videoType']
+                    item['videoId'] = result['videoId']
+                    hit = True
+        if not hit:
             continue
+
+        item['title'] = text
+        item['sinaId'] = sinaId
+        item['sinaName'] = sinaName
+        item['weiboId'] = video['id']
+        item['comment'] = comment
+        item['friendId'] = video['user']['id']
+        item['friendName'] = video['user']['name']
+        item['friendScreenName'] = video['user']['screen_name']
+        item['friendProfileImageUrl'] = video['user']['profile_image_url']
+        if 'cover_image' in video['user']:
+            item['friendCoverImageUrl'] = video['user']['cover_image']
+        item['friendGender'] = video['user']['gender']
+        item['repostsCount'] = video['reposts_count']
+        item['commentsCount'] = video['comments_count']
+        item['attitudesCount'] = video['attitudes_count']
+        if 'bmiddle_pic' in video:
+            item['videoScreenshotUrl'] = video['bmiddle_pic']
+
+        if 'retweeted_status' in video:
+            item['retweetedFriendId'] = video['retweeted_status']['user']['id']
+            item['retweetedFriendName'] = video['retweeted_status']['user']['name']
+            item['retweetedFriendScreenName'] = video['retweeted_status']['user']['screen_name']
+            item['retweetedFriendProfileImageUrl'] = video['retweeted_status']['user']['profile_image_url']
+            if 'cover_image' in video['retweeted_status']['user']:
+                item['retweetedFriendCoverImageUrl'] = video['retweeted_status']['user']['cover_image']
+            item['retweetedFriendGender'] = video['retweeted_status']['user']['gender']
+
+        #except:
+            #print "Decode exception."
+            #continue
         #print item
-        videoList.append(buildResource(item['url'] , item['title'], channelId, item['videoType'], item['videoId']))
+        videoList.append({'resource':buildResource(item['url'] , item['title'], channelId, item['videoType'], item['videoId']),
+                          'userWeibo':buildUserWeibo(item)})
 
     return videoList
 
+def buildUserWeibo(item):
+    userWeibo = UserWeibo()
+
+    userWeibo['title'] = item['title']
+    userWeibo['sinaId'] = item['sinaId']
+    userWeibo['sinaName'] = item['sinaName']
+    userWeibo['weiboId'] = item['weiboId']
+    userWeibo['comment'] = item['comment']
+    userWeibo['friendId'] = item['friendId']
+    userWeibo['friendName'] = item['friendName']
+    userWeibo['friendScreenName'] = item['friendScreenName']
+    userWeibo['friendProfileImageUrl'] = item['friendProfileImageUrl']
+    if 'cover_image' in item:
+        userWeibo['friendCoverImageUrl'] = item['friendCoverImageUrl']
+    userWeibo['friendGender'] = item['friendGender']
+    userWeibo['repostsCount'] = item['repostsCount']
+    userWeibo['commentsCount'] = item['commentsCount']
+    userWeibo['attitudesCount'] = item['attitudesCount']
+    if 'videoScreenshotUrl' in item:
+        userWeibo['videoScreenshotUrl'] = item['videoScreenshotUrl']
+
+    if 'retweetedFriendId' in item:
+        userWeibo['retweetedFriendId'] = item['retweetedFriendId']
+        userWeibo['retweetedFriendName'] = item['retweetedFriendName']
+        userWeibo['retweetedFriendScreenName'] = item['retweetedFriendScreenName']
+        userWeibo['retweetedFriendProfileImageUrl'] = item['retweetedFriendProfileImageUrl']
+        if 'cover_image' in item:
+            userWeibo['retweetedFriendCoverImageUrl'] = item['retweetedFriendCoverImageUrl']
+        userWeibo['retweetedFriendGender'] = item['retweetedFriendGender']
+
+    userWeibo['createTime'] = getCurTime()
+    userWeibo['modifyTime'] = getCurTime()
+
+    return userWeibo.getInsertDict()
 
 def buildResource(url,title,channelId,videoType,videoId):
     resource = Resource()
@@ -67,10 +148,11 @@ def buildResource(url,title,channelId,videoType,videoId):
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
     resource['modifyTime'] = getCurTime()
-    
+
     return resource.getInsertDict()
-    
+
+
 
 if __name__ == '__main__':
-    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262'))
+    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', 'sinaId', 'sinaName'))
 
