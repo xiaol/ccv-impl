@@ -232,6 +232,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_baomihua_funny', url, channelId, snapShot = snapShot)
     elif handleName == 'zealer':
         startSearch('handles.handle_zealer', url, channelId, snapShot = snapShot)
+    elif handleName == 'qqList':
+        startSearch('handles.handle_qq_list', url, channelId, snapShot=snapShot)
 
 if __name__ == '__main__':
     pass
