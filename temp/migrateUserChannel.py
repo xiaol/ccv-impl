@@ -17,4 +17,7 @@ for userChannel in clct_userChannel.find({},{'uuid':1,'channelId':1},timeout=Fal
 
 
 for key in userMap:
+    print key
     print userMap[key]
+    clct_user.update({'uuid':key},{'$set':{'subscribedChannelList':userMap[key]}})
+    break
