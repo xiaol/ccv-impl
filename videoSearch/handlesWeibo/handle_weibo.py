@@ -57,7 +57,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
             videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
                               'userWeibo':buildUserWeibo(item)})
         else:
-            jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName ), (),
+            jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName, getVideoIdUrl ), (),
                                           ("from common.HttpUtil import HttpUtil", "import re", "import json")))
             for job in jobs:
                 item = job()
@@ -68,7 +68,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
 
     return videoList
 
-def pDecodeWeibo(video, sinaId, sinaName):
+def pDecodeWeibo(video, sinaId, sinaName, getVideoIdUrl):
     httpUtil = HttpUtil()
 
     p_1 = re.compile('http://(.*?)/')
