@@ -192,7 +192,7 @@ class CDNSyncTask(DomainBase):
 
 class UserWeibo(DomainBase):
     weiboId = -1
-    sinaId = -1
+    sinaId = ''
     sinaName =''
     title = ''
     comment = ''

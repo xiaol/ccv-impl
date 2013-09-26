@@ -78,7 +78,7 @@ def main():
     redisHost = redis.Redis('h48', 6379)
     while True:
         #try:
-        originalMsg = redisHost.blpop('weibo'''',timeout=3''')
+        originalMsg = redisHost.blpop('weibo')   #timeout=3
         if originalMsg is None:
             #time.sleep(2)
             continue

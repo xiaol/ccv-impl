@@ -49,6 +49,8 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
             item = decodeWeibo(video, httpUtil, sinaId, sinaName)
             if item is None:
                 continue
+            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
+                              'userWeibo':buildUserWeibo(item)})
         else:
             jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName ), (),
                                           ("from common.HttpUtil import HttpUtil", "import re", "import json")))
@@ -56,7 +58,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
                 item = job()
                 if item is None:
                     continue
-        videoList.append({'resource':buildResource(item['url'] , item['title'], channelId, item['videoType'], item['videoId']),
+                videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
                           'userWeibo':buildUserWeibo(item)})
 
     return videoList
@@ -269,5 +271,5 @@ def buildResource(url,title,channelId,videoType,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', 1837408945, '__刘潇'))
+    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', '1837408945', '__刘潇'))
 
