@@ -59,12 +59,13 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
         else:
             jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName, getVideoIdUrl ), (),
                                           ("from common.HttpUtil import HttpUtil", "import re", "import json")))
-            for job in jobs:
-                item = job()
-                if item is None:
-                    continue
-                videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
-                          'userWeibo':buildUserWeibo(item)})
+    if not debug:
+        for job in jobs:
+            item = job()
+            if item is None:
+                continue
+            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
+                              'userWeibo':buildUserWeibo(item)})
 
     return videoList
 
