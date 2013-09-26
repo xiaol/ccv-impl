@@ -17,7 +17,10 @@ p_56 = re.compile('v_([^\.]+).html')
 
 p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 
-debug = False
+getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
+
+from videoSearch.setting import debug
+
 job_server = None
 if  not debug:
     import pp
@@ -32,6 +35,8 @@ if  not debug:
         # Creates jobserver with automatically detected number of workers
         job_server = pp.Server(ppservers=ppservers)
     print "pp 可以用的工作核心线程数", job_server.get_ncpus(), "workers"
+    getVideoIdUrl = 'http://h38:9090/api/getVideoId'
+
 
 def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20):
     httpUtil = HttpUtil()
@@ -97,8 +102,7 @@ def pDecodeWeibo(video, sinaId, sinaName):
         if hit:
             break
         else:
-            response = httpUtil.Post('http://h38:9090/api/getVideoId',
-                                     json.dumps({"url":'%s'%realUrl}))
+            response = httpUtil.Post(getVideoIdUrl, json.dumps({"url":'%s'%realUrl}))
             if response:
                 content = response.decode()
                 result = json.loads(content)

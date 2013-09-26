@@ -1,12 +1,18 @@
 #coding=utf-8
 import redis
-from setting import clct_channel,clct_resource,clct_userWeibo
+from setting import clct_channel,clct_resource,clct_userWeibo,debug
 import imp,sys
 from pprint import pprint
 import json ,time
 from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
 from handlesWeibo.handle_weibo import handle
+
+
+redisUrl = 'localhost'
+if not debug:
+    redisUrl = 'h48'
+
 
 def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False):
     '''更新时间 频道updateTime'''
@@ -76,7 +82,7 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
 
 
 def main():
-    redisHost = redis.Redis('h48', 6379)
+    redisHost = redis.Redis(redisUrl, 6379)
     while True:
         #try:
         originalMsg = redisHost.blpop('weibo')   #timeout=3
