@@ -3,11 +3,11 @@ import redis
 from setting import clct_channel,clct_resource,clct_userWeibo
 import imp,sys
 from pprint import pprint
-import json
+import json ,time
 from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
 from handlesWeibo.handle_weibo import handle
-from setting import clct_userWeibo
+
 
 
 def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False):
@@ -21,25 +21,26 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
     for weibo in weiboList:
         resource = weibo['resource']
         resource['createTime'] = t
+        resource['type'] = 'video'
+        resource['resourceName'] = weibo['userWeibo']['title']
+        resource['resourceUrl'] = weibo['userWeibo']['videoUrl']
+        resource['categoryId'] = 0
+        resource['isOnline'] = False
         print("insert ",resource['videoType'],resource['videoId'])
         resource['weight'] = -1
         try:
             ret = clct_resource.insert(resource , safe=True)
-            weibo['resourceId'] = str(ret['_id'])
+            weibo['userWeibo']['resourceId'] = str(ret['_id'])
         except:
             print("insert Error!")
             ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
-            weibo['resourceId'] = str(ret['_id'])
+            weibo['userWeibo']['resourceId'] = str(ret['_id'])
 
         else:
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
-
-
-    #清除 视频权重
-    clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
 
     return weiboList
 
@@ -48,7 +49,6 @@ def insertWeibo(weiboList):
     for weibo in weiboList:
         userWeibo = weibo['userWeibo']
         userWeibo['createTime'] = t
-        userWeibo['resourceId'] = weibo.get('resourceId','')
 
         print("Insert ",userWeibo['weiboId'],userWeibo['sinaId'],userWeibo['sinaName'])
         try:
@@ -80,9 +80,15 @@ def main():
     redisHost = redis.Redis('localhost', 6379)
     while True:
         #try:
-        originalMsg = redisHost.blpop('weibo')
+        originalMsg = redisHost.blpop('weibo',timeout=3)
+        if originalMsg is None:
+            #time.sleep(2)
+            continue
+        start = time.time()
         msg = json.loads(originalMsg[1])
         process(msg['isNew'], msg['access_token'],msg['sinaId'],msg['sinaName'], 0)
+        elapsed = (time.time() - start)
+        print("Time used:",elapsed)
         '''except TypeError:
             print "Can't parse json string."
         except KeyError:
