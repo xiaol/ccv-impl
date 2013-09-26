@@ -19,7 +19,7 @@ p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
 
-from videoSearch.setting import debug
+from setting import debug
 
 job_server = None
 if  not debug:
