@@ -8,8 +8,6 @@ from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
 from handlesWeibo.handle_weibo import handle
 
-
-
 def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False):
     '''更新时间 频道updateTime'''
 
@@ -77,10 +75,10 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
 
 
 def main():
-    redisHost = redis.Redis('localhost', 6379)
+    redisHost = redis.Redis('h48', 6379)
     while True:
         #try:
-        originalMsg = redisHost.blpop('weibo',timeout=3)
+        originalMsg = redisHost.blpop('weibo'''',timeout=3''')
         if originalMsg is None:
             #time.sleep(2)
             continue
