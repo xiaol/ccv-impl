@@ -97,7 +97,7 @@ def pDecodeWeibo(video, sinaId, sinaName):
         if hit:
             break
         else:
-            response = httpUtil.Post('http://60.28.29.38:9090/api/getVideoId',
+            response = httpUtil.Post('http://h38:9090/api/getVideoId',
                                      json.dumps({"url":'%s'%realUrl}))
             if response:
                 content = response.decode()

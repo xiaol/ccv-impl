@@ -24,7 +24,7 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
         resource['resourceUrl'] = weibo['userWeibo']['videoUrl']
         resource['categoryId'] = 0
         resource['isOnline'] = False
-        print("insert ",resource['videoType'],resource['videoId'])
+        print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
         try:
             ret = clct_resource.insert(resource , safe=True)
@@ -44,11 +44,10 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
 
 def insertWeibo(weiboList):
     t = getCurTime()
+
     for weibo in weiboList:
         userWeibo = weibo['userWeibo']
         userWeibo['createTime'] = t
-
-        print("Insert ",userWeibo['weiboId'],userWeibo['sinaId'],userWeibo['sinaName'])
         try:
             ret = clct_userWeibo.insert(userWeibo , safe=True)
         except:
@@ -63,14 +62,16 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
         since_id,page,count = 0,1,10
     else:
         page,count = 1,20
-        x = clct_userWeibo.find_one({'sinaId':'sinaId'},sort=[('weiboId',-1)])
+        x = clct_userWeibo.find_one({'sinaId':sinaId},sort=[('weiboId',-1)])
         if x is None:
             since_id = 0
         else:
             since_id  = x['weiboId']
+            print("latest weibo id:",since_id)
 
     weiboList = handle(channelId, access_token, since_id, sinaId, sinaName, page, count)
     weiboList = insertResouce(weiboList, channelId, True)
+    print("Insert ",sinaId, sinaName)
     insertWeibo(weiboList)
 
 
