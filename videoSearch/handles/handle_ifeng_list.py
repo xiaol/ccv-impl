@@ -15,7 +15,7 @@ p_vid = re.compile('/([^/]+)\.shtml')
 
 def handle(url, channelId, tvNumber):
     tree = etree.HTML(get_html(url))
-    videos = tree.xpath('//*[@id="list_infor"]/li/h6/a')
+    videos = tree.xpath('//div[@class="listwrap"]/div/ul/li/h6/a')
 
     ret = []
     for video in videos:

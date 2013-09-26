@@ -212,6 +212,8 @@ class UserWeibo(DomainBase):
     commentsCount = 0
     attitudesCount = 0
     videoScreenshotUrl = ''
+    videoUrl = ''
     resourceId = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+
