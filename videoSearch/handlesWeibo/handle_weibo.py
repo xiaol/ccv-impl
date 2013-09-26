@@ -9,8 +9,6 @@ from pymongo import Connection
 from common.Domain import Resource,Channel,UserWeibo
 from common.HttpUtil import get_html,HttpUtil
 
-
-
 p_1 = re.compile('http://(.*?)/')
 p_url = re.compile('http://[\w\./]*')
 p_sina = re.compile('http://video.sina.com.cn/v/b/(.*?)\.html')
@@ -271,5 +269,5 @@ def buildResource(url,title,channelId,videoType,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', 1241231, 'sinaName'))
+    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', 1837408945, '__刘潇'))
 
