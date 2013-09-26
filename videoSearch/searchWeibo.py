@@ -35,8 +35,8 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
         try:
             ret = clct_resource.insert(resource , safe=True)
             weibo['userWeibo']['resourceId'] = str(ret['_id'])
-        except:
-            print("insert Error!")
+        except Exception,e:
+            print("insert Error!",e)
             ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
             weibo['userWeibo']['resourceId'] = str(ret['_id'])
 
@@ -56,8 +56,8 @@ def insertWeibo(weiboList):
         userWeibo['createTime'] = t
         try:
             ret = clct_userWeibo.insert(userWeibo , safe=True)
-        except:
-            print("Insert Error!")
+        except Exception,e:
+            print("Insert Error!",e)
             #ret  = clct_userWeibo.find_one({'weiboId':userWeibo['weiboId'],})
         else:
             pass
