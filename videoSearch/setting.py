@@ -2,9 +2,10 @@ from pymongo import Connection
 
 debug = False
 
-con = Connection('60.28.29.37:20010')
 if not debug:
     con = Connection('h37:20010')
+else:
+    con = Connection('60.28.29.37:20010')
 
 clct_category  = con.tiercel.category
 clct_channel  = con.tiercel.channel
