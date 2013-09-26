@@ -1,7 +1,7 @@
 from pymongo import Connection
 
 #con = Connection('60.28.29.37:20010')
-con = Connection('h37')
+con = Connection('h37:20010')
 
 clct_category  = con.tiercel.category
 clct_channel  = con.tiercel.channel
