@@ -11,7 +11,7 @@ from pprint import pprint
 
 
 def process_channel(channel):
-    #print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
+    print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
     pprint(channel)
     try:
         handleFrequents = int(channel['handleFrequents'])
