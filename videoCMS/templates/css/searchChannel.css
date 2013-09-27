@@ -1,0 +1,18 @@
+.searchChannel
+{
+    padding-top: 10px;
+}
+
+.searchChannel tr
+{
+    border: 0px;
+    padding: 0px;
+}
+.searchChannel td
+{
+    padding: 0px;
+}
+.hidden
+{
+    display: None;
+}

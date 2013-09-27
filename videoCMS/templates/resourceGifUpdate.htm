@@ -8,12 +8,14 @@
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/searchChannel.css" rel="stylesheet" type="text/css" />
 
 <!--<script src="/static/js/jquery-1.7.1.js"></script>-->
 <script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/js/resourceUpdate.js"></script>
+<script src="/static/js/searchChannel.js"></script>
 </head>
 
 <body style="background-color: #CCC;">
@@ -88,7 +90,11 @@
 							<tr>
                                 <td style="width: 100px">频道ID</td>
                                 <td><input type="text" class="input-xlarge" name="channelId"
-                                    value="{{channelId}}" /></td>
+                                    value="{{channelId}}" />
+                                <a id="channelName" href="/channel/update?id={{channelObId}}">{{channelName}}</a>
+                                    {%  include "_searchChannel.htm" %}
+                                </td>
+
                             </tr>
                             <tr>
                                 <td style="width: 100px">视频时长(s)</td>
