@@ -84,22 +84,19 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
 def main():
     redisHost = redis.Redis(redisUrl, 6379)
     while True:
-        #try:
-        originalMsg = redisHost.blpop('weibo')   #timeout=3
-        if originalMsg is None:
-            #time.sleep(2)
-            continue
-        start = time.time()
-        msg = json.loads(originalMsg[1])
-        process(msg['isNew'], msg['access_token'],msg['sinaId'],msg['sinaName'], 0)
-        elapsed = (time.time() - start)
-        print("Time used:",elapsed)
-        '''except TypeError:
-            print "Can't parse json string."
-        except KeyError:
-            print "Can't find requested keys."
-        except :
-            print "Something bad happened."'''
+        try:
+            originalMsg = redisHost.blpop('weibo')   #timeout=3
+            if originalMsg is None:
+                #time.sleep(2)
+                continue
+            start = time.time()
+            msg = json.loads(originalMsg[1])
+            process(msg['isNew'], msg['access_token'],msg['sinaId'],msg['sinaName'], 0)
+            elapsed = (time.time() - start)
+            print("Time used:",elapsed)
+
+        except Exception,e:
+            print e
 
 
 if __name__ == '__main__':
