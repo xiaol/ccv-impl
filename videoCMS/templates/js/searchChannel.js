@@ -7,6 +7,7 @@ function searchChannel()
         data:{'keyword':keyword},
         success:function(data,textStatus)
         {
+            $('.SearchResultRow').remove();
             data = JSON.parse(data);
             for(var i=0;i<data.length; ++i)
             {
@@ -14,7 +15,7 @@ function searchChannel()
                 var r = $("#SearchResultRow").clone();
                 r.removeAttr("id");
                 r.removeAttr("class");
-
+                r.addClass('SearchResultRow');
                 r.find('.searchChannel_Id').text(item['channelId']);
                 r.find('.searchChannel_Name').text(item['channelName']);
                 r.find('.searchChannel_Name').attr('href','/channel/update?id='+item['id']);
