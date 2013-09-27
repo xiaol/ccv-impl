@@ -436,3 +436,10 @@ def search(request):
         one.pop('_id')
         ret.append(one)
     return HttpResponse(json.dumps(ret))
+
+def setCompleted(request):
+    channelId = int(request.GET.get("channelId"))
+    clct_channel.update({"channelId":channelId},{"$set":{"nextSearchTime":'99990101000000'},
+                                                  "$unset":{"searchMsg":1,"searchStatus":1}})
+
+    return HttpResponse('ok')

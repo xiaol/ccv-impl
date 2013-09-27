@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^channel/toggleProcessed$', 'videoCMS.views.channel.toggleProcessed'),
     url(r'^channel/showJson$', 'videoCMS.views.channel.showJson'),
     url(r'^channel/search', 'videoCMS.views.channel.search'),
+    url(r'^channel/setCompleted', 'videoCMS.views.channel.setCompleted'),
+
     
     url(r'^resource/index$', 'videoCMS.views.resource.index'),
     url(r'^resource/add$', 'videoCMS.views.resource.add'),
