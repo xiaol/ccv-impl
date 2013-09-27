@@ -13,7 +13,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         updateMap['tvNumber'] = resouceList[0]['number']
         updateMap['subtitle'] = str(resouceList[0]['number'])
     clct_channel.update({'channelId':channelId},{'$set':updateMap})
-    
+    channel = clct_channel.find_one({'channelId':channelId})
     '''入库'''
     t = getCurTime()
     for resource in resouceList:
@@ -24,6 +24,17 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             ret = clct_resource.insert(resource , safe=True)
         except:
             print("insert Error!")
+            '''检查 电视剧资源是否被抢'''
+            if channel['videoClass'] in [1]:
+                old = clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']})
+                if not old: continue
+                if type(old['number'])==int and  old['number'] <= 0:
+                    clct_resource.update({'_id':old['_id']},{'$set':{
+                        'resourceName':resource['resourceName'],'channelId':resource['channelId'],
+                        'number':resource['number']
+                        }})
+
+
         else:
             print("insert Ok!")
 
