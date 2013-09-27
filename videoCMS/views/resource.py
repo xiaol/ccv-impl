@@ -268,6 +268,11 @@ def deleteResource(request):
     clct_resource.remove({'_id':ObjectId(resourceId)})
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+def deleteChannelResource(request):
+    channelId = int(request.GET.get('channelId'))
+    clct_resource.remove({'channelId':channelId})
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 #==============================================================
 
 def refreshSnapshot(request):

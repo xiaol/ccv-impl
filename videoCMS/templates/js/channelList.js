@@ -6,6 +6,16 @@ function deleteChannel(channelId)
 	}
 }
 
+function deleteAllResource(channelId)
+{
+	if(confirm("确定删除频道内所有视频？"))
+	{
+		window.location = '/resource/deleteChannelResource?channelId='+channelId;
+	}
+}
+
+
+
 function updateNow(channelId)
 {
 	$.ajax({
