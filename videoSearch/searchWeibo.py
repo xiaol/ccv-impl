@@ -65,7 +65,7 @@ def insertWeibo(weiboList):
 
 def process(isNew, access_token, sinaId, sinaName, channelId):
     if isNew:
-        since_id,page,count = 0,1,10
+        since_id,page,count = 0,1,4
     else:
         page,count = 1,20
         x = clct_userWeibo.find_one({'sinaId':sinaId},sort=[('weiboId',-1)])
