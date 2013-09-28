@@ -427,3 +427,19 @@ def showJson(request):
     one = clct_channel.find_one({'_id':ObjectId(id)})
     one['_id'] = str(one['_id'])
     return HttpResponse(json.dumps(one))
+
+def search(request):
+    kw = request.GET.get('keyword')
+    ret = []
+    for one in  clct_channel.find({'channelName':re.compile(kw)}).limit(10):
+        one['id'] = str(one['_id'])
+        one.pop('_id')
+        ret.append(one)
+    return HttpResponse(json.dumps(ret))
+
+def setCompleted(request):
+    channelId = int(request.GET.get("channelId"))
+    clct_channel.update({"channelId":channelId},{"$set":{"nextSearchTime":'99990101000000'},
+                                                  "$unset":{"searchMsg":1,"searchStatus":1}})
+
+    return HttpResponse('ok')

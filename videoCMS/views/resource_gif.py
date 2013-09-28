@@ -54,6 +54,12 @@ def update(request):
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'resource'
+        channel = clct_channel.find_one({'channelId':resource['channelId']})
+        if channel != None:
+            DICT['channelName'] = channel['channelName']
+            DICT['channelObId'] = str(channel['_id'])
+        else:
+            DICT['channelName'] = '频道不存在'
         return render_to_response('resourceGifUpdate.htm',DICT)
 
     resource = POST2Resource(request)

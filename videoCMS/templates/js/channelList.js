@@ -6,6 +6,16 @@ function deleteChannel(channelId)
 	}
 }
 
+function deleteAllResource(channelId)
+{
+	if(confirm("确定删除频道内所有视频？"))
+	{
+		window.location = '/resource/deleteChannelResource?channelId='+channelId;
+	}
+}
+
+
+
 function updateNow(channelId)
 {
 	$.ajax({
@@ -74,4 +84,25 @@ function toggleProcessed(object)
             alert(errorThrown);
         }
     });
+}
+
+
+function setCompleted(channelId)
+{
+    if(confirm("设置完结？"))
+    {
+        $.ajax({
+            type:'get',
+            url:'/channel/setCompleted',
+            data:{'channelId':channelId},
+            success:function(data,textStatus)
+            {
+                window.location = window.location;
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown)
+            {
+                alert(errorThrown);
+            }
+        });
+    }
 }

@@ -4,10 +4,12 @@ import os
 #from django.contrib import admin
 #admin.autodiscover()
 
+handler404 = 'videoCMS.views.channel.index'
+
 urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'templates').replace('\\','/')}),
     url(r'^admin/(.*)$','admin.site.root'),
-    url(r'^$','videoCMS.views.statistics2.index'),
+    url(r'^$','videoCMS.views.channel.index'),
     url(r'^login$', 'videoCMS.views.login.login'),
     
     url(r'^category/index$', 'videoCMS.views.category.index'),
@@ -27,6 +29,9 @@ urlpatterns = patterns('',
     url(r'^channel/resetWeight$', 'videoCMS.views.channel.resetWeight'),
     url(r'^channel/toggleProcessed$', 'videoCMS.views.channel.toggleProcessed'),
     url(r'^channel/showJson$', 'videoCMS.views.channel.showJson'),
+    url(r'^channel/search', 'videoCMS.views.channel.search'),
+    url(r'^channel/setCompleted', 'videoCMS.views.channel.setCompleted'),
+
     
     url(r'^resource/index$', 'videoCMS.views.resource.index'),
     url(r'^resource/add$', 'videoCMS.views.resource.add'),
@@ -35,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^resource/toggleOnlineStatus$', 'videoCMS.views.resource.toggleOnlineStatus'),
     url(r'^resource/refreshSnapshot$', 'videoCMS.views.resource.refreshSnapshot'),
     url(r'^resource/delete$', 'videoCMS.views.resource.deleteResource'),
+    url(r'^resource/deleteChannelResource$', 'videoCMS.views.resource.deleteChannelResource'),
     url(r'^resource/stopSnapshot$', 'videoCMS.views.resource.stopSnapshot'),
     url(r'^resource/prefetchCDN$', 'videoCMS.views.resource.prefetchCDN'),
     url(r'^resource/queryCDN$', 'videoCMS.views.resource.queryCDN'),

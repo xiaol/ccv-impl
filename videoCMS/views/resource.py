@@ -158,6 +158,12 @@ def update(request):
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'resource'
+        channel = clct_channel.find_one({'channelId':resource['channelId']})
+        if channel != None:
+            DICT['channelName'] = channel['channelName']
+            DICT['channelObId'] = str(channel['_id'])
+        else:
+            DICT['channelName'] = '频道不存在'
         return render_to_response('resourceUpdate.htm',DICT)
     
     #更新
@@ -260,6 +266,11 @@ def getVideoId(request):
 def deleteResource(request):
     resourceId = request.GET.get('resourceId')
     clct_resource.remove({'_id':ObjectId(resourceId)})
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def deleteChannelResource(request):
+    channelId = int(request.GET.get('channelId'))
+    clct_resource.remove({'channelId':channelId})
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 #==============================================================
