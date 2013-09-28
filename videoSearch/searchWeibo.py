@@ -34,11 +34,11 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
         resource['weight'] = -1
         try:
             ret = clct_resource.insert(resource , safe=True)
-            weibo['userWeibo']['resourceId'] = str(ret['_id'])
+            weibo['userWeibo']['resourceId'] = str(ret)
         except Exception,e:
             print("insert Error!",e)
             ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
-            weibo['userWeibo']['resourceId'] = str(ret['_id'])
+            weibo['userWeibo']['resourceId'] = str(ret)
 
         else:
             '''新增 截图任务'''
