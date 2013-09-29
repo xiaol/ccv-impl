@@ -53,5 +53,6 @@ if __name__ == '__main__':
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1915-----------2-1-1-1---.html',100129))
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1677-----------2-1-1-1---.html',100130))
     #pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1674-----------2-1-1-1---.html',100095))
-    pprint.pprint(handle('http://list.iqiyi.com/www/17/1688-1690-----------2-1-1-1---.html', 100128, 1))
+    #pprint.pprint(handle('http://list.iqiyi.com/www/17/1688-1690-----------2-1-1-1---.html', 100128, 1))
+    pprint.pprint(handle('http://list.iqiyi.com/www/17/1673-1677-----------2-1-1-1---.html', 100128, 1))
 
