@@ -182,6 +182,7 @@ class VideoInfoTask(DomainBase):
     videoId = ''
     videoType = ''
     force = False
+    goOnline = False
 
 
 class CDNSyncTask(DomainBase):

@@ -9,7 +9,7 @@ except:
     from ..setting import clct_videoInfoTask,clct_resource
 from bson import ObjectId
 
-def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False, force = False):
+def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False, force = False, goOnline = False):
     '''
         错误的resourceId
     '''
@@ -20,6 +20,7 @@ def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False,
     videoInfoTask['videoType'] = videoType
     videoInfoTask['mp4box'] = mp4box
     videoInfoTask['force'] = force
+    videoInfoTask['goOnline'] = goOnline
     
     resource = clct_resource.find_one({'_id':ObjectId(resourceId)})
     if resource == None:
