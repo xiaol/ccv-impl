@@ -10,7 +10,7 @@ from videoCMS.common.HttpUtil import getVideoUrl
 def index(request):
     DICT = {}
 
-    return HttpResponse(request.get_full_path())
+    #return HttpResponse(request.get_full_path())
 
     if request.GET.get('id','') == '' and  request.GET.get('channelid','') != '':
         id = clct_channel.find_one({'channelId':int(request.GET['channelid'])})['_id']
