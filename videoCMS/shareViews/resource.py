@@ -10,8 +10,8 @@ from videoCMS.common.HttpUtil import getVideoUrl
 def index(request):
     DICT = {}
 
-    if request.GET.get('channelid',None):
-        id = clct_channel.find_one({'channelId':int(request.GET.get('channelid',None))})['_id']
+    if request.GET.get('id','') == '' and  request.GET.get('channelid','') != '':
+        id = clct_channel.find_one({'channelId':int(request.GET['channelid'])})['_id']
         return HttpResponseRedirect('/share/channel?id='+str(id))
 
     id = request.GET.get('id')
