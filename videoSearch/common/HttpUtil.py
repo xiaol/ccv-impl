@@ -7,7 +7,10 @@ import traceback
 import gzip
 import StringIO
 import json
-
+import os
+import sys
+from PIL import Image
+from setting import GIF_TEMP_DIR
 
 class HttpUtil():
     def __init__(self,proxy = None):
@@ -105,6 +108,45 @@ def getVideoInfoByUrl(url):
     ret = httpUtil.Post('http://60.28.29.38:9090/api/getVideoId', data)
 
     return json.loads(ret)
+
+
+def getFrameFromGif(gif_path):
+    try:
+        im = Image.open(gif_path)
+        im.seek(0)
+        frame = im.copy()
+        png_path = gif_path.rstrip('gif') + 'png'
+        frame.save(png_path, **frame.info)
+        return png_path
+    except Exception, e:
+        print(e)
+        return None
+
+
+def downloadGif(url, channelId):
+    relative_dir = 'videoCMS/gif_resource/' + str(channelId)
+    gif_dir = os.path.join(GIF_TEMP_DIR, relative_dir)
+    if not os.path.exists(gif_dir):
+        os.makedirs(gif_dir)
+    filename = str(time.time()).replace('.', '_') + url.split('/')[-1]
+    gif_path = os.path.join(gif_dir, filename)
+    httpUtil = HttpUtil()
+    gif = httpUtil.Get(url, times=3)
+    if gif:
+        f = file(gif_path, "wb")
+        f.write(gif)
+        f.close()
+        relative_path = os.path.join(relative_dir, filename)
+        #get first image of gif
+        png_path = getFrameFromGif(gif_path)
+        if png_path:
+            relative_image_path = relative_path.rstrip('gif') + 'png'
+            return relative_path, relative_image_path
+        else:
+            return relative_path, None
+    else:
+        return None, None
+
 
 if __name__ =='__main__':
     httpUtil = HttpUtil()
