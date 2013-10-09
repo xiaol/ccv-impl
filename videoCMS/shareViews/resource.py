@@ -43,7 +43,7 @@ def index(request):
         if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
-    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer1.5.4_official_website.apk'
+    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer_1.7_official_website.apk'
     
     return render_to_response('share_resource.htm',DICT)
     
