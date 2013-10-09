@@ -10,7 +10,8 @@ import json
 import os
 import sys
 from PIL import Image
-from setting import GIF_TEMP_DIR
+from setting import GIF_TEMP_DIR, clct_resource
+
 
 class HttpUtil():
     def __init__(self,proxy = None):
@@ -124,11 +125,17 @@ def getFrameFromGif(gif_path):
 
 
 def downloadGif(url, channelId):
+    #跳过已经存在的gif
+    cursor = clct_resource.find({'resourceUrl': url})
+    if cursor.count() > 0:
+        return None, None
+
     relative_dir = 'videoCMS/gif_resource/' + str(channelId)
     gif_dir = os.path.join(GIF_TEMP_DIR, relative_dir)
     if not os.path.exists(gif_dir):
         os.makedirs(gif_dir)
-    filename = str(time.time()).replace('.', '_') + url.split('/')[-1]
+    filename = url.split('/')[-1]
+    # filename = str(time.time()).replace('.', '_') + url.split('/')[-1]
     gif_path = os.path.join(gif_dir, filename)
     httpUtil = HttpUtil()
     gif = httpUtil.Get(url, times=3)

@@ -9,17 +9,12 @@ from common.common import getCurTime
 
 
 def insertResouce(resouceList, channelId):
-    '''更新时间 频道updateTime'''
-    resouceList.sort(key=lambda a: a['number'], reverse=True)
-    '''入库'''
-    t = getCurTime()
-    numInserted = 0
+    """ 入库 """
 
+    numInserted = 0
     for resource in resouceList:
-        resource['createTime'] = t
-        print("insert ", resource['videoType'], resource['videoId'])
-        resource['weight'] = -1
         try:
+            resource['weight'] = -1
             clct_resource.insert(resource, safe=True)
             numInserted += 1
         except Exception, e:
@@ -67,9 +62,9 @@ def handle(channelId, handleName, url):
     if handleName == 'onegif':
         startSearch('handlesGif.handle_onegif', url, channelId)
     elif handleName == 'forgifs':
-        startSearch('handles.handle_forgifs', url, channelId)
+        startSearch('handlesGif.handle_forgifs', url, channelId)
 
 
 if __name__ == '__main__':
-    handle(100240, 'onegif', 'http://onegif.com/')
+    handle(100056, 'forgifs', 'http://forgifs.com/gallery/main.php')
     pass
