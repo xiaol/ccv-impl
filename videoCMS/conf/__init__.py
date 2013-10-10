@@ -152,4 +152,8 @@ searchHandleListAll = [
 "search.qqList",
 "search.sinaEntList",
 "search.letvEntzt",
+"search.yinyuetaiMV",
+
+"searchGif.onegif",
+"searchGif.forgifs",
 ]

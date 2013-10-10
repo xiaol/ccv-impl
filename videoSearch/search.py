@@ -259,6 +259,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sina_ent_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvEntzt':
         startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
+    elif handleName == 'yinyuetaiMV':
+        startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
 
 if __name__ == '__main__':
     pass
