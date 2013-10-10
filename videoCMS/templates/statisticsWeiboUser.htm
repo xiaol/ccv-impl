@@ -26,7 +26,7 @@
                 <div class="row-fluid" id="content">
                     总计：{{ number }}人<br/>
                     {% for user in data %}
-                        <a href="http://weibo.com/u/{{user.sinaId}}">{{user.name}}</a><br/>
+                        <a target="_blank" href="http://weibo.com/u/{{user.sinaId}}">{{user.name}}</a><br/>
                     {% endfor %}
                 </div>
             </div>
