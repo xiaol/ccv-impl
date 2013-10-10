@@ -12,6 +12,7 @@ con = Connection('60.28.29.37:20010')
 #clct_tag      = con.iDown.tag
 clct_category  = con.tiercel.category
 clct_channel  = con.tiercel.channel
+clct_user  = con.tiercel.user
 clct_resource = con.tiercel.resource
 clct_preresource = con.tiercel.preresource
 clct_tag      = con.tiercel.tag

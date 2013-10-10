@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{title}}</title>
+
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/statisticsChannel.css" rel="stylesheet" type="text/css" />
+
+
+<!--<script src="/static/js/jquery-1.8.3.min.js"></script>-->
+<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/statisticsCategory.js"></script>
+<!-- zencode 快捷键 ctrl opt enter  -->
+</head>
+<body style="background-color:#CCC;">
+    {% include "nav.htm" %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12 paddingWrap" style="background-color:#FFF;">
+                <div class="row-fluid" id="content">
+                    总计：{{ number }}人<br/>
+                    {% for user in data %}
+                        <a href="http://weibo.com/u/{{user.sinaId}}">{{user.name}}</a><br/>
+                    {% endfor %}
+                </div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
