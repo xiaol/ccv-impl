@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime,getRealTimeStruct
@@ -517,3 +517,14 @@ def resource(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '视频 下载/播放统计'
     return render_to_response('statisticsResource.htm',DICT)
+
+
+def weiboUser(request):
+    DICT = {"data":[]}
+
+    weiboUsers = list(clct_user.find({'sinaId':{'$ne':''}},{"sinaId":1,"name":1}))
+
+    DICT['data'] = list(weiboUsers)
+    DICT['number'] = len(weiboUsers)
+
+    return render_to_response("statisticsWeiboUser.htm",DICT)
