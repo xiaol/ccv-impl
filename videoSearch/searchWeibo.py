@@ -1,6 +1,6 @@
 #coding=utf-8
 import redis
-from setting import clct_channel,clct_resource,clct_userWeibo,debug
+from setting import clct_channel,clct_resource,clct_userWeibo
 import imp,sys
 from pprint import pprint
 import json ,time
@@ -10,7 +10,7 @@ from handlesWeibo.handle_weibo import handle
 
 
 redisUrl = 'localhost'
-if not debug:
+if not __debug__:
     redisUrl = 'h48'
 
 
@@ -65,7 +65,7 @@ def insertWeibo(weiboList):
 
 def process(isNew, access_token, sinaId, sinaName, channelId):
     if isNew:
-        since_id,page,count = 0,1,4
+        since_id,page,count = 0,1,10
     else:
         page,count = 1,20
         x = clct_userWeibo.find_one({'sinaId':sinaId},sort=[('weiboId',-1)])
