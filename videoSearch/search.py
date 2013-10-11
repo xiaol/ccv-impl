@@ -8,14 +8,11 @@ from common.videoInfoTask import addVideoInfoTask
 def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False):
     '''更新时间 频道updateTime'''
     resouceList.sort(key = lambda a:a['number'],reverse = True)
-    updateMap = {'updateTime':getCurTime()}
-    if updateTvNumber:
-        updateMap['tvNumber'] = resouceList[0]['number']
-        updateMap['subtitle'] = str(resouceList[0]['number'])
-    clct_channel.update({'channelId':channelId},{'$set':updateMap})
     channel = clct_channel.find_one({'channelId':channelId})
     '''入库'''
     t = getCurTime()
+    numInserted = 0
+
     for resource in resouceList:
         resource['createTime'] = t
         print("insert ",resource['videoType'],resource['videoId'])
@@ -33,15 +30,24 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                         'resourceName':resource['resourceName'],'channelId':resource['channelId'],
                         'number':resource['number']
                         }})
+                    numInserted += 1
 
 
         else:
             print("insert Ok!")
-
+            numInserted += 1
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
+
+    #如果 成功有视频插入，则更新频道
+    if numInserted >0 :
+        updateMap = {'updateTime':getCurTime()}
+        if updateTvNumber:
+            updateMap['tvNumber'] = resouceList[0]['number']
+            updateMap['subtitle'] = str(resouceList[0]['number'])
+        clct_channel.update({'channelId':channelId},{'$set':updateMap})
     #清除 视频权重
     clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
 
@@ -253,6 +259,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sina_ent_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvEntzt':
         startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
+    elif handleName == 'yinyuetaiMV':
+        startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
 
 if __name__ == '__main__':
     pass

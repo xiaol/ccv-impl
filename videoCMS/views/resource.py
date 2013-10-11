@@ -51,6 +51,8 @@ def index(request):
     mongo = request.GET.get('mongo','')
     id = request.GET.get('id','')
     channelId = request.GET.get('channelId','')
+    videoType = request.GET.get('videoType','')
+    videoId = request.GET.get('videoId','')
     skip = limit * (page - 1)
     channelType = request.GET.get('channelType','')
     startTime = request.GET.get('startTime','')
@@ -65,6 +67,12 @@ def index(request):
         spec['channelId'] = int(channelId)
         DICT['title'] = clct_channel.find_one(spec)['channelName']
         print DICT['title']
+    elif videoType != '':
+        spec['videoType'] = videoType
+    elif videoId != '':
+        spec['videoId'] = videoId
+
+
     if channelType != '' and channelType != u'全部':
         spec['categoryId'] = getCategoryIdByName(channelType)
         pass
@@ -109,6 +117,9 @@ def index(request):
     DICT['name'] = name
     DICT['id'] = id
     DICT['channelId'] = channelId
+    DICT['videoType'] = videoType
+    DICT['videoId'] = videoId
+
     DICT['mongo'] = mongo
     DICT['findNum'] = clct_resource.find(spec).count()
     DICT['navPage'] = 'resource'

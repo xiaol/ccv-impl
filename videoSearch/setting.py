@@ -32,3 +32,8 @@ FFMEPG = '/home/download/ffmpeg-1.1/ffmpeg'
 MLDONKEY_DIR = '/root/.mldonkey/incoming/files'
 MLDONKEY_D_DIR = '/root/.mldonkey/incoming/directories'
 STORE_DIR = '/data/tiercel'
+
+GIF_TEMP_DIR = '/data/img'
+GIF_SERVER_DIR = '/data/img/videoCMS/gif_resource'
+GIF_SERVER = 'root@60.28.29.47'
+GIF_SERVER_PORT = 33470

@@ -10,8 +10,10 @@ from videoCMS.common.HttpUtil import getVideoUrl
 def index(request):
     DICT = {}
 
-    if request.GET.get('channelid',None):
-        id = clct_channel.find_one({'channelId':int(request.GET.get('channelid',None))})['_id']
+    #return HttpResponse(request.get_full_path())
+
+    if request.GET.get('id','') == '' and  request.GET.get('channelid','') != '':
+        id = clct_channel.find_one({'channelId':int(request.GET['channelid'])})['_id']
         return HttpResponseRedirect('/share/channel?id='+str(id))
 
     id = request.GET.get('id')
@@ -41,7 +43,7 @@ def index(request):
         if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
-    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer1.5.4_official_website.apk'
+    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer_1.7_official_website.apk'
     
     return render_to_response('share_resource.htm',DICT)
     
