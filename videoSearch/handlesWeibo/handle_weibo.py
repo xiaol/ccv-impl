@@ -19,10 +19,8 @@ p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
 
-from setting import debug
-
 job_server = None
-if  not debug:
+if  not __debug__:
     import pp
     # tuple of all parallel python servers to connect with
     ppservers = ()
@@ -50,7 +48,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
     videoList  = []
     jobs = []
     for video in  videos:
-        if debug:
+        if __debug__:
             item = decodeWeibo(video, httpUtil, sinaId, sinaName)
             if item is None:
                 continue
@@ -59,7 +57,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
         else:
             jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName, getVideoIdUrl ), (),
                                           ("from common.HttpUtil import HttpUtil", "import re", "import json")))
-    if not debug:
+    if not __debug__:
         for job in jobs:
             item = job()
             if item is None:
