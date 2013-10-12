@@ -1,12 +1,15 @@
 #coding=utf-8
 
 import redis
-from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user
+from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend
 import imp,sys
 from pprint import pprint
 import json ,time
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
+import distance
+import urllib2
+from common.common import getCurTime
 
 redisUrl = 'localhost'
 if not __debug__:
@@ -46,16 +49,57 @@ def retrieveUserSearchHistory(userId):
     pass
 
 def similarWords(words):
-    pass
+    result = {}
+    for word in words:
+        tags_str = " ".join(segment(word))
+        result[tags_str] = distance.similar('',tags_str.encode('utf8'))
+    return result
 
 def segment(sentences):
-    pass
+    url = 'http://60.28.29.46:8080/solr/collection1/analysis/field?'\
+        'wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'%(urllib2.quote(sentences.encode('utf8')))
+    html = get_html(url)
+    result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
+    i,tags = 0,[]
+    for line in result:
+        tags.append(line['text'])
+    return tags
+
+def recommend(words, source):
+    subCon = ' OR '.join(words)
+    if len(words) > 1:
+        subCon = '( %s )'%subCon
+    #query = '(channelName: %s AND processed:true) OR (resourceName: %s AND isOnline:true) OR (detailLeadingRole: %s AND processed:true) OR (detailMovieCategory: %s AND processed:true)'%(subCon, subCon, subCon, subCon)
+    query = 'resourceName: %s AND isOnline:true'%subCon
+    query = urllib2.quote(query)
+    url = 'http://60.28.29.46:8080/solr/collection1/select?'\
+          'q=%s&rows=1&wt=json&indent=true'%query
+    html = get_html(url)
+    ret = json.loads(html)['response']['docs']
+    videos = buildVideo(ret, ' '.join(words), source)
+    return videos
+
+def buildVideo(entities, reason, source):
+    for entity in entities:
+        entity['recommendSource'] = source
+        entity['recommendReason'] = reason
+        entity['isViewed'] = -1
+    return entities
 
 def retrieveVideo(keywords):
     pass
 
 def upload(videos):
-    pass
+    t = getCurTime()
+
+    for video in videos:
+        try:
+            ret = clct_userRecommend.insert(video , safe=True)
+        except Exception,e:
+            print("Insert Error!",e)
+            #ret  = clct_userWeibo.find_one({'weiboId':userWeibo['weiboId'],})
+        else:
+            pass
 
 def process(userId):
     ret = clct_user.find_one({'_id':ObjectId(userId)})
@@ -66,18 +110,13 @@ def process(userId):
     similarTags = []
     similarKeywords = []
     if userTags is not None:
-        similarTags = similarWords(userTags)
-    
-    infos = retrieveUserHistory(userId)
-    keywords = segment(infos)
-    
-    if keywords is not None:
-        similarKeywords = similarWords(keywords)
+        similarDic = similarWords(userTags)
 
     videos = []
-    videos.append(retrieveVideo(similarTags)) 
-    videos.append(retrieveVideo(similarKeywords))
-
+    for (k,v) in similarDic.items():
+        for tag in v:
+            video = recommend([tag], k);videos.append(video)
+    infos = retrieveUserHistory(userId)
     upload(videos)
 
 def main():
