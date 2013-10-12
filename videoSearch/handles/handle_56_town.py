@@ -20,10 +20,29 @@ def handle(url, channelId, tvNumber):
     town_id = re.search(r'tid\s*=\s*(\d+);', html).groups()[0]
 
     json_data = json.loads(get_html("http://z.56.com/api/getContentListByTid.php?tid=%s" %town_id))
-    total = json_data["total"]
-    json_data = json.loads(get_html("http://z.56.com/api/getContentListByTid.php?tid=%s&page=1&pageSize=%s"\
-                                    %(town_id, total)))
-    videos = json_data["data"]
+
+    DateMonths = []
+    date = json_data["date"]
+    for year in date:
+        if year.startswith('y'):
+            year_num = year.lstrip('y')
+            for month in date[year]:
+                DateMonths.append(year_num + '-' + month)
+
+    DateMonths.sort(key=lambda x: x.split('-'))
+
+
+    videos = []
+    for sortDateM in DateMonths:
+        try:
+            json_data = json.loads(get_html("http://z.56.com/api/getContentListByTid.php?tid=%s&sortDateM=%s" \
+                                            %(town_id, sortDateM)))
+            total = json_data["total"]
+            json_data = json.loads(get_html("http://z.56.com/api/getContentListByTid.php?tid=%s&sortDateM=%s&page=1&pageSize=%s" \
+                                        %(town_id, sortDateM, total)))
+            videos.extend(json_data["data"])
+        except Exception, e:
+            print(e, sortDateM)
 
     ret = []
     for video in videos:
@@ -34,7 +53,6 @@ def handle(url, channelId, tvNumber):
             ret.append(buildResource(url, title, channelId, videoId))
         except Exception, e:
             print(e, url)
-            continue
 
     return ret
 
