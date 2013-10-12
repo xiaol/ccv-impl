@@ -30,12 +30,14 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                         'resourceName':resource['resourceName'],'channelId':resource['channelId'],
                         'number':resource['number']
                         }})
-                    numInserted += 1
+                    if resource['isOnline']:
+                        numInserted += 1
 
 
         else:
             print("insert Ok!")
-            numInserted += 1
+            if resource['isOnline']:
+                numInserted += 1
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
