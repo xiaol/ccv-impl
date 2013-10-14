@@ -15,13 +15,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <stdlib.h> // mac os x
+//#include <stdlib.h> // mac os x
+//#include <Python/Python.h>
 
-//#include <malloc.h>
-
-#include <Python/Python.h>
+#include <malloc.h>
+#include <Python.h>
 
 //gcc -fPIC distance-py.c -o distance.so -shared -framework Python
+//gcc -fPIC distance-py.c -o distance.so -shared -I /usr/local/python2.7/include/python2.7
 
 const long long max_size = 2000;         // max length of strings
 const long long N = 40;                  // number of closest words that will be shown
