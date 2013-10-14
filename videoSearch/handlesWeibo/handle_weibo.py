@@ -48,7 +48,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
     videoList  = []
     jobs = []
     for video in  videos:
-        if __debug__:
+        if debug:
             item = decodeWeibo(video, httpUtil, sinaId, sinaName)
             if item is None:
                 continue
@@ -57,7 +57,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
         else:
             jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName, getVideoIdUrl ), (),
                                           ("from common.HttpUtil import HttpUtil", "import re", "import json")))
-    if not __debug__:
+    if not debug:
         for job in jobs:
             item = job()
             if item is None:

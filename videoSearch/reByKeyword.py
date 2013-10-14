@@ -135,8 +135,8 @@ def walk(reason, source): #TODO maybe find in list can work this out
             return recommend([reason], source)
         else: return videos
 
-def process(userId):
-    ret = clct_user.find_one({'_id':ObjectId(userId)})
+def process(uuid):
+    ret = clct_user.find_one({'uuid':uuid})
     if ret is None:
         return False
     similarDic = {}
@@ -172,7 +172,7 @@ def main():
                 continue
             start = time.time()
             msg = json.loads(originalMsg[1])
-            process(msg['userId'])
+            process(msg['uuid'])
             elapsed = (time.time() - start)
             print("Time used:",elapsed)
 
@@ -180,5 +180,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('51bb18b10cf2507d314b78f2'))
+    #pprint(process('sina_1837408945'))
     main()
