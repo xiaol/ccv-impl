@@ -17,6 +17,8 @@
 #include <math.h>
 #include <stdlib.h> // mac os x
 
+//#include <malloc.h>
+
 #include <Python/Python.h>
 
 //gcc -fPIC distance-py.c -o distance.so -shared -framework Python

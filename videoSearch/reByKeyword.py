@@ -11,6 +11,7 @@ import distance
 import urllib2
 from common.common import getCurTime
 
+
 redisUrl = 'localhost'
 if not __debug__:
     redisUrl = 'h48'
@@ -43,16 +44,28 @@ def retrieveSuggestion(sinaToken):
     return result
 
 def retrieveUserHistory(userId):
-    pass
+    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': '0' }}).sort("operationTime", 1).limit(10)
+    records = []
+    for ret in rets: records.append(ret['resourceId'])
+    reSet = set(records)
+    records = []
+
+    for record in reSet:
+        records.append(clct_resource.find_one({'_id': ObjectId(record)}))
+    return records
 
 def retrieveUserSearchHistory(userId):
     pass
 
 def similarWords(words):
+    if not isinstance(words, list):
+        words = [words]
     result = {}
     for word in words:
         tags_str = " ".join(segment(word))
-        result[tags_str] = distance.similar('',tags_str.encode('utf8'))
+        temp = distance.similar('',tags_str.encode('utf8'))
+        tempA = temp[:10];tempB = temp[-10:];tempA.extend(tempB)
+        result[tags_str] = tempA
     return result
 
 def segment(sentences):
@@ -69,7 +82,8 @@ def recommend(words, source):
     subCon = ' OR '.join(words)
     if len(words) > 1:
         subCon = '( %s )'%subCon
-    #query = '(channelName: %s AND processed:true) OR (resourceName: %s AND isOnline:true) OR (detailLeadingRole: %s AND processed:true) OR (detailMovieCategory: %s AND processed:true)'%(subCon, subCon, subCon, subCon)
+    '''query = '(channelName: %s AND processed:true) OR (resourceName: %s AND isOnline:true)' \
+            ' OR (detailLeadingRole: %s AND processed:true) OR (detailMovieCategory: %s AND processed:true)'%(subCon, subCon, subCon, subCon)'''
     query = 'resourceName: %s AND isOnline:true'%subCon
     query = urllib2.quote(query)
     url = 'http://60.28.29.46:8080/solr/collection1/select?'\
@@ -80,44 +94,73 @@ def recommend(words, source):
     return videos
 
 def buildVideo(entities, reason, source):
+    t = getCurTime()
     for entity in entities:
         entity['recommendSource'] = source
         entity['recommendReason'] = reason
         entity['isViewed'] = -1
+        entity['isPlayed'] = -1
+        entity['playTime'] = 0
+        entity['resourceId'] = entity['_id']
+        del entity['_id']
+        entity['createTime'] = t
     return entities
 
 def retrieveVideo(keywords):
     pass
 
-def upload(videos):
-    t = getCurTime()
-
+def upload(videos, uuid):
     for video in videos:
         try:
+            video['uuid'] = uuid
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
             print("Insert Error!",e)
-            #ret  = clct_userWeibo.find_one({'weiboId':userWeibo['weiboId'],})
         else:
             pass
+
+def walk(reason, source): #TODO maybe find in list can work this out
+    rets = clct_userRecommend.find({'recommendReason':reason, 'isPlayed': 1})
+    videos = []
+    if rets.count() != 0:
+        for ret in rets:
+            reasonDic = similarWords([ret['recommendReason']])
+            for (k, v) in reasonDic.items():
+                for word in v:
+                    videos.extend(walk(word,'%s %s'%(source, k)))
+            return videos
+    else:
+        rets = clct_userRecommend.find({'recommendReason':reason})
+        if rets.count() == 0:
+            return recommend([reason], source)
+        else: return videos
 
 def process(userId):
     ret = clct_user.find_one({'_id':ObjectId(userId)})
     if ret is None:
         return False
+    similarDic = {}
+    similarKeywordsDic = []
+    videos = []
+
+    records = retrieveUserHistory(ret['uuid'])
+    for record in records:
+        similarKeywordsDic = similarWords(record['resourceName'])
+        for (k,v) in similarKeywordsDic.items():
+            for tag in v:
+                video = walk(tag, k)
+                if video: videos.extend(video)
+
     if ret['sinaId'] is not None:
         userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
-    similarTags = []
-    similarKeywords = []
     if userTags is not None:
         similarDic = similarWords(userTags)
-
-    videos = []
-    for (k,v) in similarDic.items():
-        for tag in v:
-            video = recommend([tag], k);videos.append(video)
-    infos = retrieveUserHistory(userId)
-    upload(videos)
+        for (k,v) in similarDic.items():
+            for tag in v:
+                video = walk(tag, k)
+                if video: videos.extend(video)
+    
+    upload(videos, ret['uuid'])
 
 def main():
     redisHost = redis.Redis(redisUrl, 6379)
@@ -137,4 +180,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    pprint(process('51bb18b10cf2507d314b78f2'))
+    #pprint(process('51bb18b10cf2507d314b78f2'))
+    main()
