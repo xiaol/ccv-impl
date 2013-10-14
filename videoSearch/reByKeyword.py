@@ -1,7 +1,7 @@
 #coding=utf-8
 
 import redis
-from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend
+from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug
 import imp,sys
 from pprint import pprint
 import json ,time
@@ -13,7 +13,7 @@ from common.common import getCurTime
 
 
 redisUrl = 'localhost'
-if not __debug__:
+if not debug:
     redisUrl = 'h48'
 
 def retrieveUserTag(sinaToken,sinaId):

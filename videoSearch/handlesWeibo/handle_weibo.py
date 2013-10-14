@@ -1,7 +1,7 @@
 #coding=utf-8
 import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
-
+from setting import debug
 from lxml import etree
 import re,pprint,json
 from common.common import getCurTime
@@ -20,7 +20,7 @@ p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
 
 job_server = None
-if  not __debug__:
+if  not debug:
     import pp
     # tuple of all parallel python servers to connect with
     ppservers = ()

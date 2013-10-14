@@ -1,7 +1,8 @@
 from pymongo import Connection
 
+debug = False
 
-if not __debug__:
+if not debug:
     con = Connection('h37:20010')
 else:
     con = Connection('60.28.29.37:20010')
@@ -16,7 +17,7 @@ clct_userRecommend = con.tiercel.userRecommend
 clct_user = con.tiercel.user
 
 
-if not __debug__:
+if not debug:
     logCon = Connection('h39:20010')
 else:
     logCon = Connection('60.28.29.39:20010')
