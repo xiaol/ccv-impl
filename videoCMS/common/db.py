@@ -1,10 +1,17 @@
 from videoCMS.conf import clct_category
 
 def getCategoryNameById(id):
-    return clct_category.find_one({'categoryId':id}).get('categoryName','Not Found')
+    result = clct_category.find_one({'categoryId':id})
+    if not result:
+        return 'Not Found'
+    return result['categoryName']
+
 
 def getCategoryIdByName(name):
-    return clct_category.find_one({'categoryName':name}).get('categoryId','Not Found')
+    result = clct_category.find_one({'categoryName':name})
+    if not result:
+        return 'Not Found'
+    return result['categoryId']
 
 def getCategoryList():
     return clct_category.distinct('categoryName') 
