@@ -32,8 +32,9 @@ def handle(url,channelId ,tvNumber):
         ret.append(buildResource(url, title, number, channelId, videoId))
 
     '''检测完结'''
-    if html.find("ico-rt-add") != -1:
+    if not re.search(u'更新至\d+', html):
         ret.append("over")
+
     return ret
 
 
