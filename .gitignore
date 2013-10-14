@@ -4,6 +4,8 @@
 .svn/
 .idea/
 *.so
+*.pyc
+*.pyo
 
 #################
 ## Eclipse

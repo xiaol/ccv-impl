@@ -8,7 +8,6 @@ from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
 from handlesWeibo.handle_weibo import handle
 
-
 redisUrl = 'localhost'
 if not debug:
     redisUrl = 'h48'
