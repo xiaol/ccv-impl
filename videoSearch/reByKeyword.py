@@ -13,7 +13,11 @@ from common.common import getCurTime
 
 
 redisUrl = 'localhost'
+contentUrl = 'http://60.28.29.46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
+segmentUrl = 'http://60.28.29.46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
 if not debug:
+    contentUrl = 'http://h46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
+    segmentUrl = 'http://h46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
     redisUrl = 'h48'
 
 def retrieveUserTag(sinaToken,sinaId):
@@ -69,8 +73,7 @@ def similarWords(words):
     return result
 
 def segment(sentences):
-    url = 'http://60.28.29.46:8080/solr/collection1/analysis/field?'\
-        'wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'%(urllib2.quote(sentences.encode('utf8')))
+    url = segmentUrl%(urllib2.quote(sentences.encode('utf8')))
     html = get_html(url)
     result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
     i,tags = 0,[]
@@ -86,8 +89,7 @@ def recommend(words, source):
             ' OR (detailLeadingRole: %s AND processed:true) OR (detailMovieCategory: %s AND processed:true)'%(subCon, subCon, subCon, subCon)'''
     query = 'resourceName: %s AND isOnline:true'%subCon
     query = urllib2.quote(query)
-    url = 'http://60.28.29.46:8080/solr/collection1/select?'\
-          'q=%s&rows=1&wt=json&indent=true'%query
+    url = contentUrl%query
     html = get_html(url)
     ret = json.loads(html)['response']['docs']
     videos = buildVideo(ret, ' '.join(words), source)
