@@ -126,7 +126,7 @@ def handle(channelId,handleName,url):
     elif handleName == 'youkuDongman':
         startSearch('handles.handle_youku_dongman', url, channelId,snapShot = snapShot, updateTvNumber=True)
     elif handleName == 'tudouDongman':
-        startSearch('handles.handle_tudou', url,channelId,snapShot = snapShot, updateTvNumber=True)
+        startSearch('handles.handle_tudou_dongman', url, channelId, snapShot=snapShot, updateTvNumber=True)
     elif handleName == 'sohuDongman':
         startSearch("handles.handle_sohu_dongman", url,channelId,snapShot = snapShot, updateTvNumber=True)
     elif handleName == 'iqiyiDongman':
