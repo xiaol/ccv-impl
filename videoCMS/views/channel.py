@@ -415,6 +415,18 @@ def toggleProcessed(request):
     
     return HttpResponse(json.dumps(ret))
 
+
+def toggleRec(request):
+    ret = {}
+    channelId = int(request.GET.get('channelId'))
+    channel = clct_channel.find_one({'channelId':channelId})
+
+    clct_channel.update({'channelId':channelId},{'$set':{'isRecommend':not channel['isRecommend']}})
+
+    ret['status'] = not channel['isRecommend']
+
+    return HttpResponse(json.dumps(ret))
+
 #===============================================
 
 def resetWeight(request):
