@@ -1,6 +1,6 @@
 #coding=utf-8
 from setting import clct_channel,clct_resource
-import imp,sys
+import imp,sys,time
 from pprint import pprint
 from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
@@ -11,8 +11,10 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     channel = clct_channel.find_one({'channelId':channelId})
     '''入库'''
     t = getCurTime()
-    numInserted = 0
+    InsertedList  = []
 
+
+    #入库
     for resource in resouceList:
         resource['createTime'] = t
         print("insert ",resource['videoType'],resource['videoId'])
@@ -31,20 +33,19 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                         'number':resource['number']
                         }})
                     if resource['isOnline']:
-                        numInserted += 1
-
+                        InsertedList.append(ret)
 
         else:
             print("insert Ok!")
             if resource['isOnline']:
-                numInserted += 1
+                InsertedList.append(ret)
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
 
     #如果 成功有视频插入，则更新频道
-    if numInserted >0 :
+    if len(InsertedList) >0 :
         updateMap = {'updateTime':getCurTime()}
         if updateTvNumber:
             updateMap['tvNumber'] = resouceList[0]['number']
@@ -52,6 +53,18 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         clct_channel.update({'channelId':channelId},{'$set':updateMap})
     #清除 视频权重
     clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
+
+    #如果 成功有视频插入，更新插入视频的updateTime
+    if len(InsertedList) > 0 :
+        t_lastUpdateTime = time.mktime(time.strptime(channel['updateTime'],'%Y%m%d%H%M%S'))
+        t_now = time.time()
+        t_span = (t_now - t_lastUpdateTime)/len(InsertedList)
+        t_this = t_lastUpdateTime
+        for obid in InsertedList:
+            t_this += t_span
+            updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
+            clct_resource.update({'_id':obid},{'$set':{'updateTime':updateTime}})
+
 
 def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , **keyParams):
     #获取模块
