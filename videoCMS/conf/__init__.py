@@ -151,6 +151,7 @@ searchHandleListAll = [
 "search.baomihuaFunny",
 "search.zealer",
 "search.qqList",
+"search.qqCover",
 "search.sinaEntList",
 "search.letvEntzt",
 "search.yinyuetaiMV",

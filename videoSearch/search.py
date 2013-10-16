@@ -257,6 +257,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_zealer', url, channelId, snapShot = snapShot)
     elif handleName == 'qqList':
         startSearch('handles.handle_qq_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'qqCover':
+        startSearch('handles.handle_qq_cover', url, channelId, snapShot=snapShot)
     elif handleName == 'sinaEntList':
         startSearch('handles.handle_sina_ent_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvEntzt':
