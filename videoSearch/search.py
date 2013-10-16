@@ -33,7 +33,6 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                     if resource['isOnline']:
                         numInserted += 1
 
-
         else:
             print("insert Ok!")
             if resource['isOnline']:

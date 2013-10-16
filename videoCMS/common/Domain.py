@@ -49,6 +49,7 @@ class Resource(DomainBase):
     ext = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+    updateTime = '00000000000000'
     type = ''
     hot = -1
     number = -1
@@ -70,7 +71,6 @@ class Resource(DomainBase):
 
     scheduleGoOnline = ''
     gifUrl = ''
-    
 
 class Category(DomainBase):
     categoryName = ''
@@ -181,6 +181,7 @@ class VideoInfoTask(DomainBase):
     videoId = ''
     videoType = ''
     force = False
+    goOnline = False
 
 
 class CDNSyncTask(DomainBase):
@@ -188,3 +189,31 @@ class CDNSyncTask(DomainBase):
     resourceId = ''
     videoId = ''
     videoType = ''
+
+class UserWeibo(DomainBase):
+    weiboId = -1
+    sinaId = ''
+    sinaName =''
+    title = ''
+    comment = ''
+    friendId = -1
+    friendScreenName = ''
+    friendName = ''
+    friendProfileImageUrl = ''
+    friendCoverImageUrl = ''
+    friendGender = ''
+    retweetedFriendId = -1
+    retweetedFriendScreenName = ''
+    retweetedFriendName = ''
+    retweetedFriendProfileImageUrl = ''
+    retweetedFriendCoverImageUrl = ''
+    retweetedFriendGender = ''
+    repostsCount = 0
+    commentsCount = 0
+    attitudesCount = 0
+    videoScreenshotUrl = ''
+    videoUrl = ''
+    resourceId = ''
+    createTime = '00000000000000'
+    modifyTime = '00000000000000'
+
