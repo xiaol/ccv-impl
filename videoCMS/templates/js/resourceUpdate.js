@@ -1,3 +1,12 @@
+function openGetVideoUrl()
+{
+    var videoType = $('[name="videoType"]').val();
+    var videoId = $('[name="videoId"]').val();
+
+    var url = "/resource/getVideoUrl?videoType="+videoType+"&videoId="+videoId;
+    window.open(url);
+}
+
 function queryVideoId()
 {
 	var url = $("#videoURL").val();

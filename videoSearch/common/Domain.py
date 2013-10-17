@@ -216,4 +216,5 @@ class UserWeibo(DomainBase):
     resourceId = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+    updateTime = '00000000000000'
 

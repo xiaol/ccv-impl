@@ -60,7 +60,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         t_now = time.time()
         t_span = (t_now - t_lastUpdateTime)/len(InsertedList)
         t_this = t_lastUpdateTime
-        for obid in InsertedList:
+        for obid in reversed(InsertedList):
             t_this += t_span
             updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
             clct_resource.update({'_id':obid},{'$set':{'updateTime':updateTime}})

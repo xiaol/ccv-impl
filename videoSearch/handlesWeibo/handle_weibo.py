@@ -3,11 +3,11 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from setting import debug
 from lxml import etree
-import re,pprint,json
+import re,pprint,json,time
 from common.common import getCurTime
 from pymongo import Connection
 from common.Domain import Resource,Channel,UserWeibo
-from common.HttpUtil import get_html,HttpUtil
+from common.HttpUtil import get_html,HttpUtil, downloadGif
 
 p_1 = re.compile('http://(.*?)/')
 p_url = re.compile('http://[\w\./]*')
@@ -16,6 +16,7 @@ p_youku = re.compile('http://v.youku.com/v_show/id_(.*?).html')
 p_56 = re.compile('v_([^\.]+).html')
 
 p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
+p_2 = re.compile('\S.(?P<type>\w+)$')
 
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
 
@@ -52,7 +53,7 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
             item = decodeWeibo(video, httpUtil, sinaId, sinaName)
             if item is None:
                 continue
-            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
+            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId'],'video'),
                               'userWeibo':buildUserWeibo(item)})
         else:
             jobs.append(job_server.submit(pDecodeWeibo, (video, sinaId, sinaName, getVideoIdUrl ), (),
@@ -62,10 +63,35 @@ def handle(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20)
             item = job()
             if item is None:
                 continue
-            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId']),
+            videoList.append({'resource':buildResource(item['videoUrl'] , item['title'], channelId, item['videoType'], item['videoId'],'video'),
                               'userWeibo':buildUserWeibo(item)})
 
     return videoList
+
+def handleGif(channelId, access_token, since_id, sinaId, sinaName, page=1,count=20):
+    httpUtil = HttpUtil()
+    # 列表页
+    url = 'https://api.weibo.com/2/statuses/home_timeline.json?' \
+          'access_token=%s&since_id=%s&page=%s&count=%s&feature=2'%(access_token,since_id,page,count)
+    print url
+    html = get_html(url)
+    images = json.loads(html)['statuses']
+    print len(images)
+    gifList  = []
+    for image in  images:
+        if 'retweeted_status' in image:
+            imageUrl = image['retweeted_status']['bmiddle_pic']
+        else:
+            imageUrl = image['bmiddle_pic']
+        m = p_2.search(imageUrl)
+        type = m.group('type')
+        if cmp(type,'gif') == 0:
+            item = decodeImageWeibo(image, httpUtil, sinaId, sinaName)
+            videoId, resourceImageUrl = downloadGif(item['videoUrl'], channelId)
+            if videoId and resourceImageUrl:
+                gifList.append({'resource':buildGifResource(item['videoUrl'] , item['title'], channelId, videoId, resourceImageUrl),
+                             'userWeibo':buildUserWeibo(item)})
+    return gifList
 
 def pDecodeWeibo(video, sinaId, sinaName, getVideoIdUrl):
     httpUtil = HttpUtil()
@@ -131,6 +157,7 @@ def pDecodeWeibo(video, sinaId, sinaName, getVideoIdUrl):
     item['repostsCount'] = video['reposts_count']
     item['commentsCount'] = video['comments_count']
     item['attitudesCount'] = video['attitudes_count']
+    item['created_at'] = video['created_at']
     if 'bmiddle_pic' in video:
         item['videoScreenshotUrl'] = video['bmiddle_pic']
 
@@ -205,6 +232,7 @@ def decodeWeibo(video, httpUtil, sinaId, sinaName):
     item['repostsCount'] = video['reposts_count']
     item['commentsCount'] = video['comments_count']
     item['attitudesCount'] = video['attitudes_count']
+    item['created_at'] = video['created_at']
     if 'bmiddle_pic' in video:
         item['videoScreenshotUrl'] = video['bmiddle_pic']
 
@@ -216,6 +244,55 @@ def decodeWeibo(video, httpUtil, sinaId, sinaName):
         if 'cover_image' in video['retweeted_status']['user']:
             item['retweetedFriendCoverImageUrl'] = video['retweeted_status']['user']['cover_image']
         item['retweetedFriendGender'] = video['retweeted_status']['user']['gender']
+
+        #except:
+        #print "Decode exception."
+        #continue
+        #print item
+    return item
+
+def decodeImageWeibo(image, httpUtil, sinaId, sinaName):
+    item = {}
+    if 'retweeted_status' in image:
+        comment = image['text']
+        text = image['retweeted_status']['text']
+        imageUrl = image['retweeted_status']['bmiddle_pic']
+    else:
+        text = image['text']
+        comment = ''
+        imageUrl = image['bmiddle_pic']
+        #print video['text']
+    #try:
+    item['videoUrl'] = imageUrl
+    item['videoId'] = imageUrl
+    item['videoType'] = 'gifUrl'
+    item['title'] = text
+    item['sinaId'] = sinaId
+    item['sinaName'] = sinaName
+    item['weiboId'] = image['id']
+    item['comment'] = comment
+    item['friendId'] = image['user']['id']
+    item['friendName'] = image['user']['name']
+    item['friendScreenName'] = image['user']['screen_name']
+    item['friendProfileImageUrl'] = image['user']['profile_image_url']
+    if 'cover_image' in image['user']:
+        item['friendCoverImageUrl'] = image['user']['cover_image']
+    item['friendGender'] = image['user']['gender']
+    item['repostsCount'] = image['reposts_count']
+    item['commentsCount'] = image['comments_count']
+    item['attitudesCount'] = image['attitudes_count']
+    item['created_at'] = image['created_at']
+    if 'bmiddle_pic' in image:
+        item['videoScreenshotUrl'] = image['bmiddle_pic']
+
+    if 'retweeted_status' in image:
+        item['retweetedFriendId'] = image['retweeted_status']['user']['id']
+        item['retweetedFriendName'] = image['retweeted_status']['user']['name']
+        item['retweetedFriendScreenName'] = image['retweeted_status']['user']['screen_name']
+        item['retweetedFriendProfileImageUrl'] = image['retweeted_status']['user']['profile_image_url']
+        if 'cover_image' in image['retweeted_status']['user']:
+            item['retweetedFriendCoverImageUrl'] = image['retweeted_status']['user']['cover_image']
+        item['retweetedFriendGender'] = image['retweeted_status']['user']['gender']
 
         #except:
         #print "Decode exception."
@@ -256,15 +333,20 @@ def buildUserWeibo(item):
 
     userWeibo['createTime'] = getCurTime()
     userWeibo['modifyTime'] = getCurTime()
+    timeList = item['created_at'].split(' ')
+    del timeList[-2]
+    strTime = ' '.join(timeList)
+    weiboTime = time.strptime(strTime, "%a %b %d %H:%M:%S %Y")
+    userWeibo['updateTime'] = time.mktime(weiboTime)
 
     return userWeibo.getInsertDict()
 
-def buildResource(url,title,channelId,videoType,videoId):
+def buildResource(url,title,channelId,videoType,videoId,type):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['channelId'] = channelId
-    resource['type'] = 'video'
+    resource['type'] = type
     resource['videoType'] = videoType
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
@@ -272,7 +354,21 @@ def buildResource(url,title,channelId,videoType,videoId):
 
     return resource.getInsertDict()
 
+def buildGifResource(url,title,channelId,videoId, resourceImageUrl):
+    resource = Resource()
+    resource['resourceName'] = title
+    resource['resourceUrl'] = url
+    resource['channelId'] = channelId
+    resource['type'] = 'gif'
+    resource['videoType'] =  'gif'
+    resource['videoId'] =  videoId#videoUrl
+    resource['createTime'] = getCurTime()
+    resource['modifyTime'] = getCurTime()
+    resource['resourceImageUrl'] = resourceImageUrl
+
+    return resource.getInsertDict()
+
 
 if __name__ == '__main__':
-    pprint.pprint(handle(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', '1837408945', '__刘潇'))
+    pprint.pprint(handleGif(0,'2.00JAa2ACfsSuoB59e11ed8f40Kt3ip','3625753381928262', '1837408945', '__刘潇'))
 
