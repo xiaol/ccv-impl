@@ -155,6 +155,8 @@ searchHandleListAll = [
 "search.sinaEntList",
 "search.letvEntzt",
 "search.yinyuetaiMV",
+"search.163Open",
+"search.163Paike",
 
 "searchGif.onegif",
 "searchGif.forgifs",

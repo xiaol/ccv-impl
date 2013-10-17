@@ -15,7 +15,7 @@ from common.HttpUtil import get_html
 def handle(url, channelId, tvNumber):
     html = get_html(url, 'gbk')
 
-    album_id = re.search(r'/(\w+)\.html', url).groups()[0]
+    album_id = re.search(r'/([^/]+)\.html', url).groups()[0]
     album_data = json.loads(get_html("http://www.tudou.com/albumcover/albumdata/getAlbumItems.html?acode=%s&charset=utf-8"\
                         % album_id))
     item_num = album_data['itemNum']
@@ -62,3 +62,4 @@ def buildResource(url,title,number,channelId,videoId):
 if __name__ == '__main__':
     # pprint.pprint(handle('http://www.tudou.com/albumcover/_nJJMEa6O6I.html',1,1))
     pprint.pprint(handle('http://www.tudou.com/albumcover/92J2xqpSxWY.html',1,1))
+    pprint.pprint(handle('http://www.tudou.com/albumcover/9y-2dhiYwk0.html',1,1))

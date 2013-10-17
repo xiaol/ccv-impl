@@ -278,6 +278,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
     elif handleName == 'yinyuetaiMV':
         startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
+    elif handleName == '163Open':
+        startSearch('handles.handle_163_open', url, channelId, snapShot=snapShot, updateTvNumber=True)
+    elif handleName == '163Paike':
+        startSearch('handles.handle_163_paike', url, channelId, snapShot=snapShot, updateTvNumber=True)
 
 if __name__ == '__main__':
     pass
