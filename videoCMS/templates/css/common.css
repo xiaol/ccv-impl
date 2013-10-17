@@ -22,4 +22,6 @@ box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0
 body{
     background-image: url('/static/img/bg.jpg');
     background-attachment : fixed;
+    background-position: center 0;
+    background-position: cover;
 }
