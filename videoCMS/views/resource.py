@@ -79,7 +79,9 @@ def index(request):
     if startTime != '':
         spec['createTime'] = {"$gte":startTime}
     if endTime != '':
-        spec['createTime'] = {"$lte":endTime}
+        if 'createTime' not in spec:
+            spec['createTime'] = {}
+        spec['createTime'].update({"$lte":endTime})
     if mongo != '':
         spec.update(json.loads(mongo))
 
