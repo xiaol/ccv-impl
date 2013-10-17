@@ -49,6 +49,7 @@ class Resource(DomainBase):
     ext = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+    updateTime = '00000000000000'
     type = ''
     hot = -1
     number = -1
@@ -71,7 +72,6 @@ class Resource(DomainBase):
     scheduleGoOnline = ''
     gifUrl = ''
 
-    
 class Category(DomainBase):
     categoryName = ''
     categoryId = 0
@@ -102,7 +102,6 @@ class Channel(DomainBase):
     updateTime = '00000000000000'
     nextSearchTime = '00000000000000'
     searchTime = '00000000000000'
-
     
     onlineStatus = 0
     description = ''

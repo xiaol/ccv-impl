@@ -57,7 +57,11 @@
 		                            {% endifequal %}
                                     <br/>
                                     <span class="label label-info">订{{channel.subscribeNum}}</span>
-                                    
+                                    {% if channel.isRecommend%}
+		                            <a channelId="{{channel.channelId}}" class="label label-warning" onclick="toggleRec(this)">已推荐</a>
+		                            {% else %}
+		                            <a channelId="{{channel.channelId}}" class="label"  onclick="toggleRec(this)">未推荐</a>
+		                        	{% endif %}
                                     <a class="label label-warning"  target="_blank" href="showJson?id={{channel.id}}">JSON</a>
                                     <a class="label label-warning" onclick="resetWeight({{channel.channelId}})" >重置权重</a>
                                     <a class="label label-warning" onclick="setCompleted({{channel.channelId}})" >设置完结</a>
