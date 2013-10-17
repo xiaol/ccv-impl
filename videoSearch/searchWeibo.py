@@ -3,10 +3,11 @@ import redis
 from setting import clct_channel,clct_resource,clct_userWeibo, debug
 import imp,sys
 from pprint import pprint
-import json ,time
+import json ,time, os
 from common.common import getCurTime
 from common.videoInfoTask import addVideoInfoTask
-from handlesWeibo.handle_weibo import handle
+from handlesWeibo.handle_weibo import handle, handleGif
+from setting import clct_channel, clct_resource, GIF_SERVER, GIF_SERVER_PORT, GIF_SERVER_DIR, GIF_TEMP_DIR
 
 redisUrl = 'localhost'
 if not debug:
@@ -66,7 +67,7 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
     if isNew:
         since_id,page,count = 0,1,10
     else:
-        page,count = 1,20
+        page,count = 1,100
         x = clct_userWeibo.find_one({'sinaId':sinaId},sort=[('weiboId',-1)])
         if x is None:
             since_id = 0
@@ -79,6 +80,27 @@ def process(isNew, access_token, sinaId, sinaName, channelId):
     print("Insert ",sinaId, sinaName)
     insertWeibo(weiboList)
 
+
+def processGif(isNew, access_token, sinaId, sinaName, channelId,since_id,page,count):
+    gifList = handleGif(channelId, access_token, since_id, sinaId, sinaName, page, count)
+
+    for gifMap in gifList:
+        one = gifMap['resource']
+        one['isOnline'] = True
+        one['duration'] = -1
+        one['categoryId'] = 0
+        one['type'] = 'gif'
+
+    #拷贝本地gif和png到47服务器 然后删除本地图片
+    cmd = 'scp -P %d -r %s/videoCMS/gif_resource/%d %s:%s' \
+          % (GIF_SERVER_PORT, GIF_TEMP_DIR, channelId, GIF_SERVER, GIF_SERVER_DIR)
+    os.popen(cmd)
+    cmd = 'rm -f %s/videoCMS/gif_resource/%d/*.*' % (GIF_TEMP_DIR, channelId)
+    os.popen(cmd)
+
+    gifList = insertResouce(gifList, channelId, True)
+    print("Insert gif ",sinaId, sinaName)
+    insertWeibo(gifList)
 
 def main():
     redisHost = redis.Redis(redisUrl, 6379)
