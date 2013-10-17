@@ -23,5 +23,5 @@ body{
     background-image: url('/static/img/bg.jpg');
     background-attachment : fixed;
     background-position: center 0;
-    background-position: cover;
+    background-size: cover;
 }
