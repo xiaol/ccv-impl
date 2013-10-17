@@ -147,7 +147,7 @@ def POST2Resource(request):
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    resource['createTime'] = getCurTime()
+
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
@@ -181,6 +181,7 @@ def update(request):
     
     #更新
     resource = POST2Resource(request)
+    resource['modifyTime'] = getCurTime()
         
     img = request.FILES.get('resourceImage',None)
     if img:
@@ -202,7 +203,10 @@ def add(request):
         return render_to_response('resourceUpdate.htm',DICT)
     
     resource = POST2Resource(request)
-    
+    now = getCurTime()
+    resource['createTime'] = now
+    resource['updateTime'] = now
+
     for tag in resource['tagList']:
         if clct_tag.find_one({'name':tag}) == None:
             createTag(tag)
