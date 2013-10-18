@@ -118,11 +118,14 @@ def upload(videos, uuid):
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
             print("Insert Error!",e)
+            ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
+            ret['recommendReason'] = ret['recommendReason'].encode('utf8')+' '+video['recommendReason']
+            clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})
         else:
             pass
 
 def walk(reason, source): #TODO maybe find in list can work this out
-    rets = clct_userRecommend.find({'recommendReason':reason, 'isPlayed': 1})
+    rets = clct_userRecommend.find({'recommendReason':{'$regex':reason}, 'isPlayed': 1})
     videos = []
     if rets.count() != 0:
         for ret in rets:
@@ -132,7 +135,7 @@ def walk(reason, source): #TODO maybe find in list can work this out
                     videos.extend(walk(word,'%s %s'%(source, k)))
             return videos
     else:
-        rets = clct_userRecommend.find({'recommendReason':reason})
+        rets = clct_userRecommend.find({'recommendReason':{'$regex':reason}})
         if rets.count() == 0:
             return recommend([reason], source)
         else: return videos
