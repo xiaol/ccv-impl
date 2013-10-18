@@ -29,8 +29,8 @@ def retrieveUserTag(sinaToken,sinaId):
     tags = json.loads(html)
     for tag in tags:
         for (k,v) in tag.items():
-            result.append(v)
-            break
+            if isinstance(v, basestring):
+                result.append(v)
 
     return result
 
@@ -182,5 +182,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('sina_1837408945'))
-    main()
+    pprint(process('huohua_sina_524922ad0cf25568d165cbdd')) #sina_1837408945
+    #main()
