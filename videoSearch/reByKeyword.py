@@ -161,7 +161,8 @@ def process(uuid):
             for tag in v:
                 video = walk(tag, k)
                 if video: videos.extend(video)
-    
+
+    print uuid,'count: ',len(videos)
     upload(videos, ret['uuid'])
 
 def main():
