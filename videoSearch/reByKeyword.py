@@ -156,14 +156,17 @@ def process(uuid):
                 video = walk(tag, k)
                 if video: videos.extend(video)
 
-    if ret['sinaId'] is not None:
-        userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
-    if userTags is not None:
-        similarDic = similarWords(userTags)
-        for (k,v) in similarDic.items():
-            for tag in v:
-                video = walk(tag, k)
-                if video: videos.extend(video)
+    try:
+        if ret['sinaId'] is not None:
+            userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
+        if userTags is not None:
+            similarDic = similarWords(userTags)
+            for (k,v) in similarDic.items():
+                for tag in v:
+                    video = walk(tag, k)
+                    if video: videos.extend(video)
+    except Exception,e:
+        print e
 
     print uuid,'count: ',len(videos)
     upload(videos, ret['uuid'])
