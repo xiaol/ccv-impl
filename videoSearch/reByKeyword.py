@@ -177,6 +177,7 @@ def main():
                 #time.sleep(2)
                 continue
             start = time.time()
+            print(originalMsg[1])
             msg = json.loads(originalMsg[1])
             print("User starting: ", msg['uuid'])
             process(msg['uuid'])
