@@ -72,6 +72,8 @@ class Resource(DomainBase):
     scheduleGoOnline = ''
     gifUrl = ''
 
+    subtitle = ''
+
 class Category(DomainBase):
     categoryName = ''
     categoryId = 0

@@ -151,6 +151,7 @@ def POST2Resource(request):
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
+    resource['subtitle'] = request.POST.get('subtitle')
 
     try:
         resource['number'] = int(resource['number'])
