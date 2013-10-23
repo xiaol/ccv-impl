@@ -135,7 +135,7 @@ def walk(reason, source): #TODO maybe find in list can work this out
                     videos.extend(walk(word,'%s %s'%(source, k)))
             return videos
     else:
-        rets = clct_userRecommend.find({'recommendReason':{'$regex':reason}})
+        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}})
         if rets.count() == 0:
             return recommend([reason], source)
         else: return videos
