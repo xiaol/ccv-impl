@@ -228,7 +228,7 @@ def add(request):
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         return render_to_response('channelUpdate.htm',DICT)
     
-    channel = POST2Channel()
+    channel = POST2Channel(request)
 
     channel['createTime'] = getCurTime()
     channel['modifyTime'] = getCurTime()
