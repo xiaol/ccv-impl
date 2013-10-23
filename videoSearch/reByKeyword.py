@@ -125,7 +125,7 @@ def upload(videos, uuid):
             pass
 
 def walk(reason, source): #TODO maybe find in list can work this out
-    rets = clct_userRecommend.find({'recommendReason':{'$regex':reason}, 'isPlayed': 1})
+    rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
     videos = []
     if rets.count() != 0:
         for ret in rets:
