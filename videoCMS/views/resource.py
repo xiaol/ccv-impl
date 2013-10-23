@@ -153,6 +153,7 @@ def POST2Resource(request):
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
 
+
     try:
         resource['number'] = int(resource['number'])
     except:

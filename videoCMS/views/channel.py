@@ -103,6 +103,70 @@ def index(request):
     return render_to_response('channelList.htm',DICT)
 
 
+
+def POST2Channel(request):
+    channel = Channel()
+    channel = Channel()
+    if request.POST['channelId'] == '':
+        channel['channelId'] = getMaxChannelId()
+    else:
+        channel['channelId'] = int(request.POST['channelId'])
+
+    channel['tvNumber'] = request.POST.get('tvNumber')
+    if channel['tvNumber'] == '':
+        channel['tvNumber'] = 0
+    try:
+        channel['tvNumber'] = int(request.POST.get('tvNumber',0))
+    except:
+        pass
+
+    channel['createTime'] = request.POST.get('createTime')
+    channel['identifer'] = int(request.POST.get('identifer'))
+    channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
+    channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
+    channel['channelName'] = request.POST.get('channelName')
+    channel['subtitle'] = request.POST.get('subtitle')
+    channel['sourceWebsite'] = request.POST.get('sourceWebsite')
+    channel['yyetsSeason'] = request.POST.get('yyetsSeason')
+    channel['yyetsDownMode'] = request.POST.get('yyetsDownMode')
+    channel['yyetsEncode'] = request.POST.get('yyetsEncode')
+    channel['sourceList'] = filter(lambda a:a,request.POST.getlist('sourceList'))
+    channel['searchHandleList'] = request.POST.getlist('searchHandleList')
+    if len(channel['searchHandleList']) > len(channel['sourceList']):
+        channel['searchHandleList'] = channel['searchHandleList'][:len(channel['sourceList'])]
+
+    channel['channelType'] = getCategoryIdByName(request.POST.get('channelType'))
+    channel['categoryType'] = getCategoryTypeById(channel['channelType'])
+    channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
+    channel['updateTime'] = request.POST.get('updateTime')
+    if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
+    if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
+    channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
+    channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
+    channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
+    channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
+    channel['type'] = request.POST.get('type')
+    channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
+    channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
+    channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
+    channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
+    channel['nextSearchTime'] = request.POST.get('nextSearchTime')
+    if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990101000000'
+    if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
+    channel['handleName'] = request.POST.get('handleName')
+    channel['handleArgs'] = request.POST.get('handleArgs')
+    channel['handleFrequents'] = request.POST.get('handleFrequents')
+    #同步类别的视频类型 到 频道
+    channel['videoClass'] = clct_category.find_one({'categoryId':channel['channelType']})['videoClass']
+
+
+    #检查 字段
+    if channel['channelName'] == '':
+        raise Exception('频道名 不能为空')
+
+    return channel
+
+
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -126,46 +190,11 @@ def update(request):
         return render_to_response('channelUpdate.htm',DICT)
     
     #更新
-    channel = Channel()
-    channel['channelId'] = int(request.POST.get('channelId'))
-    channel['tvNumber'] = int(request.POST.get('tvNumber'))
-    channel['identifer'] = int(request.POST.get('identifer'))
-    channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
-    channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
-    channel['channelName'] = request.POST.get('channelName')
-    channel['subtitle'] = request.POST.get('subtitle')
-    channel['sourceWebsite'] = request.POST.get('sourceWebsite')
-    channel['yyetsSeason'] = request.POST.get('yyetsSeason')
-    channel['yyetsDownMode'] = request.POST.get('yyetsDownMode')
-    channel['yyetsEncode'] = request.POST.get('yyetsEncode')
-    channel['sourceList'] = filter(lambda a:a,request.POST.getlist('sourceList'))
-    channel['searchHandleList'] = request.POST.getlist('searchHandleList')
-    if len(channel['searchHandleList']) > len(channel['sourceList']):
-        channel['searchHandleList'] = channel['searchHandleList'][:len(channel['sourceList'])]
-    
-    channel['channelType'] = getCategoryIdByName(request.POST.get('channelType'))
-    channel['categoryType'] = getCategoryTypeById(channel['channelType'])
-    channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    channel['updateTime'] = request.POST.get('updateTime')
-    if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
-    if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
+    channel = POST2Channel(request)
+
     channel['modifyTime'] = getCurTime()
-    channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
-    channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
-    channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
-    channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
-    channel['type'] = request.POST.get('type')
-    channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
-    channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
-    channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
-    channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
-    channel['nextSearchTime'] = request.POST.get('nextSearchTime')
-    if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990101000000'
-    if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
-    channel['handleName'] = request.POST.get('handleName')
-    channel['handleArgs'] = request.POST.get('handleArgs')
-    channel['handleFrequents'] = request.POST.get('handleFrequents')
-    
+
+    #更新图片
     img = request.FILES.get('channelImage',None)
     if img:channel['channelImageUrl'] = saveChannelImage(img.read(),id)
     img = request.FILES.get('poster',None)
@@ -199,59 +228,11 @@ def add(request):
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         return render_to_response('channelUpdate.htm',DICT)
     
-    channel  = Channel()
-    if request.POST['channelId'] == '':
-        channel['channelId'] = getMaxChannelId()
-    else:
-        channel['channelId'] = int(request.POST['channelId'])
-    try:
-        channel['tvNumber'] = int(request.POST.get('tvNumber',0))
-    except:
-        channel['tvNumber'] = 0
-    channel['identifer'] = int(request.POST.get('identifer'))
-    channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
-    channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
-    channel['channelName'] = request.POST['channelName']
-    channel['subtitle'] = request.POST.get('subtitle')
-    channel['sourceWebsite'] = request.POST.get('sourceWebsite')
-    channel['yyetsSeason'] = request.POST.get('yyetsSeason')
-    channel['yyetsDownMode'] = request.POST.get('yyetsDownMode')
-    channel['yyetsEncode'] = request.POST.get('yyetsEncode')
-    channel['channelType'] = getCategoryIdByName(request.POST.get('channelType'))
-    channel['categoryType'] = getCategoryTypeById(channel['channelType'])
-    channel['isNewest'] = True if request.POST.get('isNewest') == u'是' else False
-    channel['autoOnline'] = True if request.POST.get('autoOnline') == u'是' else False
-    channel['processed'] = True if request.POST.get('processed') == u'已处理' else False
-    channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
-    channel['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
-    channel['type'] = request.POST.get('type')
-    channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
-    channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
-    channel['updateTime'] = request.POST.get('updateTime')
-    if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
-    if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
+    channel = POST2Channel()
+
     channel['createTime'] = getCurTime()
     channel['modifyTime'] = getCurTime()
-    if channel['channelName'] == '':
-        raise Exception('频道名 不能为空')
-    channel['sourceList'] = filter(lambda a:a,request.POST.getlist('sourceList'))
-    channel['searchHandleList'] = request.POST.getlist('searchHandleList')
-    if len(channel['searchHandleList']) > len(channel['sourceList']):
-        channel['searchHandleList'] = channel['searchHandleList'][:len(channel['sourceList'])]
-    channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
-    channel['nextSearchTime'] = request.POST.get('nextSearchTime')
-    if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990000000000'
-    if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
-    channel['handleName'] = request.POST.get('handleName')
-    channel['handleArgs'] = request.POST.get('handleArgs')
-    channel['handleFrequents'] = request.POST.get('handleFrequents')
-    
 
-    #同步类别的视频类型 到 频道
-    categoryId =  channel['channelType']
-    category = clct_category.find_one({'categoryId':categoryId})
-    channel['videoClass'] = category['videoClass']
 
     id = clct_channel.insert(channel.getInsertDict(),safe=True)
     id = str(id)
@@ -455,3 +436,35 @@ def setCompleted(request):
                                                   "$unset":{"searchMsg":1,"searchStatus":1}})
 
     return HttpResponse('ok')
+
+
+def disperseUpdateTime(request):
+    channelId = int(request.GET.get('channelId'))
+    channel = clct_channel.find_one({'channelId':channelId})
+    disperseResourceUpdateTime(channelId,channel['createTime'],channel['updateTime'])
+    return HttpResponse('ok')
+
+
+
+def disperseResourceUpdateTime(channelId, startTime, endTime):
+    resourceIt = clct_resource.find({'channelId':channelId},timeout=False).sort([('number',1),('createTime',1)])
+    SIZE = resourceIt.count()
+    if SIZE == 0:
+        return
+
+    t_start = time.mktime(time.strptime(startTime,'%Y%m%d%H%M%S'))
+    t_now = time.mktime(time.strptime(endTime,'%Y%m%d%H%M%S'))
+
+    t_span = (t_now - t_start)/SIZE
+    t_this = t_start
+
+    #间隔过短，修改开始时间
+    if t_span < 3600 :
+        t_span = 3600
+        t_start = t_now - t_span*SIZE
+
+    for resource in resourceIt:
+        t_this += t_span
+        updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
+        print updateTime
+        clct_resource.update({'_id':resource['_id']},{'$set':{'updateTime':updateTime}})

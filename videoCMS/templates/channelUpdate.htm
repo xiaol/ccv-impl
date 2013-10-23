@@ -143,10 +143,17 @@
 		                        
 		                    </td>
 		                </tr>
+                        <tr>
+		                    <td>频道创建时间</td>
+		                    <td>
+		                        <input type="text"  name="createTime" value="{{createTime}}" />
+		                    </td>
+		                </tr>
 		                <tr>
 		                    <td>资源更新时间</td>
 		                    <td>
 		                        <input type="text"  name="updateTime" value="{{updateTime}}" />
+                                <input type="button" value="打散视频" onclick="disperseUpdateTime({{ channelId }})"/>
 		                    </td>
 		                </tr>
 		                <!-- 
