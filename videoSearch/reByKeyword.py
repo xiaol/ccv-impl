@@ -178,6 +178,7 @@ def main():
                 continue
             start = time.time()
             msg = json.loads(originalMsg[1])
+            print("User starting: ", msg['uuid'])
             process(msg['uuid'])
             elapsed = (time.time() - start)
             print("Time used:",elapsed)
@@ -186,5 +187,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    pprint(process('huohua_sina_524922ad0cf25568d165cbdd')) #sina_1837408945
+    pprint(process('sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
     #main()
