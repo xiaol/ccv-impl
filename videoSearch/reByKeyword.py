@@ -81,6 +81,8 @@ def similarWords(words):
     return result
 
 def segment(sentences):
+    if len(sentences) <= 2:
+        return [sentences]
     url = segmentUrl%(urllib2.quote(sentences.encode('utf8')))
     i,tags = 0,[]
     try:
@@ -136,8 +138,9 @@ def upload(videos, uuid):
         except Exception,e:
             print("Insert Error!",e)
             ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
-            ret['recommendReason'] = ret['recommendReason'].encode('utf8')+' '+video['recommendReason']
-            clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})
+            if cmp(ret['recommendReason'].encode('utf8'), video['recomendReason']) != 0:
+                ret['recommendReason'] = ret['recommendReason'].encode('utf8')+' '+video['recommendReason']
+                clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})
         else:
             pass
 
@@ -186,6 +189,19 @@ def process(uuid):
         print e
 
     print uuid,'count: ',len(videos)
+    if len(videos) == 0:
+        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isPlayed':-1})
+        try:
+            if  retR is None and ret['sinaId'] is not None:
+                suggestionTag = retrieveSuggestion(ret['sinaToken'])
+                if suggestionTag is not None:
+                    similarSuggestionDic = similarWords(suggestionTag)
+                    for (k,v) in similarSuggestionDic.items():
+                        for tag in v:
+                            video = walk(tag, k)
+                            if video: videos.extend(video)
+        except Exception,e:
+            print e
     upload(videos, ret['uuid'])
 
 def main():
