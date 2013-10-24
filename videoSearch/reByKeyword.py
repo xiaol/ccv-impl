@@ -25,8 +25,12 @@ def retrieveUserTag(sinaToken,sinaId):
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
                  'access_token=%s&uid=%s&page=%s&count=%s'%(sinaToken,sinaId,page,count)
     result = []
-    html = get_html(userTagUrl)
-    tags = json.loads(html)
+    try:
+        html = get_html(userTagUrl)
+        tags = json.loads(html)
+    except Exception,e:
+        print e
+        return result
     for tag in tags:
         for (k,v) in tag.items():
             if isinstance(v, basestring):
@@ -38,8 +42,12 @@ def retrieveSuggestion(sinaToken):
     result = []
     userSuggestionUrl = 'https://api.weibo.com/2/tags/suggestions.json?' \
                         'access_token=%s&count=10'%(sinaToken)
-    html = get_html(userSuggestionUrl)
-    suggestions = json.loads(html)
+    try:
+        html = get_html(userSuggestionUrl)
+        suggestions = json.loads(html)
+    except Exception,e:
+        print e
+        return result
     for suggest in suggestions:
         for (k,v) in suggest.items():
             if cmp(k,'value') == 0:
@@ -74,9 +82,13 @@ def similarWords(words):
 
 def segment(sentences):
     url = segmentUrl%(urllib2.quote(sentences.encode('utf8')))
-    html = get_html(url)
-    result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
     i,tags = 0,[]
+    try:
+        html = get_html(url)
+        result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
+    except Exception,e:
+        print e
+        return tags
     for line in result:
         tags.append(line['text'])
     return tags
@@ -90,8 +102,13 @@ def recommend(words, source):
     query = 'resourceName: %s AND isOnline:true'%subCon
     query = urllib2.quote(query)
     url = contentUrl%query
-    html = get_html(url)
-    ret = json.loads(html)['response']['docs']
+    videos = []
+    try:
+        html = get_html(url)
+        ret = json.loads(html)['response']['docs']
+    except Exception,e:
+        print e
+        return videos
     videos = buildVideo(ret, ' '.join(words), source)
     return videos
 
