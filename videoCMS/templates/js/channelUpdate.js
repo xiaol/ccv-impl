@@ -51,6 +51,26 @@ function applyDurationAll(channelId,object)
 	});
 }
 
+
+function disperseUpdateTime(channelId)
+{
+	var channelId = channelId;
+
+	$.ajax({
+		type:'get',
+		url:'/channel/disperseUpdateTime',
+		data:{'channelId':channelId},
+		success:function(data,textStatus)
+		{
+			alert('更新成功');
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
+}
+
 function calcSeconds()
 {
 	var minutes = $("#secondBox").val();
