@@ -52,17 +52,21 @@ function applyDurationAll(channelId,object)
 }
 
 
-function disperseUpdateTime(channelId)
+function disperseUpdateTime(channelId, object)
 {
-	var channelId = channelId;
-
+	if(channelId == '')
+    {
+        alert('请先保存之后再打散！');
+        return;
+    }
+    $(object).val("正在请求..");
 	$.ajax({
 		type:'get',
 		url:'/channel/disperseUpdateTime',
 		data:{'channelId':channelId},
 		success:function(data,textStatus)
 		{
-			alert('更新成功');
+            $(object).val("打散视频");
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown)
 		{
