@@ -153,7 +153,7 @@
 		                    <td>资源更新时间</td>
 		                    <td>
 		                        <input type="text"  name="updateTime" value="{{updateTime}}" />
-                                <input type="button" class="btn btn-primary" value="打散视频" onclick="disperseUpdateTime({{ channelId }})"/>
+                                <input onclick="disperseUpdateTime('{{ channelId }}',this)" type="button" class="btn btn-primary" value="打散视频" />
 		                    </td>
 		                </tr>
 		                <!-- 

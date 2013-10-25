@@ -28,14 +28,13 @@ class ResourceGoOnlineCronJob(CronJobBase):
     RUN_EVERY_MINS = 0.5
 
     def do(self):
-        for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$exists':True}},{'scheduleGoOnline':1,'channelId':1},timeout=False):
-            curTime = getCurTime()
+        curTime = getCurTime()
+        for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$lte':curTime}},{'scheduleGoOnline':1,'channelId':1},timeout=False):
             print one
-            if curTime > one['scheduleGoOnline']:
-                print one['_id'],'goOnline'
-                clct_resource.update({'_id':one['_id']},{'$set':\
-                    {'scheduleGoOnline':'','createTime':curTime,'isOnline':True}})
-                clct_channel.update({'channelId':one['channelId']},{'$set':{'updateTime':getCurTime()}})
+            clct_resource.update({'_id':one['_id']},{'$set':\
+                {'scheduleGoOnline':'','updateTime':curTime,'isOnline':True}})
+            clct_channel.update({'channelId':one['channelId']},{'$set':{'updateTime':getCurTime()}})
+        print 'scaned'
 
 
 
