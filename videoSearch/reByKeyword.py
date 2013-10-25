@@ -64,6 +64,9 @@ def retrieveUserHistory(userId):
 
     for record in reSet:
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
+    for entity in records:
+        retC = clct_channel.find_one({'channelId':entity['channelId']})
+	entity['resourceName'] = entity['resourceName']+' ' + retC.get('channelName','')+' '+retC.get('detailDescription','') 
     return records
 
 def retrieveUserSearchHistory(userId):
