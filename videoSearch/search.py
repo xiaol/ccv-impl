@@ -23,8 +23,8 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             ret = clct_resource.insert(resource , safe=True)
         except:
             print("insert Error!")
-            '''检查 电视剧资源是否被抢'''
-            if channel['videoClass'] in [1]:
+            '''检查 电视剧,综艺 资源是否被抢'''
+            if channel['videoClass'] in [1, 3]:
                 old = clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']})
                 if not old: continue
                 if type(old['number'])==int and  old['number'] <= 0:
