@@ -193,7 +193,7 @@ def process(uuid):
 
     print uuid,'count: ',len(videos)
     if len(videos) == 0:
-        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isPlayed':-1})
+        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1})
         try:
             if  retR is None and ret['sinaId'] is not None:
                 suggestionTag = retrieveSuggestion(ret['sinaToken'])
