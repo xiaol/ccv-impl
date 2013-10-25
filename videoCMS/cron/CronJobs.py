@@ -34,7 +34,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
             if curTime > one['scheduleGoOnline']:
                 print one['_id'],'goOnline'
                 clct_resource.update({'_id':one['_id']},{'$set':\
-                    {'scheduleGoOnline':'','createTime':curTime,'isOnline':True}})
+                    {'scheduleGoOnline':'','updateTime':curTime,'isOnline':True}})
                 clct_channel.update({'channelId':one['channelId']},{'$set':{'updateTime':getCurTime()}})
 
 
