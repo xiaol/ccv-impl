@@ -141,7 +141,7 @@ def upload(videos, uuid):
         except Exception,e:
             print("Insert Error!",e)
             ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
-            if cmp(ret['recommendReason'].encode('utf8'), video['recomendReason']) != 0:
+            if cmp(ret['recommendReason'].encode('utf8'), video['recommendReason']) != 0:
                 ret['recommendReason'] = ret['recommendReason'].encode('utf8')+' '+video['recommendReason']
                 clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})
         else:
@@ -205,6 +205,7 @@ def process(uuid):
                             if video: videos.extend(video)
         except Exception,e:
             print e
+    print uuid,'count: ',len(videos)
     upload(videos, ret['uuid'])
 
 def main():
@@ -227,5 +228,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
-    main()
+    pprint(process('sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
+    #main()
