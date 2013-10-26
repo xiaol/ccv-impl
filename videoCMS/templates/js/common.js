@@ -7,13 +7,13 @@ function goPage(page)
 
 function init()
 {
-    $('.dropdown-toggle').parent().mouseout(function()
+    $('.mydropdown').parent().mouseout(function()
     {
-       $(this).find('.dropdown-toggle').dropdown("toggle");
+       $(this).find('.dropdown-menu').toggle();
     });
-    $('.dropdown-toggle').parent().mouseover(function()
+    $('.mydropdown').parent().mouseover(function()
     {
-       $(this).find('.dropdown-toggle').dropdown("toggle");
+       $(this).find('.dropdown-menu').toggle();
     });
 }
 

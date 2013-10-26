@@ -42,6 +42,7 @@ def startSearch(handleName, url, channelId, **keyParams):
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
         one['type'] = 'gif'
+        one['source'] = 'spider'
 
     #拷贝本地gif和png到47服务器 然后删除本地图片
     cmd = 'scp -P %d -r %s/videoCMS/gif_resource/%d %s:%s' \

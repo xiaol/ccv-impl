@@ -8,7 +8,7 @@ from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,searchHandleL
 from bson import ObjectId
 from videoCMS.common.Domain import Channel
 from videoCMS.common.doubanMovie import extraInfos
-from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr
+from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr,myLocaltime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
@@ -375,11 +375,11 @@ def updateSearchNow(request):
     channelId = int(request.GET['channelId'])
     channel = clct_channel.find_one({'channelId':channelId})
     handleFrequents = int(channel['handleFrequents'])
-    tCur = time.mktime(time.localtime())
+    tCur = time.mktime(myLocaltime())
     tPreNext = time.mktime(time.strptime(channel['nextSearchTime'],'%Y%m%d%H%M%S'))
     
     tNext =  tPreNext + (-int(abs(tCur -tPreNext) / handleFrequents) - 2) * handleFrequents
-    t = time.strftime('%Y%m%d%H%M%S',time.localtime(tNext))
+    t = time.strftime('%Y%m%d%H%M%S',myLocaltime(tNext))
     
     clct_channel.update({'channelId':channelId},{'$set':{'nextSearchTime':t}})
     return HttpResponse('ok')
@@ -465,6 +465,6 @@ def disperseResourceUpdateTime(channelId, startTime, endTime):
 
     for resource in resourceIt:
         t_this += t_span
-        updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
+        updateTime = time.strftime('%Y%m%d%H%M%S',myLocaltime(t_this))
         print updateTime
         clct_resource.update({'_id':resource['_id']},{'$set':{'updateTime':updateTime}})
