@@ -31,6 +31,7 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
         resource['categoryId'] = 0
         resource['isOnline'] = False
         resource['source'] = 'weibo'
+        resource['updateTime'] = weibo['userWeibo']['updateTime']
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
         try:
