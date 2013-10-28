@@ -28,11 +28,11 @@ def myLocaltime(sec=None):
 
 def getCurTime():
     return time.strftime("%Y%m%d%H%M%S",time.localtime())
-    return time.strftime("%Y%m%d%H%M%S",myLocaltime())
+
 
 
 def getCurDate():
-    return time.strftime("%Y%m%d",myLocaltime())
+    return time.strftime("%Y%m%d",time.localtime())
 
 def Obj2Str(dic):
     dic['id'] = str(dic['_id'])
