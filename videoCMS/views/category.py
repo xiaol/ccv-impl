@@ -103,6 +103,7 @@ def update(request):
     category['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     category['categoryType'] = CATEGORY_TYPE_MAP[request.POST.get('categoryType')]
     category['videoClass'] = CATEGORY_VIDEO_CLASS_MAP[request.POST.get('videoClass')]
+    category['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
 
     #更新关联频道 categoryId aka channelType
     if oldCategory['categoryId'] != category['categoryId']:

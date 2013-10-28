@@ -2,7 +2,7 @@
 import time
 import md5
 import os
-
+'''
 def myLocaltime(sec=None):
     if sec != None:
         ret = time.gmtime(sec)
@@ -22,14 +22,17 @@ def myLocaltime(sec=None):
             if tl[1] > 12:
                 tl[0] += 1
                 tl[1] = 1
+    print 'myLocaltime:',time.struct_time(tl)
     return time.struct_time(tl)
+'''
 
 def getCurTime():
-    return time.strftime("%Y%m%d%H%M%S",myLocaltime())
+    return time.strftime("%Y%m%d%H%M%S",time.localtime())
+
 
 
 def getCurDate():
-    return time.strftime("%Y%m%d",myLocaltime())
+    return time.strftime("%Y%m%d",time.localtime())
 
 def Obj2Str(dic):
     dic['id'] = str(dic['_id'])

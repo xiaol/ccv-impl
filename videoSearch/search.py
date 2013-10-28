@@ -2,7 +2,7 @@
 from setting import clct_channel,clct_resource
 import imp,sys,time
 from pprint import pprint
-from common.common import getCurTime
+from common.common import getCurTime,myLocaltime
 from common.videoInfoTask import addVideoInfoTask
 
 def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False):
@@ -65,7 +65,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         t_this = t_lastUpdateTime
         for obid in reversed(InsertedList):
             t_this += t_span
-            updateTime = time.strftime('%Y%m%d%H%M%S',time.myLocaltime(t_this))
+            updateTime = time.strftime('%Y%m%d%H%M%S',myLocaltime(t_this))
             clct_resource.update({'_id':obid},{'$set':{'updateTime':updateTime}})
 
 
