@@ -16,6 +16,7 @@ import urllib2
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
+from login import NeedLogin
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -35,12 +36,12 @@ def createTag(name,refNum=0):
 def addTagRef(name,addNum):
     clct_tag.update({'name':name},{'$inc':{'refNum':1}})
 
+@NeedLogin
 def index(request):
     spec = {}
     DICT = {}
     
     if checkLogin(request):
-        print ('username:',request.session['username'])
         DICT['username'] = request.session['username']
         
     
@@ -109,6 +110,9 @@ def index(request):
             one['channelName'] = "not found channel:"+str(one['channelId'])
         else:
             one['channelName'] = channel['channelName']
+        one['createTime'] = formatHumanTime(one['createTime'])
+        one['updateTime'] = formatHumanTime(one['updateTime'])
+        one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
     DICT['resourceList'] = resourceList
     
@@ -152,7 +156,7 @@ def POST2Resource(request):
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
-
+    resource['isLD'] = request.POST.get('isLD')
 
     try:
         resource['number'] = int(resource['number'])
@@ -161,7 +165,7 @@ def POST2Resource(request):
 
     return resource
 
-
+@NeedLogin
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -170,6 +174,7 @@ def update(request):
         resource['resourceImageUrl'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
+        DICT['username'] = request.session['username']
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'resource'
@@ -194,7 +199,7 @@ def update(request):
     return HttpResponseRedirect('update?id='+id)
 
 
-
+@NeedLogin
 def add(request):
     if request.method == "GET":
         DICT = {}
@@ -202,6 +207,7 @@ def add(request):
         DICT['typeList'] = getCategoryList()
         DICT['navPage'] = 'resource'
         DICT['number'] = -1
+        DICT['username'] = request.session['username']
         return render_to_response('resourceUpdate.htm',DICT)
     
     resource = POST2Resource(request)
@@ -256,19 +262,22 @@ def saveResourceImage(img, id):
     return filename.replace('/', '_')
 
 #==============================================================
+@NeedLogin
 def toggleOnlineStatus(request):
     ret = {}
     id = ObjectId(request.GET.get('id'))
     resource = clct_resource.find_one({'_id':id})
+
     if resource['isOnline'] == True:
-        clct_resource.update({'_id':id},{'$set':{'isOnline':False}})
+        clct_resource.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
     else:
-        clct_resource.update({'_id':id},{'$set':{'isOnline':True}})
+        clct_resource.update({'_id':id},{'$set':{'isOnline':True,'modifyTime':getCurTime()}})
     ret['status'] = not resource['isOnline']
     
     return HttpResponse(json.dumps(ret))
 
 #=============================================================
+@NeedLogin
 def getVideoId(request):
     url = request.POST.get('url')
     ret = {}
@@ -281,12 +290,13 @@ def getVideoId(request):
 
 
 #==============================================================
-
+@NeedLogin
 def deleteResource(request):
     resourceId = request.GET.get('resourceId')
     clct_resource.remove({'_id':ObjectId(resourceId)})
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@NeedLogin
 def deleteChannelResource(request):
     channelId = int(request.GET.get('channelId'))
     clct_resource.remove({'channelId':channelId})
@@ -294,6 +304,7 @@ def deleteChannelResource(request):
 
 #==============================================================
 
+@NeedLogin
 def refreshSnapshot(request):
     id = request.GET.get('id')
     resource = clct_resource.find_one({'_id':ObjectId(id)})
@@ -306,6 +317,7 @@ def refreshSnapshot(request):
     
 #==============================================================
 
+@NeedLogin
 def stopSnapshot(request):
     id = request.GET.get('id')
     clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':''}})
@@ -313,20 +325,21 @@ def stopSnapshot(request):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 #==============================================================
-
+@NeedLogin
 def CdnSync(request):
     
     sync = CDNSyncTask()
     sync['']
     clct_cdnSync.insert()
     pass
-
+@NeedLogin
 def prefetchCDN(request):
     videoId = "/" + request.GET.get("videoId")
     ret = PrefetchCache(videoId)
     clct_resource.update({'videoId':videoId[1:]},{'$set':{'cdn':'waiting'}})
     return HttpResponse(ret)
 
+@NeedLogin
 def queryCDN(request):
     videoId = "/" + request.GET.get("videoId")
     ret = GetProgress(videoId)
@@ -338,6 +351,7 @@ def showJson(request):
     one['_id'] = str(one['_id'])
     return HttpResponse(json.dumps(one))
 
+@NeedLogin
 def getVideoUrl(request):
     videoId = request.GET.get('videoId')
     videoType = request.GET.get('videoType')
@@ -349,6 +363,7 @@ def getVideoUrl(request):
 
     return HttpResponse(result)
 
+@NeedLogin
 def unsetInvalid(request):
     id = request.GET.get('id')
     clct_resource.update({'_id':ObjectId(id)},{'$unset':{'validTime':1}})

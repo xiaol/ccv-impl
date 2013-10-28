@@ -40,7 +40,7 @@ def POST2Resource(request):
         pass
     return resource
 
-
+@NeedLogin
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -81,7 +81,7 @@ def update(request):
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)
 
-
+@NeedLogin
 def add(request):
     if request.method == "GET":
         DICT = {}

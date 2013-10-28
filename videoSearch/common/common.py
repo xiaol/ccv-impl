@@ -6,9 +6,12 @@ db_connection = Connection('60.28.29.49:20010')
 clct_downList = db_connection.iDown.downList
 
 
-def getRealTimeStruct():
+def myLocaltime(sec=None):
+    if sec != None:
+        ret = time.gmtime(sec)
+    else:
+        ret = time.gmtime()
     days = [31,28,31,30,31,30,31,31,30,31,30,31]
-    ret = time.gmtime()
     if (ret.tm_year%4==0 and ret.tm_year%100!=0) or ret.tm_year%400 == 0:
         days[1] = 29
     tl = list(ret)
@@ -25,7 +28,7 @@ def getRealTimeStruct():
     return time.struct_time(tl)
 
 def getCurTime():
-    return time.strftime("%Y%m%d%H%M%S",getRealTimeStruct())
+    return time.strftime("%Y%m%d%H%M%S",myLocaltime())
 
 def formatHumanTime(s):
     try:

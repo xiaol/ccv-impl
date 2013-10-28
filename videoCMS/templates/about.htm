@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>关于</title>
+<link href="/static/css/tagUpdate.css" rel="stylesheet"
+	type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/resourceUpdate.js"></script>
+    <script src="/static/js/common.js"></script>
+</head>
+
+<body style="background-color: #CCC;">
+	{% include "nav.htm" %}
+	<div class="container">
+		{% ifnotequal info "" %}
+		<div class="row-fluid">
+			<div class="span10 offset1">
+				<div class="alert {{info_class}}">{{info|safe}}</div>
+			</div>
+		</div>
+		{%endifnotequal%}
+		<div class="row-fluid smallFont">
+			<!--  左部分  -->
+			<div class="span12 whitepanel">
+                <h1>更新日志</h1>
+                <p>
+                    <p>2013-10-28</p>
+                    1.修正修改视频页面没有菜单的bug<br/>
+                    2.增加所有页面的权限要求</br>
+                    3.视频首页优化时间显示</br>
+                </p>
+
+                <h1>说明</h1>
+                <ul>
+                    <li>为保证所有功能正常使用，请使用Chrome等webkit核心浏览器</li>
+                </ul>
+
+                <h1>反馈</h1>
+                <ul>
+                    <a href="mailto:dingyaguang117@gmail.com">dingyaguang117@gmail.com</a>
+                </ul>
+			</div>
+
+			<!--  右部分  -->
+			<div class="span3">
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

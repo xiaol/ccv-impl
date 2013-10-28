@@ -62,7 +62,7 @@ CATEGORY_VIDEO_CLASS_MAP = {
 
 userList = [
 ('admin','huohua123456'),
-('someone','112233'),
+('editor','123456'),
 ]
 
 

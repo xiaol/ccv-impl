@@ -3,20 +3,14 @@
 		<div class="container">
 			<div class="nav-collapse">
 				<ul class="nav pull-left">
-					<li {%ifequal navPage "category"%} class="active" {%endifequal%}><a href="/category/index">分类首页</a></li>
-                    <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
-                       </a>
+					<li style="position:relative;" {%ifequal navPage "category"%} class="active" {%endifequal%}>
+                        <a href="/category/index" class="mydropdown">分类首页</a>
                         <ul class="dropdown-menu">
                             <li><a href="/category/add">添加分类</a></li>
                         </ul>
                     </li>
-                    <li {%ifequal navPage "channel"%} class="active" {%endifequal%}><a href="/channel/index">频道首页</a></li>
-                    <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
-                       </a>
+                    <li style="position:relative;" {%ifequal navPage "channel"%} class="active" {%endifequal%}>
+                        <a href="/channel/index" class="mydropdown">频道首页</a>
                         <ul class="dropdown-menu">
                             <li><a href="/channel/add">添加频道</a></li>
                             <li><a href="/channel/index?mongo=%7B%22autoSub%22%3Atrue%7D">首次订阅频道</a></li>
@@ -27,11 +21,8 @@
                             <li><a href="/channel/index?mongo=%7B%22searchHandleList%22%3A%7B%22%24not%22%3A%7B%22%24in%22%3A%5B%22%22%2C%5B%5D%5D%7D%7D%7D">已处理的频道</a></li>
                         </ul>
                     </li>
-                    <li {%ifequal navPage "resource"%} class="active" {%endifequal%}><a href="/resource/index">视频首页</a></li>
-                    <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
-                       </a>
+                    <li style="position:relative;" {%ifequal navPage "resource"%} class="active" {%endifequal%}>
+                        <a href="/resource/index" class="mydropdown">视频首页</a>
                         <ul class="dropdown-menu">
                             <li><a href="/resource/add">添加视频</a></li>
                             <li><a href="/resourceGif/add">添加GIF</a></li>
@@ -41,27 +32,23 @@
                             <li><a href="/resource/index?mongo=%7B%22isOnline%22%3Afalse%2C%22scheduleGoOnline%22%3A%22%22%7D">未上线/未定时视频</a></li>
                         </ul>
                     </li>
-                    <li {%ifequal navPage "preresource"%} class="active" {%endifequal%}><a href="/preresource/index">正在下载</a></li>
-                    <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
-                       </a>
+                    <li style="position:relative;" {%ifequal navPage "preresource"%} class="active" {%endifequal%}>
+                        <a href="/preresource/index" class="mydropdown">
+                        正在下载
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="/preresource/addEd2k">添加Ed2k任务</a></li>
                             <li><a href="/preresource/addBT">添加BT任务</a></li>
                         </ul>
                     </li>
-                    <li {%ifequal navPage "tag"%} class="active" {%endifequal%}><a href="/tag/index">标签首页</a></li>
-                    <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <b class="caret"></b>
-                       </a>
-                        <ul class="dropdown-menu">
+                    <li style="position:relative;"  class="{%ifequal navPage "tag"%}active{%endifequal%}" >
+                        <a href="/tag/index" class="mydropdown">标签首页</a>
+                        <ul class="dropdown-menu" >
                             <li><a href="/tag/add">添加标签</a></li>
                         </ul>
                     </li>
 
-                    <li style="position: relative;" class="">
+                    <li style="position: relative;" lass="">
                        <a href="#" class="dropdown-toggle {%ifequal navPage "statistics"%} active {%endifequal%}" data-toggle="dropdown">
                         统计
                        <b class="caret"></b>
@@ -79,13 +66,22 @@
                     </li>
 				</ul>
 				<ul class="nav pull-right">
+                    <li>
+
+                    </li>
 					<li >
 						{%if username%}
-						{{username}}
+                        <a class="mydropdown">{{ username }}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/logout">退出</a></li>
+                        </ul>
 						{%else%}
 						<a href="/login">登录</a>
 						{%endif%}
 					</li>
+                    <li>
+                        <a href="/about">关于</a>
+                    </li>
 				</ul>
 			</div>
 		</div>

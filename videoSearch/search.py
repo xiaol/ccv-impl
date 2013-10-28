@@ -12,6 +12,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     '''入库'''
     t = getCurTime()
     InsertedList  = []
+    onlineNum = 0
 
 
     #入库
@@ -32,20 +33,22 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                         'resourceName':resource['resourceName'],'channelId':resource['channelId'],
                         'number':resource['number']
                         }})
+                    InsertedList.append(ret)
                     if resource['isOnline']:
-                        InsertedList.append(ret)
+                        onlineNum += 1
 
         else:
             print("insert Ok!")
+            InsertedList.append(ret)
             if resource['isOnline']:
-                InsertedList.append(ret)
+                onlineNum += 1
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
 
     #如果 成功有视频插入，则更新频道
-    if len(InsertedList) >0 :
+    if onlineNum >0 :
         updateMap = {'updateTime':getCurTime()}
         if updateTvNumber:
             updateMap['tvNumber'] = resouceList[0]['number']
@@ -62,7 +65,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         t_this = t_lastUpdateTime
         for obid in reversed(InsertedList):
             t_this += t_span
-            updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
+            updateTime = time.strftime('%Y%m%d%H%M%S',time.myLocaltime(t_this))
             clct_resource.update({'_id':obid},{'$set':{'updateTime':updateTime}})
 
 
@@ -88,6 +91,7 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
         one['type'] = 'video'
+        one['source'] = 'spider'
         
     pprint(result)
     result = filter(lambda a:a!="over",result)

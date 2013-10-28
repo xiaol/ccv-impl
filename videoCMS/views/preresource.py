@@ -71,6 +71,7 @@ def index(request):
     DICT['mongo'] = mongo
     DICT['findNum'] = clct_preresource.find(spec).count()
     DICT['navPage'] = 'preresource'
+    DICT['username'] = request.session['username']
     return render_to_response('preresourceList.htm',DICT)
 
 
@@ -84,6 +85,7 @@ def update(request):
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'preresource'
+        DICT['username'] = request.session['username']
         return render_to_response('preresourceUpdate.htm',DICT)
     
     #更新
@@ -112,6 +114,7 @@ def addEd2k(request):
         DICT = {}
         DICT['info'] = ''
         DICT['navPage'] = 'preresource'
+        DICT['username'] = request.session['username']
         return render_to_response('preresourceAddEd2k.htm',DICT)
     
     resource  = Resource()

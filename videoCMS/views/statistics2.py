@@ -6,7 +6,7 @@ from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAG
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
-from videoCMS.common.common import Obj2Str,getCurTime,getRealTimeStruct
+from videoCMS.common.common import Obj2Str,getCurTime,myLocaltime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
@@ -23,7 +23,7 @@ def getStartEndDateTime(request):
     if startDate == "":
         startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
     if endDate == "":
-        endDate = time.strftime('%Y/%m/%d',getRealTimeStruct())
+        endDate = time.strftime('%Y/%m/%d',myLocaltime())
     if request.GET.get('today',None) != None:
         endDate = startDate
     print startDate,endDate

@@ -7,6 +7,7 @@ from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,CATEGORY_TYPE
 from bson import ObjectId
 from videoCMS.common.Domain import Category
 from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime
+from login import NeedLogin
 from videoCMS.common.ImageUtil import imgconvert
 from pymongo.errors import OperationFailure
 
@@ -16,7 +17,7 @@ def getSkipLimit(DICT,skip=0,limit=10):
     return _skip,_limit
 
 
-
+@NeedLogin
 def index(request):
     spec = {}
     DICT = {}
@@ -64,9 +65,10 @@ def index(request):
     DICT['findNum'] = clct_category.find(spec).count()
     DICT['navPage'] = 'category'
     DICT['sort'] = sort
+    DICT['username'] = request.session['username']
     return render_to_response('categoryList.htm',DICT)
 
-
+@NeedLogin
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -88,6 +90,7 @@ def update(request):
                 DICT['videoClass'] = k
                 
         DICT['navPage'] = 'category'
+        DICT['username'] = request.session['username']
         return render_to_response('categoryUpdate.htm',DICT)
     
     oldCategory = clct_category.find_one({'_id':ObjectId(id)})
@@ -130,7 +133,7 @@ def update(request):
     return HttpResponseRedirect('update?id='+id)
 
 
-
+@NeedLogin
 def add(request):
     if request.method == "GET":
         DICT = {}
@@ -138,6 +141,7 @@ def add(request):
         DICT['categoryTypeList'] = CATEGORY_TYPE_MAP.keys()
         DICT['videoClassList'] = CATEGORY_VIDEO_CLASS_MAP.keys()
         DICT['navPage'] = 'category'
+        DICT['username'] = request.session['username']
         return render_to_response('categoryUpdate.htm',DICT)
     
     category  = Category()
@@ -191,11 +195,12 @@ def saveCategoryImage(img, id):
     return filename.replace('/', '_')
 
 #===============================================
-
+@NeedLogin
 def resetWeight(request):
     categoryId = int(request.GET.get("categoryId"))
     clct_channel.update({"categoryId":categoryId},{"$set":{"weight":0}},multi=True)
     return HttpResponse("ok")
+
 
 def showJson(request):
     id = request.GET.get('id')

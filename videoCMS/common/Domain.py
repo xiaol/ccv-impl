@@ -65,14 +65,12 @@ class Resource(DomainBase):
     weight = -1
     playNumber = 0
     downloadNumber = 0
-
     gameName = ''
     gameUrl = ''
-
     scheduleGoOnline = ''
     gifUrl = ''
-
     subtitle = ''
+    isLD = False
 
 class Category(DomainBase):
     categoryName = ''
