@@ -3,7 +3,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from setting import debug
 from lxml import etree
-import re,pprint,json,time
+import re,pprint,json,time, datetime
 from common.common import getCurTime
 from pymongo import Connection
 from common.Domain import Resource,Channel,UserWeibo
@@ -337,7 +337,8 @@ def buildUserWeibo(item):
     del timeList[-2]
     strTime = ' '.join(timeList)
     weiboTime = time.strptime(strTime, "%a %b %d %H:%M:%S %Y")
-    userWeibo['updateTime'] = time.mktime(weiboTime)
+    timeStamp =  time.mktime(weiboTime)
+    userWeibo['updateTime'] = datetime.datetime.fromtimestamp(timeStamp).strftime('%Y%m%d%H%M%S')
 
     return userWeibo.getInsertDict()
 
