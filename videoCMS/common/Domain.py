@@ -86,6 +86,7 @@ class Category(DomainBase):
     '''0 电影, 1 电视剧,2 短视频'''
     videoClass = 0
     logoUrl = ''
+    isOnline = True
     
     
     

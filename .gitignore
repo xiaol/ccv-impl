@@ -6,6 +6,7 @@
 *.so
 *.pyc
 *.pyo
+videoCMS/session/
 
 #################
 ## Eclipse

@@ -88,6 +88,15 @@
                                     <input type="text"  name="weight" value="{{weight}}"/>
                                 </td>
                         </tr>
+                        <tr>
+                            <td>上线</td>
+                            <td>
+                                <select name="isOnline"  style="width:90px">
+	                        			<option>是</option>
+	                        			<option {% if not isOnline %}selected="selected"{% endif %}>否</option>
+	                        		</select>
+                            </td>
+                        </tr>
 		                <tr>
 		                    <td></td>
 		                    <td>

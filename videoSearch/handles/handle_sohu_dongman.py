@@ -51,7 +51,6 @@ def buildResource(url,title,number,channelId,videoId):
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
-    #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
     resource['videoType'] = 'sohu_url'
     resource['videoId'] =  url
