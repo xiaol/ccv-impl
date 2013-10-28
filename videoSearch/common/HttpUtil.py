@@ -130,11 +130,11 @@ def downloadGif(url, channelId):
     if cursor.count() > 0:
         return None, None
 
-    relative_dir = 'videoCMS/gif_resource/' + str(channelId)
+    relative_dir = 'videoCMS/gifResource/' + str(channelId)
     gif_dir = os.path.join(GIF_TEMP_DIR, relative_dir)
     if not os.path.exists(gif_dir):
         os.makedirs(gif_dir)
-    filename = url.split('/')[-1]
+    filename = url.split('/')[-1].replace('_', '-')
     # filename = str(time.time()).replace('.', '_') + url.split('/')[-1]
     gif_path = os.path.join(gif_dir, filename)
     httpUtil = HttpUtil()
@@ -148,9 +148,9 @@ def downloadGif(url, channelId):
         png_path = getFrameFromGif(gif_path)
         if png_path:
             relative_image_path = relative_path.rstrip('gif') + 'png'
-            return relative_path, relative_image_path
+            return relative_path.replace('/', '_'), relative_image_path.replace('/', '_')
         else:
-            return relative_path, None
+            return relative_path.replace('/', '_'), None
     else:
         return None, None
 
