@@ -157,6 +157,7 @@ def POST2Resource(request):
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
     resource['isLD'] = request.POST.get('isLD')
+    resource['updateTime'] = request.POST.get('updateTime')
 
     try:
         resource['number'] = int(resource['number'])
