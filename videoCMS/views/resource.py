@@ -110,6 +110,9 @@ def index(request):
             one['channelName'] = "not found channel:"+str(one['channelId'])
         else:
             one['channelName'] = channel['channelName']
+        one['createTime'] = formatHumanTime(one['createTime'])
+        one['updateTime'] = formatHumanTime(one['updateTime'])
+        one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
     DICT['resourceList'] = resourceList
     

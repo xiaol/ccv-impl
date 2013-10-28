@@ -40,7 +40,7 @@ def formatHumanTime(s):
     try:
         return time.strftime("%Y/%m/%d %H:%M:%S",time.strptime(s,"%Y%m%d%H%M%S"))
     except:
-        return ''
+        return s
 
 def antiFormatHumanTime(s):
     return s.replace('/','').replace(':','').replace(' ','')
