@@ -260,10 +260,11 @@ def toggleOnlineStatus(request):
     ret = {}
     id = ObjectId(request.GET.get('id'))
     resource = clct_resource.find_one({'_id':id})
+
     if resource['isOnline'] == True:
-        clct_resource.update({'_id':id},{'$set':{'isOnline':False}})
+        clct_resource.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
     else:
-        clct_resource.update({'_id':id},{'$set':{'isOnline':True}})
+        clct_resource.update({'_id':id},{'$set':{'isOnline':True,'modifyTime':getCurTime()}})
     ret['status'] = not resource['isOnline']
     
     return HttpResponse(json.dumps(ret))
