@@ -66,13 +66,22 @@
                     </li>
 				</ul>
 				<ul class="nav pull-right">
+                    <li>
+
+                    </li>
 					<li >
 						{%if username%}
-						{{username}}
+                        <a class="mydropdown">{{ username }}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/logout">退出</a></li>
+                        </ul>
 						{%else%}
 						<a href="/login">登录</a>
 						{%endif%}
 					</li>
+                    <li>
+                        <a href="/about">关于</a>
+                    </li>
 				</ul>
 			</div>
 		</div>

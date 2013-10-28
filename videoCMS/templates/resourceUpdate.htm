@@ -146,6 +146,15 @@
 								<td>{{modifyTime}} <!-- <input type="text" class="span7" name="modifyTime"  value="{{modifyTime}}" disabled/> -->
 								</td>
 							</tr>
+                            <tr>
+	                        	<td>LD</td>
+	                        	<td>
+	                        		<select name="isLD"  style="width:90px">
+	                        			<option>是</option>
+	                        			<option {% if not isLD %}selected="selected"{% endif %}>否</option>
+	                        		</select>
+	                        	</td>
+	                        </tr>
 							<tr>
 	                        	<td>已上线</td>
 	                        	<td>

@@ -30,6 +30,12 @@ def login(request):
     
     return HttpResponse('xxx')
 
+def logout(request):
+    if 'username' in request.session:
+        del request.session['username']
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
 def checkLogin(request):
     if 'username' not in request.session:
         print 'check fail'
