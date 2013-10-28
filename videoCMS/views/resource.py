@@ -271,6 +271,9 @@ def toggleOnlineStatus(request):
     if resource['isOnline'] == True:
         clct_resource.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
     else:
+        up = {'isOnline':True,'modifyTime':getCurTime()}
+        if resource['updateTime'] == '00000000000000':
+            up['updateTime'] = getCurTime()
         clct_resource.update({'_id':id},{'$set':{'isOnline':True,'modifyTime':getCurTime()}})
     ret['status'] = not resource['isOnline']
     
