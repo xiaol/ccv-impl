@@ -20,18 +20,14 @@ def getSkipLimit(DICT,skip=0,limit=10):
     return _skip,_limit
 
 
-
+@NeedLogin
 def index(request):
     spec = {}
     DICT = {}
-    
-    
+
     if checkLogin(request):
-        print ('username:',request.session['username'])
         DICT['username'] = request.session['username']
 
-
-    
     
     page = int(request.GET['page']) if request.GET.get('page','') != '' else 1
     limit =int(request.GET['len']) if request.GET.get('len','') != '' else 10
@@ -166,7 +162,7 @@ def POST2Channel(request):
 
     return channel
 
-
+@NeedLogin
 def update(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -187,6 +183,7 @@ def update(request):
         DICT['update'] = True
         DICT['navPage'] = 'channel'
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
+        DICT['username'] = request.session['username']
         return render_to_response('channelUpdate.htm',DICT)
     
     #更新
@@ -217,7 +214,7 @@ def update(request):
     return HttpResponseRedirect('update?id='+id)
 
 
-
+@NeedLogin
 def add(request):
     if request.method == "GET":
         DICT = {}
@@ -226,6 +223,7 @@ def add(request):
         DICT['navPage'] = 'channel'
         DICT['autoOnline'] = True
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
+        DICT['username'] = request.session['username']
         return render_to_response('channelUpdate.htm',DICT)
     
     channel = POST2Channel(request)
@@ -300,7 +298,7 @@ def savePosterImage(img, id):
     return filename.replace('/', '_')
 
 #========================================
-
+@NeedLogin
 def detail(request):
     id = request.GET.get('id','')
     if request.method == "GET":
@@ -354,7 +352,7 @@ def detailExtraDouban(request):
     clct_channel.update({'channelId':channelId}, {'$set':info })
     return HttpResponse('ok')
 #==========================================
-
+@NeedLogin
 def updateDuration(request):
     channelId = int(request.GET['channelId'])
     duration = int(request.GET['duration'])
@@ -363,14 +361,14 @@ def updateDuration(request):
     return HttpResponse('ok')
 
 
-
+@NeedLogin
 def deleteChannel(request):
     channelId = int(request.GET.get('channelId'))
     clct_channel.remove({'channelId':channelId})
     clct_resource.remove({'channelId':channelId},multi=True)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-
+@NeedLogin
 def updateSearchNow(request):
     channelId = int(request.GET['channelId'])
     channel = clct_channel.find_one({'channelId':channelId})
@@ -384,7 +382,7 @@ def updateSearchNow(request):
     clct_channel.update({'channelId':channelId},{'$set':{'nextSearchTime':t}})
     return HttpResponse('ok')
 
-
+@NeedLogin
 def toggleProcessed(request):
     ret = {}
     channelId = int(request.GET.get('channelId'))
@@ -396,7 +394,7 @@ def toggleProcessed(request):
     
     return HttpResponse(json.dumps(ret))
 
-
+@NeedLogin
 def toggleRec(request):
     ret = {}
     channelId = int(request.GET.get('channelId'))
@@ -409,11 +407,12 @@ def toggleRec(request):
     return HttpResponse(json.dumps(ret))
 
 #===============================================
-
+@NeedLogin
 def resetWeight(request):
     channelId = int(request.GET.get("channelId"))
     clct_resource.update({"channelId":channelId},{"$set":{"weight":-1}},multi=True)
     return HttpResponse("ok")
+
 
 def showJson(request):
     id = request.GET.get('id')
@@ -421,6 +420,7 @@ def showJson(request):
     one['_id'] = str(one['_id'])
     return HttpResponse(json.dumps(one))
 
+@NeedLogin
 def search(request):
     kw = request.GET.get('keyword')
     ret = []
@@ -430,6 +430,7 @@ def search(request):
         ret.append(one)
     return HttpResponse(json.dumps(ret))
 
+@NeedLogin
 def setCompleted(request):
     channelId = int(request.GET.get("channelId"))
     clct_channel.update({"channelId":channelId},{"$set":{"nextSearchTime":'99990101000000'},
@@ -437,7 +438,7 @@ def setCompleted(request):
 
     return HttpResponse('ok')
 
-
+@NeedLogin
 def disperseUpdateTime(request):
     channelId = int(request.GET.get('channelId'))
     channel = clct_channel.find_one({'channelId':channelId})
