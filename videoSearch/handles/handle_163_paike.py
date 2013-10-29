@@ -29,22 +29,22 @@ def handle(url, channelId, tvNumber):
         else:
             title = title[0]
 
-        ids = re.search(r"http://v.163.com/video/recommend/([^/]+)/([^/]+)/([^/]+)/([^/]+)\.xml",
-                        get_html(url, 'gbk')).groups()
-        videoId = 'video/%s/%s/%s_%s' %(ids[1], ids[2], ids[0], ids[3])
-        ret.append(buildResource(url, title, channelId, videoId))
+        # ids = re.search(r"http://v.163.com/video/recommend/([^/]+)/([^/]+)/([^/]+)/([^/]+)\.xml",
+        #                 get_html(url, 'gbk')).groups()
+        # videoId = 'video/%s/%s/%s_%s' %(ids[1], ids[2], ids[0], ids[3])
+        ret.append(buildResource(url, title, channelId))
 
     return ret
 
 
-def buildResource(url,title,channelId,videoId):
+def buildResource(url,title,channelId):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['channelId'] = channelId
     resource['type'] = 'video'
-    resource['videoType'] = '163'
-    resource['videoId'] =  videoId
+    resource['videoType'] = 'netease'
+    resource['videoId'] = url
     resource['createTime'] = getCurTime()
 
     return resource.getInsertDict()

@@ -28,9 +28,9 @@ def handle(url, channelId, tvNumber):
             url = video.xpath('./a/@href')[0]
             title = video.xpath('./a/text()')[0]
 
-            ids = re.search(r'/([^/]+)/([^/]+)/([^/]+)\.html', url).groups()
-            videoId = 'movie/' + ids[0] + '/' + ids[1] + '/2_' + ids[2]
-            ret.append(buildResource(url, title, number, channelId, videoId))
+            # ids = re.search(r'/([^/]+)/([^/]+)/([^/]+)\.html', url).groups()
+            # videoId = 'movie/' + ids[0] + '/' + ids[1] + '/2_' + ids[2]
+            ret.append(buildResource(url, title, number, channelId))
         except Exception, e:
             print(e)
 
@@ -45,15 +45,15 @@ def handle(url, channelId, tvNumber):
     return ret
 
 
-def buildResource(url,title, number, channelId,videoId):
+def buildResource(url,title, number, channelId):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
     resource['type'] = 'video'
-    resource['videoType'] = '163'
-    resource['videoId'] =  videoId
+    resource['videoType'] = 'netease'
+    resource['videoId'] = url
     resource['createTime'] = getCurTime()
 
     return resource.getInsertDict()

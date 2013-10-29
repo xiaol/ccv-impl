@@ -50,6 +50,7 @@ def index(request):
     
     name = request.GET.get('name','')
     mongo = request.GET.get('mongo','')
+    isOnline = request.GET.get('isOnline','all')
     id = request.GET.get('id','')
     channelId = request.GET.get('channelId','')
     videoType = request.GET.get('videoType','')
@@ -58,7 +59,7 @@ def index(request):
     channelType = request.GET.get('channelType','')
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
-    sort = request.GET.get('sort','createTime')
+    sort = request.GET.get('sort','updateTime')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -83,15 +84,21 @@ def index(request):
         if 'createTime' not in spec:
             spec['createTime'] = {}
         spec['createTime'].update({"$lte":endTime})
+    if isOnline == 'true':
+        spec['isOnline'] = True
+    elif isOnline == 'false':
+        spec['isOnline'] = False
     if mongo != '':
         spec.update(json.loads(mongo))
 
     if sort == '':
-        sort = 'createTime'
+        sort = 'updateTime'
     if sort == 'weight':
         sortParams = [('weight',-1),('number',-1),('createTime',-1)]
     elif sort == 'createTime':
         sortParams = [('createTime',-1)]
+    elif sort == 'updateTime':
+        sortParams = [('updateTime',-1)]
     elif sort == 'playNumber':
         sortParams = [('playNumber',-1)]
     elif sort == 'downloadNumber':
@@ -114,27 +121,15 @@ def index(request):
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
-    DICT['resourceList'] = resourceList
-    
-    DICT['page'] = page
-    DICT['len'] = limit
+
+
     DICT['nextPage'] = page + 1
     DICT['prePage'] = page-1 if page>1 else 1
-    DICT['name'] = name
-    DICT['id'] = id
-    DICT['channelId'] = channelId
-    DICT['videoType'] = videoType
-    DICT['videoId'] = videoId
-
-    DICT['mongo'] = mongo
     DICT['findNum'] = clct_resource.find(spec).count()
     DICT['navPage'] = 'resource'
     DICT['typeList'] = [u'全部'] + getCategoryList()
-    DICT['channelType'] = channelType
-    DICT['sort'] = sort
-    DICT['startTime'] = startTime
-    DICT['endTime'] = endTime
-    
+    DICT.update(locals())
+
     return render_to_response('resourceList.htm',DICT)
 
 
@@ -147,7 +142,7 @@ def POST2Resource(request):
     resource['weight'] = float(request.POST.get('weight'))
     channel = clct_channel.find_one({'channelId':resource['channelId']})
     resource['categoryId'] = channel['channelType']
-    resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
+    resource['duration'] = int(float(-1 if request.POST.get('duration') == '' else request.POST.get('duration')))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
@@ -157,6 +152,7 @@ def POST2Resource(request):
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
     resource['isLD'] = request.POST.get('isLD')
+    resource['updateTime'] = request.POST.get('updateTime')
 
     try:
         resource['number'] = int(resource['number'])
@@ -271,7 +267,10 @@ def toggleOnlineStatus(request):
     if resource['isOnline'] == True:
         clct_resource.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
     else:
-        clct_resource.update({'_id':id},{'$set':{'isOnline':True,'modifyTime':getCurTime()}})
+        up = {'isOnline':True,'modifyTime':getCurTime()}
+        if resource['updateTime'] == '00000000000000':
+            up['updateTime'] = getCurTime()
+        clct_resource.update({'_id':id},{'$set':up})
     ret['status'] = not resource['isOnline']
     
     return HttpResponse(json.dumps(ret))

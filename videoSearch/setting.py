@@ -35,6 +35,6 @@ MLDONKEY_D_DIR = '/root/.mldonkey/incoming/directories'
 STORE_DIR = '/data/tiercel'
 
 GIF_TEMP_DIR = '/data/img'
-GIF_SERVER_DIR = '/data/img/videoCMS/gif_resource'
+GIF_SERVER_DIR = '/data/img/videoCMS/gifResource'
 GIF_SERVER = 'root@60.28.29.47'
 GIF_SERVER_PORT = 33470
