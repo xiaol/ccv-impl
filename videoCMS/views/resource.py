@@ -354,13 +354,12 @@ def showJson(request):
 def getVideoUrl(request):
     videoId = request.GET.get('videoId')
     videoType = request.GET.get('videoType')
-    
     data = {"request-body":{"getVideoUrl":{"videoType":videoType,"videoId":videoId}}}
-
     httpUtil = HttpUtil()
     result = httpUtil.Post('http://60.28.29.38:9090/api/huohuaId2Url',json.dumps(data))
 
     return HttpResponse(result)
+
 
 @NeedLogin
 def unsetInvalid(request):

@@ -40,7 +40,7 @@
 		                            <a resourceId="{{resource.id}}" class="label"  onclick="toggleOnlineStatus(this)">下线</a>
 		                        	{% endif %}
                                     {% ifnotequal resource.videoFileName "" %}
-                                    <a target="_blank" href="/video/play?url={{resource.videoFileName}}" resourceId="{{resource.id}}" class="label label-warning" >预览</a>
+                                        木有预览了
                                     {%endifnotequal%}
                                     <span class="label label-info">播{{resource.playNumber}}</span>
                                     <span class="label label-info">下{{resource.downloadNumber}}</span>
@@ -67,6 +67,8 @@
                                 </div>
                                 <div class="row-fluid smallFont">
                                     <a target="_blank" href="/resource/getVideoUrl?videoType={{resource.videoType}}&videoId={{resource.videoId}}">检测视频地址</a>
+                                    <a target="_blank" href="/video/play?videoType={{resource.videoType}}&videoId={{resource.videoId}}" class="label label-warning" >预览</a>
+
                                     {% if resource.validTime%}
                                     <div class="span12">
                                         <span class="label {%ifequal resource.invalidMsg 'client' %} {%else%} label-important{%endifequal%} "  title="{{resource.invalidMsg}}">失效日期:{{resource.validTime}}</span>
