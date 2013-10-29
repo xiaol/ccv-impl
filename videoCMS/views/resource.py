@@ -87,11 +87,13 @@ def index(request):
         spec.update(json.loads(mongo))
 
     if sort == '':
-        sort = 'createTime'
+        sort = 'updateTime'
     if sort == 'weight':
         sortParams = [('weight',-1),('number',-1),('createTime',-1)]
     elif sort == 'createTime':
         sortParams = [('createTime',-1)]
+    elif sort == 'updateTime':
+        sortParams = [('updateTime',-1)]
     elif sort == 'playNumber':
         sortParams = [('playNumber',-1)]
     elif sort == 'downloadNumber':
@@ -147,7 +149,7 @@ def POST2Resource(request):
     resource['weight'] = float(request.POST.get('weight'))
     channel = clct_channel.find_one({'channelId':resource['channelId']})
     resource['categoryId'] = channel['channelType']
-    resource['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
+    resource['duration'] = int(float(-1 if request.POST.get('duration') == '' else request.POST.get('duration')))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
     resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
@@ -275,7 +277,7 @@ def toggleOnlineStatus(request):
         up = {'isOnline':True,'modifyTime':getCurTime()}
         if resource['updateTime'] == '00000000000000':
             up['updateTime'] = getCurTime()
-        clct_resource.update({'_id':id},{'$set':{'isOnline':True,'modifyTime':getCurTime()}})
+        clct_resource.update({'_id':id},{'$set':up})
     ret['status'] = not resource['isOnline']
     
     return HttpResponse(json.dumps(ret))
