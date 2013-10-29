@@ -96,6 +96,7 @@ def segment(sentences):
         return tags
     for line in result:
         tags.append(line['text'])
+        if len(tags) >= 100: return tags
     return tags
 
 def recommend(words, source):
@@ -148,20 +149,24 @@ def upload(videos, uuid):
             pass
 
 def walk(reason, source): #TODO maybe find in list can work this out
-    rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
     videos = []
-    if rets.count() != 0:
-        for ret in rets:
-            reasonDic = similarWords([ret['recommendReason']])
-            for (k, v) in reasonDic.items():
-                for word in v:
-                    videos.extend(walk(word,'%s %s'%(source, k)))
-            return videos
-    else:
-        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}})
-        if rets.count() == 0:
-            return recommend([reason], source)
-        else: return videos
+    try:
+        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
+        if rets.count() != 0:
+            for ret in rets:
+                reasonDic = similarWords([ret['recommendReason']])
+                for (k, v) in reasonDic.items():
+                    for word in v:
+                        videos.extend(walk(word,'%s %s'%(source, k)))
+                return videos
+        else:
+            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}})
+            if rets.count() == 0:
+                return recommend([reason], source)
+            else: return videos
+    except Exception,e:
+        print e
+        return videos
 
 def process(uuid):
     ret = clct_user.find_one({'uuid':uuid})
@@ -176,18 +181,19 @@ def process(uuid):
         similarKeywordsDic = similarWords(record['resourceName'])
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
+                if cmp(tag,'') == 0: continue
                 video = walk(tag, k)
                 if video: videos.extend(video)
 
     try:
-        if ret['sinaId'] is not None:
+        if ret['sinaId'] != "":
             userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
-        if userTags is not None:
-            similarDic = similarWords(userTags)
-            for (k,v) in similarDic.items():
-                for tag in v:
-                    video = walk(tag, k)
-                    if video: videos.extend(video)
+            if not userTags:
+                similarDic = similarWords(userTags)
+                for (k,v) in similarDic.items():
+                    for tag in v:
+                        video = walk(tag, k)
+                        if video: videos.extend(video)
     except Exception,e:
         print e
 
@@ -195,7 +201,7 @@ def process(uuid):
     if len(videos) == 0:
         retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1})
         try:
-            if  retR is None and ret['sinaId'] is not None:
+            if  retR is None and ret['sinaId'] != "":
                 suggestionTag = retrieveSuggestion(ret['sinaToken'])
                 if suggestionTag is not None:
                     similarSuggestionDic = similarWords(suggestionTag)
@@ -228,5 +234,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
+    #pprint(process('99000310639035'))#sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
