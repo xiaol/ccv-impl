@@ -121,6 +121,14 @@
                             <td><textarea name="mongo" type="text" style="width:110px;height:110px;">{{mongo}}</textarea></td>
                         </tr>
                         <tr>
+                            <td>在线</td>
+                            <td>
+                                <input type="radio" name="isOnline" value="all" {%ifequal isOnline "all" %}checked="checked" {%endifequal%} />全部
+                                <input type="radio" name="isOnline" value="true" {%ifequal isOnline "true" %}checked="checked" {%endifequal%} />在线
+                                <input type="radio" name="isOnline" value="false" {%ifequal isOnline "false" %}checked="checked" {%endifequal%} />不在线
+                            </td>
+                        </tr>
+                        <tr>
                             <td>时间段</td>
                             <td>
                                 <input type="text" name="startTime" value="{{startTime}}"  style="width:110px"/>至<br/>

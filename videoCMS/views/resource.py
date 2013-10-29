@@ -50,6 +50,7 @@ def index(request):
     
     name = request.GET.get('name','')
     mongo = request.GET.get('mongo','')
+    isOnline = request.GET.get('isOnline','all')
     id = request.GET.get('id','')
     channelId = request.GET.get('channelId','')
     videoType = request.GET.get('videoType','')
@@ -58,7 +59,7 @@ def index(request):
     channelType = request.GET.get('channelType','')
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
-    sort = request.GET.get('sort','createTime')
+    sort = request.GET.get('sort','updateTime')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -83,6 +84,10 @@ def index(request):
         if 'createTime' not in spec:
             spec['createTime'] = {}
         spec['createTime'].update({"$lte":endTime})
+    if isOnline == 'true':
+        spec['isOnline'] = True
+    elif isOnline == 'false':
+        spec['isOnline'] = False
     if mongo != '':
         spec.update(json.loads(mongo))
 
@@ -116,27 +121,15 @@ def index(request):
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
-    DICT['resourceList'] = resourceList
-    
-    DICT['page'] = page
-    DICT['len'] = limit
+
+
     DICT['nextPage'] = page + 1
     DICT['prePage'] = page-1 if page>1 else 1
-    DICT['name'] = name
-    DICT['id'] = id
-    DICT['channelId'] = channelId
-    DICT['videoType'] = videoType
-    DICT['videoId'] = videoId
-
-    DICT['mongo'] = mongo
     DICT['findNum'] = clct_resource.find(spec).count()
     DICT['navPage'] = 'resource'
     DICT['typeList'] = [u'全部'] + getCategoryList()
-    DICT['channelType'] = channelType
-    DICT['sort'] = sort
-    DICT['startTime'] = startTime
-    DICT['endTime'] = endTime
-    
+    DICT.update(locals())
+
     return render_to_response('resourceList.htm',DICT)
 
 
