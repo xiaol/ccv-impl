@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from videoCMS.conf import userList,clct_resource,IMG_INTERFACE_FF
 from videoCMS.common.HttpUtil import getVideoUrl
 from videoCMS.views.resource import saveResourceImage
-import base64,Image
+import base64,Image,StringIO
 from bson import ObjectId
 
 def play(request):
@@ -28,7 +28,7 @@ def play(request):
     img = request.POST.get('image')[22:]
     img = base64.decodestring(img)
     try:
-        Image.open(img)
+        Image.open(StringIO.StringIO(img))
     except:
         return HttpResponse('图片不正确！')
     file = saveResourceImage(img,resourceId)
