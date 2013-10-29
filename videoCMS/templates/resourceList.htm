@@ -130,8 +130,9 @@
                         <tr>
                             <td>排序</td>
                             <td>
-                                <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
                                 <input type="radio" name="sort" value="updateTime"  {%ifequal sort "updateTime" %}checked="checked" {%endifequal%}/>updateTime
+                                <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
+                                <br/>
                                 <input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重<br/>
                                 <input type="radio" name="sort" value="playNumber" {%ifequal sort "playNumber" %}checked="checked" {%endifequal%}/>播放数
                                 <input type="radio" name="sort" value="downloadNumber" {%ifequal sort "downloadNumber" %}checked="checked" {%endifequal%}/>下载数<br/>
