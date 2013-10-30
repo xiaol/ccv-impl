@@ -286,6 +286,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_163_open', url, channelId, snapShot=snapShot, updateTvNumber=True)
     elif handleName == '163Paike':
         startSearch('handles.handle_163_paike', url, channelId, snapShot=snapShot, updateTvNumber=True)
+    else:
+        raise Exception("not this handle"+handleName)
 
 if __name__ == '__main__':
     pass

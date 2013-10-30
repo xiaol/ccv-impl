@@ -6,13 +6,34 @@
 <link href="/static/css/login.css" rel="stylesheet" type="text/css" />
 <link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/4.0/video.js"></script>
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/pasteImage.js"></script>
+<!--<link href="/static/css/video-js.css" rel="stylesheet">
+<script src="/static/js/video.js"></script> -->
 </head>
 <body>
-<video id="example_video_1" class="video-js vjs-default-skin"
-  controls preload="auto" width="640" height="264"
-  poster="http://video-js.zencoder.com/oceans-clip.png"
-  data-setup='{"example_option":true}'>
- <source src="{{videoUrl}}" type='video/flv' />
-</video>
+<div style="float: left; width: 640px;">
+    <video id="example_video_1" class="video-js vjs-default-skin"
+      controls preload="auto" width="640" height="480"
+      poster="http://video-js.zencoder.com/oceans-clip.png"
+      data-setup='{"example_option":true}'>
+     <source src="{{videoUrl}}" type='video/flv' />
+    </video>
+</div>
+<div style="float: left; width: 640px; margin-left: 10px;">
+    <h1>当前封面</h1>
+    <div>
+        <img src={{ curImage }} />
+    </div>
+    <h1>更新封面</h1>
+    <form method="post">
+
+        <input type="hidden" name="image"/>
+        <div contenteditable="true" style="height: 400px; width: 100%; outline: 0; overflow: auto; border: 3px gray dashed;">
+
+        </div>
+        <input type="submit" value="保存封面图">
+    </form>
+</div>
 </body>
 </html>
