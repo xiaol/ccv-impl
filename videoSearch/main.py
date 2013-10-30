@@ -49,7 +49,7 @@ def main():
             except:
                 print '=========== process_channel %s error ============='%channel['channelId']
                 clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),\
-                                                                    'searchTime':getCurTime()}})
+                                                                    'searchTime':getCurTime(),'nextSearchTime':'99990101000000'}})
                 print traceback.format_exc()
             else:
                 print '=========== process_channel %s success ============='%channel['channelId']
@@ -76,7 +76,7 @@ def test():
     process_channel(channel)
 '''
 def test():
-    channel = clct_channel.find_one({"channelId":100065})
+    channel = clct_channel.find_one({"channelId":101446})
     process_channel(channel)
 
 
