@@ -56,9 +56,10 @@ def retrieveSuggestion(sinaToken):
     return result
 
 def retrieveUserHistory(userId):
-    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': "0" }}).sort("operationTime", -1).limit(10)
+    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': "0" }}).sort("operationTime", -1).limit(20)
     records = []
-    for ret in rets: records.append(ret['resourceId'])
+    for ret in rets:
+        records.append(ret['resourceId'])
     reSet = set(records)
     records = []
 
@@ -66,21 +67,24 @@ def retrieveUserHistory(userId):
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
     for entity in records:
         retC = clct_channel.find_one({'channelId':entity['channelId']})
-	entity['resourceName'] = entity['resourceName']+' ' + retC.get('channelName','')+' '+retC.get('detailDescription','') 
+        entity['resourceName'] = entity['resourceName']+' ' + retC.get('channelName','')+' '+retC.get('detailDescription','')
     return records
 
 def retrieveUserSearchHistory(userId):
     pass
 
-def similarWords(words):
+def similarWords(words,total=False):
     if not isinstance(words, list):
         words = [words]
     result = {}
     for word in words:
         tags_str = " ".join(segment(word))
         temp = distance.similar('',tags_str.encode('utf8'))
-        tempA = temp[:10];tempB = temp[-10:];tempA.extend(tempB)
-        result[tags_str] = tempA
+        if not total:
+            tempA = temp[:10];tempB = temp[-10:];tempA.extend(tempB)
+            result[tags_str] = tempA
+        else:
+            result[tags_str] = temp
     return result
 
 def segment(sentences):
@@ -177,8 +181,10 @@ def process(uuid):
     videos = []
 
     records = retrieveUserHistory(ret['uuid'])
+    if  ret['sinaId'] == "":
+        total = True
     for record in records:
-        similarKeywordsDic = similarWords(record['resourceName'])
+        similarKeywordsDic = similarWords(record['resourceName'],total)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
                 if cmp(tag,'') == 0: continue
@@ -209,9 +215,9 @@ def process(uuid):
                         for tag in v:
                             video = walk(tag, k)
                             if video: videos.extend(video)
+                print uuid,'count: ',len(videos)
         except Exception,e:
             print e
-    print uuid,'count: ',len(videos)
     upload(videos, ret['uuid'])
 
 def main():
