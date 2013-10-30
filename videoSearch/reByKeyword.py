@@ -183,6 +183,7 @@ def process(uuid):
     records = retrieveUserHistory(ret['uuid'])
     if  ret['sinaId'] == "":
         total = True
+    else: total = False
     for record in records:
         similarKeywordsDic = similarWords(record['resourceName'],total)
         for (k,v) in similarKeywordsDic.items():
@@ -240,5 +241,5 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('99000310639035'))#sina_1837408945')) #huohua_sina_524922ad0cf25568d165cbdd'
+    #pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
