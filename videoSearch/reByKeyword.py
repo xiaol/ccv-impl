@@ -146,7 +146,10 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
 
     '''入库'''
     t = getCurTime()
+    result = []
     for entity in entities:
+        if entity['view_count'] < 7000:
+            continue
         resource = buildResource(entity['link'],entity['title'],101641,'youku',entity['id'],'video')
         resource['createTime'] = t
         resource['categoryId'] = 0
@@ -178,8 +181,9 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
         entity['isPlayed'] = -1
         entity['playTime'] = 0
         entity['createTime'] = t
+        result.extend(entity)
 
-    return entities
+    return result
 
 
 def buildResource(url,title,channelId,videoType,videoId,type):
