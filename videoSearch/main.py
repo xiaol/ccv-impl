@@ -7,6 +7,7 @@ from setting import clct_channel
 import sys,time,json,traceback
 from common.common import getCurTime
 from pprint import pprint
+from common.ParallelUtil import ThreadPool
 
 
 
@@ -33,56 +34,41 @@ def process_channel(channel):
     for i,searchHandle in enumerate(channel['searchHandleList']):
         if searchHandle == "":
             continue
-        print '[%d] %s'%(i,searchHandle)
+        print '[%d] %s %s'%(i,channel['sourceList'][i],searchHandle)
         handleModule,handleName = searchHandle.split('.')
         __import__(handleModule)
         module = sys.modules[handleModule]
         print module.handle(channel['channelId'],handleName,channel['sourceList'][i])
 
+def doWork(channel):
+    try:
+        process_channel(channel)
+    except:
+        print '=========== process_channel %s error ============='%channel['channelId']
+        clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),\
+                                                            'searchTime':getCurTime(),'nextSearchTime':'99990101000000'}})
+        print traceback.format_exc()
+    else:
+        print '=========== process_channel %s success ============='%channel['channelId']
+        clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1}})
+        clct_channel.update({'_id':channel['_id']},{'$set':{'searchTime':getCurTime()}})
+    sys.stdout.flush()
+
 def main():
     while True:
         channels = clct_channel.find({'searchHandleList':{"$ne":[]},"processed":True,\
                                       'nextSearchTime':{'$lte':getCurTime(),"$not":{"$in":["","00000000000000"]}}}, timeout=False)
+        threadPool = ThreadPool(5)
         for channel in channels:
-            try:
-                process_channel(channel)
-            except:
-                print '=========== process_channel %s error ============='%channel['channelId']
-                clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),\
-                                                                    'searchTime':getCurTime(),'nextSearchTime':'99990101000000'}})
-                print traceback.format_exc()
-            else:
-                print '=========== process_channel %s success ============='%channel['channelId']
-                clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1}})
-                clct_channel.update({'_id':channel['_id']},{'$set':{'searchTime':getCurTime()}})
-            sys.stdout.flush()
+            threadPool.do(doWork,channel)
+        threadPool.join()
         print 'loop'
         time.sleep(6)
-        
-def main_once():
-    channels = clct_channel.find({'handleName':{"$ne":""},"processed":True},timeout=False)
-    for channel in channels:
-        print channel
-        try:
-            process_channel(channel)
-        except:
-            import traceback
-            print traceback.format_exc()
-'''
-def test():
-    channel = {}
-    channel['handleName'] = 'search_zongyi'
-    channel['handleArgs'] = ['handles.handle_youku_showPage', 'http://www.youku.com/show_page/id_zd18a7caa2d4311e29498.html',100022]
-    process_channel(channel)
-'''
-def test():
-    channel = clct_channel.find_one({"channelId":101446})
-    process_channel(channel)
+
 
 
 if __name__ == '__main__':
     main()
-    #main_once()
-    #test()
+
     
 
