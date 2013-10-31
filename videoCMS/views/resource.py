@@ -92,7 +92,7 @@ def index(request):
         spec.update(json.loads(mongo))
 
     if sort == '':
-        sort = 'updateTime'
+        sort = 'createTime'
     if sort == 'weight':
         sortParams = [('weight',-1),('number',-1),('createTime',-1)]
     elif sort == 'createTime':
