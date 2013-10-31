@@ -1,15 +1,14 @@
 #coding=utf-8
-
 import redis
 from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug
 import imp,sys
 from pprint import pprint
-import json ,time
+import json ,time, re
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
 import distance
 import urllib2
-from common.common import getCurTime
+from common.common import getCurTime,strB2Q
 from common.Domain import Resource
 from common.videoInfoTask import addVideoInfoTask
 
@@ -72,6 +71,7 @@ def retrieveUserHistory(userId):
     for entity in records:
         retC = clct_channel.find_one({'channelId':entity['channelId']})
         entity['resourceName'] = entity['resourceName']+' ' + retC.get('channelName','')+' '+retC.get('detailDescription','')
+        entity['resourceName'] = re.sub('http://[\w\./]*','',entity['resourceName'])
     return records
 
 def retrieveUserSearchHistory(userId):
@@ -103,7 +103,7 @@ def segment(sentences):
         print e
         return tags
     for line in result:
-        tags.append(line['text'])
+        tags.append(strB2Q(line['text']))
         if len(tags) >= 100: return tags
     return tags
 
@@ -124,7 +124,7 @@ def recommend(words, source):
         print e
         return videos
     videos = buildVideo(ret, ' '.join(words), source)
-    videos.extend(recommendByYouku(words,' '.join(words), source))
+    #videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
 def recommendByYouku(words,reason, source):
