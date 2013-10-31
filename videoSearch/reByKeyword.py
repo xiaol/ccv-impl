@@ -10,6 +10,8 @@ from bson import ObjectId
 import distance
 import urllib2
 from common.common import getCurTime
+from common.Domain import Resource
+from common.videoInfoTask import addVideoInfoTask
 
 
 redisUrl = 'localhost'
@@ -19,6 +21,8 @@ if not debug:
     contentUrl = 'http://h46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
     segmentUrl = 'http://h46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
     redisUrl = 'h48'
+
+youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=view-count&page=1&count=1"
 
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
@@ -120,7 +124,76 @@ def recommend(words, source):
         print e
         return videos
     videos = buildVideo(ret, ' '.join(words), source)
+    videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
+
+def recommendByYouku(words,reason, source):
+    subCon = ' '.join(words)
+    url = youkuSearchUrl%subCon
+    videos = []
+    try:
+        html = get_html(url)
+        ret = json.loads(html)['videos']
+        videos = buildVideoFromYouku(ret,reason, source,True)
+    except Exception,e:
+        print e
+        return videos
+    return videos
+
+def buildVideoFromYouku(entities, reason, source, snapShot = False):
+    updateMap = {'updateTime':getCurTime()}
+    clct_channel.update({'channelId':101641},{'$set':updateMap})
+
+    '''入库'''
+    t = getCurTime()
+    for entity in entities:
+        resource = buildResource(entity['link'],entity['title'],101641,'youku',entity['id'],'video')
+        resource['createTime'] = t
+        resource['categoryId'] = 0
+        resource['isOnline'] = False
+        resource['source'] = 'recommend'
+        resource['updateTime'] = getCurTime()
+        resource['tagList'] = entity['tags'].split(',')
+        resource['tagList'].append(entity['category'])
+        print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
+        resource['weight'] = -1
+
+        try:
+            ret = clct_resource.insert(resource , safe=True)
+            entity['resourceId'] = str(ret)
+        except Exception,e:
+            print("insert Error!",e)
+            ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
+            entity['resourceId'] = str(ret['_id'])
+
+        else:
+            '''新增 截图任务'''
+            if snapShot:
+                mp4box = True if resource['videoType'] == 'sohu_url' else False
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,goOnline=True)
+
+        entity['recommendSource'] = source
+        entity['recommendReason'] = reason
+        entity['isViewed'] = -1
+        entity['isPlayed'] = -1
+        entity['playTime'] = 0
+        entity['createTime'] = t
+
+    return entities
+
+
+def buildResource(url,title,channelId,videoType,videoId,type):
+    resource = Resource()
+    resource['resourceName'] = title
+    resource['resourceUrl'] = url
+    resource['channelId'] = channelId
+    resource['type'] = type
+    resource['videoType'] = videoType
+    resource['videoId'] =  videoId
+    resource['createTime'] = getCurTime()
+    resource['modifyTime'] = getCurTime()
+
+    return resource.getInsertDict()
 
 def buildVideo(entities, reason, source):
     t = getCurTime()
@@ -152,8 +225,10 @@ def upload(videos, uuid):
         else:
             pass
 
-def walk(reason, source): #TODO maybe find in list can work this out
+def walk(reason, source):
     videos = []
+    if reason == '':
+        return videos
     try:
         rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
         if rets.count() != 0:
@@ -161,6 +236,8 @@ def walk(reason, source): #TODO maybe find in list can work this out
                 reasonDic = similarWords([ret['recommendReason']])
                 for (k, v) in reasonDic.items():
                     for word in v:
+                        if cmp(word,ret['recommendReason']) == 0:
+                            continue
                         videos.extend(walk(word,'%s %s'%(source, k)))
                 return videos
         else:
@@ -188,7 +265,6 @@ def process(uuid):
         similarKeywordsDic = similarWords(record['resourceName'],total)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
-                if cmp(tag,'') == 0: continue
                 video = walk(tag, k)
                 if video: videos.extend(video)
 
@@ -219,6 +295,8 @@ def process(uuid):
                 print uuid,'count: ',len(videos)
         except Exception,e:
             print e
+
+
     upload(videos, ret['uuid'])
 
 def main():
