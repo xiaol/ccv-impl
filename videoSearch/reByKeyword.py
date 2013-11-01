@@ -124,7 +124,7 @@ def recommend(words, source):
         print e
         return videos
     videos = buildVideo(ret, ' '.join(words), source)
-    videos.extend(recommendByYouku(words,' '.join(words), source))
+    #videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
 def recommendByYouku(words,reason, source):
