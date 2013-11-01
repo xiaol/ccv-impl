@@ -46,12 +46,15 @@ def doWork(channel):
     except:
         print '=========== process_channel %s error ============='%channel['channelId']
         clct_channel.update({'_id':channel['_id']},{'$set':{'searchStatus':'error','searchMsg':traceback.format_exc(),\
-                                                            'searchTime':getCurTime(),'nextSearchTime':'99990101000000'}})
+                                                            'searchTime':getCurTime()}})
         print traceback.format_exc()
     else:
         print '=========== process_channel %s success ============='%channel['channelId']
         clct_channel.update({'_id':channel['_id']},{'$unset':{'searchStatus':1,'searchMsg':1}})
         clct_channel.update({'_id':channel['_id']},{'$set':{'searchTime':getCurTime()}})
+
+    #修改下次更新时间
+
     sys.stdout.flush()
 
 def main():
