@@ -33,7 +33,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                         'resourceName':resource['resourceName'],'channelId':resource['channelId'],
                         'number':resource['number']
                         }})
-                    InsertedList.append(ret)
+                    InsertedList.append(old['_id'])
                     if resource['isOnline']:
                         onlineNum += 1
 
