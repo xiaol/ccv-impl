@@ -166,8 +166,11 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
             entity['resourceId'] = str(ret)
         except Exception,e:
             print("insert Error!",e)
-            ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
-            entity['resourceId'] = str(ret['_id'])
+            try:
+                ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
+                entity['resourceId'] = str(ret['_id'])
+            except Exception,x:
+                print x
 
         else:
             '''新增 截图任务'''
@@ -181,17 +184,17 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
         entity['isPlayed'] = -1
         entity['playTime'] = 0
         entity['createTime'] = t
-        result.extend(entity)
+        result.append(entity)
 
     return result
 
 
-def buildResource(url,title,channelId,videoType,videoId,type):
+def buildResource(url,title,channelId,videoType,videoId,typeType):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['channelId'] = channelId
-    resource['type'] = type
+    resource['type'] = typeType
     resource['videoType'] = videoType
     resource['videoId'] =  videoId
     resource['createTime'] = getCurTime()
