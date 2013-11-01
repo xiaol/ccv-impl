@@ -59,7 +59,7 @@ def index(request):
     channelType = request.GET.get('channelType','')
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
-    sort = request.GET.get('sort','updateTime')
+    sort = request.GET.get('sort','createTime')
     
     if id != '':
         spec['_id'] = ObjectId(id)
