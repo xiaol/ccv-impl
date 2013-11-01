@@ -266,7 +266,7 @@ def process(uuid):
 
     records = retrieveUserHistory(ret['uuid'])
     if  ret['sinaId'] == "":
-        total = True
+        total = False
     else: total = False
     for record in records:
         similarKeywordsDic = similarWords(record['resourceName'],total)
