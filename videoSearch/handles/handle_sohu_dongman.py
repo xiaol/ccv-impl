@@ -29,7 +29,7 @@ def handle(url,channelId,tvNumber):
             if number <= tvNumber:
                 continue
         except:
-            pass
+            number = -1
         
 
         videoId = p_vid.search(url).groups()[0]
