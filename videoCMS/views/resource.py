@@ -232,8 +232,6 @@ def add(request):
     #增加截图任务
     if resource['videoType'] not in [u'bt',u'huohua']:
         ret = addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],force=True)
-        if ret:
-            clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':'doing'}})
     #更新 频道更新时间
     clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':getCurTime()}})
     return HttpResponseRedirect('update?id='+id)
@@ -309,7 +307,6 @@ def refreshSnapshot(request):
     resource = clct_resource.find_one({'_id':ObjectId(id)})
     ret = addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],force=True)
     if ret:
-        clct_resource.update({'_id':ObjectId(id)},{'$set':{'snapshot':'doing'}})
         return HttpResponse('ok')
     else:
         return HttpResponse('failed')

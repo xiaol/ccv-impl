@@ -9,7 +9,7 @@ except:
     from ..setting import clct_videoInfoTask,clct_resource
 from bson import ObjectId
 
-def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False, force = False, goOnline = False):
+def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False, force = False, goOnline = False, type= 'snap'):
     '''
         错误的resourceId
     '''
@@ -21,6 +21,7 @@ def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False,
     videoInfoTask['mp4box'] = mp4box
     videoInfoTask['force'] = force
     videoInfoTask['goOnline'] = goOnline
+    videoInfoTask['type'] = type
     
     resource = clct_resource.find_one({'_id':ObjectId(resourceId)})
     if resource == None:
@@ -31,5 +32,5 @@ def  addVideoInfoTask(channelId, resourceId, videoId, videoType, mp4box = False,
     if clct_videoInfoTask.find_one({'resourceId':videoInfoTask['resourceId']}):
         clct_videoInfoTask.remove({'resourceId':videoInfoTask['resourceId']},mulit=True)
     clct_videoInfoTask.insert(videoInfoTask.getInsertDict())
-    clct_resource.update({'_id':ObjectId(resourceId)},{'$set':{"snapshot": "doing"}})
+    clct_resource.update({'_id':ObjectId(resourceId)},{'$set':{"snapshot": "pending"}})
     return True
