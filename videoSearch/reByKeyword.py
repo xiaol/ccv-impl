@@ -278,7 +278,7 @@ def process(uuid):
     try:
         if ret['sinaId'] != "":
             userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
-            if not userTags:
+            if userTags:
                 similarDic = similarWords(userTags)
                 for (k,v) in similarDic.items():
                     for tag in v:
