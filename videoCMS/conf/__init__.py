@@ -157,6 +157,7 @@ searchHandleListAll = [
 "search.yinyuetaiMV",
 "search.163Open",
 "search.163Paike",
+"search.youkuTop",
 
 "searchGif.onegif",
 "searchGif.forgifs",
