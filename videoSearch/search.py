@@ -161,6 +161,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_weibo', url, channelId,snapShot = snapShot)#url 其实就是微博UID
     elif handleName == 'youkuNews':
         startSearch('handles.handle_youku_template1', url, channelId,snapShot = snapShot)
+    elif handleName == 'youkuTop':
+        startSearch('handles.handle_youku_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
