@@ -8,7 +8,7 @@ from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
 import distance
 import urllib2
-from common.common import getCurTime,strB2Q
+from common.common import getCurTime,strB2Q,strQ2B
 from common.Domain import Resource
 from common.videoInfoTask import addVideoInfoTask
 
@@ -124,11 +124,12 @@ def recommend(words, source):
         print e
         return videos
     videos = buildVideo(ret, ' '.join(words), source)
-    videos.extend(recommendByYouku(words,' '.join(words), source))
+    #videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
 def recommendByYouku(words,reason, source):
     subCon = ' '.join(words)
+    #subCon = strQ2B(subCon)
     url = youkuSearchUrl%subCon
     videos = []
     try:
@@ -243,15 +244,21 @@ def walk(reason, source):
                 reasonDic = similarWords([ret['recommendReason']])
                 for (k, v) in reasonDic.items():
                     for word in v:
-                        if cmp(word,ret['recommendReason']) == 0:
+                        if cmp(word,ret['recommendReason'].encode('utf8')) == 0:
                             continue
                         videos.extend(walk(word,'%s %s'%(source, k)))
                 return videos
         else:
-            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}})
+            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}}).sort("createTime", -1)
             if rets.count() == 0:
                 return recommend([reason], source)
-            else: return videos
+            else:
+                for oldRecommend in rets:
+                    cooling = time.mktime(time.localtime()) - time.mktime(time.strptime(oldRecommend['createTime'],'%Y%m%d%H%M%S'))  > 3600*48
+                    if cooling:
+                        return recommend([reason],source)
+                    break
+                return videos
     except Exception,e:
         print e
         return videos
@@ -328,3 +335,4 @@ def main():
 if __name__ == '__main__':
     #pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
+    #recommendByYouku(["ＩＴ"],"","")
