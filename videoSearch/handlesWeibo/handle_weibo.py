@@ -13,9 +13,9 @@ p_1 = re.compile('http://(.*?)/')
 p_url = re.compile('http://[\w\./]*')
 p_sina = re.compile('http://video.sina.com.cn/v/b/(.*?)\.html')
 p_youku = re.compile('http://v.youku.com/v_show/id_(.*?).html')
-p_56 = re.compile('v_([^\.]+).html')
+#p_56 = re.compile('v_([^\.]+).html')
 
-p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
+p_videos = [('sina',p_sina), ('youku',p_youku)]
 p_2 = re.compile('\S.(?P<type>\w+)$')
 
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
