@@ -111,7 +111,9 @@ def index(request):
     for one in resourceList:
         one['id'] = str(one['_id'])
         one.pop('_id')
-        one['resourceImageUrl'] = IMG_INTERFACE_FF%(96,96,one['resourceImageUrl'])
+        immm = one['resourceImageUrl']
+        one['resourceImageUrl'] = IMG_INTERFACE_FF%(96,96,immm)
+        one['resourceImageUrlOri'] = IMG_INTERFACE_FF%('*','*',immm)
         channel = clct_channel.find_one({'channelId':one['channelId']})
         if channel == None:
             one['channelName'] = "not found channel:"+str(one['channelId'])

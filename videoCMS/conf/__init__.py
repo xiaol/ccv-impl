@@ -158,6 +158,8 @@ searchHandleListAll = [
 "search.163Open",
 "search.163Paike",
 "search.youkuTop",
+"search.funshionTop",
+"search.letvTop",
 
 "searchGif.onegif",
 "searchGif.forgifs",
