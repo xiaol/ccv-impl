@@ -163,6 +163,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_youku_template1', url, channelId,snapShot = snapShot)
     elif handleName == 'youkuTop':
         startSearch('handles.handle_youku_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'funshionTop':
+        startSearch('handles.handle_funshion_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'letvTop':
+        startSearch('handles.handle_letv_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
