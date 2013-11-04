@@ -165,12 +165,13 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
         try:
             ret = clct_resource.insert(resource , safe=True)
             entity['resourceId'] = str(ret)
+            entity['snapshot'] = 'inQueue'
         except Exception,e:
             print("insert Error!",e)
             try:
-                ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
-                entity['resourceId'] = str(ret['_id'])
-                if ret['isOnline']:
+                retR  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
+                entity['resourceId'] = str(retR['_id'])
+                if retR['isOnline']:
                     entity['snapshot'] = 'done'
                 else: continue
             except Exception,x:
@@ -226,6 +227,10 @@ def retrieveVideo(keywords):
 def upload(videos, uuid):
     for video in videos:
         try:
+            retR = clct_resource.find_one({'_id':ObjectId(video['resourceId'])})
+            if retR is not None:
+                if retR.get('snapshot','') == 'done':
+                    video['snapshot'] = retR['snapshot']
             video['uuid'] = uuid
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
@@ -337,6 +342,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
-    main()
+    pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    #main()
     #recommendByYouku(["ＩＴ"],"","")
