@@ -170,6 +170,9 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
             try:
                 ret  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
                 entity['resourceId'] = str(ret['_id'])
+                if ret['isOnline']:
+                    entity['snapshot'] = 'done'
+                else: continue
             except Exception,x:
                 print x
 
