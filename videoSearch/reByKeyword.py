@@ -217,6 +217,7 @@ def buildVideo(entities, reason, source):
         entity['resourceId'] = entity['_id']
         del entity['_id']
         entity['createTime'] = t
+        entity['snapshot'] = 'done'
     return entities
 
 def retrieveVideo(keywords):
