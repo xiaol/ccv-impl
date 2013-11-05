@@ -101,7 +101,7 @@ def pDecodeWeibo(video, sinaId, sinaName, getVideoIdUrl):
     p_sina = re.compile('http://video.sina.com.cn/v/b/(.*?)\.html')
     p_youku = re.compile('http://v.youku.com/v_show/id_(.*?).html')
     p_56 = re.compile('v_([^\.]+).html')
-    p_videos = [('sina',p_sina), ('youku',p_youku), ('56',p_56)]
+    p_videos = [('sina',p_sina), ('youku',p_youku)]
 
     item = {}
     if 'retweeted_status' in video:
