@@ -15,14 +15,12 @@ from bson.objectid import ObjectId
 __author__ = 'Ivan liu'
 
 def main():
-    rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$exists':False}})
+    rets = clct_userRecommend.find({'isViewed':-1,'snapshot':"doingGif"})
 
     for ret in rets:
         retR = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
         if retR['isOnline']:
-            if retR.get('snapshot','')== '':
-                retR['snapshot'] = 'done'
-            clct_userRecommend.update({'uuid':ret['uuid'], 'resourceId':ret['resourceId']},{'$set':{'snapshot':retR['snapshot']}})
+            clct_userRecommend.update({'uuid':ret['uuid'], 'resourceId':ret['resourceId']},{'$set':{'snapshot':'done'}})
         else:
             clct_userRecommend.update({'uuid':ret['uuid'], 'resourceId':ret['resourceId']},{'$set':{'snapshot':retR['snapshot']}})
 

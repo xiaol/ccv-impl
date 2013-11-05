@@ -124,7 +124,7 @@ def recommend(words, source):
         print e
         return videos
     videos = buildVideo(ret, ' '.join(words), source)
-    videos.extend(recommendByYouku(words,' '.join(words), source))
+    #videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
 def recommendByYouku(words,reason, source):
@@ -250,12 +250,12 @@ def walk(reason, source):
         rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
         if rets.count() != 0:
             for ret in rets:
-                reasonDic = similarWords([ret['recommendReason']])
+                reasonDic = similarWords([ret['recommendReason']]+" "+reason)
                 for (k, v) in reasonDic.items():
                     for word in v:
                         if cmp(word,ret['recommendReason'].encode('utf8')) == 0:
                             continue
-                        videos.extend(walk(word,'%s %s'%(source, k)))
+                        videos.extend(walk('%s %s'%(word, k),'%s %s'%(source, k)))
                 return videos
         else:
             rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}}).sort("createTime", -1)
@@ -342,6 +342,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    #print(process('99000310639035'))#'sina_1837408945'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
     #recommendByYouku(["ＩＴ"],"","")
