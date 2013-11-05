@@ -342,6 +342,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
-    #main()
+    #pprint(process('sina_1837408945'))#'99000310639035'))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    main()
     #recommendByYouku(["ＩＴ"],"","")
