@@ -235,10 +235,11 @@ def upload(videos, uuid):
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
             print("Insert Error!",e)
-            ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
+            #Different reason to same recommendation
+            '''ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
             if cmp(ret['recommendReason'].encode('utf8'), video['recommendReason']) != 0:
                 ret['recommendReason'] = ret['recommendReason'].encode('utf8')+' '+video['recommendReason']
-                clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})
+                clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})'''
         else:
             pass
 
@@ -247,10 +248,10 @@ def walk(reason, source):
     if reason == '':
         return videos
     try:
-        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}, 'isPlayed': 1})
+        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason}, 'isPlayed': 1})
         if rets.count() != 0:
             for ret in rets:
-                reasonDic = similarWords([ret['recommendReason']]+" "+reason)
+                reasonDic = similarWords([ret['recommendReason']])
                 for (k, v) in reasonDic.items():
                     for word in v:
                         if cmp(word,ret['recommendReason'].encode('utf8')) == 0:
@@ -258,7 +259,7 @@ def walk(reason, source):
                         videos.extend(walk('%s %s'%(word, k),'%s %s'%(source, k)))
                 return videos
         else:
-            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason+'|'+' '+reason}}).sort("createTime", -1)
+            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason}}).sort("createTime", -1)
             if rets.count() == 0:
                 return recommend([reason], source)
             else:
@@ -342,6 +343,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('99000310639035'))#'sina_1837408945'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
     #recommendByYouku(["ＩＴ"],"","")
