@@ -33,3 +33,10 @@
     padding: 4px 10px;
     border: 1px solid #BBB;
 }
+
+.highlight
+{
+    background-color: rgb(255,217,163);
+    color: #222;
+    font-weight: bold;
+}
