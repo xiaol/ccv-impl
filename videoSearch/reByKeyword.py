@@ -120,10 +120,9 @@ def recommend(words, source):
     try:
         html = get_html(url)
         ret = json.loads(html)['response']['docs']
+        videos = buildVideo(ret, ' '.join(words), source)
     except Exception,e:
         print e
-        return videos
-    videos = buildVideo(ret, ' '.join(words), source)
     videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
@@ -256,7 +255,7 @@ def walk(reason, source):
                     for word in v:
                         if cmp(word,ret['recommendReason'].encode('utf8')) == 0:
                             continue
-                        videos.extend(walk('%s %s'%(word, k),'%s %s'%(source, k)))
+                        videos.extend(walk('%s %s'%(word, k.encode('utf8')),'%s %s'%(source, k)))
                 return videos
         else:
             rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason}}).sort("createTime", -1)
