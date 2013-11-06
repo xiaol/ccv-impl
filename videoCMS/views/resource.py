@@ -153,7 +153,7 @@ def POST2Resource(request):
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
-    resource['isLD'] = request.POST.get('isLD')
+    resource['isLD'] = True if request.POST.get('isLD') == u'是' else False
     resource['updateTime'] = request.POST.get('updateTime')
 
     try:
