@@ -3,6 +3,8 @@ import urllib2
 import re
 import time
 
+headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.65 Safari/537.36'}
+req = urllib2.Request(url = 'http://movie.douban.com/tag/?view=cloud',headers = headers)
 #抓取豆瓣电影标签
 f=urllib2.urlopen('http://movie.douban.com/tag/?view=cloud').read()
 n1=f.find('007')
@@ -19,10 +21,14 @@ tags= []
 #抓取每个标签打开后的网页地址
 class Movie_list:
     def __init__(self):
-        self.url1='http://movie.douban.com/tag/' 
+        self.url1='http://movie.douban.com/tag/'
+        self.n1,self.n2 = -1,-1
     def request_open(self,n1,n2): #n1是标签list中的序号，n2是页码
         self.url2='?start='+str(n2*20)+'&type=T'
+        if self.n1 == n1 and self.n2 == n2:
+            return self.page1
         self.page1=urllib2.urlopen(self.url1+movie_tags[n1]+self.url2).read()
+        self.n1,self.n2 = n1,n2
         return self.page1 #点击标签打开后的页面地址
         
     
