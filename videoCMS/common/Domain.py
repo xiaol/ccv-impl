@@ -142,7 +142,7 @@ class Channel(DomainBase):
     detailMovieCategory = []
     detailDistrict = ''
     detailLanguage = ''
-    detailReleaseDate = '00000000000000'
+    detailReleaseDate = ''
     detailDoubanUrl = ''
     detailDuration = ''
     detaildoubanScore = -1
