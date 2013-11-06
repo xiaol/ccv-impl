@@ -47,6 +47,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
 
+    print '频道: %d, 成功插入: %d,上线: %d,是否更新tvNumber: %s'%(channelId,len(InsertedList), onlineNum,updateTvNumber)
     #如果 成功有视频插入，则更新频道
     if onlineNum >0 :
         updateMap = {'updateTime':getCurTime()}
@@ -304,4 +305,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(100240,'iqiyiDongman','http://www.iqiyi.com/dongman/yhdzz.html')
+    handle(101708,'funshionTv','http://www.funshion.com/subject/110803/')

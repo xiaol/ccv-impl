@@ -342,6 +342,104 @@ def channel(request):
     return render_to_response('statisticsChannel.htm',DICT)
 
 
+def channelSub2(request):
+    DICT = {}
+
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+    categoryName = request.GET.get('categoryName',"全部")
+    limit = int(request.GET.get('limit',20))
+    sort = request.GET.get('sort','downplayNum')
+
+    spec = {}
+    if categoryName != u"全部":
+        filterCategoryId = getCategoryIdByName(categoryName)
+    else:
+        filterCategoryId = None
+    print 'filterCategoryId:',filterCategoryId
+    spec['date'] = {'$gte':startTime, '$lte':endTime}
+
+    '''
+    在线播放:      30010 获取地址失败， 30009 播放失败，  30008 播放成功
+    手动下载:      30005 获取地址失败， 30001 下载失败，  30000 下载成功
+    自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
+    本地播放:      30007 播放失败，  30006 播放成功
+    '''
+    spec["operationCode"] = {"$in":[30008,30000]}
+
+    #开始统计
+    logs = list(clct_statisticsLog.find(spec,{'className':0, 'msg':0}))
+
+    print '初始化getChannelId'
+    getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
+
+    print '开始统计'
+    result = {}
+    '''
+        {
+            channelId:(下载数，播放数, 总数)
+        }
+    '''
+    for log in logs:
+        #print log
+        resourceId = log['resourceId']
+        if resourceId == 'default':
+            continue
+        categoryId = getCategorylId(resourceId)
+        if filterCategoryId and filterCategoryId != categoryId:
+            continue
+        channelId = getChannelId(resourceId)
+        if not channelId:
+            continue
+        if channelId not in result:
+            result[channelId] = [0,0,0]
+        #下载
+        if log['operationCode'] in [30000]:
+            result[channelId][0] += log['count']
+        #播放
+        if log['operationCode'] == 30008:
+            result[channelId][1] += log['count']
+        #总数
+        result[channelId][2] += log['count']
+
+    #将结果转化成 数组
+    L = []
+    for key in result:
+        item = {}
+        item['channelId'] = key
+        item['data'] = result[key]
+        L.append(item)
+    #排序
+    if sort == 'downplayNum':
+        L.sort(key=lambda a:a['data'][2], reverse=True)
+    elif sort == 'downloadNum':
+        L.sort(key=lambda a:a['data'][0], reverse=True)
+    elif sort == 'playNum':
+        L.sort(key=lambda a:a['data'][1], reverse=True)
+
+
+    L = L[:limit]
+
+    for one in L:
+        channel = clct_channel.find_one({'channelId':one['channelId']})
+        if not channel:
+            print 'channelId not exists:',one['channelId']
+            continue
+        one['channelName'] = channel['channelName']
+        one['subscribeNum'] = channel['subscribeNum']
+        one['categoryName'] = getCategoryNameById(channel['channelType'])
+
+
+    DICT['result'] = L
+    DICT['categoryList'] = [u'全部'] + getCategoryList()
+    DICT['categoryName'] = categoryName
+    DICT['sort'] = sort
+    DICT['limit'] = limit
+    DICT['navPage'] = 'statistics'
+    DICT['title'] = '频道下载/播放统计'
+    return render_to_response('statisticsChannel.htm',DICT)
+
+
+
 def channelSub(request):
     DICT = {}
     categoryName = request.GET.get('categoryName',"全部")
