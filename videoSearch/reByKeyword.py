@@ -188,6 +188,8 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
         entity['isPlayed'] = -1
         entity['playTime'] = 0
         entity['createTime'] = t
+        entity['tags'] = entity['tags'].split(',')
+        entity['tags'].append(entity['category'])
         result.append(entity)
 
     return result
@@ -247,7 +249,7 @@ def walk(reason, source):
     if reason == '':
         return videos
     try:
-        rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason}, 'isPlayed': 1})
+        rets = clct_userRecommend.find({'recommendReason':reason, 'isPlayed': 1})
         if rets.count() != 0:
             for ret in rets:
                 reasonDic = similarWords([ret['recommendReason']])
@@ -258,7 +260,7 @@ def walk(reason, source):
                         videos.extend(walk('%s %s'%(word, k.encode('utf8')),'%s %s'%(source, k)))
                 return videos
         else:
-            rets = clct_userRecommend.find({'recommendReason':{'$regex':'^'+reason}}).sort("createTime", -1)
+            rets = clct_userRecommend.find({'recommendReason':reason}).sort("createTime", -1)
             if rets.count() == 0:
                 return recommend([reason], source)
             else:
@@ -344,4 +346,4 @@ def main():
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
     main()
-    #recommendByYouku(["ＩＴ"],"","")
+    #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

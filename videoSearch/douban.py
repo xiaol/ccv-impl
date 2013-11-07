@@ -1,12 +1,34 @@
 # -*- coding: utf-8 -*-
-import urllib2
+import urllib2,urllib
 import re
 import time
+
+
 
 headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.65 Safari/537.36'}
 req = urllib2.Request(url = 'http://movie.douban.com/tag/?view=cloud',headers = headers)
 #抓取豆瓣电影标签
-f=urllib2.urlopen('http://movie.douban.com/tag/?view=cloud').read()
+#response = urllib2.urlopen('http://movie.douban.com/tag/?view=cloud')
+cookies = 'bid="MKjUjsGxAAw"; viewed="10750155"; ll="108288"; dbcl2="4522663:fGbE2hEYL4s"; ck="8MlT"; ct=y; __utma=30149280.1224970880.1375326960.1383731138.1383733414.38; __utmb=30149280.2.10.1383733414; __utmc=30149280; __utmz=30149280.1383722966.36.17.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __utmv=30149280.452; __utma=223695111.1736981594.1381394804.1383731138.1383733415.9; __utmb=223695111.2.10.1383733415; __utmc=223695111; __utmz=223695111.1383719109.6.5.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/'#response.headers["Set-cookie"]
+urllib2.socket.setdefaulttimeout(10)
+
+def request(url):
+    request = urllib2.Request(url)
+    request.add_header('Cookie', cookies)
+    while True:
+        try:
+            response = urllib2.urlopen(request ).read()
+            time.sleep(delayTime)
+        except Exception,e:
+            print e
+            continue
+        else:
+            break
+    return response
+
+delayTime = 1.5
+response = request('http://movie.douban.com/tag/?view=cloud')
+f = response
 n1=f.find('007')
 n2=f.find('宗教')        #n1是第一个标签，n2是第二个标签，利用这两个标签定位标签们在f中的位置
 f1=f[(n1-4):(n2+10)]    #去掉标签旁边的杂质
@@ -27,7 +49,7 @@ class Movie_list:
         self.url2='?start='+str(n2*20)+'&type=T'
         if self.n1 == n1 and self.n2 == n2:
             return self.page1
-        self.page1=urllib2.urlopen(self.url1+movie_tags[n1]+self.url2).read()
+        self.page1 = request(self.url1+movie_tags[n1]+self.url2)
         self.n1,self.n2 = n1,n2
         return self.page1 #点击标签打开后的页面地址
         
@@ -38,7 +60,7 @@ class Next_page:
     def __init__(self):
         self.url1='http://movie.douban.com/tag/'
     def np(self,n1):
-        self.page1=urllib2.urlopen(self.url1+movie_tags[n1]).read()
+        self.page1 = request(self.url1+movie_tags[n1])
         self.url2=re.findall('amp.*\d{1,2}',self.page1)
         if self.url2:
             self.num2=self.url2[-1][13:]
@@ -99,7 +121,7 @@ class Movie_info:
             self.dic.append(self.movie_rating2[i])             #评分
             self.dic.append(self.movie_url2[i])                #地址
 
-            movieDetail = urllib2.urlopen(self.movie_url2[i]).read()
+            movieDetail = request(self.movie_url2[i])
             subDetail = re.findall(r'<div class="tags-body">[\s\S]*?</div>',movieDetail)
             for d in subDetail:
                 detailTag=re.findall('\>[^\(]\S{1,}?\<',d)         #初步抓取标签
