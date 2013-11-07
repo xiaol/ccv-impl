@@ -23,6 +23,7 @@ clct_videoInfoTask = con.tiercel.videoInfoTask
 con39 = Connection('60.28.29.39:20010')
 clct_operationLog = con39.tiercel.operationLog
 clct_statisticsLog = con39.tiercel.statisticsLog
+clct_subscribeLog = con39.tiercel.subscribeLog
 
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
@@ -160,6 +161,7 @@ searchHandleListAll = [
 "search.youkuTop",
 "search.funshionTop",
 "search.letvTop",
+"search.iqiyiTop",
 
 "searchGif.onegif",
 "searchGif.forgifs",

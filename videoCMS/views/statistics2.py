@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user,clct_subscribeLog
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime
@@ -340,6 +340,99 @@ def channel(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
     return render_to_response('statisticsChannel.htm',DICT)
+
+
+def channelSub2(request):
+    DICT = {}
+
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+    categoryName = request.GET.get('categoryName',"全部")
+    limit = int(request.GET.get('limit',20))
+    sort = request.GET.get('sort','increaseNum')
+
+    spec = {}
+    if categoryName != u"全部":
+        filterCategoryId = getCategoryIdByName(categoryName)
+    else:
+        filterCategoryId = None
+    print 'filterCategoryId:',filterCategoryId
+    spec['date'] = {'$gte':startTime[8:], '$lt':endTime[:8]}
+
+    #开始统计
+    logs = list(clct_subscribeLog.find(spec))
+    #读取channel列表
+    channelList = list(clct_channel.find({'channelId':{'$in':list(set([log['channelId'] for log in logs]))}},
+                       {'channelId':1,'channelType':1,'channelName':1}))
+    channelMap = {}
+    for channel in channelList:
+        channelMap[channel['channelId']] = channel
+
+
+    print '开始统计'
+    result = {}
+    '''
+        {
+            channelId:(首次订阅数,FEED订阅数,详情订阅数,未知订阅数,总订阅数,取消订阅数,净增加订阅数)
+        }
+    '''
+    for log in logs:
+        #过滤不要的类别
+        if filterCategoryId:
+            if log['channelId'] not in channelMap:
+                continue
+            if channelMap[log['channelId']]['channelType'] != filterCategoryId:
+                continue
+        if log['channelId'] not in result:
+            result[log['channelId']] = [0,0,0,0,0,0,0]
+        if log['action'] == 'unsub':
+            result[log['channelId']][5] += 1
+            result[log['channelId']][6] -= 1
+        else:
+            if log['from'] == 'first':
+                result[log['channelId']][0] += 1
+            elif log['from'] == 'feed':
+                result[log['channelId']][1] += 1
+            elif log['from'] == 'channelDetail':
+                result[log['channelId']][2] += 1
+            else:
+                result[log['channelId']][3] += 1
+            result[log['channelId']][4] += 1
+            result[log['channelId']][6] += 1
+
+
+    #将结果转化成 数组
+    L = []
+    for key in result:
+        item = {}
+        item['channelId'] = key
+        item['data'] = result[key]
+        L.append(item)
+    #排序
+    if sort == 'subNum':
+        L.sort(key=lambda a:a['data'][4], reverse=True)
+    elif sort == 'unsubNum':
+        L.sort(key=lambda a:a['data'][5], reverse=True)
+    elif sort == 'increaseNum':
+        L.sort(key=lambda a:a['data'][6], reverse=True)
+
+    L = L[:limit]
+    for one in L:
+        channel = clct_channel.find_one({'channelId':one['channelId']})
+        if not channel:
+            print 'channelId not exists:',one['channelId']
+            continue
+        one['categoryName'] = getCategoryNameById(channel['channelType'])
+        one['channelName'] = channel['channelName']
+
+    DICT['result'] = L
+    DICT['sort'] = sort
+    DICT['limit'] = limit
+    DICT['categoryList'] = [u'全部'] + getCategoryList()
+    DICT['categoryName'] = categoryName
+    DICT['navPage'] = 'statistics'
+    DICT['title'] = '频道下载/播放统计'
+    return render_to_response('statisticsChannelSub2.htm',DICT)
+
 
 
 def channelSub(request):

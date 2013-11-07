@@ -12,21 +12,21 @@ class ThreadPool():
         self.full = threading.Semaphore(0)
         self.empty = threading.Semaphore(size)
 
-    def curSizeChange(self,num):
+    def _curSizeChange(self,num):
         self.curSizeLock.acquire()
         self.curSize += num
         self.curSizeLock.release()
 
-    def proc(self,target,params,kwargs):
+    def _proc(self,target,params,kwargs):
         target(*params,**kwargs)
-        self.curSizeChange(-1)
+        self._curSizeChange(-1)
         self.empty.release()
 
 
     def do(self,target,*params,**kwargs):
         self.empty.acquire()
-        self.curSizeChange(+1)
-        t = threading.Thread(target=self.proc,args=(target,params,kwargs))
+        self._curSizeChange(+1)
+        t = threading.Thread(target=self._proc,args=(target,params,kwargs))
         t.start()
 
 

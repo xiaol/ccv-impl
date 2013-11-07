@@ -12,6 +12,7 @@ from videoCMS.common.db import getCategoryList
 from videoSearch.common.videoInfoTask import addVideoInfoTask
 from resource import addTagRef,createTag
 import uuid,Image
+from login import NeedLogin
 
 
 def POST2Resource(request):

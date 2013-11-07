@@ -47,6 +47,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
 
+    print '频道: %d, 成功插入: %d,上线: %d,是否更新tvNumber: %s'%(channelId,len(InsertedList), onlineNum,updateTvNumber)
     #如果 成功有视频插入，则更新频道
     if onlineNum >0 :
         updateMap = {'updateTime':getCurTime()}
@@ -167,6 +168,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_funshion_top', url, channelId, snapShot=snapShot)
     elif handleName == 'letvTop':
         startSearch('handles.handle_letv_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'iqiyiTop':
+        startSearch('handles.handle_iqiyi_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
@@ -304,4 +307,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(100240,'iqiyiDongman','http://www.iqiyi.com/dongman/yhdzz.html')
+    handle(101087,'iqiyiSport','http://list.iqiyi.com/www/17/-----1837-------2-1-1-0---.html')
