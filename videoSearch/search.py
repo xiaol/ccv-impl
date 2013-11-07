@@ -168,6 +168,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_funshion_top', url, channelId, snapShot=snapShot)
     elif handleName == 'letvTop':
         startSearch('handles.handle_letv_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'iqiyiTop':
+        startSearch('handles.handle_iqiyi_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
