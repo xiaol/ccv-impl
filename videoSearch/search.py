@@ -305,4 +305,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(101708,'funshionTv','http://www.funshion.com/subject/110803/')
+    handle(101087,'iqiyiSport','http://list.iqiyi.com/www/17/-----1837-------2-1-1-0---.html')
