@@ -28,7 +28,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             if channel['videoClass'] in [1, 3]:
                 old = clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']})
                 if not old: continue
-                if type(old['number'])==int and  old['number'] <= 0:
+                if type(old['number']) in [int,float] and  old['number'] <= 0:
                     clct_resource.update({'_id':old['_id']},{'$set':{
                         'resourceName':resource['resourceName'],'channelId':resource['channelId'],
                         'number':resource['number']
@@ -54,6 +54,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         if updateTvNumber:
             updateMap['tvNumber'] = resouceList[0]['number']
             updateMap['subtitle'] = str(resouceList[0]['number'])
+        print {'channelId':channelId},{'$set':updateMap}
         clct_channel.update({'channelId':channelId},{'$set':updateMap})
     #清除 视频权重
     clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
@@ -307,4 +308,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(101087,'iqiyiSport','http://list.iqiyi.com/www/17/-----1837-------2-1-1-0---.html')
+    handle(101721,'youkuTv','http://www.youku.com/show_page/id_z92e9b836ee8511e28b3f.html')
