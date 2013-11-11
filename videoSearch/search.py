@@ -55,7 +55,10 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             updateMap['tvNumber'] = resouceList[0]['number']
             updateMap['subtitle'] = str(resouceList[0]['number'])
         print {'channelId':channelId},{'$set':updateMap}
-        clct_channel.update({'channelId':channelId},{'$set':updateMap})
+        try:
+            clct_channel.update({'channelId':channelId},{'$set':updateMap},safe=True)
+        except Exception,e:
+            print e
     #清除 视频权重
     clct_resource.update({'channelId':channelId,'weight':{'$ne':-1}},{'$set':{'weight':-1}},multi=True)
 

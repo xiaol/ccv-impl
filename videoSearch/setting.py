@@ -38,3 +38,12 @@ GIF_TEMP_DIR = '/data/img'
 GIF_SERVER_DIR = '/data/img/videoCMS/gifResource'
 GIF_SERVER = 'root@60.28.29.47'
 GIF_SERVER_PORT = 33470
+
+
+if __name__ == '__main__':
+    clct_channel.update(
+    {'channelId': 101742},
+    {'$set':
+         {'tvNumber': u'12-30\u671f', 'updateTime': '20131111122447', 'subtitle': '12-30\xe6\x9c\x9f'}
+    }
+    )
