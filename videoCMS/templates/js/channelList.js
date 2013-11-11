@@ -141,3 +141,10 @@ function setCompleted(channelId)
         });
     }
 }
+
+function pushChannel(channelId,channelName)
+{
+    $('[name=pushChannelId]').val(channelId);
+    $('#pushChannelName').text(channelName);
+    $('#pushModal').modal('show');
+}

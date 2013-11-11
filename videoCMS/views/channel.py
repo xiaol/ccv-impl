@@ -368,6 +368,26 @@ def deleteChannel(request):
     clct_resource.remove({'channelId':channelId},multi=True)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
+
+
+@NeedLogin
+def pushChannel(request):
+    from videoCMS.conf import jPushClient,JPUSH_APP_KEY
+
+    channelId = int(request.GET.get('pushChannelId'))
+    title = request.GET.get('pushTitle')
+    content = request.GET.get('pushContent')
+
+    extras = \
+    {
+        'action':"OpenChannel",
+        'channelId':channelId
+    }
+    jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 @NeedLogin
 def updateSearchNow(request):
     channelId = int(request.GET['channelId'])

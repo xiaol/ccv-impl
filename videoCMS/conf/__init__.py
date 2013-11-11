@@ -25,6 +25,8 @@ clct_operationLog = con39.tiercel.operationLog
 clct_statisticsLog = con39.tiercel.statisticsLog
 clct_subscribeLog = con39.tiercel.subscribeLog
 
+
+#=======================  图片
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
 
@@ -36,7 +38,18 @@ CHANNEL_IMAGE_WIDTH = 400
 CHANNEL_IMAGE_HEIGHT = 300
 
 
+#=======================  jpush 推送
+from jpush import JPushClient
 
+JPUSH_USERNAME = 'huohuadiandian'
+JPUSH_APP_KEY = 'b34412ab2f0a5dc6aad20571'
+JPUSH_MASTER_KEY = '7d956e6ac5635c9a604cff88'
+
+jPushClient = JPushClient(JPUSH_USERNAME,JPUSH_MASTER_KEY)
+
+
+
+#==========================
 from videoCMS.common.db import getCategoryList
 CHANNEL_TYPE_LIST = getCategoryList()
 
@@ -65,8 +78,6 @@ userList = [
 ('admin','huohua123456'),
 ('editor','123456'),
 ]
-
-
 
 
 searchHandleListAll = [
