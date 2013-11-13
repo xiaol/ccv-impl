@@ -41,7 +41,8 @@ def main():
 
     print '解析错误',num_30005,'下载错误',num_30001
     print '下载错误详情：'
-    result = S.items().sort(key=lambda a:a[1])
+    result = S.items()
+    result.sort(key=lambda a:a[1])
     for one in result:
         print one[0],':',one[1]
 
