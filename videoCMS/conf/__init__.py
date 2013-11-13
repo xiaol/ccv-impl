@@ -173,6 +173,10 @@ searchHandleListAll = [
 "search.funshionTop",
 "search.letvTop",
 "search.iqiyiTop",
+"search.163Top",
+"search.56Top",
+"search.ku6Top",
+"search.sohuTop",
 
 "searchGif.onegif",
 "searchGif.forgifs",

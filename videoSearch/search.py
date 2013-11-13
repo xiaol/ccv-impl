@@ -174,6 +174,14 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_letv_top', url, channelId, snapShot=snapShot)
     elif handleName == 'iqiyiTop':
         startSearch('handles.handle_iqiyi_top', url, channelId, snapShot=snapShot)
+    elif handleName == '163Top':
+        startSearch('handles.handle_163_top', url, channelId, snapShot=snapShot)
+    elif handleName == '56Top':
+        startSearch('handles.handle_56_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'ku6Top':
+        startSearch('handles.handle_ku6_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'sohuTop':
+        startSearch('handles.handle_sohu_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
