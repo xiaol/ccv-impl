@@ -48,7 +48,7 @@ def main():
     result = S.items()
     result.sort(key=lambda a:a[1],reverse=True)
     for one in result:
-        print one[0],':',one[1],'%.1f%%'%100.0*one[1]/(num_30005 + num_30001)
+        print one[0],':',one[1],'%.1f%%'%(100.0*one[1]/(num_30005 + num_30001))
 
 
 if __name__ == '__main__':
