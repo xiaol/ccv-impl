@@ -46,9 +46,9 @@ def main():
     print '解析错误',num_30005,'下载错误',num_30001
     print '下载错误详情：'
     result = S.items()
-    result.sort(key=lambda a:a[1])
+    result.sort(key=lambda a:a[1],reverse=True)
     for one in result:
-        print one[0],':',one[1]
+        print one[0],':',one[1], 100.0* one[1]/len(result),'%'
 
 
 if __name__ == '__main__':
