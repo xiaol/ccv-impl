@@ -18,6 +18,17 @@ def main():
             msg = json.loads(log['msg'])
             try:
                 key = msg['errCode']+','+msg['errorMsg']
+
+                if key.startswith('VALUE_ERROR_DWONLOADING_ERROR,Download incomplete'):
+                    key = 'VALUE_ERROR_DWONLOADING_ERROR,Download incomplete'
+                elif key.startswith('RESPONSE_PARSER_ERROR'):
+                    key = 'RESPONSE_PARSER_ERROR'
+                elif key.startswith('GET_VIDEO_SIZE_ERROR'):
+                    key = 'GET_VIDEO_SIZE_ERROR'
+                elif key.startswith('failed,failedTraceback'):
+                    key = 'failed,failedTraceback'
+
+
                 print key
                 if key not in S:
                     S[key] = 1
@@ -30,8 +41,10 @@ def main():
 
     print '解析错误',num_30005,'下载错误',num_30001
     print '下载错误详情：'
-    for key in S:
-        print key,':',S[key]
+    result = S.items().sort(key=lambda a:a[1])
+    for one in result:
+        print one[0],':',one[1]
+
 
 if __name__ == '__main__':
     main()
