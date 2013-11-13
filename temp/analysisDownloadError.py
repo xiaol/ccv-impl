@@ -27,6 +27,10 @@ def main():
                     key = 'GET_VIDEO_SIZE_ERROR'
                 elif key.startswith('failed,failedTraceback'):
                     key = 'failed,failedTraceback'
+                elif key.startswith('VALUE_ERROR_DWONLOADING_ERROR,Connection to'):
+                    key = 'VALUE_ERROR_DWONLOADING_ERROR,Connection to'
+                elif key.startswith('VALUE_ERROR_DWONLOADING_ERROR,Unable to resolve host'):
+                    key = 'VALUE_ERROR_DWONLOADING_ERROR,Unable to resolve host'
 
 
                 print key
