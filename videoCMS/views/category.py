@@ -104,6 +104,7 @@ def update(request):
     category['categoryType'] = CATEGORY_TYPE_MAP[request.POST.get('categoryType')]
     category['videoClass'] = CATEGORY_VIDEO_CLASS_MAP[request.POST.get('videoClass')]
     category['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
+    category['isFirst'] = True if request.POST.get('isFirst') == u'是' else False
 
     #更新关联频道 categoryId aka channelType
     if oldCategory['categoryId'] != category['categoryId']:
@@ -157,6 +158,8 @@ def add(request):
     category['modifyTime'] = getCurTime()
     category['categoryType'] = CATEGORY_TYPE_MAP[request.POST.get('categoryType')]
     category['videoClass'] = CATEGORY_VIDEO_CLASS_MAP[request.POST.get('videoClass')]
+    category['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
+    category['isFirst'] = True if request.POST.get('isFirst') == u'是' else False
     clct_channel.update({'channelType':category['categoryId']},{'$set':{'videoClass':category['videoClass']}},multi=True)
     if category['categoryName'] == '':
         raise Exception('分类名 不能为空')

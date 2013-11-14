@@ -157,6 +157,21 @@
 								</td>
 							</tr>
                             <tr>
+	                        	<td>清晰度</td>
+	                        	<td>
+	                        		<select name="resolution"  style="width:90px">
+	                        		<option>-1</option>
+	                        		<option {% ifequal resolution 0 %}selected="selected"{% endifequal %}>0</option>
+                                    <option {% ifequal resolution 1 %}selected="selected"{% endifequal %}>1</option>
+                                    <option {% ifequal resolution 2 %}selected="selected"{% endifequal %}>2</option>
+                                    <option {% ifequal resolution 3 %}selected="selected"{% endifequal %}>3</option>
+                                    <option {% ifequal resolution 4 %}selected="selected"{% endifequal %}>4</option>
+	                        		</select>
+                                 <span>0:流畅， 1:标清， 2:高清 3:超清 4:原画</span>
+	                        	</td>
+
+	                        </tr>
+                            <tr>
 	                        	<td>LD</td>
 	                        	<td>
 	                        		<select name="isLD"  style="width:90px">

@@ -89,6 +89,15 @@
                                 </td>
                         </tr>
                         <tr>
+                            <td>首订</td>
+                            <td>
+                                <select name="isFirst"  style="width:90px">
+	                        			<option>是</option>
+	                        			<option {% if not isFirst %}selected="selected"{% endif %}>否</option>
+	                        		</select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>上线</td>
                             <td>
                                 <select name="isOnline"  style="width:90px">
