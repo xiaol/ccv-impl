@@ -47,6 +47,19 @@ function calcSeconds()
 }
 
 
+function onSubmit()
+{
+    alert($('[name="tagList"]').val().replace("，",","));
+    alert($('[name="tagList"]').val().replace("，",",").split(",").length);
+    var tagStr = $('[name="tagList"]').val().replace( /^\s+|\s+$/g, '' );
+    if(tagStr=="" || tagStr.replace("，",",").split(",").length < 1)
+    {
+        alert("标签列表至少填写1个标签！");
+        return false;
+    }
+    return true;
+}
+
 
 
 function init()

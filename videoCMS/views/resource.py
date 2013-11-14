@@ -34,7 +34,14 @@ def createTag(name,refNum=0):
 
 
 def addTagRef(name,addNum):
-    clct_tag.update({'name':name},{'$inc':{'refNum':1}})
+    clct_tag.update({'name':name},{'$inc':{'refNum':addNum}})
+
+def addTag(name):
+    if clct_tag.find_one({'name':name}) == None:
+        createTag(name,1)
+    else:
+        addTagRef(name,1)
+
 
 @NeedLogin
 def index(request):
@@ -147,8 +154,7 @@ def POST2Resource(request):
     resource['duration'] = int(float(-1 if request.POST.get('duration') == '' else request.POST.get('duration')))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
-    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-
+    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').replace(u'，',',').split(','))
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
@@ -187,6 +193,9 @@ def update(request):
     #更新
     resource = POST2Resource(request)
     resource['modifyTime'] = getCurTime()
+
+    ##
+    ##待 补充 对tag 引用次数的修改
         
     img = request.FILES.get('resourceImage',None)
     if img:
@@ -214,9 +223,7 @@ def add(request):
     resource['updateTime'] = now
 
     for tag in resource['tagList']:
-        if clct_tag.find_one({'name':tag}) == None:
-            createTag(tag)
-        addTagRef(tag, 1)
+        addTag(tag, 1)
     if resource['resourceName'] == '':raise Exception('资源名 不能为空')
     if resource['videoType'] == '':raise Exception('videoType 不能为空')
     if resource['videoId'] == '':raise Exception('videoId 不能为空')
