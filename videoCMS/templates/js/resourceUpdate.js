@@ -49,10 +49,10 @@ function calcSeconds()
 
 function onSubmit()
 {
-    alert($('[name="tagList"]').val().replace("，",","));
-    alert($('[name="tagList"]').val().replace("，",",").split(",").length);
-    var tagStr = $('[name="tagList"]').val().replace( /^\s+|\s+$/g, '' );
-    if(tagStr=="" || tagStr.replace("，",",").split(",").length < 3)
+    /*alert($('[name="tagList"]').val().replace("，",","));
+    alert($('[name="tagList"]').val().replace("，",",").split(",").length);*/
+    var tagStr = $('[name="tagList"]').val().replace( /^\s+|\s+$/g, '').replace(/，/g,",");
+    if(tagStr=="" || tagStr.split(",").length < 3)
     {
         alert("标签列表至少填写1个标签！");
         return false;
