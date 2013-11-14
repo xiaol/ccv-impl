@@ -36,11 +36,11 @@ def createTag(name,refNum=0):
 def addTagRef(name,addNum):
     clct_tag.update({'name':name},{'$inc':{'refNum':addNum}})
 
-def addTag(name):
+def addTag(name,addNum=1):
     if clct_tag.find_one({'name':name}) == None:
-        createTag(name,1)
+        createTag(name,addNum)
     else:
-        addTagRef(name,1)
+        addTagRef(name,addNum)
 
 
 @NeedLogin

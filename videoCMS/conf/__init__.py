@@ -18,7 +18,7 @@ clct_preresource = con.tiercel.preresource
 clct_tag      = con.tiercel.tag
 clct_cdnSync  = con.tiercel.cdnSync
 clct_videoInfoTask = con.tiercel.videoInfoTask
-
+clct_cronJob = con.tiercel.cronJob
 
 con39 = Connection('60.28.29.39:20010')
 clct_operationLog = con39.tiercel.operationLog
@@ -47,6 +47,8 @@ JPUSH_MASTER_KEY = '7d956e6ac5635c9a604cff88'
 
 jPushClient = JPushClient(JPUSH_USERNAME,JPUSH_MASTER_KEY)
 
+
+#==========================
 
 
 #==========================

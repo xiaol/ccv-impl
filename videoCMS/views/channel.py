@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_channel,clct_resource,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,\
-    clct_category
+    clct_category,clct_cronJob
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,searchHandleListAll
 from bson import ObjectId
 from videoCMS.common.Domain import Channel
@@ -375,16 +375,23 @@ def deleteChannel(request):
 def pushChannel(request):
     from videoCMS.conf import jPushClient,JPUSH_APP_KEY
 
+    type = request.GET.get('immediate')
     channelId = int(request.GET.get('pushChannelId'))
     title = request.GET.get('pushTitle')
     content = request.GET.get('pushContent')
-
     extras = \
     {
         'action':"OpenChannel",
         'channelId':channelId
     }
-    jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
+
+    if type == u"立即":
+        jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
+    elif type == u"定时":
+        task = {type:"AndroidPush","pushChannelId":channelId,"pushTitle":title,"pushContent":content,"extras":extras}
+
+        task['cronTime'] = ''
+        clct_cronJob.insert(task)
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
