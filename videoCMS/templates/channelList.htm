@@ -5,10 +5,13 @@
 <title>频道列表</title>
 <link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/common.css" rel="stylesheet" type="text/css" />
 
-<script src="/static/js/jquery-1.7.1.js"></script>
+
+<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/channelList.js"></script>
 
@@ -171,10 +174,14 @@
         <p>内容:</p>
         <input name="pushTitle" type="text" style="width: 350px;"/><br/>
         <textarea name="pushContent" style="width: 350px;height: 120px;"></textarea><br/>
-        <span>
-            立即<input type="radio" name="immediate" value="立即"/>
-            定时<input type="radio" name="delay" value="定时"/>
-        </span>
+
+        <div id="datetimepicker1" class="input-append">
+            定时发送:
+            <input data-format="yyyy/MM/dd hh:mm:ss" name="cronTime" type="text" />
+            <span class="add-on">
+                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>(立即发送请留空)
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>

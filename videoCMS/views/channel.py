@@ -8,7 +8,7 @@ from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,searchHandleL
 from bson import ObjectId
 from videoCMS.common.Domain import Channel
 from videoCMS.common.doubanMovie import extraInfos
-from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr
+from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr,antiFormatHumanTime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
@@ -375,7 +375,7 @@ def deleteChannel(request):
 def pushChannel(request):
     from videoCMS.conf import jPushClient,JPUSH_APP_KEY
 
-    type = request.GET.get('immediate')
+    cronTime = request.GET.get('cronTime')
     channelId = int(request.GET.get('pushChannelId'))
     title = request.GET.get('pushTitle')
     content = request.GET.get('pushContent')
@@ -385,14 +385,13 @@ def pushChannel(request):
         'channelId':channelId
     }
 
-    if type == u"立即":
+    if cronTime == "":
         jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
-    elif type == u"定时":
-        task = {type:"AndroidPush","pushChannelId":channelId,"pushTitle":title,"pushContent":content,"extras":extras}
-
-        task['cronTime'] = ''
+    else:
+        task = {"type":"AndroidPush","pushChannelId":channelId,"pushTitle":title,"pushContent":content,"extras":extras}
+        task['cronTime'] = antiFormatHumanTime(cronTime)
+        task['createTime'] = getCurTime()
         clct_cronJob.insert(task)
-
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @NeedLogin

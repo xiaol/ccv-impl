@@ -148,3 +148,13 @@ function pushChannel(channelId,channelName)
     $('#pushChannelName').text(channelName);
     $('#pushModal').modal('show');
 }
+
+function init()
+{
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR',
+      pick12HourFormat: false
+    });
+}
+
+$(document).ready(init);
