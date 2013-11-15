@@ -21,7 +21,8 @@ if not debug:
     segmentUrl = 'http://h46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
     redisUrl = 'h48'
 
-youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=view-count&page=1&count=1"
+youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
+baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
@@ -126,21 +127,40 @@ def recommend(words, source):
     videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
-def recommendByYouku(words,reason, source):
+def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count',viewCount=7000):
     subCon = ' '.join(words)
     #subCon = strQ2B(subCon)
-    url = youkuSearchUrl%subCon
+    url = youkuSearchUrl%(subCon, orderBy)
     videos = []
     try:
         html = get_html(url)
         ret = json.loads(html)['videos']
-        videos = buildVideoFromYouku(ret,reason, source,True)
+        videos = buildVideoFromYouku(ret,reason, source,True,channelId, viewCount)
     except Exception,e:
         print e
         return videos
     return videos
 
-def buildVideoFromYouku(entities, reason, source, snapShot = False):
+def recommendByBaidu(words, reason, source, channelId=101758):
+    subCon = ' '.join(words)
+    #subCon = strQ2B(subCon)
+    subCon = subCon.decode('utf-8').encode('gb2312')
+    subCon = urllib2.quote(subCon)
+    url = baiduSearchUrl%subCon
+    videos = []
+    try:
+        html = get_html(url, 'gbk')[10:-1]
+        html = re.sub(r'\\\'','\'',html)
+        html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
+        #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
+        ret = json.loads(html)['data']
+        videos = buildVideoFromBaidu(ret,reason, source,True,channelId )
+    except Exception,e:
+        print e
+        return videos
+    return videos
+
+def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000):
     updateMap = {'updateTime':getCurTime()}
     clct_channel.update({'channelId':101641},{'$set':updateMap})
 
@@ -148,9 +168,85 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
     t = getCurTime()
     result = []
     for entity in entities:
-        if entity['view_count'] < 7000:
+        item = decodeVideo(entity.get('url',''))
+        if not item:
             continue
-        resource = buildResource(entity['link'],entity['title'],101641,'youku',entity['id'],'video')
+        resource = buildResource(entity['url'],entity['ti'],channelId,item['videoType'],item['videoId'],'video')
+        resource['createTime'] = t
+        resource['categoryId'] = 0
+        resource['isOnline'] = False
+        resource['source'] = 'recommend'
+        resource['updateTime'] = getCurTime()
+        resource['tagList'] = []
+        for videoTag in entity['tag']:
+            resource['tagList'].append(videoTag['name'])
+        resource['tagList'].append(reason)
+        print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
+        resource['weight'] = -1
+
+        try:
+            ret = clct_resource.insert(resource , safe=True)
+            entity['resourceId'] = str(ret)
+            entity['snapshot'] = 'inQueue'
+        except Exception,e:
+            print("insert Error!",e)
+            try:
+                retR  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
+                entity['resourceId'] = str(retR['_id'])
+                if retR['isOnline']:
+                    entity['snapshot'] = 'done'
+                else: continue
+            except Exception,x:
+                print x
+
+        else:
+            '''新增 截图任务'''
+            if snapShot:
+                mp4box = True if resource['videoType'] == 'sohu_url' else False
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,goOnline=True)
+        result.append(resource)
+
+    return result
+
+getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
+
+p_1 = re.compile('http://(.*?)/')
+p_url = re.compile('http://[\w\./]*')
+p_sina = re.compile('http://video.sina.com.cn/v/b/(.*?)\.html')
+p_youku = re.compile('http://v.youku.com/v_show/id_(.*?).html')
+p_videos = [('sina',p_sina), ('youku',p_youku)]
+httpUtil = HttpUtil()
+
+def decodeVideo(videoUrl):
+    item = {}
+    try:
+        for p_video in p_videos:
+            if p_video[1].search(videoUrl):
+                item['videoType'] = p_video[0]
+                item['videoId'] = p_video[1].search(videoUrl).groups()[0]
+                break
+        else:
+            response = httpUtil.Post(getVideoIdUrl, json.dumps({"url":'%s'%videoUrl}))
+            if response:
+                content = response.decode()
+                result = json.loads(content)
+                item['videoType'] = result['videoType']
+                item['videoId'] = result['videoId']
+    except Exception,e:
+        print e
+    return item
+
+def buildVideoFromYouku(entities, reason, source, snapShot = False,channelId=101641, viewCount=7000):
+    updateMap = {'updateTime':getCurTime()}
+    clct_channel.update({'channelId':101641},{'$set':updateMap})
+
+    '''入库'''
+    t = getCurTime()
+    result = []
+    for entity in entities:
+        if entity['view_count'] < viewCount:
+            continue
+        resource = buildResource(entity['link'],entity['title'],channelId,'youku',entity['id'],'video')
         resource['createTime'] = t
         resource['categoryId'] = 0
         resource['isOnline'] = False
@@ -158,6 +254,7 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False):
         resource['updateTime'] = getCurTime()
         resource['tagList'] = entity['tags'].split(',')
         resource['tagList'].append(entity['category'])
+        resource['tagList'].append(reason)
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
 
@@ -344,6 +441,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
-    main()
+    print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    #main()
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

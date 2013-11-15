@@ -3,8 +3,6 @@ import urllib2,urllib
 import re
 import time
 
-
-
 headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.65 Safari/537.36'}
 req = urllib2.Request(url = 'http://movie.douban.com/tag/?view=cloud',headers = headers)
 #抓取豆瓣电影标签
@@ -15,11 +13,14 @@ urllib2.socket.setdefaulttimeout(10)
 def request(url):
     request = urllib2.Request(url)
     request.add_header('Cookie', cookies)
+    response = ''
     while True:
         try:
             response = urllib2.urlopen(request ).read()
             time.sleep(delayTime)
         except Exception,e:
+            if hasattr(e,'code') and e.code == 301:
+                return ''
             print e
             continue
         else:
@@ -63,8 +64,21 @@ class Next_page:
         self.page1 = request(self.url1+movie_tags[n1])
         self.url2=re.findall('amp.*\d{1,2}',self.page1)
         if self.url2:
-            self.num2=self.url2[-1][13:]
-            if int(self.num2)<50 or int(self.num2)==50:
+            retry = -1
+            self.num2=self.url2[retry][13:]
+            if self.num2 == '':return 1
+            while True:
+                try:
+                    pageN = int(self.num2)
+                    break
+                except Exception,e:
+                    print e
+                    retry = retry -1
+                    if abs(retry) > len(self.url2):
+                        return 1
+                    self.num2  = self.url2[retry][13:]
+
+            if pageN<50 or pageN==50:
                 return int(self.num2)
             else:
                 return 50       #电影列表页数超过50页则只扫描前50页
@@ -145,10 +159,10 @@ class Movie_info:
 next_page=Next_page()
 movie_info=Movie_info() 
 
-
+ftag=file('movies_tags.dat','w')
 #执行，开始抓取
 for x in range(len(movie_tags)):          #x代表标签在movie_tags这个list中的位置
-    print "正在抓取标签“%s”中的电影"%(movie_tags[x])
+    print "正在抓取标签“%s”中的电影 x"%(movie_tags[x])
     starttime2=time.time()
     for i in range(next_page.np(x)):       #i代表正在抓取当前标签的第i页
         print "开始抓取第%d页，抓取进度："%(i+1)
@@ -156,10 +170,15 @@ for x in range(len(movie_tags)):          #x代表标签在movie_tags这个list�
         movie_info.m(x,i)
         endtime2=time.time()
         print "抓取第%d页完毕，用时%.2fs"%(i+1,endtime2-starttime2)     #输出抓取每个页面所花费的时间
-        time.sleep(2)
+
+    for tag in tags:
+        ftag.write(tag+' ')
+    ftag.flush()
+    tags = []
     endtime2=time.time()
     print "抓取“%s”标签完毕，用时%.2fs\n"%(movie_tags[x],endtime2-starttime2)   #输出抓取每个标签所花费的时间
 
+ftag.close()
 
 #删除超过3000部的电影
 if len(movie)>3000:
@@ -188,10 +207,7 @@ for i in movie:
 f.write('</body>')
 f.close()
 
-ftag=file('movies_tags.dat','w')
-for t in tags:
-    f.write(t+' ')
-ftag.close()
+
 
 print '完成！请查看html文件，获取豆瓣电影榜单。'
 
