@@ -1,6 +1,6 @@
 from pymongo import Connection
 
-debug = False
+debug = True
 
 if not debug:
     con = Connection('h37:20010')
@@ -15,6 +15,7 @@ clct_videoInfoTask = con.tiercel.videoInfoTask
 clct_userWeibo = con.tiercel.userWeibo
 clct_userRecommend = con.tiercel.userRecommend
 clct_user = con.tiercel.user
+clct_tag = con.tiercel.tag
 
 
 if not debug:
