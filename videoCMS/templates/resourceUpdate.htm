@@ -114,6 +114,7 @@
                                 <td style="width: 100px">资源标签</td>
                                 <td>
                                     <textarea name="tagList">{{tagList}}</textarea>
+                                    <span>注：可从视频标题本身、演员、导演、特色、属性、类别各方面打标签；主要为名词或动名词；至少打三个标签，鼓励更多；每个用逗号隔开</span>
                                 </td>
                             </tr>
                             <tr>
@@ -156,6 +157,21 @@
 								<td>{{modifyTime}} <!-- <input type="text" class="span7" name="modifyTime"  value="{{modifyTime}}" disabled/> -->
 								</td>
 							</tr>
+                            <tr>
+	                        	<td>清晰度</td>
+	                        	<td>
+	                        		<select name="resolution"  style="width:90px">
+	                        		<option>-1</option>
+	                        		<option {% ifequal resolution 0 %}selected="selected"{% endifequal %}>0</option>
+                                    <option {% ifequal resolution 1 %}selected="selected"{% endifequal %}>1</option>
+                                    <option {% ifequal resolution 2 %}selected="selected"{% endifequal %}>2</option>
+                                    <option {% ifequal resolution 3 %}selected="selected"{% endifequal %}>3</option>
+                                    <option {% ifequal resolution 4 %}selected="selected"{% endifequal %}>4</option>
+	                        		</select>
+                                 <span>0:流畅， 1:标清， 2:高清 3:超清 4:原画</span>
+	                        	</td>
+
+	                        </tr>
                             <tr>
 	                        	<td>LD</td>
 	                        	<td>

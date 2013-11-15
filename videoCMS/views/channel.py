@@ -3,12 +3,12 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_channel,clct_resource,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,\
-    clct_category
+    clct_category,clct_cronJob
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,searchHandleListAll
 from bson import ObjectId
 from videoCMS.common.Domain import Channel
 from videoCMS.common.doubanMovie import extraInfos
-from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr
+from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTimeStr,antiFormatHumanTime
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
@@ -366,6 +366,32 @@ def deleteChannel(request):
     channelId = int(request.GET.get('channelId'))
     clct_channel.remove({'channelId':channelId})
     clct_resource.remove({'channelId':channelId},multi=True)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+
+
+@NeedLogin
+def pushChannel(request):
+    from videoCMS.conf import jPushClient,JPUSH_APP_KEY
+
+    cronTime = request.GET.get('cronTime')
+    channelId = int(request.GET.get('pushChannelId'))
+    title = request.GET.get('pushTitle')
+    content = request.GET.get('pushContent')
+    extras = \
+    {
+        'action':"OpenChannel",
+        'channelId':channelId
+    }
+
+    if cronTime == "":
+        jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
+    else:
+        task = {"type":"AndroidPush","pushChannelId":channelId,"pushTitle":title,"pushContent":content,"extras":extras}
+        task['cronTime'] = antiFormatHumanTime(cronTime)
+        task['createTime'] = getCurTime()
+        clct_cronJob.insert(task)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @NeedLogin

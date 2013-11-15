@@ -71,6 +71,10 @@ class Resource(DomainBase):
     gifUrl = ''
     subtitle = ''
     isLD = False
+    resolution = -1
+    '''resolution:
+    0:流畅， 1:标清， 2:高清 3:超清 4:原画
+    '''
 
 class Category(DomainBase):
     categoryName = ''
@@ -87,7 +91,7 @@ class Category(DomainBase):
     videoClass = 0
     logoUrl = ''
     isOnline = True
-    
+    isFirst = False
     
     
     

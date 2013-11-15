@@ -2,7 +2,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))]
 
 import time,json,threading
-from videoCMS.conf import clct_resource,clct_channel
+from videoCMS.conf import clct_resource,clct_channel,clct_cronJob
 from videoCMS.common.common import getCurTime
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 
@@ -38,7 +38,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
 
 
 
-class CDNWatchCronJob(CronJobBase):
+class PushCronJob(CronJobBase):
     RUN_EVERY_MINS = 1
 
     def do(self):
@@ -58,12 +58,12 @@ if __name__ == '__main__':
             job = ResourceGoOnlineCronJob()
             print 'start ResourceGoOnlineCronJob'
             job.run()
-        elif sys.argv[1] == 'CDNWatchCronJob':
-            job = CDNWatchCronJob()
-            print 'start CDNWatchCronJob'
+        elif sys.argv[1] == 'PushCronJob':
+            job = PushCronJob()
+            print 'start PushCronJob'
             job.run()
 
-    print 'usage: python CronJobs.py [ ResourceGoOnlineCronJob | CDNWatchCronJob ]'
+    print 'usage: python CronJobs.py [ ResourceGoOnlineCronJob | PushCronJob ]'
 
     #t1.join()
     #t2.join()

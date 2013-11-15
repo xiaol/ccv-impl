@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^channel/search', 'videoCMS.views.channel.search'),
     url(r'^channel/setCompleted', 'videoCMS.views.channel.setCompleted'),
     url(r'^channel/disperseUpdateTime', 'videoCMS.views.channel.disperseUpdateTime'),
+    url(r'^channel/pushChannel', 'videoCMS.views.channel.pushChannel'),
 
     
     url(r'^resource/index$', 'videoCMS.views.resource.index'),

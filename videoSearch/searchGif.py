@@ -45,10 +45,10 @@ def startSearch(handleName, url, channelId, **keyParams):
         one['source'] = 'spider'
 
     #拷贝本地gif和png到47服务器 然后删除本地图片
-    cmd = 'scp -P %d -r %s/videoCMS/gif_resource/%d %s:%s' \
+    cmd = 'scp -P %d -r %s/videoCMS/gifResource/%d %s:%s' \
           % (GIF_SERVER_PORT, GIF_TEMP_DIR, channelId, GIF_SERVER, GIF_SERVER_DIR)
     os.popen(cmd)
-    cmd = 'rm -f %s/videoCMS/gif_resource/%d/*.*' % (GIF_TEMP_DIR, channelId)
+    cmd = 'rm -f %s/videoCMS/gifResource/%d/*.*' % (GIF_TEMP_DIR, channelId)
     os.popen(cmd)
 
     #入库
@@ -67,5 +67,5 @@ def handle(channelId, handleName, url):
 
 
 if __name__ == '__main__':
-    handle(100056, 'forgifs', 'http://forgifs.com/gallery/main.php')
+    handle(101112, 'forgifs', 'http://forgifs.com/gallery/main.php')
     pass
