@@ -32,9 +32,10 @@ def handle(url, channelId, tvNumber):
         else:
             urls[url] = 1
         title = link.xpath('./@title')[0]
-        videoId = p_vid.search(url).groups()[0]
-
-        ret.append(buildResource(url, title, channelId, videoId))
+        videoId = p_vid.search(url)
+        if videoId:
+            videoId = videoId.groups()[0]
+            ret.append(buildResource(url, title, channelId, videoId))
 
     return ret
 
@@ -54,6 +55,6 @@ def buildResource(url, title, channelId, videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://ent.letv.com/',100055,-1))
-    pprint.pprint(handle('http://top.letv.com/sporthp.html',100055,-1))
+    # pprint.pprint(handle('http://ent.letv.com/',100055,-1))
+    pprint.pprint(handle('http://top.letv.com/musichp.html',100055,-1))
 
