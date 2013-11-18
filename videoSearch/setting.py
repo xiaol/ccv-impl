@@ -1,6 +1,6 @@
 from pymongo import Connection
 
-debug = True
+debug = False
 
 if not debug:
     con = Connection('h37:20010')

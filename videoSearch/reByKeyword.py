@@ -3,7 +3,7 @@ import redis
 from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug
 import imp,sys
 from pprint import pprint
-import json ,time, re
+import json ,time, re, traceback
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
 import distance
@@ -352,7 +352,7 @@ def walk(reason, source):
                 reasonDic = similarWords([ret['recommendReason']])
                 for (k, v) in reasonDic.items():
                     for word in v:
-                        if cmp(word,ret['recommendReason'].encode('utf8')) == 0:
+                        if word == '' or cmp(word,ret['recommendReason'].encode('utf8')) == 0:
                             continue
                         videos.extend(walk('%s %s'%(word, k.encode('utf8')),'%s %s'%(source, k)))
                 return videos
@@ -368,7 +368,7 @@ def walk(reason, source):
                     break
                 return videos
     except Exception,e:
-        print e
+        print e,' ',traceback.format_exc()
         return videos
 
 def process(uuid):
@@ -441,6 +441,6 @@ def main():
             print e
 
 if __name__ == '__main__':
-    print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
-    #main()
+    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
+    main()
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

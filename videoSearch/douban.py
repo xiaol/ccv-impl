@@ -159,7 +159,7 @@ class Movie_info:
 next_page=Next_page()
 movie_info=Movie_info() 
 
-ftag=file('movies_tags.dat','w')
+ftag=file('movies_tags.dat','w') #TODO wb to append
 #执行，开始抓取
 for x in range(len(movie_tags)):          #x代表标签在movie_tags这个list中的位置
     print "正在抓取标签“%s”中的电影 x"%(movie_tags[x])
