@@ -8,7 +8,7 @@ from videoCMS.common.common import getCurTime
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 
 class CronJobServer():
-    RUN_EVERY_MINS = 60
+    RUN_EVERY_MINS = 1
     taskMap = {}
 
     def register(self,type,handle):
@@ -31,6 +31,7 @@ class CronJobServer():
                     self.taskMap[task['type']](task)
             except:
                 print traceback.format_exc()
+            time.sleep(self.RUN_EVERY_MINS * 60)
 
 
 

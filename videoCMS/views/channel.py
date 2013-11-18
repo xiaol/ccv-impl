@@ -389,6 +389,7 @@ def pushChannel(request):
         jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
     else:
         task = {"type":"AndroidPush","pushChannelId":channelId,"pushTitle":title,"pushContent":content,"extras":extras}
+        task['pushType'] = 'AppKey'
         task['cronTime'] = antiFormatHumanTime(cronTime)
         task['createTime'] = getCurTime()
         clct_cronJob.insert(task)

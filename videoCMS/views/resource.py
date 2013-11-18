@@ -154,7 +154,7 @@ def POST2Resource(request):
     resource['duration'] = int(float(-1 if request.POST.get('duration') == '' else request.POST.get('duration')))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
-    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').replace(u'，',',').split(','))
+    resource['tagList'] = [tag for tag in map(lambda a:a.strip(),request.POST.get('tagList').replace(u'，',',').split(',')) if tag!='']
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
@@ -194,6 +194,12 @@ def update(request):
     resource = POST2Resource(request)
     resource['modifyTime'] = getCurTime()
 
+    #更新tag
+    oldresource = clct_resource.find_one({'_id':ObjectId(id)})
+    for tag in oldresource['tagList']:
+        addTagRef(tag,-1)
+    for tag in resource['tagList']:
+        addTag(tag,1)
     ##
     ##待 补充 对tag 引用次数的修改
         

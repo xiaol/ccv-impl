@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user,clct_subscribeLog
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user,clct_subscribeLog,clct_searchLog
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime
@@ -342,6 +342,40 @@ def channel(request):
     return render_to_response('statisticsChannel.htm',DICT)
 
 
+def search(request):
+    DICT = {}
+
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+    limit = int(request.GET.get('limit',20))
+    spec = {}
+    spec['date'] = {'$gte':startTime[:8], '$lt':endTime[:8]}
+
+    #读取channel列表
+    mapScript = '''
+    function()
+    {
+        if(this.createTime >= "%s" && this.createTime < "%s")
+        emit(this.keyword,1);
+    }
+    '''%(startTime[:8],endTime[:8])
+    reduceScript= '''
+    function(key,values)
+    {
+        return values.length;
+    }
+    '''
+    print (startTime[:8],endTime[:8])
+    clct_searchStatistic = clct_searchLog.map_reduce(mapScript,reduceScript,"searchStatistics")
+    print clct_searchStatistic
+    L = list(clct_searchStatistic.find().sort([('value',-1)]).limit(limit))
+    for one in L:
+        one['id'] = one['_id']
+    DICT['result'] = L
+    DICT['limit'] = limit
+    DICT['navPage'] = 'statistics'
+    DICT['title'] = '频道下载/播放统计'
+    return render_to_response('statisticsSearch.htm',DICT)
+
 def channelSub2(request):
     DICT = {}
 
@@ -356,7 +390,7 @@ def channelSub2(request):
     else:
         filterCategoryId = None
     print 'filterCategoryId:',filterCategoryId
-    spec['date'] = {'$gte':startTime[8:], '$lt':endTime[:8]}
+    spec['date'] = {'$gte':startTime[:8], '$lt':endTime[:8]}
 
     #开始统计
     logs = list(clct_subscribeLog.find(spec))
