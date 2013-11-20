@@ -15,7 +15,7 @@ from setting import clct_channel
 def handle(url, channelId, tvNumber):
     html = get_html(url, 'gbk')
     tree = etree.HTML(html)
-    videos = tree.xpath('//*[@id="list1"]//td[@class="u-ctitle"]')
+    videos = tree.xpath('//*[@id="list2"]//td[@class="u-ctitle"]')
 
     ret = []
     max_number = 0
@@ -62,3 +62,4 @@ def buildResource(url,title, number, channelId):
 if __name__ == '__main__':
     pprint.pprint(handle('http://v.163.com/special/opencourse/form.html',100055,1))
     pprint.pprint(handle('http://v.163.com/special/cuvocw/xifangjingdianjuzuo.html',100055,1))
+    pprint.pprint(handle('http://v.163.com/special/sp/positivepsychology.html',100055,1))
