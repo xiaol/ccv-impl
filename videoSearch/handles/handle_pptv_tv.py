@@ -44,8 +44,7 @@ def getAllEpisodes(url):
         print url
         ret += json.loads(get_html(url)[1:-2])['html']
     ret += '</html>'
-    
-    print ret
+
     return ret
 
 
