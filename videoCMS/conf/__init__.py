@@ -169,6 +169,7 @@ searchHandleListAll = [
 "search.qqCover",
 "search.sinaEntList",
 "search.letvEntzt",
+"search.letvList",
 "search.yinyuetaiMV",
 "search.163Open",
 "search.163Paike",
