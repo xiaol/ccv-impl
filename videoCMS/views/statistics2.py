@@ -419,19 +419,19 @@ def channelSub2(request):
         if log['channelId'] not in result:
             result[log['channelId']] = [0,0,0,0,0,0,0]
         if log['action'] == 'unsub':
-            result[log['channelId']][5] += 1
-            result[log['channelId']][6] -= 1
+            result[log['channelId']][5] += log['number']
+            result[log['channelId']][6] -= log['number']
         else:
             if log['from'] == 'first':
-                result[log['channelId']][0] += 1
+                result[log['channelId']][0] += log['number']
             elif log['from'] == 'feed':
-                result[log['channelId']][1] += 1
+                result[log['channelId']][1] += log['number']
             elif log['from'] == 'channelDetail':
-                result[log['channelId']][2] += 1
+                result[log['channelId']][2] += log['number']
             else:
-                result[log['channelId']][3] += 1
-            result[log['channelId']][4] += 1
-            result[log['channelId']][6] += 1
+                result[log['channelId']][3] += log['number']
+            result[log['channelId']][4] += log['number']
+            result[log['channelId']][6] += log['number']
 
 
     #将结果转化成 数组
