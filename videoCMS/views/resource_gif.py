@@ -13,6 +13,7 @@ from videoSearch.common.videoInfoTask import addVideoInfoTask
 from resource import addTagRef,createTag
 import uuid,Image
 from login import NeedLogin
+from resource import addTag,createTag,addTagRef
 
 
 def POST2Resource(request):
@@ -28,8 +29,7 @@ def POST2Resource(request):
     resource['duration'] = int(float(request.POST.get('duration')))
     resource['resourceSize'] = -1 if request.POST.get('resourceSize') == '' else int(request.POST.get('resourceSize'))
     resource['isOnline'] = True if request.POST.get('channelId') == u'是' else False
-    resource['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
-    #resource['modifyTime'] = getCurTime()
+    resource['tagList'] = [tag for tag in map(lambda a:a.strip(),request.POST.get('tagList').replace(u'，',',').split(',')) if tag!='']
     resource['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
     resource['number'] = request.POST.get('number')
     resource['resourceUrl'] = request.POST.get('resourceUrl')
@@ -65,7 +65,13 @@ def update(request):
 
     resource = POST2Resource(request)
     resource['modifyTime'] = getCurTime()
-        
+
+    #更新tag
+    oldresource = clct_resource.find_one({'_id':ObjectId(id)})
+    for tag in oldresource['tagList']:
+        addTagRef(tag,-1)
+    for tag in resource['tagList']:
+        addTag(tag,1)
 
     #如果更新了GIF，则封面封面由GIF生成。否则单独更新
     img = request.FILES.get('gifUrl',None)
@@ -101,9 +107,8 @@ def add(request):
 
 
     for tag in resource['tagList']:
-        if clct_tag.find_one({'name':tag}) == None:
-            createTag(tag)
-        addTagRef(tag, 1)
+        addTag(tag, 1)
+
     if resource['resourceName'] == '':raise Exception('资源名 不能为空')
     if resource['videoType'] == '':raise Exception('videoType 不能为空')
 
