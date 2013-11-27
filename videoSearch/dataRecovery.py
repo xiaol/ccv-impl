@@ -92,9 +92,22 @@ def addTag():
                 print e
                 continue
 
+def addTagResource():
+    rets = clct_resource.find({'tagList':[]})
+    for ret in rets:
+        title = ret.get('resourceName','')
+        if title:
+            try:
+                tags = segmentByNLP(title)
+                clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
+            except Exception,e:
+                print e
+                continue
+
 
 if __name__ == '__main__':
     #createOrUpdateTags()
-    addTag()
+    #addTag()
+    addTagResource()
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)

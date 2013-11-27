@@ -14,7 +14,7 @@ from common.videoInfoTask import addVideoInfoTask
 from py4j.java_gateway import JavaGateway
 
 
-redisUrl = 'localhost'
+redisUrl = '60.28.29.48'
 contentUrl = 'http://60.28.29.46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
 segmentUrl = 'http://60.28.29.46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
 if not debug:
@@ -79,12 +79,15 @@ def retrieveUserHistory(userId):
 def retrieveUserSearchHistory(userId):
     pass
 
-def similarWords(words,total=False):
+def similarWords(words,total=False,isSegment=False):
     if not isinstance(words, list):
         words = [words]
     result = {}
     for word in words:
-        tags_str = " ".join(segment(word))
+        if not isSegment:
+            tags_str = word
+        else:
+            tags_str = " ".join(segment(word,isSegment))
         temp = distance.similar('',tags_str.encode('utf8'))
         if not total:
             tempA = temp[:10];tempB = temp[-10:];tempA.extend(tempB)
@@ -93,7 +96,7 @@ def similarWords(words,total=False):
             result[tags_str] = temp
     return result
 
-def segment(sentences):
+def segment(sentences,isSegment=False):
     if len(sentences) <= 2:
         return [sentences]
     try:
@@ -401,7 +404,7 @@ def process(uuid):
         total = False
     else: total = False
     for record in records:
-        similarKeywordsDic = similarWords(record['resourceName'],total)
+        similarKeywordsDic = similarWords(record['resourceName'],total,True)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
                 video = walk(tag, k)
@@ -458,7 +461,7 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214
+    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
      main()
     #segmentByNLP("【大S怀孕3月台湾安胎 汪小菲夜会美女】http://t.cn/8kL7XWx 据台媒报道，大S老公汪小菲，昨遭爆料私会高瘦美女，据报道，大S目前在台安胎，汪小菲却在北京密会气质美女，对方脸型小、身材高挑，外型颇似大S。面对媒体质疑，大S的助理表示，“只是单纯与朋友聚会的饭局。详情：http://t.cn/8kL5OvW")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
