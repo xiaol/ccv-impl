@@ -3,14 +3,14 @@ import redis
 from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug
 import imp,sys
 from pprint import pprint
-import json ,time, re, traceback
+import json ,time, re, traceback, os
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
-import distance
 import urllib2
 from common.common import getCurTime,strB2Q,strQ2B
 from common.Domain import Resource
 from common.videoInfoTask import addVideoInfoTask
+from py4j.java_gateway import JavaGateway
 
 
 redisUrl = 'localhost'
@@ -95,18 +95,27 @@ def similarWords(words,total=False):
 def segment(sentences):
     if len(sentences) <= 2:
         return [sentences]
-    url = segmentUrl%(urllib2.quote(sentences.encode('utf8')))
-    i,tags = 0,[]
     try:
-        html = get_html(url)
-        result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
+        return segmentByNLP(sentences)
     except Exception,e:
-        print e
+        url = segmentUrl%(urllib2.quote(sentences.encode('utf8')))
+        i,tags = 0,[]
+        try:
+            html = get_html(url)
+            result = json.loads(html)['analysis']['field_types']['text_cn']['query'][1]
+        except Exception,e:
+            print e
+            return tags
+        for line in result:
+            tags.append(strB2Q(line['text']))
+            if len(tags) >= 100: return tags
         return tags
-    for line in result:
-        tags.append(strB2Q(line['text']))
-        if len(tags) >= 100: return tags
-    return tags
+
+def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
+    gateway = JavaGateway()
+    keywords = gateway.entry_point.extractKeywords(sentences,5,True)
+    keywordsList = keywords.split(' ')
+    return keywordsList
 
 def recommend(words, source):
     subCon = ' OR '.join(words)
@@ -329,6 +338,13 @@ def upload(videos, uuid):
             if retR is not None:
                 if retR.get('snapshot','') == 'done':
                     video['snapshot'] = retR['snapshot']
+            try:
+                if not retR['tagList']:
+                    newTags = segmentByNLP(retR['resourceName'])
+                    clct_resource.update({'_id':retR['_id']},{'$set':{'tagList':newTags}})
+                    videos['tagList'] = newTags
+            except Exception,e:
+                print e
             video['uuid'] = uuid
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
@@ -441,6 +457,7 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'
-    main()
+    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214
+     main()
+    #segmentByNLP("【大S怀孕3月台湾安胎 汪小菲夜会美女】http://t.cn/8kL7XWx 据台媒报道，大S老公汪小菲，昨遭爆料私会高瘦美女，据报道，大S目前在台安胎，汪小菲却在北京密会气质美女，对方脸型小、身材高挑，外型颇似大S。面对媒体质疑，大S的助理表示，“只是单纯与朋友聚会的饭局。详情：http://t.cn/8kL5OvW")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
