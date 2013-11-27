@@ -6,6 +6,7 @@ from pprint import pprint
 import json ,time, re, traceback, os
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
+import distance
 import urllib2
 from common.common import getCurTime,strB2Q,strQ2B
 from common.Domain import Resource
