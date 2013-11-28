@@ -138,6 +138,8 @@ def handle(channelId,handleName,url):
         startSearch("handles.handle_qq_tv", url, channelId,snapShot = snapShot, updateTvNumber=True)
     elif handleName == 'ppsTv':
         startSearch("handles.handle_pps_tv", url, channelId,snapShot = snapShot, updateTvNumber=True)
+    elif handleName == 'wasuTv':
+        startSearch("handles.handle_wasu_tv", url, channelId, snapShot=snapShot, updateTvNumber=True)
         '''===============综艺=============='''
     elif handleName == 'youkuZongyi':
         startSearch('handles.handle_youku_zongyi', url, channelId ,snapShot = snapShot, updateTvNumber=True)
@@ -189,6 +191,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_ku6_top', url, channelId, snapShot=snapShot)
     elif handleName == 'sohuTop':
         startSearch('handles.handle_sohu_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'wasuTop':
+        startSearch('handles.handle_wasu_top', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
@@ -316,6 +320,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_163_open', url, channelId, snapShot=snapShot, updateTvNumber=True)
     elif handleName == '163Paike':
         startSearch('handles.handle_163_paike', url, channelId, snapShot=snapShot, updateTvNumber=True)
+    elif handleName == 'wasuSearch':
+        startSearch('handles.handle_wasu_search', url, channelId, snapShot=snapShot)
+    elif handleName == 'wasuList':
+        startSearch('handles.handle_wasu_list', url, channelId, snapShot=snapShot)
     else:
         raise Exception("not this handle"+handleName)
 

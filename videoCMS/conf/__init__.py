@@ -93,6 +93,7 @@ searchHandleListAll = [
 'search.sohuTv',
 'search.pptvTv',
 'search.qqTv',
+'search.wasuTv',
 
 'search.youkuZongyi',
 'search.iqiyiZongyi',
@@ -181,6 +182,9 @@ searchHandleListAll = [
 "search.56Top",
 "search.ku6Top",
 "search.sohuTop",
+'search.wasuTop',
+'search.wasuSearch',
+'search.wasuList',
 
 "searchGif.onegif",
 "searchGif.forgifs",
