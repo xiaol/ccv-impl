@@ -60,7 +60,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         updateMap = {'updateTime':getCurTime()}
         if updateTvNumber:
             updateMap['tvNumber'] = resouceList[0]['number']
-            updateMap['subtitle'] = str(resouceList[0]['number'])
+            #updateMap['subtitle'] = str(resouceList[0]['number'])
         print {'channelId':channelId},{'$set':updateMap}
         try:
             clct_channel.update({'channelId':channelId},{'$set':updateMap},safe=True)
