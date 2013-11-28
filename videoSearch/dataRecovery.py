@@ -108,6 +108,8 @@ def addTagResource():
 if __name__ == '__main__':
     #createOrUpdateTags()
     #addTag()
-    addTagResource()
+    while True:
+        addTagResource()
+        time.sleep(60*60*24)
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)
