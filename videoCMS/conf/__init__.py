@@ -171,6 +171,7 @@ searchHandleListAll = [
 "search.sinaEntList",
 "search.letvEntzt",
 "search.letvList",
+"search.letvVar",
 "search.yinyuetaiMV",
 "search.163Open",
 "search.163Paike",
