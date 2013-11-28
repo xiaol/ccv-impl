@@ -28,20 +28,20 @@ def clearChannel(channelId):
     rets = clct_resource.remove({'channelId':channelId})
 
 initial_tags = ['BBC', 'HBO', 'OVA', 'TVB', 'MV', '爱情',
-                '奥斯卡', '暴力', '成长', '传记', '迪斯尼', '谍战',  '动画短片', '动漫', '萌宠',  '动作',
+                '奥斯卡', '暴力',  '传记', '迪斯尼', '谍战',  '动画短片', '动漫', '萌宠',  '动作',
                 '独立电影', '恶搞', '儿童', '二战', '犯罪',  '感人',  '搞笑',  '宫崎骏',  '国产电影',
-                '国产动画', '韩剧',  '黑白片' , '黑帮', '黑色幽默', '纪录片',  '僵尸', '教育',
+                '国产动画', '韩剧',  '黑白片' , '黑帮', '黑色幽默', '纪录片',  '僵尸',
                 '惊悚',  '经典', '警匪', '剧场版',  '科幻', '恐怖片', '烂片', '浪漫',  '励志', '历史',
                 '旅行',  '伦理',  '漫画改编', '冒险', '美剧',  '美食',  '好莱坞',  '梦想',  '名著改编',
                 '魔幻',   '女性',  '欧美电影',  '奇幻',  '亲情', '青春', '情色',   '人性',  '日本动漫',  '日剧',
-                '生活',   '时尚',  '史诗',  '台剧',  '泰国电影',  '同性',  '童话',  '童年回忆',  '推理',  '文艺',
-                '武侠',   '吸血鬼',  '希区柯克', '喜剧' ,  '香港电影',  '校园', '心理',  '悬疑',   '血腥',  '摇滚',  '音乐',
-                '音乐剧',  '英剧',  '友情',  '灾难',  '战争',  '政治',  '治愈系',  '自由',  '宗教',
+                '生活',   '史诗',  '台剧',  '泰国电影',  '同性',  '童话',  '童年回忆',  '推理',  '文艺',
+                '武侠',   '吸血鬼',  '希区柯克', '喜剧' ,  '香港电影',  '校园',  '悬疑',   '血腥',  '摇滚',
+                '音乐剧',  '英剧',  '友情',  '灾难',  '战争',  '治愈系',  '自由',  '宗教',
                 '纯音乐',  '电影原声',  '独立音乐',  '翻唱牛人',  '摩登天空音乐节',  '同人音乐',  '演唱会',
-                '明星', '写真', '游戏', '健康', '小窍门']
+                '明星', '写真',  '健康', '小窍门']
 
-top_tags = ['动画短片', '黑色幽默', '僵尸', '烂片', '人性', '同性', '童年回忆',
-            '武侠', '治愈系', '写真', '摇滚', '音乐剧', '推理', '科幻', '灾难', '小窍门']
+top_tags = ['动画短片', '黑色幽默', '惊悚', '烂片', '亲情', '同性', '童年回忆',
+            '武侠', '治愈系', '写真', '摇滚', '音乐剧', '推理', '科幻', '灾难', '纪录片']
 
 def createOrUpdateTags():
     for entity in initial_tags:
@@ -68,7 +68,7 @@ def buildTag(name,wordVec,refNum=1):
         tag['weight'] = 100
     return tag
 
-from reByKeyword import recommendByYouku,recommendByBaidu
+from reByKeyword import recommendByYouku,recommendByBaidu, segmentByNLP
 
 def feedTag(tags, divide=False, fromWord = ''):
     start = False
@@ -79,8 +79,37 @@ def feedTag(tags, divide=False, fromWord = ''):
         if start:
             recommendByBaidu([entity], entity, 'Tags', 101758)
 
+def addTag():
+    rets = clct_userRecommend.find({'tags':{'$exists':False},'tagList':{'$exists':False}})
+    for ret in rets:
+        title = ret.get('resourceName','')
+        if title:
+            try:
+                tags = segmentByNLP(title)
+                clct_resource.update({'_id':ObjectId(ret['resourceId'])},{'$set':{'tagList':tags}})
+                clct_userRecommend.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
+            except Exception,e:
+                print e
+                continue
+
+def addTagResource():
+    rets = clct_resource.find({'tagList':[]})
+    for ret in rets:
+        title = ret.get('resourceName','')
+        if title:
+            try:
+                tags = segmentByNLP(title)
+                clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
+            except Exception,e:
+                print e
+                continue
+
 
 if __name__ == '__main__':
-    createOrUpdateTags()
+    #createOrUpdateTags()
+    #addTag()
+    while True:
+        addTagResource()
+        time.sleep(60*60*24)
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)
