@@ -74,8 +74,8 @@ box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0
     padding:10px;
     background-color: #FFF;
     min-height:300px;
-    border-top:solid 1px rgb(50,151,253);
-    box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0px;
+    /*border-top:solid 1px rgb(50,151,253);
+    box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0px;*/
 }
 
 .smallFont
