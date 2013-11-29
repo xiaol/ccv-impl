@@ -63,7 +63,11 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             #updateMap['subtitle'] = str(resouceList[0]['number'])
         print {'channelId':channelId},{'$set':updateMap}
         try:
-            clct_channel.update({'channelId':channelId},{'$set':updateMap},safe=True)
+            if clct_channel.find_one({'channelId':channelId}):
+                print {'channelId':channelId},'found!!'
+            else:
+                print {'channelId':channelId},'not found!!'
+            clct_channel.update({'channelId':channelId},{'$set':updateMap},w=2)
         except Exception,e:
             print e
     #清除 视频权重
