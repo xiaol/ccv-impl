@@ -475,7 +475,6 @@ def disperseUpdateTime(request):
     return HttpResponse('ok')
 
 
-
 def disperseResourceUpdateTime(channelId, startTime, endTime):
     resourceIt = clct_resource.find({'channelId':channelId},timeout=False).sort([('number',1),('createTime',1)])
     SIZE = resourceIt.count()

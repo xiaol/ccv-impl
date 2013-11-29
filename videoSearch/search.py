@@ -60,10 +60,14 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         updateMap = {'updateTime':getCurTime()}
         if updateTvNumber:
             updateMap['tvNumber'] = resouceList[0]['number']
-            updateMap['subtitle'] = str(resouceList[0]['number'])
+            #updateMap['subtitle'] = str(resouceList[0]['number'])
         print {'channelId':channelId},{'$set':updateMap}
         try:
-            clct_channel.update({'channelId':channelId},{'$set':updateMap},safe=True)
+            if clct_channel.find_one({'channelId':channelId}):
+                print {'channelId':channelId},'found!!'
+            else:
+                print {'channelId':channelId},'not found!!'
+            clct_channel.update({'channelId':channelId},{'$set':updateMap},w=2)
         except Exception,e:
             print e
     #清除 视频权重
@@ -314,6 +318,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
     elif handleName == 'letvList':
         startSearch('handles.handle_letv_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'letvVar':
+        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot)
     elif handleName == 'yinyuetaiMV':
         startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
     elif handleName == '163Open':

@@ -22,4 +22,11 @@ def fixInt():
         clct_resource.update({'_id':resource['_id']},{'$set':{'updateTime':resource['createTime']}})
 
 
-fixInt()
+def fixUpdateTimeNotExists():
+    for resource in clct_resource.find({'updateTime':{'$exists':False}}):
+        print resource['createTime']
+        clct_resource.update({'_id':resource['_id']},{'$set':{'updateTime':resource['createTime']}})
+
+
+
+fixUpdateTimeNotExists()
