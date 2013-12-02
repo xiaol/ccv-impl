@@ -98,8 +98,30 @@ def addTagResource():
         title = ret.get('resourceName','')
         if title:
             try:
-                tags = segmentByNLP(title)
+                if ret['channelId'] == 0 :
+                    tags = []
+                    hashtag = re.findall(r"#(\S+)#",title)
+                    if not hashtag:
+                        tags = segmentByNLP(title)
+                    else:
+                        tags = hashtag
+                else:
+                    tags = segmentByNLP(title)
                 clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
+            except Exception,e:
+                print e
+                continue
+
+def setWeiboTag():
+    rets = clct_resource.find({'channelId':0})
+    for ret in rets:
+        title = ret.get('resourceName','')
+        if title:
+            try:
+                hashtag = re.findall(r"#(\S+)#",title)
+                if hashtag:
+                    tags = hashtag
+                    clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             except Exception,e:
                 print e
                 continue
@@ -108,6 +130,7 @@ def addTagResource():
 if __name__ == '__main__':
     #createOrUpdateTags()
     #addTag()
+    #setWeiboTag()
     while True:
         addTagResource()
         time.sleep(60*60*12)
