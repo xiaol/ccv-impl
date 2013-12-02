@@ -27,12 +27,10 @@ def index(request):
     channel['detailMovieCategory'] = '/'.join(channel['detailMovieCategory'])
 
     DICT = channel
+    DICT['resource'] = resource
     if resource:
         DICT['starList'] = [True] * int(channel['detaildoubanScore']/2)
         DICT['starList'].extend([False] * (5-len(DICT['starList'])))
-        DICT['videoType'] = resource['videoType']
-        DICT['videoId'] = resource['videoId']
-        DICT['channelName'] = channel["channelName"]
         DICT['resourceImageUrl'] = "http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/" + resource['resourceImageUrl']
         if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
             DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
@@ -43,7 +41,7 @@ def index(request):
         if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
-    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer_1.7_official_website.apk'
+    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer.apk'
     
     return render_to_response('share_resource.htm',DICT)
     

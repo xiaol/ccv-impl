@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<meta name="MobileOptimized" content="640"/> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+<title>口袋视频</title>
+
+
+<link href="/static/shareDir/css/channel.css" rel="stylesheet" type="text/css" />
+<link href="/static/shareDir/css/video-js.css" rel="stylesheet">
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+
+<script src="/static/shareDir/js/video.js"></script>
+<script src="/static/shareDir/js/channel.js"></script>
+<script>
+    var pageVideoType = "{{videoType}}";
+    var pageVideoId = "{{videoId}}";
+</script>
+
+</head>
+<body>
+    <div class="main-wrap">
+        <div id="top" class="clearfix">
+            <div id="top-left">
+                <img src="/static/shareDir/img/phone.png"/>
+            </div>
+
+            <div id="logo">
+                <img src="/static/shareDir/img/logo_name.png"/>
+            </div>
+            <div id="buttondiv">
+                <a id="download-button1"  target="_blank" href="{{apkUrl}}">
+                    <img  id="download_button" src="/static/shareDir/img/download_button.png"/>
+                </a>
+            </div>
+
+        </div>
+        <div id="content" class="clearfix">
+            <div id="resourceName"> {{channelName}}
+            <div id="stars">
+                    {%for star in starList%}
+                        {%if star%}
+                        <img src="/static/shareDir/img/star1.png"/>
+                        {%else%}
+                        <img src="/static/shareDir/img/star2.png"/>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+
+            <div id="video">
+                <!--
+                {% if videoUrl%}
+                <video src="{{videoUrl}}" controls="controls" width="100%">
+                    您的浏览器不支持 video 标签。
+                </video> 
+                {% endif %}-->
+                <a href="{{videoUrl}}" target="_blank">
+                    <img src="/static/shareDir/img/player_button.png" id="player_button">
+                    <img src="{{resourceImageUrl}}" id="videoSnapshot"/>
+                </a>
+            </div>
+            <div >
+                <table id="detailTable">
+                    {%if detailDirecter%}<tr><td width="60px">导演</td><td>{{detailDirecter}}</td></tr> {% endif %}
+                    {%if detailLeadingRole%}<tr><td>主演</td><td>{{detailLeadingRole}}</td></tr> {% endif %}
+                    {%if detailReleaseDate%}<tr><td>年份</td><td>{{detailReleaseDate}}</td></tr> {% endif %}
+                    {%if detailMovieCategory%}<tr><td>影片类型</td><td>{{detailMovieCategory}}</td></tr> {% endif %}
+                    {%if detailDistrict%}<tr><td>地区</td><td>{{detailDistrict}}</td></tr> {% endif %}
+                </table>
+            </div>
+            
+        </div>
+        <div id="indent">
+                {{detailDescription}}
+        </div>
+        <div id="button" class="clearfix">
+            <div>下载应用查看更多精彩抢先影片</div>
+            <a target="_blank" href="{{apkUrl}}">
+                <img src="/static/shareDir/img/download_button2.png"/>
+            </a>
+        </div>
+        
+    </div>
+
+</body>
+</html>
