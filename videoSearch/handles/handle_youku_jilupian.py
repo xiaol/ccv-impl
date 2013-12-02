@@ -19,7 +19,7 @@ def handle(url,channelId,tvNumber):
     ret = []
     for video in videoList:
         try:
-            title = video.xpath('./a/@title')[0]
+            title = video.xpath('./a/text()')[0]
             url = video.xpath('./a/@href')[0]
             number = int(video.xpath('./label/text()')[0])
         except:
