@@ -37,15 +37,17 @@ def handle(url, channelId, tvNumber):
         url = video["url"]
         title = video["name"]
         videoId = video["vid"]
-        ret.append(buildResource(url, title, channelId, videoId))
+        number = video["releasedate"]
+        ret.append(buildResource(url, title, number, channelId, videoId))
 
     return ret
 
 
-def buildResource(url, title, channelId, videoId):
+def buildResource(url, title, number, channelId, videoId):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
+    resource['number'] = number
     resource['channelId'] = channelId
     resource['type'] = 'video'
     resource['videoType'] = 'letv'
