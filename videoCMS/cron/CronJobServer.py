@@ -31,13 +31,15 @@ class CronJobServer():
                     self.taskMap[task['type']](task)
             except:
                 print traceback.format_exc()
+            else:
+                clct_cronJob.remove({'_id':task['_id']})
             time.sleep(self.RUN_EVERY_MINS * 60)
 
 
 
 def handleAndroidPush(task):
     pushType = task['pushType']
-    channelId = task.get['pushChannelId']
+    channelId = task['pushChannelId']
     title = task['pushTitle']
     content = task['pushContent']
     extras = task['extras']
