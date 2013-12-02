@@ -187,6 +187,7 @@ class VideoInfoTask(DomainBase):
     videoType = ''
     force = False
     goOnline = False
+    type = ''
 
 
 class CDNSyncTask(DomainBase):
@@ -221,4 +222,5 @@ class UserWeibo(DomainBase):
     resourceId = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+    updateTime = '00000000000000'
 

@@ -65,14 +65,16 @@ class Resource(DomainBase):
     weight = -1
     playNumber = 0
     downloadNumber = 0
-
     gameName = ''
     gameUrl = ''
-
     scheduleGoOnline = ''
     gifUrl = ''
-
     subtitle = ''
+    isLD = False
+    resolution = -1
+    '''resolution:
+    0:流畅， 1:标清， 2:高清 3:超清 4:原画
+    '''
 
 class Category(DomainBase):
     categoryName = ''
@@ -88,7 +90,8 @@ class Category(DomainBase):
     '''0 电影, 1 电视剧,2 短视频'''
     videoClass = 0
     logoUrl = ''
-    
+    isOnline = True
+    isFirst = False
     
     
     
@@ -143,7 +146,7 @@ class Channel(DomainBase):
     detailMovieCategory = []
     detailDistrict = ''
     detailLanguage = ''
-    detailReleaseDate = '00000000000000'
+    detailReleaseDate = ''
     detailDoubanUrl = ''
     detailDuration = ''
     detaildoubanScore = -1
