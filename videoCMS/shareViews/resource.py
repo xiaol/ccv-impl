@@ -32,13 +32,11 @@ def index(request):
         DICT['starList'] = [True] * int(channel['detaildoubanScore']/2)
         DICT['starList'].extend([False] * (5-len(DICT['starList'])))
         DICT['resourceImageUrl'] = "http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/" + resource['resourceImageUrl']
-        if resource['videoType'] in [u'huohua', u'bt' ,u'torrent']:
-            DICT['videoUrl'] = 'http://test.weiweimeishi.com/' + resource['videoId']
+
+        videoUrl = getVideoUrl(resource['videoType'], resource['videoId'])
+        if len(videoUrl) != 0 and videoUrl[0].find('.mp4') != -1:
+            DICT['videoUrl'] = videoUrl[0]
         else:
-            videoUrl = getVideoUrl(resource['videoType'], resource['videoId'])
-            if resource['videoType'] == u'baidupan' or len(videoUrl) != 0 and videoUrl[0].find('.mp4') != -1:
-                DICT['videoUrl'] = videoUrl[0]
-        if 'videoUrl' not in DICT:
             DICT['videoUrl'] = resource['resourceUrl']
 
     DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer.apk'

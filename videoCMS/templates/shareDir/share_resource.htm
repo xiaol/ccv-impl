@@ -37,6 +37,9 @@
             <ul>
                 <li>
                     <h1>{{ resource.resourceName }}</h1>
+                    {% if not videoUrl %}
+                    <h2 style="color: red;">此视频不支持网页观看，请下载客户端观看!</h2>
+                    {% endif %}
                 </li>
                 <li>
                     <div id="video">
