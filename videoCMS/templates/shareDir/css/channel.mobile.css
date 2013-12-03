@@ -41,12 +41,16 @@ li
     width: 100%;
     zoom: 1;
 }
+
+#header-logo img
+{
+    width: 50%;
+}
+
 .middle
 {
-    max-width: 450px;
-    min-width: 450px;
-    width: 450px;
-    margin: 0 auto;
+    margin: 0px 10px;
+    zoom: 1;
 }
 
 .content
@@ -64,13 +68,19 @@ li
 #video
 {
     position: relative;
+    witdh:100%;
 }
 
-#player_button {
+#video #player_button {
     width: 20%;
     position: absolute;
     top: 40%;
     left: 40%;
+}
+
+#video #videoSnapshot
+{
+    width: 100%;
 }
 
 #detailTable
