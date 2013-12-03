@@ -36,9 +36,9 @@
         <div class="content middle">
             <ul>
                 <li>
-                    <h1>{{ resource.resourceName }}</h1>
+                    <h2>{{ resource.resourceName }}</h2>
                     {% if not videoUrl %}
-                    <h2 style="color: red;">此视频不支持网页观看，请下载客户端观看!</h2>
+                    <h3 style="color: red;">此视频不支持网页观看，请下载客户端观看!</h3>
                     {% endif %}
                 </li>
                 <li>
@@ -49,9 +49,7 @@
                         </a>
                     </div>
                 </li>
-                <li>
-                    <h2 style="color: gray">部分视频会被微信阻止，请下载《口袋视频》客户端 或 点击微信右上角按钮在外部浏览器打开观看</h2>
-                </li>
+
                 <li>
                     <div >
                         <table id="detailTable">
@@ -62,6 +60,9 @@
                             {%if detailDistrict%}<tr><td>地区</td><td>{{detailDistrict}}</td></tr> {% endif %}
                         </table>
                     </div>
+                </li>
+                <li>
+                    <h6 style="color: gray">Tips：部分视频会被微信阻止，请下载《口袋视频》客户端 或 点击微信右上角按钮在外部浏览器打开观看</h6>
                 </li>
             </ul>
         </div>
