@@ -83,6 +83,7 @@ urlpatterns = patterns('',
     url(r'^statistics2/resource$','videoCMS.views.statistics2.resource'),
     url(r'^statistics2/weiboUser$','videoCMS.views.statistics2.weiboUser'),
     url(r'^statistics2/search','videoCMS.views.statistics2.search'),
+    url(r'^statistics2/playTime','videoCMS.views.statistics2.playTime'),
 
 
     url(r'^about$','videoCMS.views.about.index'),
