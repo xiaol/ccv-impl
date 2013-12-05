@@ -9,6 +9,7 @@ from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
+p_title = re.compile(r'title="(.*?)" href=')
 
 
 def handle(url,channelId,tvNumber):
@@ -19,7 +20,8 @@ def handle(url,channelId,tvNumber):
     ret = []
     for video in videoList:
         try:
-            title = video.xpath('./a/text()')[0]
+            title = etree.tostring(video,encoding="utf-8",method="html").decode()
+            title = p_title.search(title).groups()[0]
             url = video.xpath('./a/@href')[0]
             number = int(video.xpath('./label/text()')[0])
         except:

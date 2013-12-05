@@ -15,7 +15,7 @@ from common.HttpUtil import get_html
 
 
 p_vid = re.compile('id_([\w=]+?).html')
-
+p_title = re.compile(r'title="(.*?)" href=')
 
 def handle(url, channelId, tvNumber):
     html = get_html(url)

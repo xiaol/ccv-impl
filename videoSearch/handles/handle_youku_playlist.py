@@ -12,7 +12,7 @@ from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_page_num = re.compile(r'(\d+).html')
-
+p_title = re.compile(r'title="(.*?)" href=')
 
 def handle(url,channelId,tvNumber):
     html = get_html(url)
@@ -29,7 +29,8 @@ def handle(url,channelId,tvNumber):
 
     ret = []
     for video in videoList:
-        title = video.xpath('./@title')[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = p_title.search(title).groups()[0]
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]
 
@@ -53,4 +54,4 @@ def buildResource(url, title, channelId, videoId):
 
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.youku.com/playlist_show/id_19416824.html',1,3))
-    pprint.pprint(handle('http://www.youku.com/playlist_show/id_19470036.html',1,3))
+    pprint.pprint(handle('http://www.youku.com/playlist_show/id_18600811.html',1,3))
