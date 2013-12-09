@@ -13,7 +13,7 @@ from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
-p_title = re.compile(r'title="(.*?)" href=')
+# p_title = re.compile(r'title="(.*?)" href=')
 
 
 
@@ -29,11 +29,16 @@ def handle(url,channelId,tvNumber):
     
     videoList2 = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
+        # title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        # title = p_title.search(title).groups()[0]
+        title = video.xpath('./a/text()')
+        if not title:
+            continue
+        else:
+            title = title[0]
         url = video.xpath('./a/@href')[0]
         number = video.xpath('./label/text()')[0]
-        print('number:',number,'tvNumber:',tvNumber)
+        # print('number:',number,'tvNumber:',tvNumber)
         if number <= tvNumber:
             continue
         item = buildResource(url,title,number,-1,channelId)
