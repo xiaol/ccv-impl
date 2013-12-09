@@ -191,9 +191,9 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
         resource['source'] = 'recommend'
         resource['updateTime'] = getCurTime()
         resource['tagList'] = []
+        resource['tagList'].append(reason)
         for videoTag in entity['tag']:
             resource['tagList'].append(videoTag['name'])
-        resource['tagList'].append(reason)
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
 

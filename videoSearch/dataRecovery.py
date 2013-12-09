@@ -76,8 +76,17 @@ def feedTag(tags, divide=False, fromWord = ''):
         #recommendByYouku([entity],entity,'Tags',101758, 'relevance')
         if divide and not start and (entity == fromWord):
             start = True
-        if start:
+        if start or not divide:
             recommendByBaidu([entity], entity, 'Tags', 101758)
+
+def feedUserTag():
+    rets = clct_user.find({'tagList':{'$exists':True}})
+    tags = []
+    for ret in rets:
+        tags.extend(ret['tagList'])
+    tagSet = set(tags)
+    print "Update tags count: ", len(tagSet)
+    feedTag(tagSet)
 
 def addTag():
     rets = clct_userRecommend.find({'tags':{'$exists':False},'tagList':{'$exists':False}})
@@ -134,5 +143,6 @@ if __name__ == '__main__':
     while True:
         addTagResource()
         time.sleep(60*60*12)
+        feedUserTag()
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)
