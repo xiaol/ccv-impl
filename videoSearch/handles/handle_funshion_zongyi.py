@@ -32,6 +32,7 @@ def handle(url,channelId,tvNumber):
         number = p_number.search(url).groups()[0]
         if number < tvNumber:
             continue
+        print url
         videoId = getVideoIdByUrl(url)
         item = buildResource(url,title,number,channelId,videoId,channelType)
         ret.append(item)
@@ -58,5 +59,5 @@ def buildResource(url,title,number,channelId,videoId,channelType):
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.funshion.com/subject/107354',100550,3))
     #pprint.pprint(handle('http://www.funshion.com/subject/43280/',100550,700))
-    pprint.pprint(handle('http://www.funshion.com/subject/93314/',100550,700))
+    pprint.pprint(handle('http://www.funshion.com/subject/95283/',100550,700))
 

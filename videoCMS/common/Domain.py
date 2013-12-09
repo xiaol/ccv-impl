@@ -75,6 +75,7 @@ class Resource(DomainBase):
     '''resolution:
     0:流畅， 1:标清， 2:高清 3:超清 4:原画
     '''
+    isRecommend = False
 
 class Category(DomainBase):
     categoryName = ''

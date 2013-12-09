@@ -190,6 +190,15 @@
 	                        		</select>
 	                        	</td>
 	                        </tr>
+                            <tr>
+                                <td>推荐到Feed</td>
+                                <td>
+                                    <select name="isRecommend"  style="width:90px">
+                                        <option>是</option>
+                                        <option {% if not isRecommend %}selected="selected"{% endif %}>否</option>
+                                    </select>
+                                </td>
+                            </tr>
 						</table>
 					</div>
 					<!-- 左正文 -->
