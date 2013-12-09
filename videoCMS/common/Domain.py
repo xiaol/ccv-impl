@@ -75,6 +75,7 @@ class Resource(DomainBase):
     '''resolution:
     0:流畅， 1:标清， 2:高清 3:超清 4:原画
     '''
+    isRecommend = False
 
 class Category(DomainBase):
     categoryName = ''
@@ -187,6 +188,7 @@ class VideoInfoTask(DomainBase):
     videoType = ''
     force = False
     goOnline = False
+    type = ''
 
 
 class CDNSyncTask(DomainBase):
@@ -221,4 +223,5 @@ class UserWeibo(DomainBase):
     resourceId = ''
     createTime = '00000000000000'
     modifyTime = '00000000000000'
+    updateTime = '00000000000000'
 

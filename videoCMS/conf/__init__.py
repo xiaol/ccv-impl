@@ -25,6 +25,7 @@ clct_operationLog = con39.tiercel.operationLog
 clct_statisticsLog = con39.tiercel.statisticsLog
 clct_subscribeLog = con39.tiercel.subscribeLog
 clct_searchLog = con39.tiercel.searchLog
+clct_playLog = con39.tiercel.playLog
 
 
 #=======================  图片

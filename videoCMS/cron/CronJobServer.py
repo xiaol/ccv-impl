@@ -3,7 +3,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))]
 
 import time,json,threading,traceback
-from videoCMS.conf import clct_resource,clct_channel,clct_cronJob,JPushClient,JPUSH_APP_KEY
+from videoCMS.conf import clct_resource,clct_channel,clct_cronJob,jPushClient,JPUSH_APP_KEY
 from videoCMS.common.common import getCurTime
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 
@@ -44,8 +44,8 @@ def handleAndroidPush(task):
     content = task['pushContent']
     extras = task['extras']
     if pushType ==  'AppKey':
-        print '向APPKEY%s的Android设备Push：title:%s,content:%s'%(JPUSH_APP_KEY,title,content)
-        JPushClient.send_notification_by_appkey(JPUSH_APP_KEY, time.time(), 'des',title,content, 'android',extras=extras)
+        print '向APPKEY:%s 的Android设备Push：title: %s content: %s'%(JPUSH_APP_KEY,title,content)
+        jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, int(time.time()), 'des',title,content, 'android',extras=extras)
 
 
 

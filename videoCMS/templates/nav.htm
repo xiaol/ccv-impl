@@ -30,6 +30,7 @@
 
                             <li><a href="/resource/index?mongo=%7b%22validTime%22%3a%7b%22%24exists%22%3atrue%7d%7d&sort=invalidTime">解析出错视频</a></li>
                             <li><a href="/resource/index?mongo=%7B%22isOnline%22%3Afalse%2C%22scheduleGoOnline%22%3A%22%22%7D">未上线/未定时视频</a></li>
+                            <li><a href="/resource/index?mongo=%7B%22channelId%22%3A%7B%22%24not%22%3A%7B%22%24in%22%3A%5B101641%2C0%5D%7D%7D%7D">No正在流行</a></li>
                         </ul>
                     </li>
                     <li style="position:relative;" {%ifequal navPage "preresource"%} class="active" {%endifequal%}>
@@ -63,6 +64,7 @@
                             <li><a href="/statistics/autoResource">自动下载统计</a></li>
                             <li><a href="/statistics2/weiboUser">微博用户统计</a></li>
                             <li><a href="/statistics2/search">搜索关键词统计</a></li>
+                            <li><a href="/statistics2/playTime">观看时长统计</a></li>
                         </ul>
                     </li>
 				</ul>

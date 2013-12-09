@@ -13,6 +13,7 @@ from setting import clct_channel
 
 
 p_vid = re.compile('id_([^\._]+)')
+p_title = re.compile(r'title="(.*?)" href=')
 
 '''
     根据用户的个人主页url 抽取该用户的共享视频和收藏视频（只抽取第一页）
@@ -32,7 +33,8 @@ def handle(url, channelId, tvNumber):
     
     ret = []
     for video in videoList:
-        title = video.xpath('./@title')[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = p_title.search(title).groups()[0]
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]
         item = buildResource(url, title, -1, channelId, videoId)

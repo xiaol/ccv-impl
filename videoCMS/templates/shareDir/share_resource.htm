@@ -1,17 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--<meta name="MobileOptimized" content="640"/> -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+<!--<meta name="MobileOptimized" content="680"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name=”apple-mobile-web-app-status-bar-style” content=”black-translucent” />
+
 <title>口袋视频</title>
 
 
-<link href="/static/shareDir/css/channel.css" rel="stylesheet" type="text/css" />
+<link href="/static/shareDir/css/channel.mobile.css" rel="stylesheet" type="text/css" />
 <link href="/static/shareDir/css/video-js.css" rel="stylesheet">
-
 <script src="/static/js/jquery-1.7.1.js"></script>
-
 <script src="/static/shareDir/js/video.js"></script>
 <script src="/static/shareDir/js/channel.js"></script>
 <script>
@@ -21,68 +24,50 @@
 
 </head>
 <body>
-    <div class="main-wrap">
-        <div id="top" class="clearfix">
-            <div id="top-left">
-                <img src="/static/shareDir/img/phone.png"/>
+    <div id="header">
+        <div class="middle">
+            <div id="header-logo">
+                <img src="/static/img/share/1.png"/>
             </div>
+        </div>
 
-            <div id="logo">
-                <img src="/static/shareDir/img/logo_name.png"/>
-            </div>
-            <div id="buttondiv">
-                <a id="download-button1"  target="_blank" href="{{apkUrl}}">
-                    <img  id="download_button" src="/static/shareDir/img/download_button.png"/>
-                </a>
-            </div>
+    </div>
+    <div id="body">
+        <div class="content middle">
+            <ul>
+                <li>
+                    <h2>{{ resource.resourceName }}</h2>
+                    {% if not videoUrl %}
+                    <h3 style="color: red;">此视频不支持网页观看，请下载客户端观看!</h3>
+                    {% endif %}
+                </li>
+                <li>
+                    <div id="video">
+                        <a href="{{videoUrl}}" target="_blank">
+                            <img  src="/static/shareDir/img/player_button.png" id="player_button">
+                            <img  src="{{resourceImageUrl}}" id="videoSnapshot"/>
+                        </a>
+                    </div>
+                </li>
 
+                <li>
+                    <div >
+                        <table id="detailTable">
+                            {%if detailDirecter%}<tr><td width="60px">导演</td><td>{{detailDirecter}}</td></tr> {% endif %}
+                            {%if detailLeadingRole%}<tr><td>主演</td><td>{{detailLeadingRole}}</td></tr> {% endif %}
+                            {%if detailReleaseDate%}<tr><td>年份</td><td>{{detailReleaseDate}}</td></tr> {% endif %}
+                            {%if detailMovieCategory%}<tr><td>影片类型</td><td>{{detailMovieCategory}}</td></tr> {% endif %}
+                            {%if detailDistrict%}<tr><td>地区</td><td>{{detailDistrict}}</td></tr> {% endif %}
+                        </table>
+                    </div>
+                </li>
+                <li>
+                    <h6 style="color: gray">Tips：部分视频会被微信阻止，请下载《口袋视频》客户端 或 点击微信右上角按钮在外部浏览器打开观看</h6>
+                </li>
+            </ul>
         </div>
-        <div id="content" class="clearfix">
-            <div id="resourceName"> {{channelName}}
-            <div id="stars">
-                    {%for star in starList%}
-                        {%if star%}
-                        <img src="/static/shareDir/img/star1.png"/>
-                        {%else%}
-                        <img src="/static/shareDir/img/star2.png"/>
-                        {%endif%}
-                    {%endfor%}
-                </div>
-            </div>
-
-            <div id="video">
-                <!--
-                {% if videoUrl%}
-                <video src="{{videoUrl}}" controls="controls" width="100%">
-                    您的浏览器不支持 video 标签。
-                </video> 
-                {% endif %}-->
-                <a href="{{videoUrl}}" target="_blank">
-                    <img src="/static/shareDir/img/player_button.png" id="player_button">
-                    <img src="{{resourceImageUrl}}" id="videoSnapshot"/>
-                </a>
-            </div>
-            <div >
-                <table id="detailTable">
-                    {%if detailDirecter%}<tr><td width="60px">导演</td><td>{{detailDirecter}}</td></tr> {% endif %}
-                    {%if detailLeadingRole%}<tr><td>主演</td><td>{{detailLeadingRole}}</td></tr> {% endif %}
-                    {%if detailReleaseDate%}<tr><td>年份</td><td>{{detailReleaseDate}}</td></tr> {% endif %}
-                    {%if detailMovieCategory%}<tr><td>影片类型</td><td>{{detailMovieCategory}}</td></tr> {% endif %}
-                    {%if detailDistrict%}<tr><td>地区</td><td>{{detailDistrict}}</td></tr> {% endif %}
-                </table>
-            </div>
-            
-        </div>
-        <div id="indent">
-                {{detailDescription}}
-        </div>
-        <div id="button" class="clearfix">
-            <div>下载应用查看更多精彩抢先影片</div>
-            <a target="_blank" href="{{apkUrl}}">
-                <img src="/static/shareDir/img/download_button2.png"/>
-            </a>
-        </div>
-        
+    </div>
+    <div id="footer">
     </div>
 
 </body>

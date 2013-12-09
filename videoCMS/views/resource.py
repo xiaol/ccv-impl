@@ -160,6 +160,7 @@ def POST2Resource(request):
     resource['resourceUrl'] = request.POST.get('resourceUrl')
     resource['subtitle'] = request.POST.get('subtitle')
     resource['isLD'] = True if request.POST.get('isLD') == u'是' else False
+    resource['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
     resource['updateTime'] = request.POST.get('updateTime')
     resource['resolution'] = int(request.POST.get('resolution',-1))
     try:

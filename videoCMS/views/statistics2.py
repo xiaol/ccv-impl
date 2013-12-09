@@ -3,6 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
+from videoCMS.conf import clct_playLog
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user,clct_subscribeLog,clct_searchLog
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
@@ -655,3 +656,23 @@ def weiboUser(request):
     DICT['number'] = len(weiboUsers)
 
     return render_to_response("statisticsWeiboUser.htm",DICT)
+
+
+
+def playTime(request):
+    day7 = time.strftime('%Y%m%d000000',time.localtime(time.time()-7*24*3600))
+    day = time.strftime('%Y%m%d%H%M%S',time.localtime())
+
+    logs = clct_playLog.find({'operationTime':{'$gte':day7,'$lte':day}},{'operationTime':1,'playTime':1})
+    R = {}
+    for log in logs:
+        t = log['operationTime'][:8]
+        if t not in R:
+            R[t] = float(log['playTime'])/1000/3600
+        else:
+            R[t] += float(log['playTime'])/1000/3600
+    for key in R:
+        R[key] = int(R[key])
+    result =  sorted(R.items(),key=lambda a:a[0],reverse=True)
+    DICT = {'result':result}
+    return render_to_response("statisticsPlayTime.htm",DICT)

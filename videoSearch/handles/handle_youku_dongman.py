@@ -15,6 +15,7 @@ p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
 p_totalNumber = re.compile(u'共(\d+)集')
 p_title_number = re.compile(u'第(\d+)')
+p_title = re.compile(r'title="(.*?)" href=')
 
 #=========================================================
 
@@ -39,7 +40,8 @@ def handle(url,channelId,tvNumber):
     '''抽取'''
     ret = []
     for i, video in enumerate(videoList):
-        title = video.xpath('./@title')[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = p_title.search(title).groups()[0]
         url = video.xpath('./@href')[0]
         number = p_title_number.search(title)
         if number:

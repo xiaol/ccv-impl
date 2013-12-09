@@ -379,10 +379,12 @@ def pushChannel(request):
     channelId = int(request.GET.get('pushChannelId'))
     title = request.GET.get('pushTitle')
     content = request.GET.get('pushContent')
+    channel = clct_channel.find_one({'channelId':channelId})
     extras = \
     {
         'action':"OpenChannel",
-        'channelId':channelId
+        'channelId':channelId,
+        'videoClass':channel['videoClass']
     }
 
     if cronTime == "":
