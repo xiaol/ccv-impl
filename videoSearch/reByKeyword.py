@@ -25,6 +25,7 @@ if not debug:
 youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
+blacklist = ['视频','在线','详情','点击']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
@@ -119,6 +120,11 @@ def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
     gateway = JavaGateway()
     keywords = gateway.entry_point.extractKeywords(sentences,5,True)
     keywordsList = keywords.split(' ')
+    for black in blacklist:
+        try:
+            keywordsList.remove(black)
+        except ValueError:
+            pass
     return keywordsList
 
 def recommend(words, source):
@@ -194,6 +200,11 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
         resource['tagList'].append(reason)
         for videoTag in entity['tag']:
             resource['tagList'].append(videoTag['name'])
+        for black in blacklist:
+            try:
+                resource['tagList'].remove(black)
+            except ValueError:
+                pass
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
 
@@ -271,6 +282,11 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False,channelId=101
         resource['tagList'] = entity['tags'].split(',')
         resource['tagList'].append(entity['category'])
         resource['tagList'].append(reason)
+        for black in blacklist:
+            try:
+                resource['tagList'].remove(black)
+            except ValueError:
+                pass
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
 
