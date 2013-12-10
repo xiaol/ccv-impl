@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re
 from videoCMS.conf import clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,CHANNEL_TYPE_LIST
@@ -51,7 +52,7 @@ def index(request):
     DICT['findNum'] = clct_tag.find(spec).count()
     DICT['tagList'] = tagList
     DICT['navPage'] = 'tag'
-    return render_to_response('tag.htm',DICT)
+    return render_to_response('tag.htm',DICT,context_instance=RequestContext(request))
 
 
 def update(request):
@@ -62,7 +63,7 @@ def update(request):
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'tag'
-        return render_to_response('tagUpdate.htm',DICT)
+        return render_to_response('tagUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新
     channel = Tag()
@@ -78,7 +79,7 @@ def add(request):
         DICT = {}
         DICT['info'] = ''
         DICT['navPage'] = 'tag'
-        return render_to_response('tagUpdate.htm',DICT)
+        return render_to_response('tagUpdate.htm',DICT,context_instance=RequestContext(request))
     
     channel  = Tag()
     channel['name'] = request.POST['name']

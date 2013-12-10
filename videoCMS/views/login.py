@@ -56,7 +56,18 @@ def checkAdmin(request,special=[]):
 def NeedLogin(func):
     def _func(request):
         if not checkLogin(request):
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/login?redirect='+request.get_full_path())
         return func(request)
 
     return _func
+
+
+
+
+
+def custom_proc(request):
+    DICT = {}
+    DICT['USER_NAME'] = request.session.get('username','')
+    DICT['MSG'] = '123123123123123'
+    print 'xxxxxxxxxxxxxxxxx'
+    return DICT
