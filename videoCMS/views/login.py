@@ -67,7 +67,9 @@ def NeedLogin(func):
 
 def custom_proc(request):
     DICT = {}
-    DICT['USER_NAME'] = request.session.get('username','')
+    DICT['username'] = request.session.get('username','')
+    
+
     DICT['MSG'] = '123123123123123'
-    print 'xxxxxxxxxxxxxxxxx'
+
     return DICT
