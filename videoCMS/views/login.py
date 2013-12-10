@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
-from videoCMS.conf import userList
+from videoCMS.conf import userList,clct_cmsMessage
 
 def login(request):
     
@@ -68,8 +68,8 @@ def NeedLogin(func):
 def custom_proc(request):
     DICT = {}
     DICT['username'] = request.session.get('username','')
-    
 
-    DICT['MSG'] = '123123123123123'
+    msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['username']]},'readed':{'$exists':False}}).count()
+    DICT['MSG_COUNT'] = msgCount
 
     return DICT

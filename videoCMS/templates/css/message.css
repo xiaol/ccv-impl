@@ -1,0 +1,34 @@
+
+.nav-left li
+{
+    list-style: none;
+    padding: 3px;
+    padding-left: 8px;
+    margin-bottom: 3px;
+    border-radius: 5px;
+}
+.nav-left a
+{
+    color:#08c;
+    display: block;
+    text-decoration: none;
+}
+.nav-left li.active
+{
+    background: #08c;
+    color: #FFF;
+}
+
+.nav-left li.active:hover
+{
+    background-color: #08c;
+}
+.nav-left li:hover
+{
+    background-color: #EEEEEE;
+}
+
+.nav-left li.active a
+{
+    color:#FFF;
+}
