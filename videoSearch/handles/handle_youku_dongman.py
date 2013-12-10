@@ -41,7 +41,11 @@ def handle(url,channelId,tvNumber):
     ret = []
     for i, video in enumerate(videoList):
         title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
-        title = p_title.search(title).groups()[0]
+        title = p_title.search(title)
+        if title:
+            title = title.groups()[0]
+        else:
+            title = video.xpath('./text()')[0]
         url = video.xpath('./@href')[0]
         number = p_title_number.search(title)
         if number:
@@ -98,6 +102,6 @@ def buildResource(url,title,number,channelId,videoId):
     
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.youku.com/show_page/id_z0995377e0da211e1a046.html',100254,1))
+    pprint.pprint(handle('http://www.youku.com/show_page/id_zdc4a0100d0d211e29748.html',100254,1))
     #pprint.pprint(handle('http://www.youku.com/show_page/id_zf33e2e705bd111e2b356.html',100253,31))
 
