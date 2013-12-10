@@ -121,4 +121,5 @@ if __name__ == '__main__':
     # pprint.pprint(handle('http://v.qq.com/detail/n/nndopnljjrwnwck.html',1,0))
     # pprint.pprint(handle('http://v.qq.com/zt/detail/hml/index.html',1,0))
     # pprint.pprint(handle('http://v.qq.com/zt/detail/index.html',1,0))
-    pprint.pprint(handle('http://v.qq.com/p/tv/zt/lama/index.html',1,0))
+    #pprint.pprint(handle('http://v.qq.com/p/tv/zt/lama/index.html',1,0))
+    pprint.pprint(handle('http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html',1,0))
