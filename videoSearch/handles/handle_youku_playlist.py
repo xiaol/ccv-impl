@@ -12,7 +12,7 @@ from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_page_num = re.compile(r'(\d+).html')
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle="(.*?)"\s')
 
 def handle(url,channelId,tvNumber):
     html = get_html(url)
@@ -29,8 +29,12 @@ def handle(url,channelId,tvNumber):
 
     ret = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
+        title = p_title.search(title)
+        if title:
+            title = title.groups()[0]
+        else:
+            title = video.xpath('./@title')[0]
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]
 

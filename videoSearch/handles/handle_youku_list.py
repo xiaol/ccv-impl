@@ -11,7 +11,6 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
-p_title = re.compile(r'title="(.*?)" href=')
 
 
 # 形如 http://sports.youku.com/toutiao 这样的页面集合
@@ -35,8 +34,7 @@ def handle_window_page(url, channelId):
 
     ret = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
+        title = video.xpath('./text()')[0]
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]
 
