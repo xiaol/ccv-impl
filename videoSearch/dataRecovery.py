@@ -135,14 +135,20 @@ def setWeiboTag():
                 print e
                 continue
 
+def updateWeiboUpdateTime():
+    rets = clct_resource.find({'channelId':0})
+    for ret in rets:
+        clct_resource.update({'_id':ret['_id']},{'$set':{'updateTime':ret['createTime']}})
+
 
 if __name__ == '__main__':
     #createOrUpdateTags()
     #addTag()
     #setWeiboTag()
+    #updateWeiboUpdateTime()
     while True:
-        #addTagResource()
-        #time.sleep(60*60*12)
         feedUserTag()
+        addTagResource()
+        time.sleep(60*60)
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)

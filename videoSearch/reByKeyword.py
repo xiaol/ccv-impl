@@ -223,6 +223,9 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
 
 getVideoIdUrl = 'http://60.28.29.38:9090/api/getVideoId'
 
+if not debug:
+    getVideoIdUrl = 'http://h38:9090/api/getVideoId'
+
 p_1 = re.compile('http://(.*?)/')
 p_url = re.compile('http://[\w\./]*')
 p_sina = re.compile('http://video.sina.com.cn/v/b/(.*?)\.html')
