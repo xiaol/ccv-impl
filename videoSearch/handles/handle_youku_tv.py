@@ -13,18 +13,18 @@ from setting import clct_channel,clct_resource
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle="(.*?)"\s')
 
 #=========================================================
 
 
 
 def handle(url,channelId,tvNumber):
-    html = getAllEpisodes(url)
-    tree = etree.HTML(html)
+    # html = getAllEpisodes(url)
+    # tree = etree.HTML(html)
     #print(html)
     treeOrigin = etree.HTML(get_html(url))
-    videoList = tree.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
+    videoList = treeOrigin.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
     numberList = p_number.search(treeOrigin.xpath('//div[@class="basenotice"]/text()')[0])
 
     if numberList != None:
@@ -37,12 +37,14 @@ def handle(url,channelId,tvNumber):
     
     ret = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
         title = p_title.search(title).groups()[0]
+        if title.endswith(u"预告"):
+            continue
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]
         number = int(video.xpath('./text()')[0])
-        if number < tvNumber:
+        if number <= tvNumber:
             continue
         item = buildResource(url,title,number,channelId,videoId)
         ret.append(item)
