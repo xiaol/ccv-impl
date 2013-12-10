@@ -338,7 +338,7 @@ def buildUserWeibo(item):
     strTime = ' '.join(timeList)
     weiboTime = time.strptime(strTime, "%a %b %d %H:%M:%S %Y")
     timeStamp =  time.mktime(weiboTime)
-    userWeibo['updateTime'] = datetime.datetime.fromtimestamp(timeStamp).strftime('%Y%m%d%H%M%S')
+    userWeibo['updateTime'] = getCurTime()#datetime.datetime.fromtimestamp(timeStamp).strftime('%Y%m%d%H%M%S')
 
     return userWeibo.getInsertDict()
 

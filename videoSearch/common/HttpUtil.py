@@ -73,6 +73,7 @@ def get_html(url,encoding='utf-8'):
     httpUtil = HttpUtil()
     content = httpUtil.Get(url)
     if content:
+        print url
         return content.decode(encoding,'ignore')
     else:
         return ""

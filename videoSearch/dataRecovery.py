@@ -141,8 +141,8 @@ if __name__ == '__main__':
     #addTag()
     #setWeiboTag()
     while True:
-        addTagResource()
-        time.sleep(60*60*12)
+        #addTagResource()
+        #time.sleep(60*60*12)
         feedUserTag()
     #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)
