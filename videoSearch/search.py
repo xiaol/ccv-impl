@@ -67,7 +67,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                 print {'channelId':channelId},'found!!'
             else:
                 print {'channelId':channelId},'not found!!'
-            clct_channel.update({'channelId':channelId},{'$set':updateMap},w=2)
+            print clct_channel.update({'channelId':channelId},{'$set':updateMap},w=2)
         except Exception,e:
             print e
     #清除 视频权重
@@ -342,4 +342,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(101721,'youkuTv','http://www.youku.com/show_page/id_z92e9b836ee8511e28b3f.html')
+    handle(102008,'qqTv','http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html')
