@@ -301,6 +301,8 @@ def getVideoId(request):
     resp = json.loads(urllib2.urlopen('http://60.28.29.38:9090/api/getVideoId',json.dumps(query)).read())
     ret['videoType'] = resp['videoType']
     ret['videoId'] = resp['videoId']
+    if clct_resource.find_one(ret):
+        ret['exists'] = True
     return HttpResponse(json.dumps(ret))
 
 
