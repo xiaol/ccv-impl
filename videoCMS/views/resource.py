@@ -228,6 +228,7 @@ def add(request):
     resource = POST2Resource(request)
     now = getCurTime()
     resource['createTime'] = now
+    resource['modifyTime'] = now
     resource['updateTime'] = now
 
     for tag in resource['tagList']:

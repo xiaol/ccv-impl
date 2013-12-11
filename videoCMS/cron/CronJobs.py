@@ -32,7 +32,7 @@ class ResourceGoOnlineCronJob(CronJobBase):
         for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$lte':curTime}},{'scheduleGoOnline':1,'channelId':1},timeout=False):
             print one
             clct_resource.update({'_id':one['_id']},{'$set':\
-                {'scheduleGoOnline':'','updateTime':curTime,'isOnline':True}})
+                {'scheduleGoOnline':'','updateTime':curTime,'modifyTime':curTime,'isOnline':True}})
             clct_channel.update({'channelId':one['channelId']},{'$set':{'updateTime':getCurTime()}})
         print 'scaned'
 
