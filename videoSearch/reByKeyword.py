@@ -3,7 +3,7 @@ import redis
 from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug
 import imp,sys
 from pprint import pprint
-import json ,time, re, traceback, os
+import json ,time, re, traceback, os, random
 from common.HttpUtil import get_html,HttpUtil
 from bson import ObjectId
 import distance
@@ -355,6 +355,7 @@ def retrieveVideo(keywords):
     pass
 
 def upload(videos, uuid):
+    insertErrorCount = 0
     for video in videos:
         try:
             retR = clct_resource.find_one({'_id':ObjectId(video['resourceId'])})
@@ -372,6 +373,7 @@ def upload(videos, uuid):
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
             print("Insert Error!",e)
+            insertErrorCount = insertErrorCount +1
             #Different reason to same recommendation
             '''ret = clct_userRecommend.find_one({'uuid':video['uuid'], 'resourceId':video['resourceId']})
             if cmp(ret['recommendReason'].encode('utf8'), video['recommendReason']) != 0:
@@ -379,6 +381,7 @@ def upload(videos, uuid):
                 clct_userRecommend.update({'uuid':video['uuid'], 'resourceId':video['resourceId']},{'$set':{'recommendReason':ret['recommendReason']}})'''
         else:
             pass
+    return insertErrorCount
 
 def walk(reason, source):
     videos = []
@@ -410,6 +413,7 @@ def walk(reason, source):
         print e,' ',traceback.format_exc()
         return videos
 
+from dataRecovery import  top_tags,initial_tags
 def process(uuid):
     ret = clct_user.find_one({'uuid':uuid})
     if ret is None:
@@ -453,12 +457,40 @@ def process(uuid):
                         for tag in v:
                             video = walk(tag, k)
                             if video: videos.extend(video)
-                print uuid,'count: ',len(videos)
+                print uuid,'Sina suggestion count: ',len(videos)
         except Exception,e:
             print e
 
+    if len(videos) == 0:
+        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+        try:
+            if retR is None:
+                random.shuffle(top_tags, random.random)
+                for topTag in top_tags:
+                    topRecommendVideo = clct_resource.find_one({'tagList':topTag}, sort=[("createTime", -1)])
+                    videos.extend(buildVideo([topRecommendVideo],topTag,topTag))
+        except Exception,e:
+            print e
 
-    upload(videos, ret['uuid'])
+    print uuid, 'total count: ',len(videos)
+    insertErrorCount = upload(videos, ret['uuid'])
+    if insertErrorCount == len(videos):
+        videos = []
+        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+        try:
+            if retR is None:
+                random.shuffle(initial_tags, random.random)
+                randomCount = 0
+                for initialTag in initial_tags:
+                    topRecommendVideo = clct_resource.find_one({'tagList':initialTag}, sort=[("createTime", -1)])
+                    videos.extend(buildVideo([topRecommendVideo],topTag,topTag))
+                    randomCount = randomCount + 1
+                    if randomCount > 10:
+                        break
+        except Exception,e:
+            print e
+
+        upload(videos, ret['uuid'])
 
 def main():
     redisHost = redis.Redis(redisUrl, 6379)
