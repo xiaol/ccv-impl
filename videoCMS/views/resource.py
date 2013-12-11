@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re
 from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask
@@ -139,7 +140,7 @@ def index(request):
     DICT['typeList'] = [u'全部'] + getCategoryList()
     DICT.update(locals())
 
-    return render_to_response('resourceList.htm',DICT)
+    return render_to_response('resourceList.htm',DICT,context_instance=RequestContext(request))
 
 
 def POST2Resource(request):
@@ -189,7 +190,7 @@ def update(request):
             DICT['channelObId'] = str(channel['_id'])
         else:
             DICT['channelName'] = '频道不存在'
-        return render_to_response('resourceUpdate.htm',DICT)
+        return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新
     resource = POST2Resource(request)
@@ -222,7 +223,7 @@ def add(request):
         DICT['navPage'] = 'resource'
         DICT['number'] = -1
         DICT['username'] = request.session['username']
-        return render_to_response('resourceUpdate.htm',DICT)
+        return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     resource = POST2Resource(request)
     now = getCurTime()
@@ -285,8 +286,9 @@ def toggleOnlineStatus(request):
         if resource['updateTime'] == '00000000000000':
             up['updateTime'] = getCurTime()
         clct_resource.update({'_id':id},{'$set':up})
+    newestResource = clct_resource.find_one({'channelId':resource['channelId']}).sort([('updateTime',-1)])
+    clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':newestResource['updateTime']}})
     ret['status'] = not resource['isOnline']
-    
     return HttpResponse(json.dumps(ret))
 
 #=============================================================

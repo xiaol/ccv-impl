@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
 from videoCMS.conf import clct_playLog
@@ -178,7 +179,7 @@ def category(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
-    return render_to_response("statisticsCategory2.htm",DICT)
+    return render_to_response("statisticsCategory2.htm",DICT,context_instance=RequestContext(request))
 
 
 
@@ -243,7 +244,7 @@ def categoryDetail(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '分类统计'
 
-    return render_to_response("statisticsCategory2Detail.htm",DICT)
+    return render_to_response("statisticsCategory2Detail.htm",DICT,context_instance=RequestContext(request))
 
 
 def channel(request):
@@ -340,7 +341,7 @@ def channel(request):
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
-    return render_to_response('statisticsChannel.htm',DICT)
+    return render_to_response('statisticsChannel.htm',DICT,context_instance=RequestContext(request))
 
 
 def search(request):
@@ -375,7 +376,7 @@ def search(request):
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
-    return render_to_response('statisticsSearch.htm',DICT)
+    return render_to_response('statisticsSearch.htm',DICT,context_instance=RequestContext(request))
 
 def channelSub2(request):
     DICT = {}
@@ -466,7 +467,7 @@ def channelSub2(request):
     DICT['categoryName'] = categoryName
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
-    return render_to_response('statisticsChannelSub2.htm',DICT)
+    return render_to_response('statisticsChannelSub2.htm',DICT,context_instance=RequestContext(request))
 
 
 
@@ -491,7 +492,7 @@ def channelSub(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
     DICT['mongo'] = mongo
-    return render_to_response('statisticsChannelSub.htm',DICT)
+    return render_to_response('statisticsChannelSub.htm',DICT,context_instance=RequestContext(request))
 
 
 def autoResource(request):
@@ -531,7 +532,7 @@ def autoResource(request):
     '''
     DICT['result'] = L
 
-    return render_to_response('statisticsAutoResource.htm',DICT)
+    return render_to_response('statisticsAutoResource.htm',DICT,context_instance=RequestContext(request))
 
 def resource(request):
     DICT = {}
@@ -644,7 +645,7 @@ def resource(request):
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
     DICT['title'] = '视频 下载/播放统计'
-    return render_to_response('statisticsResource.htm',DICT)
+    return render_to_response('statisticsResource.htm',DICT,context_instance=RequestContext(request))
 
 
 def weiboUser(request):
@@ -655,7 +656,7 @@ def weiboUser(request):
     DICT['data'] = list(weiboUsers)
     DICT['number'] = len(weiboUsers)
 
-    return render_to_response("statisticsWeiboUser.htm",DICT)
+    return render_to_response("statisticsWeiboUser.htm",DICT,context_instance=RequestContext(request))
 
 
 
@@ -675,4 +676,4 @@ def playTime(request):
         R[key] = int(R[key])
     result =  sorted(R.items(),key=lambda a:a[0],reverse=True)
     DICT = {'result':result}
-    return render_to_response("statisticsPlayTime.htm",DICT)
+    return render_to_response("statisticsPlayTime.htm",DICT,context_instance=RequestContext(request))

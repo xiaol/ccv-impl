@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re,os
 from videoCMS.conf import clct_resource,clct_preresource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT
@@ -72,7 +73,7 @@ def index(request):
     DICT['findNum'] = clct_preresource.find(spec).count()
     DICT['navPage'] = 'preresource'
     DICT['username'] = request.session['username']
-    return render_to_response('preresourceList.htm',DICT)
+    return render_to_response('preresourceList.htm',DICT,context_instance=RequestContext(request))
 
 
 def update(request):
@@ -86,7 +87,7 @@ def update(request):
         DICT['update'] = True
         DICT['navPage'] = 'preresource'
         DICT['username'] = request.session['username']
-        return render_to_response('preresourceUpdate.htm',DICT)
+        return render_to_response('preresourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新
     resource = Resource()
@@ -115,7 +116,7 @@ def addEd2k(request):
         DICT['info'] = ''
         DICT['navPage'] = 'preresource'
         DICT['username'] = request.session['username']
-        return render_to_response('preresourceAddEd2k.htm',DICT)
+        return render_to_response('preresourceAddEd2k.htm',DICT,context_instance=RequestContext(request))
     
     resource  = Resource()
     resource['resourceName'] = request.POST.get('resourceName')
@@ -156,7 +157,7 @@ def addTorrent(request):
         DICT = {}
         DICT['info'] = ''
         DICT['navPage'] = 'preresource'
-        return render_to_response('preresourceAddBT.htm',DICT)
+        return render_to_response('preresourceAddBT.htm',DICT,context_instance=RequestContext(request))
     resource  = Resource()
     resource['channelId'] = int(request.POST.get('channelId'))
     channel = clct_channel.find_one({'channelId':resource['channelId']})

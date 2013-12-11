@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re,time
 from videoCMS.conf import clct_channel,clct_resource,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,\
     clct_category,clct_cronJob
@@ -96,7 +97,7 @@ def index(request):
     DICT['processed'] = processed
     DICT['navPage'] = 'channel'
     DICT['sort'] = sort
-    return render_to_response('channelList.htm',DICT)
+    return render_to_response('channelList.htm',DICT,context_instance=RequestContext(request))
 
 
 
@@ -154,8 +155,6 @@ def POST2Channel(request):
     channel['handleFrequents'] = request.POST.get('handleFrequents')
     #同步类别的视频类型 到 频道
     channel['videoClass'] = clct_category.find_one({'categoryId':channel['channelType']})['videoClass']
-
-
     #检查 字段
     if channel['channelName'] == '':
         raise Exception('频道名 不能为空')
@@ -184,7 +183,7 @@ def update(request):
         DICT['navPage'] = 'channel'
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         DICT['username'] = request.session['username']
-        return render_to_response('channelUpdate.htm',DICT)
+        return render_to_response('channelUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新
     channel = POST2Channel(request)
@@ -224,7 +223,7 @@ def add(request):
         DICT['autoOnline'] = True
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         DICT['username'] = request.session['username']
-        return render_to_response('channelUpdate.htm',DICT)
+        return render_to_response('channelUpdate.htm',DICT,context_instance=RequestContext(request))
     
     channel = POST2Channel(request)
 
@@ -307,7 +306,7 @@ def detail(request):
         DICT = Obj2Str(channel)
         DICT['info'] = ''
         DICT['navPage'] = 'channel'
-        return render_to_response('channelDetail.htm',DICT)
+        return render_to_response('channelDetail.htm',DICT,context_instance=RequestContext(request))
     
     #更新
     channel = Channel()
@@ -335,7 +334,7 @@ def detail(request):
     request.POST.getlist('detailTrailerTitle'),
     request.POST.getlist('detailTrailerUrl')
     )
-    channel['detailTrailerList'] = [ {"url":trailer[3], "title":trailer[2] , "videoType":trailer[0], "videoId":trailer[1]}
+    channel['detailTrailerList'] = [{"url":trailer[3], "title":trailer[2] , "videoType":trailer[0], "videoId":trailer[1]}
                                         for trailer in trailers]
         
     

@@ -14,16 +14,16 @@ p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
 p_totalNumber = re.compile(u'共(\d+)集')
-p_title_number = re.compile(u'第(\d+)')
-p_title = re.compile(r'title="(.*?)" href=')
+p_title_number = re.compile('(\d+)')
+p_title = re.compile(r'\stitle="(.*?)"\s')
 
 #=========================================================
 
 def handle(url,channelId,tvNumber):
     #剧集网页
-    html = getAllEpisodes(url)
-    videosTree = etree.HTML(html)
-    videoList = videosTree.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
+    # html = getAllEpisodes(url)
+    tree = etree.HTML(get_html(url))
+    videoList = tree.xpath('//div[@id="episode"]//ul/li[not(@class)]/a')
     
     #原始网页
     #tree = etree.HTML(get_html(url))
@@ -40,8 +40,12 @@ def handle(url,channelId,tvNumber):
     '''抽取'''
     ret = []
     for i, video in enumerate(videoList):
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
+        title = p_title.search(title)
+        if title:
+            title = title.groups()[0]
+        else:
+            title = video.xpath('./text()')[0]
         url = video.xpath('./@href')[0]
         number = p_title_number.search(title)
         if number:
@@ -98,6 +102,6 @@ def buildResource(url,title,number,channelId,videoId):
     
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html',100254,12))
+    pprint.pprint(handle('http://www.youku.com/show_page/id_zdc4a0100d0d211e29748.html',100254,1))
     #pprint.pprint(handle('http://www.youku.com/show_page/id_zf33e2e705bd111e2b356.html',100253,31))
 

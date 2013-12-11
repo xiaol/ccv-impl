@@ -19,6 +19,8 @@ clct_tag      = con.tiercel.tag
 clct_cdnSync  = con.tiercel.cdnSync
 clct_videoInfoTask = con.tiercel.videoInfoTask
 clct_cronJob = con.tiercel.cronJob
+clct_cmsMessage = con.tiercel.cmsMessage
+
 
 con39 = Connection('60.28.29.39:20010')
 clct_operationLog = con39.tiercel.operationLog

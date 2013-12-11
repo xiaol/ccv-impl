@@ -83,6 +83,13 @@
 						{%endif%}
 					</li>
                     <li>
+                        <a href="/message">通知
+                        {% if MSG_COUNT %}
+                        <span class="badge badge-warning">{{ MSG_COUNT }}</span>
+                        {% endif %}
+                        </a>
+                    </li>
+                    <li>
                         <a href="/about">关于</a>
                     </li>
 				</ul>

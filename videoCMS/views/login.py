@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
-from videoCMS.conf import userList
+from videoCMS.conf import userList,clct_cmsMessage
 
 def login(request):
     
@@ -56,7 +56,20 @@ def checkAdmin(request,special=[]):
 def NeedLogin(func):
     def _func(request):
         if not checkLogin(request):
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/login?redirect='+request.get_full_path())
         return func(request)
 
     return _func
+
+
+
+
+
+def custom_proc(request):
+    DICT = {}
+    DICT['username'] = request.session.get('username','')
+
+    msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['username']]},'readed':{'$exists':False}}).count()
+    DICT['MSG_COUNT'] = msgCount
+
+    return DICT

@@ -14,6 +14,7 @@ from resource import addTagRef,createTag
 import uuid,Image
 from login import NeedLogin
 from resource import addTag,createTag,addTagRef
+from django.template import RequestContext
 
 
 def POST2Resource(request):
@@ -61,7 +62,7 @@ def update(request):
             DICT['channelObId'] = str(channel['_id'])
         else:
             DICT['channelName'] = '频道不存在'
-        return render_to_response('resourceGifUpdate.htm',DICT)
+        return render_to_response('resourceGifUpdate.htm',DICT,context_instance=RequestContext(request))
 
     resource = POST2Resource(request)
     resource['modifyTime'] = getCurTime()
@@ -100,7 +101,7 @@ def add(request):
         DICT['duration'] = -1
         DICT['resourceSize'] = -1
         DICT['number'] = -1
-        return render_to_response('resourceGifUpdate.htm',DICT)
+        return render_to_response('resourceGifUpdate.htm',DICT,context_instance=RequestContext(request))
 
     resource = POST2Resource(request)
     resource['createTime'] = getCurTime()

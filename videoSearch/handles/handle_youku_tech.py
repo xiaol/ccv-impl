@@ -11,7 +11,7 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('id_([^\._]+)')
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle="(.*?)"\s')
 
 
 def handle(url, channelId, tvNumber):
@@ -21,8 +21,12 @@ def handle(url, channelId, tvNumber):
     ret = []
     for video in videos:
         url = video.xpath('./@href')[0]
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
+        title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
+        title = p_title.search(title)
+        if title:
+            title = title.groups()[0]
+        else:
+            title = video.xpath('./text()')[0]
         videoId = p_vid.search(url).groups()[0]
         number = -1
         ret.append(buildResource(url, title, number, channelId, videoId))

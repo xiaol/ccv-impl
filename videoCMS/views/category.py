@@ -1,6 +1,7 @@
 #coding=utf8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import json,StringIO,re
 from videoCMS.conf import clct_category,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_channel,clct_resource
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,CATEGORY_TYPE_MAP,CATEGORY_VIDEO_CLASS_MAP
@@ -10,6 +11,7 @@ from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime
 from login import NeedLogin
 from videoCMS.common.ImageUtil import imgconvert
 from pymongo.errors import OperationFailure
+
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -66,7 +68,8 @@ def index(request):
     DICT['navPage'] = 'category'
     DICT['sort'] = sort
     DICT['username'] = request.session['username']
-    return render_to_response('categoryList.htm',DICT)
+
+    return render_to_response('categoryList.htm',DICT,context_instance=RequestContext(request))
 
 @NeedLogin
 def update(request):
@@ -91,7 +94,7 @@ def update(request):
                 
         DICT['navPage'] = 'category'
         DICT['username'] = request.session['username']
-        return render_to_response('categoryUpdate.htm',DICT)
+        return render_to_response('categoryUpdate.htm',DICT,context_instance=RequestContext(request))
     
     oldCategory = clct_category.find_one({'_id':ObjectId(id)})
     #更新
@@ -144,7 +147,7 @@ def add(request):
         DICT['videoClassList'] = CATEGORY_VIDEO_CLASS_MAP.keys()
         DICT['navPage'] = 'category'
         DICT['username'] = request.session['username']
-        return render_to_response('categoryUpdate.htm',DICT)
+        return render_to_response('categoryUpdate.htm',DICT,context_instance=RequestContext(request))
     
     category  = Category()
     if request.POST['categoryId'] == '':
