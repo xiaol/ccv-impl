@@ -91,7 +91,8 @@ def similarWords(words,total=False,isSegment=False):
             tags_str = " ".join(segment(word,isSegment))
         temp = distance.similar('',tags_str.encode('utf8'))
         if not total:
-            tempA = temp[:10];tempB = temp[-10:];tempA.extend(tempB)
+            random.shuffle(temp, random.random)
+            tempA = temp[:5];tempB = temp[-5:];tempA.extend(tempB)
             result[tags_str] = tempA
         else:
             result[tags_str] = temp
