@@ -330,6 +330,10 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_wasu_search', url, channelId, snapShot=snapShot)
     elif handleName == 'wasuList':
         startSearch('handles.handle_wasu_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'v1List':
+        startSearch('handles.handle_v1_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'v1Paike':
+        startSearch('handles.handle_v1_paike', url, channelId, snapShot=snapShot)
     else:
         raise Exception("not this handle"+handleName)
 

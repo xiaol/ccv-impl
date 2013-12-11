@@ -189,6 +189,8 @@ searchHandleListAll = [
 'search.wasuTop',
 'search.wasuSearch',
 'search.wasuList',
+'search.v1List',
+'search.v1Paike',
 
 "searchGif.onegif",
 "searchGif.forgifs",
