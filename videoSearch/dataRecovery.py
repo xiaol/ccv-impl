@@ -140,12 +140,27 @@ def updateWeiboUpdateTime():
     for ret in rets:
         clct_resource.update({'_id':ret['_id']},{'$set':{'updateTime':ret['createTime']}})
 
+from reByKeyword import blacklist
+def updateTag():
+    rets = clct_resource.find({'tagList':{'$exists':True}})
+    for ret in rets:
+        count = len(blacklist)
+        hitCount = 0
+        for black in blacklist:
+            try:
+                ret['tagList'].remove(black)
+            except ValueError:
+                hitCount = hitCount + 1
+        if hitCount != count:
+            clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
+
 
 if __name__ == '__main__':
     #createOrUpdateTags()
     #addTag()
     #setWeiboTag()
     #updateWeiboUpdateTime()
+    #updateTag()
     while True:
         feedUserTag()
         addTagResource()
