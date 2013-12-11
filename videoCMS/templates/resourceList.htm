@@ -53,7 +53,10 @@
                                     {% else %}
                                     <a href="update?id={{resource.id}}" class="label label-warning" target="_blank">编辑</a>
                                     {% endifequal %}
-                                    {%ifequal username "admin"%}<a class="label" onclick="deleteResource('{{resource.id}}')">删除</a>{%endifequal%}
+                                    {%ifequal username "admin"%}
+                                        <a class="label" onclick="deleteResource('{{resource.id}}')">删除</a>
+                                        <a class="label label-warning" onclick="pushResource('{{resource.id}}','{{resource.resourceName}}')">Push</a>
+                                    {%endifequal%}
               
 
 		                        	
@@ -166,5 +169,33 @@
             </div>
 		</div>
 	</div>
+<!-- Modal -->
+<form action="/resource/pushResource">
+    <div id="pushModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">发送Push</h3>
+      </div>
+      <div class="modal-body">
+        <p>视频：<span id="pushResourceName"></span></p>
+        <input name="pushResourcelId" type="text" />
+        <p>内容:</p>
+        <input name="pushTitle" type="text" style="width: 350px;"/><br/>
+        <textarea name="pushContent" style="width: 350px;height: 120px;"></textarea><br/>
+
+        <div id="datetimepicker1" class="input-append">
+            定时发送:
+            <input data-format="yyyy/MM/dd hh:mm:ss" name="cronTime" type="text" />
+            <span class="add-on">
+                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>(立即发送请留空)
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="btn btn-primary">发送</button>
+      </div>
+    </div>
+</form>
 </body>
 </html>

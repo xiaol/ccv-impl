@@ -286,7 +286,7 @@ def toggleOnlineStatus(request):
         if resource['updateTime'] == '00000000000000':
             up['updateTime'] = getCurTime()
         clct_resource.update({'_id':id},{'$set':up})
-    newestResource = clct_resource.find_one({'channelId':resource['channelId']}).sort([('updateTime',-1)])
+    newestResource = clct_resource.find({'channelId':resource['channelId']}).sort([('updateTime',-1)]).limit(1)[0]
     clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':newestResource['updateTime']}})
     ret['status'] = not resource['isOnline']
     return HttpResponse(json.dumps(ret))

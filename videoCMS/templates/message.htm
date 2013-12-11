@@ -27,25 +27,33 @@
 		<div class="row-fluid">
 			<div class="span3">
                 <ul class="nav-left">
-                    <li class="active">
-                        <a>未读 <span class="badge badge-warning">{{ count }}</span>
+                    <li {% ifequal request.path '/message' %}class="active" {% endifequal %}>
+                        <a href="/message">未读 <span class="badge badge-warning">{{ unreadMessageNum }}</span>
                         </a>
                     </li>
-                    <li>
-                        <a>已读</a>
+                    <li {% ifequal request.path '/message/readed' %}class="active" {% endifequal %} >
+                        <a href="/message/readed">已读<span class="badge">{{ readedMessageNum }}</span>
+                        </a>
                     </li>
-                    <li>
-                        <a>全部</a>
+                    <li {% ifequal request.path '/message/all' %}class="active" {% endifequal %}>
+                        <a href="/message/all">全部<span class="badge">{{ allMessageNum }}</span>
+                        </a>
                     </li>
                 </ul>
 			</div>
             <div class="span8 offset1">
                 {% for one in result %}
-                    <blockquote>
-                      <p>{{ one.title }}</p>
-                      <small>{{ one.content|safe }}</small>
-                    </blockquote>
-
+                    <div class="row">
+                        <div class="span10">
+                            <blockquote>
+                              <p>{{ one.title }}</p>
+                              <small>{{ one.content|safe }}</small>
+                            </blockquote>
+                        </div>
+                        <div class="span2">
+                            <a href="/message/flagRead?id={{ one.id }}" >√</a>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 		</div>

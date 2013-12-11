@@ -94,3 +94,11 @@ function unsetInvalid(object,id)
 		}
 	});
 }
+
+
+function pushResource(resourceId,resourceName)
+{
+    $('[name=pushResourceId]').val(resourceId);
+    $('#pushResourceName').text(resourceName);
+    $('#pushModal').modal('show');
+}
