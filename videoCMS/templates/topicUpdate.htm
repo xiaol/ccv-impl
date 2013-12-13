@@ -27,7 +27,7 @@
         <div class="row-fluid smallFont">
             <!--  左部分  -->
             <div class="span8 offset2 whitepanel">
-                <form enctype="multipart/form-data" method="post" >
+                <form enctype="multipart/form-data" method="post" onsubmit="return OnSubmit();" >
                     <input type="hidden" name="id"  value="{{id}}"/>
                     <input type="hidden" name="content" value="{{content}}"/>
 		            <table class="mainTable">

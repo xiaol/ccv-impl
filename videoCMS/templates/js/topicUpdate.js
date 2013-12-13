@@ -51,6 +51,8 @@ function domRemove(object)
 function addChannel(channel)
 {
     var item = $($("#topicItemTemplate").find(".topicItem")[0]).clone();
+    item.attr("type","channel");
+    item.attr("channelId",channel.channelId);
     item.find('img').attr('src',IMG_INTERFACE+channel.channelImageUrl);
     item.find('a').text(channel.channelName);
     item.find('a').attr('href',"/channel/index?channelId="+channel.channelId);
@@ -61,6 +63,8 @@ function addChannel(channel)
 function addResource(resource)
 {
     var item = $($("#topicItemTemplate").find(".topicItem")[0]).clone();
+    item.attr("type","resource");
+    item.attr("resourceUd",resource.id);
     item.find('img').attr('src',IMG_INTERFACE+resource.resourceImageUrl);
     item.find('a').text(resource.resourceName);
     item.find('a').attr('href',"/resource/index?id="+resource.id);
@@ -171,7 +175,28 @@ function loadData()
 
 function dumpData()
 {
+    var content = $('.topicItem');
+    var ret= [];
+    for(var i=0; i< content.length;++i)
+    {
+        var item = $(content[i]);
+        if(item.attr("type") == "channel")
+        {
+            ret.push({type:"channel",channelId:parseInt(item.attr('channelId'))});
+        }else if (item.attr("type") == "resource")
+        {
+            ret.push({type:"resource",resourceId:item.attr('resourceId') });
+        }
+    }
 
+    $('[name="content"]').val(JSON.stringify(ret));
+}
+
+
+function OnSubmit()
+{
+    dumpData();
+    return true;
 }
 
 $(document).ready(function()
