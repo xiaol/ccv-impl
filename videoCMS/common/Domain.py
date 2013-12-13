@@ -34,6 +34,7 @@ class DomainBase():
 
 
 
+
 class Resource(DomainBase):
     resourceSize = -1
     resourceUrl = ''
@@ -225,3 +226,27 @@ class UserWeibo(DomainBase):
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
 
+
+
+class Topic(DomainBase):
+    title = ''
+    description = ''
+    isOnline = False
+    picture = ''
+    weight = -1
+    content = []
+    createTime = '00000000000000'
+    modifyTime = '00000000000000'
+    updateTime = '00000000000000'
+
+
+
+class TopicListPage(DomainBase):
+    skip = 0
+    page = 0
+    limit = 0
+    id = ''
+    name = ''
+    mongo = ''
+    isOnline = False
+    sort = ''

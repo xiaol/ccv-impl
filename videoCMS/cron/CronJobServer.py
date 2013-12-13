@@ -47,11 +47,14 @@ def handleAndroidPush(task):
         print '向APPKEY:%s 的Android设备Push：title: %s content: %s'%(JPUSH_APP_KEY,title,content)
         jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, int(time.time()), 'des',title,content, 'android',extras=extras)
 
+def handleCheckResouceAvailable(task):
+    pass
 
 
 if __name__ == '__main__':
     cronJobServer = CronJobServer()
     cronJobServer.register('AndroidPush',handleAndroidPush)
+    cronJobServer.register('CheckResouceAvailable',handleCheckResouceAvailable)
     cronJobServer.run()
 
 

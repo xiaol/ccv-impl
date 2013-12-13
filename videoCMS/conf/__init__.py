@@ -20,6 +20,7 @@ clct_cdnSync  = con.tiercel.cdnSync
 clct_videoInfoTask = con.tiercel.videoInfoTask
 clct_cronJob = con.tiercel.cronJob
 clct_cmsMessage = con.tiercel.cmsMessage
+clct_topic = con.tiercel.topic
 
 
 con39 = Connection('60.28.29.39:20010')
@@ -189,6 +190,8 @@ searchHandleListAll = [
 'search.wasuTop',
 'search.wasuSearch',
 'search.wasuList',
+'search.v1List',
+'search.v1Paike',
 
 "searchGif.onegif",
 "searchGif.forgifs",

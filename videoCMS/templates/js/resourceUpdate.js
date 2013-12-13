@@ -20,6 +20,10 @@ function queryVideoId()
 			var data = JSON.parse(data);
 			$('*[name="videoType"]').val(data.videoType);
 			$('*[name="videoId"]').val(data.videoId);
+            if(data.exists)
+            {
+                alert('警告：此视频已存在');
+            }
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown)
 		{
