@@ -92,4 +92,11 @@ urlpatterns = patterns('',
     url(r'^message/readed$', 'videoCMS.views.message.readed'),
     url(r'^message/all$', 'videoCMS.views.message.all'),
     url(r'^message/flagRead$', 'videoCMS.views.message.flagRead'),
+
+
+    url(r'^topic/index$', 'videoCMS.views.topic.index'),
+    url(r'^topic/add$', 'videoCMS.views.topic.add'),
+    url(r'^topic/update$', 'videoCMS.views.topic.update'),
+    url(r'^topic/resetWeight$', 'videoCMS.views.topic.resetWeight'),
+    url(r'^topic/showJson$', 'videoCMS.views.topic.showJson'),
 )
