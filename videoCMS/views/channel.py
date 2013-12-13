@@ -461,6 +461,16 @@ def search(request):
     return HttpResponse(json.dumps(ret))
 
 @NeedLogin
+def searchChannelId(request):
+    channelId = int(request.GET.get('channelId'))
+    ret = []
+    for one in  clct_channel.find({'channelId':channelId}).limit(10):
+        one['id'] = str(one['_id'])
+        one.pop('_id')
+        ret.append(one)
+    return HttpResponse(json.dumps(ret))
+
+@NeedLogin
 def setCompleted(request):
     channelId = int(request.GET.get("channelId"))
     clct_channel.update({"channelId":channelId},{"$set":{"nextSearchTime":'99990101000000'},
@@ -498,3 +508,11 @@ def disperseResourceUpdateTime(channelId, startTime, endTime):
         updateTime = time.strftime('%Y%m%d%H%M%S',time.localtime(t_this))
         print updateTime
         clct_resource.update({'_id':resource['_id']},{'$set':{'updateTime':updateTime}})
+
+
+'''
+def searchName(request):
+    channelName = request.GET['name']
+    ret = list(clct_channel.find({'channelName':re.compile(channelName)}))
+    return HttpResponse(json.dumps(ret))
+'''

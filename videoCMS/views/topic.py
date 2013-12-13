@@ -64,7 +64,6 @@ def index(request):
         one['pictureOri'] = IMG_INTERFACE_FF%('*','*',one['picture'])
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
-        one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
 
 
@@ -97,6 +96,22 @@ def update(request):
         DICT['update'] = True
         DICT['navPage'] = 'topic'
         DICT['imageUrl'] = IMG_INTERFACE_FF%(250,150,topic['picture'])
+
+        content = []
+        for item in topic['content']:
+            if item['type'] == 'resource':
+                resource = clct_resource.find_one({'_id':ObjectId(item['resourceId'])})
+                resource['type'] = 'resource'
+                content.append(resource)
+            elif item['type'] == 'channel':
+                channel = clct_channel.find_one({'channelId':item['channelId']})
+                channel['type'] = 'channel'
+                content.append(channel)
+        for item in content:
+            item['id'] = str(item['_id'])
+            item.pop('_id')
+        DICT['content'] = json.dumps(content)
+
         return render_to_response('topicUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新

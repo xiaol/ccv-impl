@@ -53,6 +53,13 @@
 			                    </td>
 			                </tr>
                             <tr>
+		                        <td>视频封面2</td>
+			                    <td>
+			                        <img src="{{resourceImageUrl}}" style="display:block;" />
+			                        <input type="file"  name="resourceImage2" onchange="onImageChange(this)"/>
+			                    </td>
+			                </tr>
+                            <tr>
 			                	<td>截图状态</td>
 			                    <td>
 			                        {{snapshot}}
@@ -62,6 +69,12 @@
 								<td style="width: 100px">副标题</td>
 								<td><input type="text" class="input-xlarge" name="subtitle"
 									value="{{subtitle}}" />
+                                </td>
+							</tr>
+                            <tr>
+								<td style="width: 100px">推荐理由</td>
+								<td><input type="text" class="input-xlarge" name="recReason"
+									value="{{recReason}}" />
                                 </td>
 							</tr>
 							<tr>

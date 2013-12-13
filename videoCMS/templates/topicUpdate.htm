@@ -10,7 +10,7 @@
 <script src="/static/js/jquery-1.7.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/categoryUpdate.js"></script>
+<script src="/static/js/topicUpdate.js"></script>
 
 
 </head>
@@ -29,6 +29,7 @@
             <div class="span8 offset2 whitepanel">
                 <form enctype="multipart/form-data" method="post" >
                     <input type="hidden" name="id"  value="{{id}}"/>
+                    <input type="hidden" name="content" value="{{content}}"/>
 		            <table class="mainTable">
 		                <tr>
 		                    <td>专题名称</td>
@@ -57,6 +58,84 @@
                                 <td>
                                     <input type="text"  name="weight" value="{{weight}}"/>
                                 </td>
+                        </tr>
+                        <tr>
+                            <td>内容</td>
+                            <td>
+                                <!-- 隐藏模板 -->
+                                <div id="topicItemTemplate" class="hidden">
+                                    <div class="topicItem element" type="" _id="">
+                                        <img/>
+                                        <a></a>
+                                    </div>
+
+                                    <!-- 操作栏 -->
+                                    <div id="elementToolbar" class="elementToolbar btn-group">
+                                        <a class="btn btn-mini"
+                                            onclick="domSwapTop(this.parentNode.parentNode)"><i
+                                            class="icon-arrow-up"></i>顶部</a>
+                                        <a class="btn btn-mini"
+                                            onclick="domSwapUp(this.parentNode.parentNode)"><i
+                                            class="icon-chevron-up"></i>上移</a> <a class="btn btn-mini"
+                                            onclick="domSwapDown(this.parentNode.parentNode)"><i
+                                            class="icon-chevron-down"></i>下移</a> <a class="btn btn-mini"
+                                            onclick="domRemove(this.parentNode.parentNode)"><i
+                                            class="icon-remove"></i>移除</a>
+                                    </div>
+                                </div>
+                                <!-- 添加频道对话框 -->
+                                <div id="AddChannelModal" class="modal hide">
+                                    <div class="modal-header">
+                                        搜索频道
+                                    </div>
+                                    <div class="modal-body">
+                                       <div>
+                                           <input id="channelSearch" type="text" /> <a class="btn"
+                                               onclick="searchChannelByName()">搜名字</a> <a class="btn"
+                                               onclick="searchChannelById()">搜ID</a>
+                                       </div>
+                                       <div id="channelSearchResult">
+                                           <table class="table">
+
+                                           </table>
+                                       </div>
+                                    </div>
+                                </div>
+
+                                <!-- 添加视频对话框 -->
+                                <div id="AddResourceModal" class="modal hide">
+                                    <div class="modal-header">
+                                        搜索视频
+                                    </div>
+                                    <div class="modal-body">
+                                       <div>
+                                           <input id="resourceSearch" type="text" /> <a class="btn"
+                                               onclick="searchResourceByName()">搜名字</a> <a class="btn"
+                                               onclick="searchResourceById()">搜ID</a>
+                                       </div>
+                                       <div id="resourceSearchResult">
+                                           <table class="table">
+
+                                           </table>
+                                       </div>
+                                    </div>
+                                </div>
+
+                                <!-- 内容对话框 -->
+                                <div id="content">
+
+                                </div>
+
+                                <!-- 添加新元素按钮 -->
+                                <div class="btn-group">
+                                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 添加新元素 <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a onclick="showAddChannelModal()"><i class="icon-font"></i>频道</a></li>
+                                        <li><a onclick="showAddResourceModal()"><i class="icon-file"></i>视频</a></li>
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
 
                         <tr>

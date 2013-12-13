@@ -45,3 +45,40 @@ text-decoration: none;
 {
     content: '√';
 }
+
+.hidden
+{
+    display: none;
+}
+
+
+
+.element
+{
+    color: #3A87AD;
+    background-color: #F5F5F5;
+    border-color: #BCE8F1;
+    padding: 8px 35px 8px 14px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    position:relative;
+}
+
+
+.element:hover .elementToolbar
+{
+    display:block;
+    position:absolute;
+}
+
+.elementToolbar
+{
+    display:none;
+    position:absolute;
+    right:0px;
+    top:-20px;
+    float:right;
+}
+
+

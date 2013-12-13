@@ -40,6 +40,7 @@ class Resource(DomainBase):
     resourceUrl = ''
     resourceName = ''
     resourceImageUrl = ''
+    resourceImageUrl2 = ''
     duration = -1
     channelId = -1
     categoryId = -1
@@ -77,6 +78,8 @@ class Resource(DomainBase):
     0:流畅， 1:标清， 2:高清 3:超清 4:原画
     '''
     isRecommend = False
+    recReason = ''
+
 
 class Category(DomainBase):
     categoryName = ''

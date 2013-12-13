@@ -162,6 +162,7 @@ def POST2Resource(request):
     resource['subtitle'] = request.POST.get('subtitle')
     resource['isLD'] = True if request.POST.get('isLD') == u'是' else False
     resource['isRecommend'] = True if request.POST.get('isRecommend') == u'是' else False
+    resource['recReason'] = request.POST.get('recReason')
     resource['updateTime'] = request.POST.get('updateTime')
     resource['resolution'] = int(request.POST.get('resolution',-1))
     try:
@@ -208,6 +209,10 @@ def update(request):
     img = request.FILES.get('resourceImage',None)
     if img:
         resource['resourceImageUrl'] = saveResourceImage(img.read(),id)
+
+    img = request.FILES.get('resourceImage2',None)
+    if img:
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
     
     
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
@@ -246,6 +251,10 @@ def add(request):
     else:
         channel = clct_channel.find_one({'channelId':resource['channelId']})
         clct_resource.update({'_id':ObjectId(id)},{'$set':{'resourceImageUrl':channel['resourceImageUrl']}})
+
+    img = request.FILES.get('resourceImage2',None)
+    if img:
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
     
     #增加截图任务
     if resource['videoType'] not in [u'bt',u'huohua']:
@@ -384,6 +393,24 @@ def unsetInvalid(request):
     id = request.GET.get('id')
     clct_resource.update({'_id':ObjectId(id)},{'$unset':{'validTime':1}})
     return HttpResponse('ok')
+
+
+def search(request):
+    kw = request.GET['keyword']
+    ret = list(clct_resource.find({'resourceName':re.compile(kw)}))
+    for one in ret:
+        one['id'] = str(one['_id'])
+        one.pop('_id')
+    return HttpResponse(json.dumps(ret))
+
+def searchId(request):
+    id = request.GET['id']
+    ret = list(clct_resource.find({'_id':ObjectId(id)}))
+    for one in ret:
+        one['id'] = str(one['_id'])
+        one.pop('_id')
+    return HttpResponse(json.dumps(ret))
+
 
 #==============================================================
 '''
