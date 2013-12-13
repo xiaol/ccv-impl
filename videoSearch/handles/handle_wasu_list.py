@@ -14,6 +14,8 @@ def handle(url, channelId, tvNumber):
     html = get_html(url)
     tree = etree.HTML(html)
     videos = tree.xpath('//div[@id="publish"]/dl/dd/p[1]/a[1]')
+    if not videos:
+        videos = tree.xpath('//div[contains(@class, "relevance_video")]//p[@class="pt13 lvjz"]/a')
 
     ret = []
     for video in videos:
@@ -41,4 +43,5 @@ def buildResource(url, title, channelId, videoId):
 if __name__ == '__main__':
     pprint.pprint(handle('http://www.wasu.cn/list/index/cid/6', 100649, 3))
     pprint.pprint(handle('http://all.wasu.cn/index/cid/91', 100649, 3))
+    pprint.pprint(handle('http://www.wasu.cn/Column/show/column/1788388', 100649, 3))
 
