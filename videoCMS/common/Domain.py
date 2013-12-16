@@ -34,7 +34,6 @@ class DomainBase():
 
 
 
-
 class Resource(DomainBase):
     resourceSize = -1
     resourceUrl = ''
@@ -79,6 +78,9 @@ class Resource(DomainBase):
     '''
     isRecommend = False
     recReason = ''
+    likeNum = 0
+    shareNum = 0
+    dislikeNum = 0
 
 
 class Category(DomainBase):

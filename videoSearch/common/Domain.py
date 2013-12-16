@@ -39,6 +39,7 @@ class Resource(DomainBase):
     resourceUrl = ''
     resourceName = ''
     resourceImageUrl = ''
+    resourceImageUrl2 = ''
     duration = -1
     channelId = -1
     categoryId = -1
@@ -75,6 +76,12 @@ class Resource(DomainBase):
     '''resolution:
     0:流畅， 1:标清， 2:高清 3:超清 4:原画
     '''
+    isRecommend = False
+    recReason = ''
+    likeNum = 0
+    shareNum = 0
+    dislikeNum = 0
+
 
 class Category(DomainBase):
     categoryName = ''
@@ -224,3 +231,27 @@ class UserWeibo(DomainBase):
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
 
+
+
+class Topic(DomainBase):
+    title = ''
+    description = ''
+    isOnline = False
+    picture = ''
+    weight = -1
+    content = []
+    createTime = '00000000000000'
+    modifyTime = '00000000000000'
+    updateTime = '00000000000000'
+
+
+
+class TopicListPage(DomainBase):
+    skip = 0
+    page = 0
+    limit = 0
+    id = ''
+    name = ''
+    mongo = ''
+    isOnline = False
+    sort = ''
