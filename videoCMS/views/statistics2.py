@@ -450,6 +450,8 @@ def channelSub2(request):
         L.sort(key=lambda a:a['data'][5], reverse=True)
     elif sort == 'increaseNum':
         L.sort(key=lambda a:a['data'][6], reverse=True)
+    elif sort == 'otherSubNum':
+        L.sort(key=lambda a:a['data'][3], reverse=True)
 
     L = L[:limit]
     for one in L:

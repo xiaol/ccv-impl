@@ -76,6 +76,7 @@
                                     <td>排序</td>
                                     <td colspan="4">
                                         <input {%ifequal sort "subNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="subNum"/>订阅数
+                                        <input {%ifequal sort "otherSubNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="otherSubNum"/>其他订阅数
                                         <input {%ifequal sort "unsubNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="unsubNum"/>退订数
                                         <input {%ifequal sort "increaseNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="increaseNum"/>净增长数
                                     </td>
