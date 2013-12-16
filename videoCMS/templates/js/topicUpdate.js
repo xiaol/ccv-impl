@@ -64,7 +64,7 @@ function addResource(resource)
 {
     var item = $($("#topicItemTemplate").find(".topicItem")[0]).clone();
     item.attr("type","resource");
-    item.attr("resourceUd",resource.id);
+    item.attr("resourceId",resource.id);
     item.find('img').attr('src',IMG_INTERFACE+resource.resourceImageUrl);
     item.find('a').text(resource.resourceName);
     item.find('a').attr('href',"/resource/index?id="+resource.id);

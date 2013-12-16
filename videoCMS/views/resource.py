@@ -397,7 +397,7 @@ def unsetInvalid(request):
 
 def search(request):
     kw = request.GET['keyword']
-    ret = list(clct_resource.find({'resourceName':re.compile(kw)}))
+    ret = list(clct_resource.find({'resourceName':re.compile(kw)}).limit(10))
     for one in ret:
         one['id'] = str(one['_id'])
         one.pop('_id')
