@@ -11,11 +11,13 @@ from common.HttpUtil import get_html
 
 
 def handle(url, channelId, tvNumber):
-    html = get_html(url)
-    tree = etree.HTML(html)
-    videos = tree.xpath('//div[@id="publish"]/dl/dd/p[1]/a[1]')
-    if not videos:
-        videos = tree.xpath('//div[contains(@class, "relevance_video")]//p[@class="pt13 lvjz"]/a')
+    videos = []
+    if url.startswith('http://www.wasu.cn/Column/show'):
+        videos = getZongYi(url)
+    else:
+        html = get_html(url)
+        tree = etree.HTML(html)
+        videos = tree.xpath('//div[@id="publish"]/dl/dd/p[1]/a[1]')
 
     ret = []
     for video in videos:
@@ -25,6 +27,24 @@ def handle(url, channelId, tvNumber):
         ret.append(item)
 
     return ret
+
+
+def getZongYi(url):
+    html = get_html(url)
+    tree = etree.HTML(html)
+    page_num = tree.xpath('//div[@class="item_page right"]/a[not(@class)]')
+    videos = tree.xpath('//div[contains(@class, "relevance_video")]//p[@class="pt13 lvjz"]/a')
+    if page_num:
+        page_num = int(page_num[-1].xpath('./text()')[0])
+        for page in range(2, page_num+1):
+            try:
+                html = get_html(url + '?&p=%d' % page)
+                tree = etree.HTML(html)
+                videos.extend(tree.xpath('//div[contains(@class, "relevance_video")]//p[@class="pt13 lvjz"]/a'))
+            except:
+                pass
+
+    return videos
 
 
 def buildResource(url, title, channelId, videoId):
@@ -41,7 +61,7 @@ def buildResource(url, title, channelId, videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.wasu.cn/list/index/cid/6', 100649, 3))
-    pprint.pprint(handle('http://all.wasu.cn/index/cid/91', 100649, 3))
+    # pprint.pprint(handle('http://www.wasu.cn/list/index/cid/6', 100649, 3))
+    # pprint.pprint(handle('http://all.wasu.cn/index/cid/91', 100649, 3))
     pprint.pprint(handle('http://www.wasu.cn/Column/show/column/1788388', 100649, 3))
 
