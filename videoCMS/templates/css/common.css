@@ -82,3 +82,7 @@ text-decoration: none;
 }
 
 
+.hoverHighLight:hover
+{
+    background-color: #F0F0F0;
+}

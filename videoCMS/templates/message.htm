@@ -43,7 +43,7 @@
 			</div>
             <div class="span8 offset1">
                 {% for one in result %}
-                    <div class="row">
+                    <div class="row hoverHighLight">
                         <div class="span10">
                             <blockquote>
                               <p>{{ one.title }}</p>
@@ -51,7 +51,7 @@
                             </blockquote>
                         </div>
                         <div class="span2">
-                            <a href="/message/flagRead?id={{ one.id }}" >√</a>
+                            <a href="/message/flagRead?id={{ one.id }}" ><i style="margin-top: 20px;" class="icon-ok"></i></a>
                         </div>
                     </div>
                 {% endfor %}
