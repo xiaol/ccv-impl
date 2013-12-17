@@ -23,6 +23,7 @@ window_urls = [
     'http://sports.youku.com/index/zulan',
     'http://sports.youku.com/qiquxinggan',
     'http://sports.youku.com/index/tiyuke',
+    'http://fun.youku.com/index/qiu',
 ]
 
 
