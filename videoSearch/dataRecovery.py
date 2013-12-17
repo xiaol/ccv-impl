@@ -116,6 +116,8 @@ def addTagResource():
                         tags = hashtag
                 else:
                     tags = segmentByNLP(title)
+                if not tags:
+                    tags = [title]
                 clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             except Exception,e:
                 print e
