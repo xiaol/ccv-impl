@@ -179,6 +179,7 @@ def update(request):
         resource = clct_resource.find_one({'_id':ObjectId(id)})
         resource['tagList'] = ','.join(resource.get('tagList',[]))
         resource['resourceImageUrl'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl'])
+        resource['resourceImageUrl2'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl2'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
         DICT['username'] = request.session['username']

@@ -123,6 +123,7 @@ def POST2Channel(request):
     channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
     channel['channelName'] = request.POST.get('channelName')
     channel['subtitle'] = request.POST.get('subtitle')
+    channel['recReason'] = request.POST.get('recReason')
     channel['sourceWebsite'] = request.POST.get('sourceWebsite')
     channel['yyetsSeason'] = request.POST.get('yyetsSeason')
     channel['yyetsDownMode'] = request.POST.get('yyetsDownMode')
