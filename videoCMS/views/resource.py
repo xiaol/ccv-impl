@@ -255,7 +255,7 @@ def add(request):
 
     img = request.FILES.get('resourceImage2',None)
     if img:
-        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
     #增加截图任务
     if resource['videoType'] not in [u'bt',u'huohua']:
