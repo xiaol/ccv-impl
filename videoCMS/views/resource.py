@@ -213,7 +213,7 @@ def update(request):
 
     img = request.FILES.get('resourceImage2',None)
     if img:
-        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
     
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
