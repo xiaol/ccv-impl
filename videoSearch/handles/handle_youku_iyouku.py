@@ -13,7 +13,7 @@ from setting import clct_channel
 
 
 p_vid = re.compile('id_([^\._]+)')
-p_title = re.compile(r'\stitle="(.*?)"\s')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 '''
     根据用户的个人主页url 抽取该用户的共享视频和收藏视频（只抽取第一页）

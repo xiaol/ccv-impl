@@ -4,16 +4,14 @@ sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
-from common.Domain import Resource,Channel
+from common.Domain import Resource
 from common.HttpUtil import get_html
-from setting import clct_channel
 
 
 p_vid = re.compile('id_([^\._]+)')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 #=========================================================
 
@@ -24,21 +22,23 @@ def handle(url,channelId,tvNumber):
     tree = etree.HTML(html)
     videoList = tree.xpath('//div[@class="yk-row-index"]')[0]\
                     .xpath('.//div[@class="v-meta-title"]/a')
-    #print etree.tostring(tree.xpath('//div[@class="yk-row-index"]')[0],encoding="utf-8")
-    
+
     ret = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
-        title = p_title.search(title).groups()[0]
-        url = video.xpath('./@href')[0]
-        print title
-        print url
         try:
+            title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
+            title = p_title.search(title)
+            if title:
+                title = title.groups()[0]
+            else:
+                title = video.xpath('./text()')[0]
+            url = video.xpath('./@href')[0]
             videoId = p_vid.search(url).groups()[0]
+            item = buildResource(url,title,-1,channelId,videoId)
+            ret.append(item)
         except:
             continue
-        item = buildResource(url,title,-1,channelId,videoId)
-        ret.append(item)
+
     return ret
     
 

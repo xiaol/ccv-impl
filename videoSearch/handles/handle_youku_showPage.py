@@ -12,7 +12,7 @@ from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 
 def handle(url,channelId,tvNumber):
@@ -30,7 +30,7 @@ def showPageAnalysise(url,channelId,tvNumber):
         
     videoList2 = []
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
         title = p_title.search(title).groups()[0]
         url = video.xpath('./@href')[0]
         item = buildResource(url,title,-1,channelId)

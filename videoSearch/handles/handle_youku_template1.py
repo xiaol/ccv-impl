@@ -1,16 +1,18 @@
-#coding=utf-8
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
-from common.Domain import Resource,Channel
+from common.Domain import Resource
 from common.HttpUtil import get_html
-from setting import clct_channel
 
 
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
-p_title = re.compile(r'title="(.*?)" href=')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 
 def handle(url,channelId,tvNumber):
@@ -20,7 +22,7 @@ def handle(url,channelId,tvNumber):
     ret = []
     
     for video in videoList:
-        title = etree.tostring(video,encoding="utf-8",method="html").decode()
+        title = etree.tostring(video, encoding="utf-8", method="html").decode("utf-8")
         title = p_title.search(title).groups()[0]
         url = video.xpath('./@href')[0]
         item = buildResource(url,title,-1,channelId)
@@ -45,5 +47,5 @@ def buildResource(url,title,hot,channelId):
     
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.youku.com/show_page/id_z1e2a5fe0b6b511e1b16f.html',1))
+    pprint.pprint(handle('http://www.youku.com/show_page/id_z1e2a5fe0b6b511e1b16f.html',100000,1))
 

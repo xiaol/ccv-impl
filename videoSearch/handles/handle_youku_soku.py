@@ -11,7 +11,7 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('id_([\w=]+?).html')
-p_title = re.compile(r'\stitle=["\'](.*?)["\']\s')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 
 def handle(url,channelId,tvNumber):
