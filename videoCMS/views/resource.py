@@ -405,7 +405,7 @@ def search(request):
     return HttpResponse(json.dumps(ret))
 
 def searchId(request):
-    id = request.GET['id']
+    id = ObjectId(request.GET['id'])
     ret = list(clct_resource.find({'_id':ObjectId(id)}))
     for one in ret:
         one['id'] = str(one['_id'])

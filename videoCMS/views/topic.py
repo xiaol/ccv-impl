@@ -60,8 +60,7 @@ def index(request):
     topicList = list(clct_topic.find(spec).sort(sortParams).skip(skip).limit(limit))
     for one in topicList:
         one['id'] = str(one['_id'])
-        one['picture'] = IMG_INTERFACE_FF%(96,96,one['picture'])
-        one['pictureOri'] = IMG_INTERFACE_FF%('*','*',one['picture'])
+        one['imageUrl'] = IMG_INTERFACE_FF%(96,96,one['picture'])
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
 
