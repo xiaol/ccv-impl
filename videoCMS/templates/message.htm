@@ -14,6 +14,8 @@
 <script src="/static/js/common.js"></script>
 </head>
 
+{% load formatHumanTime %}
+
 <body style="background-color: #CCC;">
 	{% include "nav.htm" %}
 	<div class="container" style="background-color: #FFF;padding-top: 30px;min-height: 500px;">
@@ -46,7 +48,7 @@
                     <div class="row hoverHighLight">
                         <div class="span10">
                             <blockquote>
-                              <p>{{ one.title }}</p>
+                              <p>{{ one.title }} <span style="font-size: 9px;color: #CCC;">{{ one.createTime|formatHumanTime }}</span></p>
                               <small><span class="badge badge-warning">{{ one.extras.num }}</span> {{ one.content|safe }}</small>
                             </blockquote>
                         </div>

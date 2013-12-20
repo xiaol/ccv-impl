@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'videoCMS'
     #'django_cron',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
