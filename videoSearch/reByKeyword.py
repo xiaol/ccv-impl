@@ -167,11 +167,11 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
 def recommendByBaidu(words, reason, source, channelId=101758):
     subCon = ' '.join(words)
     #subCon = strQ2B(subCon)
-    subCon = subCon.decode('utf-8').encode('gb2312')
-    subCon = urllib2.quote(subCon)
-    url = baiduSearchUrl%subCon
     videos = []
     try:
+        subCon = subCon.decode('utf-8').encode('gb2312')
+        subCon = urllib2.quote(subCon)
+        url = baiduSearchUrl%subCon
         html = get_html(url, 'gbk')[10:-1]
         html = re.sub(r'\\\'','\'',html)
         html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
