@@ -16,6 +16,7 @@ from videoSearch.common.videoInfoTask import addVideoInfoTask
 import urllib2,copy
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
+from cache import Cache
 
 
 #================================================
@@ -122,6 +123,7 @@ def index(request):
 
 
 # 使用 statisticLog 标，进行二次统计，大大节约时间
+@Cache('cms_statistics_category',60)
 def category(request):
     DICT = {}
     categoryList = getCategoryDetailList()

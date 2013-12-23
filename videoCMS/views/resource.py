@@ -179,6 +179,7 @@ def update(request):
         resource = clct_resource.find_one({'_id':ObjectId(id)})
         resource['tagList'] = ','.join(resource.get('tagList',[]))
         resource['resourceImageUrl'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl'])
+        resource['resourceImageUrl2'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl2'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
         DICT['username'] = request.session['username']
@@ -212,7 +213,7 @@ def update(request):
 
     img = request.FILES.get('resourceImage2',None)
     if img:
-        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
     
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
@@ -254,7 +255,7 @@ def add(request):
 
     img = request.FILES.get('resourceImage2',None)
     if img:
-        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'_2_')
+        resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
     #增加截图任务
     if resource['videoType'] not in [u'bt',u'huohua']:
@@ -404,7 +405,7 @@ def search(request):
     return HttpResponse(json.dumps(ret))
 
 def searchId(request):
-    id = request.GET['id']
+    id = ObjectId(request.GET['id'])
     ret = list(clct_resource.find({'_id':ObjectId(id)}))
     for one in ret:
         one['id'] = str(one['_id'])

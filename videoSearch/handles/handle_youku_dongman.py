@@ -15,7 +15,7 @@ p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
 p_totalNumber = re.compile(u'共(\d+)集')
 p_title_number = re.compile('(\d+)')
-p_title = re.compile(r'\stitle="(.*?)"\s')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 #=========================================================
 

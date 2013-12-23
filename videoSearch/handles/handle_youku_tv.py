@@ -13,7 +13,7 @@ from setting import clct_channel,clct_resource
 p_vid = re.compile('id_([\w=]+?).html')
 p_reload = re.compile("y\.episode\.show\('(\w+?)'\)")
 p_number = re.compile(u'更新至(\d+)')
-p_title = re.compile(r'\stitle="(.*?)"\s')
+p_title = re.compile(r'\stitle=["\'](.*?)["\'][\s>]')
 
 #=========================================================
 

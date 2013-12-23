@@ -178,6 +178,7 @@ class Channel(DomainBase):
     isRecommend = False
     type = ''
     snapShot = False
+    recReason = ''
 
 
 class Tag(DomainBase):
