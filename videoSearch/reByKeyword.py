@@ -90,6 +90,9 @@ def similarWords(words,total=False,isSegment=False):
         else:
             tags_str = " ".join(segment(word,isSegment))
         temp = distance.similar('',tags_str.encode('utf8'))
+        if temp[0] == '':
+            result[tags_str] = [word.encode('utf8')]
+            continue
         if not total:
             random.shuffle(temp, random.random)
             tempA = temp[:5];tempB = temp[-5:];tempA.extend(tempB)
@@ -513,7 +516,7 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
+    #print(process('352900057858214'))#sina_1837408945'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #segmentByNLP("【大S怀孕3月台湾安胎 汪小菲夜会美女】http://t.cn/8kL7XWx 据台媒报道，大S老公汪小菲，昨遭爆料私会高瘦美女，据报道，大S目前在台安胎，汪小菲却在北京密会气质美女，对方脸型小、身材高挑，外型颇似大S。面对媒体质疑，大S的助理表示，“只是单纯与朋友聚会的饭局。详情：http://t.cn/8kL5OvW")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

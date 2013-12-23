@@ -1,7 +1,6 @@
 from pymongo import Connection
 
 debug = False
-
 if not debug:
     con = Connection('h37:20010')
 else:
@@ -25,6 +24,7 @@ else:
 
 clct_playLog = logCon.tiercel.playLog
 clct_searchLog = logCon.tiercel.searchLog
+clct_playViewRateLog = logCon.tiercel.playViewRateLog
 
 APP_KEY = '3421733539'
 TOKEN = '2.004t5RdCMuAbED17969f330diAZbaC'

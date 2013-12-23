@@ -146,6 +146,26 @@ from reByKeyword import blacklist
 def updateTag():
     rets = clct_resource.find({'tagList':{'$exists':True}})
     for ret in rets:
+        if not ret['tagList']:
+            title = ret.get('resourceName','')
+            if title:
+                try:
+                    if ret['channelId'] == 0 :
+                        tags = []
+                        hashtag = re.findall(r"#(\S+)#",title)
+                        if not hashtag:
+                            tags = segmentByNLP(title)
+                        else:
+                            tags = hashtag
+                    else:
+                        tags = segmentByNLP(title)
+                    if not tags:
+                        tags = [title]
+                except Exception,e:
+                    print e
+                    continue
+            clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
+            continue
         count = len(blacklist)
         hitCount = 0
         for black in blacklist:
