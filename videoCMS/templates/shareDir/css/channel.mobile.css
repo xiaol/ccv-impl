@@ -42,6 +42,10 @@ li
     zoom: 1;
 }
 
+#header-logo
+{
+   position: relative;
+}
 #header-logo img
 {
     width: 50%;
@@ -92,4 +96,33 @@ li
 #detailTable td
 {
     padding-top: 5px;
+}
+
+element.style {
+opacity: 1;
+}
+.mv_btn a.mv_download {
+color: #fff;
+text-shadow: #739d2d 0 -1px 1px;
+border-color: #6c9a24 #648c1e #5d801a #679020;
+background-image: -webkit-linear-gradient(top,#90b93f,#74a52f);
+box-shadow: #a1cf42 0 1px 0 inset;
+}
+.btn
+{
+    height: 31px;
+    line-height: 31px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: .875em;
+    text-decoration: none;
+    border: #6c9a24 1px solid;
+    border-radius: 3px;
+    text-align: center;
+    min-width: 68px;
+    margin-top: 4%;
+    background-color: #74a52f;
+    float: right;
+    padding: 0 3px;
+    background-image: -webkit-linear-gradient(top,#90b93f,#74a52f);
 }
