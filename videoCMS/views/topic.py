@@ -82,6 +82,7 @@ def POST2Topic(request):
     ret['weight'] = int(request.POST.get('weight',0))
     ret['description'] = request.POST.get('description','')
     ret['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
+    ret['isIOS'] = True if request.POST.get('isIOS') == u'是' else False
     ret['content'] = json.loads(request.POST.get('content'))
 
     return ret

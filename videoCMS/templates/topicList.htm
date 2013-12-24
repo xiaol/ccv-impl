@@ -28,6 +28,7 @@
 		                        <div class="row-fluid">
 		                            <a>{{topic.title}}</a>
                                     <span class="label label-warning">权{{topic.weight}}</span>
+                                    {% if topic.isIOS %}<span class="label label-warning">IOS</span>{% endif %}
 		                            <span class="label label-warning" onclick="resetWeight({{topic.id}})" >重置权重</span>
                                     <a class="label label-warning" href="showJson?id={{topic.id}}" target="_blank">JSON</a>
 		                            <a  href="update?id={{topic.id}}" class="label label-warning">编辑</a>
