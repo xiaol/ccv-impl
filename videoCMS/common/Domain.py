@@ -244,6 +244,7 @@ class Topic(DomainBase):
     createTime = '00000000000000'
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
+    isIOS = False
 
 
 
