@@ -10,9 +10,11 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
+startTime = '20131226000000'
+endTime = '20131227000000'
 
 def displayRate():
-    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':'20131222000000','$lte': '20131223000000'}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
     sum = 0
     f = file('displayRate.log','w')
 
@@ -29,7 +31,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 
 def displayRateRange():
-    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':'20131220000000','$lte': '20131221000000'}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
     sum = 0
     mm = defaultdict(list)
 
@@ -76,5 +78,5 @@ def statics():
 
 if __name__ == '__main__':
     #statics()
-    #displayRateRange()
     displayRate()
+    displayRateRange()
