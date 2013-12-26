@@ -22,7 +22,10 @@ function queryVideoId()
 			$('*[name="videoId"]').val(data.videoId);
             if(data.exists)
             {
-                alert('警告：此视频已存在');
+                if(confirm("警告：此视频已存在,是否跳转到该视频？"))
+                {
+                    window.location = '/resource/index?id='+data.id;
+                }
             }
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown)
