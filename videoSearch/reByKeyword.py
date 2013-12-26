@@ -147,7 +147,8 @@ def recommend(words, source):
         videos = buildVideo(ret, ' '.join(words), source)
     except Exception,e:
         print e
-    #videos.extend(recommendByYouku(words,' '.join(words), source))
+    videos.extend(recommendByYouku(words,' '.join(words), source))
+    #videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
     return videos
 
 def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count',viewCount=7000):
