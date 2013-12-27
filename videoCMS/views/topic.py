@@ -161,3 +161,18 @@ def saveTopicImage(img, id):
     with open(IMAGE_DIR + '/' + filename, 'wb') as f:
         f.write(img)
     return filename.replace('/', '_')
+
+
+def showJson(request):
+    id = request.GET.get('id')
+    one = clct_topic.find_one({'_id':ObjectId(id)})
+    one['_id'] = str(one['_id'])
+    return HttpResponse(json.dumps(one))
+
+
+def addResourceToNewestBaBa(request):
+    resourceId = request.GET.get('resourceId')
+    topic = list(clct_topic.find({'isIOS':True}).sort([('updateTime',-1)]).limit(1))[0]
+    item = {"resourceId": "52ab16bbcf99d64355e95b5b","type": "resource"}
+    print clct_topic.update({'_id':topic['_id']},{'$push':{'content':item}})
+    return HttpResponse('已经添加至 '+topic['title'])

@@ -47,7 +47,8 @@
                                     <span class="label label-info">下{{resource.downloadNumber}}</span>
 		                        	<a resourceId="{{resource.id}}" class="label label-warning" onclick="refreshSnapshot(this)">更新截图</a>
 		                        	<a resourceId="{{resource.id}}" class="label label-warning" onclick="stopSnapshot(this)">取消截图</a>
-		                        	<a href="#" title="{{resource.snapshotMsg}}">{{resource.snapshot}}</a>
+		                        	<a href="#" title="{{resource.snapshotMsg}}" >{{resource.snapshot}}</a>
+                                    <a class="label label-warning"  onclick="addToBaBa(this,'{{ resource.id }}')">+Baba视频</a>
                                     {% ifequal resource.type "gif" %}
 		                        	<a href="/resourceGif/update?id={{resource.id}}" class="label label-warning" target="_blank">编辑</a>
                                     {% else %}

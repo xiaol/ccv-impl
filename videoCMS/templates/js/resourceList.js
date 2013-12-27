@@ -102,3 +102,26 @@ function pushResource(resourceId,resourceName)
     $('#pushResourceName').text(resourceName);
     $('#pushModal').modal('show');
 }
+
+
+
+function addToBaBa(object,resourceId)
+{
+    $(object).text("发送中...");
+    $.ajax({
+		type:'get',
+		url:'/topic/addResourceToNewestBaBa',
+		data:{'resourceId':resourceId},
+		success:function(data,textStatus)
+		{
+            alert(data);
+            $(object).text("+Baba视频");
+
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+            $(object).text("+Baba视频");
+		}
+	});
+}
