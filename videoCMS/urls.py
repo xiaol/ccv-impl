@@ -56,6 +56,7 @@ urlpatterns = patterns('',
     url(r'^resource/search$', 'videoCMS.views.resource.search'),
     url(r'^resource/searchResourceId', 'videoCMS.views.resource.searchId'),
 
+
     url(r'^resourceGif/add$', 'videoCMS.views.resource_gif.add'),
     url(r'^resourceGif/update$', 'videoCMS.views.resource_gif.update'),
     
@@ -103,4 +104,5 @@ urlpatterns = patterns('',
     url(r'^topic/update$', 'videoCMS.views.topic.update'),
     url(r'^topic/resetWeight$', 'videoCMS.views.topic.resetWeight'),
     url(r'^topic/showJson$', 'videoCMS.views.topic.showJson'),
+    url(r'^topic/addResourceToNewestBaBa', 'videoCMS.views.topic.addResourceToNewestBaBa'),
 )
