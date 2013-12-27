@@ -1,6 +1,6 @@
 #coding=utf-8
 import redis
-from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug, clct_tag
+from setting import clct_channel,clct_resource,clct_userWeibo,clct_playLog, clct_user, clct_userRecommend, debug, clct_tag, clct_userDiscard
 import imp,sys
 from pprint import pprint
 import json ,time, re
@@ -176,6 +176,28 @@ def updateTag():
         if hitCount != count:
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
 
+from collections import defaultdict
+def updateUserTag():
+    rets = clct_userDiscard.find({})
+    for ret in rets:
+        try:
+            userTags = clct_user.find_one({'uuid':ret['uuid']}).get('tagList',[])
+            mm = defaultdict(list)
+            for dislike in ret['discardList']:
+                resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
+                for tag in resourceR['tagList']:
+                    mm[tag].append(dislike)
+            dislikeTags = []
+            for k, v in mm.items():
+                if len(v) >= 2:
+                    dislikeTags.append(k)
+            resultTags = set(userTags) - set(dislikeTags)
+            if resultTags != set(userTags):
+                clct_user.update({'uuid':ret['uuid']}, {'$set':{'tagList':list(resultTags)}})
+        except Exception,e:
+            print e
+
+
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -184,6 +206,7 @@ if __name__ == '__main__':
     #updateWeiboUpdateTime()
     #updateTag()
     while True:
+        updateUserTag()
         feedUserTag()
         addTagResource()
         time.sleep(60*60)
