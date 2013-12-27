@@ -114,7 +114,7 @@ def main():
                 continue
             start = time.time()
             msg = json.loads(originalMsg[1])
-            process(msg['isNew'], msg['access_token'],msg['sinaId'],msg['sinaName'], 0)
+            process(msg['isNew'], msg['access_token'],msg['sinaId'],msg['sinaName'], 1)
             elapsed = (time.time() - start)
             print("Time used:",elapsed)
 
