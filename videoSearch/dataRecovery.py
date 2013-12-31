@@ -109,7 +109,7 @@ def addTagResource():
         title = ret.get('resourceName','')
         if title:
             try:
-                if ret['channelId'] == 0 :
+                if ret['channelId'] == 1 :
                     tags = []
                     hashtag = re.findall(r"#(\S+)#",title)
                     if not hashtag:
@@ -126,7 +126,7 @@ def addTagResource():
                 continue
 
 def setWeiboTag():
-    rets = clct_resource.find({'channelId':0})
+    rets = clct_resource.find({'channelId':1})
     for ret in rets:
         title = ret.get('resourceName','')
         if title:
@@ -140,7 +140,7 @@ def setWeiboTag():
                 continue
 
 def updateWeiboUpdateTime():
-    rets = clct_resource.find({'channelId':0})
+    rets = clct_resource.find({'channelId':1})
     for ret in rets:
         clct_resource.update({'_id':ret['_id']},{'$set':{'updateTime':ret['createTime']}})
 
@@ -152,7 +152,7 @@ def updateTag():
             title = ret.get('resourceName','')
             if title:
                 try:
-                    if ret['channelId'] == 0 :
+                    if ret['channelId'] == 1 :
                         tags = []
                         hashtag = re.findall(r"#(\S+)#",title)
                         if not hashtag:
@@ -166,17 +166,10 @@ def updateTag():
                 except Exception,e:
                     print e
                     continue
+            else:
+                continue
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             continue
-        count = len(blacklist)
-        hitCount = 0
-        for black in blacklist:
-            try:
-                ret['tagList'].remove(black)
-            except ValueError:
-                hitCount = hitCount + 1
-        if hitCount != count:
-            clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
 
 from collections import defaultdict
 def updateUserTag():
@@ -198,7 +191,6 @@ def updateUserTag():
                 clct_user.update({'uuid':ret['uuid']}, {'$set':{'tagList':list(resultTags)}})
         except Exception,e:
             print e
-
 '''def transferVideoInfoTask():
     rets = clct_videoInfoTask_bak.find({})
     for ret in rets:
@@ -206,7 +198,6 @@ def updateUserTag():
             clct_videoInfoTask.insert(ret, safe=True)
         except Exception,e:
             print e'''
-
 
 
 if __name__ == '__main__':
