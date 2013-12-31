@@ -77,6 +77,8 @@ def feedTag(tags, divide=False, fromWord = ''):
         if divide and not start and (entity == fromWord):
             start = True
         if start or not divide:
+            if entity == '':
+                continue
             recommendByBaidu([entity], entity, 'Tags', 101758)
 
 def feedUserTag():
@@ -197,6 +199,14 @@ def updateUserTag():
         except Exception,e:
             print e
 
+'''def transferVideoInfoTask():
+    rets = clct_videoInfoTask_bak.find({})
+    for ret in rets:
+        try:
+            clct_videoInfoTask.insert(ret, safe=True)
+        except Exception,e:
+            print e'''
+
 
 
 if __name__ == '__main__':
@@ -205,10 +215,11 @@ if __name__ == '__main__':
     #setWeiboTag()
     #updateWeiboUpdateTime()
     #updateTag()
+    #transferVideoInfoTask()
+    #feedTag(initial_tags, True, '科幻')
     while True:
-        updateUserTag()
         feedUserTag()
         addTagResource()
+        updateUserTag()
         time.sleep(60*60)
-    #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)
