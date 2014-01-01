@@ -162,7 +162,7 @@
 	</div>
 
 <!-- Modal -->
-<form action="/channel/pushChannel">
+<form action="/channel/pushChannel" onsubmit="onPushSubmit();">
     <div id="pushModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -185,7 +185,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-        <button class="btn btn-primary">发送</button>
+        <button id="pushSubmitButtom" class="btn btn-primary">发送</button>
       </div>
     </div>
 </form>

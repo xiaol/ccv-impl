@@ -18,7 +18,7 @@ class CronJobServer():
         while True:
             curTime = getCurTime()
             print curTime,'live'
-            task = clct_cronJob.find_one({'cronTime':{'$lte':curTime}})
+            task = clct_cronJob.find_one({'cronTime':{'$lte':curTime},'error':{'$exists':False}})
             if not task:
                 time.sleep(self.RUN_EVERY_MINS * 60)
                 continue
@@ -31,8 +31,7 @@ class CronJobServer():
                     self.taskMap[task['type']](task)
             except:
                 print traceback.format_exc()
-            else:
-                clct_cronJob.remove({'_id':task['_id']})
+
             time.sleep(self.RUN_EVERY_MINS * 60)
 
 
@@ -43,9 +42,15 @@ def handleAndroidPush(task):
     title = task['pushTitle']
     content = task['pushContent']
     extras = task['extras']
-    if pushType ==  'AppKey':
-        print '向APPKEY:%s 的Android设备Push：title: %s content: %s'%(JPUSH_APP_KEY,title,content)
-        jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, int(time.time()), 'des',title,content, 'android',extras=extras)
+
+    try:
+        if pushType ==  'AppKey':
+            print '向APPKEY:%s 的Android设备Push：title: %s content: %s'%(JPUSH_APP_KEY,title,content)
+            jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, int(time.time()), 'des',title,content, 'android',extras=extras)
+    except:
+        clct_cronJob.update({'_id':task['_id']},{'$set':{'error':traceback.format_exc()}})
+    else:
+        clct_cronJob.remove({'_id':task['_id']})
 
 def handleCheckResouceAvailable(task):
     pass
