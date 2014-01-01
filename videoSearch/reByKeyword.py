@@ -77,6 +77,13 @@ def retrieveUserHistory(userId):
         entity['resourceName'] = re.sub('http://[\w\./]*','',entity['resourceName'])
     return records
 
+def retrieveUserLike(userId):
+    ret = clct_user.find_one({'uuid': userId})
+    items = []
+    for resourceId in ret.get('likeList', []):
+        items.append(clct_resource.find_one({'_id': ObjectId(resourceId)}))
+    return items
+
 def retrieveUserSearchHistory(userId):
     pass
 
@@ -177,7 +184,7 @@ def recommendByBaidu(words, reason, source, channelId=101758):
         html = re.sub(r'\\\'','\'',html)
         html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
-        ret = json.loads(html)['data']
+        ret = json.loads(html)['data'][0:15]
         videos = buildVideoFromBaidu(ret,reason, source,True,channelId )
     except Exception,e:
         print e
@@ -426,6 +433,22 @@ def process(uuid):
     similarDic = {}
     similarKeywordsDic = []
     videos = []
+
+    likeItems = retrieveUserLike(ret['uuid'])
+    for likeItem in likeItems:
+        itemTags = likeItem.get('tagList', []) #TODO 人工标签超过6个字 分词
+        try:
+            if itemTags:
+                encodedTags = [x.encode('utf-8') for x in itemTags]
+                source = ' '.join(encodedTags)
+                for encodedTag in encodedTags:
+                    videos.extend(recommendByBaidu([encodedTag], source, encodedTag, 101641))
+                shortTagDic = similarWords([' '.join(encodedTags)], False, True)
+                for (k,v) in shortTagDic.items():
+                    for tag in v:
+                        videos.extend(recommendByBaidu([tag], tag, k, 101641))
+        except Exception,e:
+            print e
 
     records = retrieveUserHistory(ret['uuid'])
     if  ret['sinaId'] == "":
