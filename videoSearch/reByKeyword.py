@@ -184,7 +184,8 @@ def recommendByBaidu(words, reason, source, channelId=101758):
         html = re.sub(r'\\\'','\'',html)
         html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
-        ret = random.shuffle(json.loads(html)['data'][0:15], random.random)[0:1]
+        #ret = random.shuffle(json.loads(html)['data'][0:15], random.random)[0:1]
+        ret = json.loads(html)['data'][0:1]
         videos = buildVideoFromBaidu(ret,reason, source,True,channelId )
     except Exception,e:
         print e
