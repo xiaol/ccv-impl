@@ -149,6 +149,12 @@ function pushChannel(channelId,channelName)
     $('#pushModal').modal('show');
 }
 
+function onPushSubmit()
+{
+    $('#pushSubmitButtom').attr('disabled',true);
+    return true;
+}
+
 function init()
 {
     $('#datetimepicker1').datetimepicker({
