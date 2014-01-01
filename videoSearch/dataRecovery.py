@@ -77,6 +77,8 @@ def feedTag(tags, divide=False, fromWord = ''):
         if divide and not start and (entity == fromWord):
             start = True
         if start or not divide:
+            if entity == '':
+                continue
             recommendByBaidu([entity], entity, 'Tags', 101758)
 
 def feedUserTag():
@@ -107,7 +109,7 @@ def addTagResource():
         title = ret.get('resourceName','')
         if title:
             try:
-                if ret['channelId'] == 0 :
+                if ret['channelId'] == 1 :
                     tags = []
                     hashtag = re.findall(r"#(\S+)#",title)
                     if not hashtag:
@@ -124,7 +126,7 @@ def addTagResource():
                 continue
 
 def setWeiboTag():
-    rets = clct_resource.find({'channelId':0})
+    rets = clct_resource.find({'channelId':1})
     for ret in rets:
         title = ret.get('resourceName','')
         if title:
@@ -138,7 +140,7 @@ def setWeiboTag():
                 continue
 
 def updateWeiboUpdateTime():
-    rets = clct_resource.find({'channelId':0})
+    rets = clct_resource.find({'channelId':1})
     for ret in rets:
         clct_resource.update({'_id':ret['_id']},{'$set':{'updateTime':ret['createTime']}})
 
@@ -150,7 +152,7 @@ def updateTag():
             title = ret.get('resourceName','')
             if title:
                 try:
-                    if ret['channelId'] == 0 :
+                    if ret['channelId'] == 1 :
                         tags = []
                         hashtag = re.findall(r"#(\S+)#",title)
                         if not hashtag:
@@ -164,28 +166,39 @@ def updateTag():
                 except Exception,e:
                     print e
                     continue
+            else:
+                continue
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             continue
-        count = len(blacklist)
-        hitCount = 0
-        for black in blacklist:
-            try:
-                ret['tagList'].remove(black)
-            except ValueError:
-                hitCount = hitCount + 1
-        if hitCount != count:
+
+def updateExistTag():
+    rets = clct_resource.find({'tagList':{'$exists':True}})
+    for ret in rets:
+        if ret['tagList']:
+            for black in blacklist:
+                try:
+                    ret['tagList'].remove(black)
+                except ValueError:
+                    pass
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
+            continue
 
 from collections import defaultdict
 def updateUserTag():
     rets = clct_userDiscard.find({})
+    resourceMM = defaultdict(list)
     for ret in rets:
         try:
             userTags = clct_user.find_one({'uuid':ret['uuid']}).get('tagList',[])
             mm = defaultdict(list)
             for dislike in ret['discardList']:
-                resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
-                for tag in resourceR['tagList']:
+                if not resourceMM[dislike]:
+                    resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
+                    resourceMM[dislike].append(resourceR['tagList'])
+                    tags = resourceR['tagList']
+                else:
+                    tags = resourceMM[dislike][0]
+                for tag in tags:
                     mm[tag].append(dislike)
             dislikeTags = []
             for k, v in mm.items():
@@ -196,7 +209,13 @@ def updateUserTag():
                 clct_user.update({'uuid':ret['uuid']}, {'$set':{'tagList':list(resultTags)}})
         except Exception,e:
             print e
-
+'''def transferVideoInfoTask():
+    rets = clct_videoInfoTask_bak.find({})
+    for ret in rets:
+        try:
+            clct_videoInfoTask.insert(ret, safe=True)
+        except Exception,e:
+            print e'''
 
 
 if __name__ == '__main__':
@@ -205,10 +224,13 @@ if __name__ == '__main__':
     #setWeiboTag()
     #updateWeiboUpdateTime()
     #updateTag()
+    #updateUserTag()
+    #updateExistTag()
+    #transferVideoInfoTask()
+    #feedTag(initial_tags, True, '科幻')
     while True:
-        updateUserTag()
         feedUserTag()
         addTagResource()
+        updateUserTag()
         time.sleep(60*60)
-    #feedTag(initial_tags, True, '音乐剧')
     #clearChannel(101758)

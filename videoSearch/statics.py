@@ -10,10 +10,12 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20131226000000'
-endTime = '20131227000000'
+startTime = '20131231000000'
+endTime = '20140101000000'
 
 def displayRate():
+    totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    print 'total count', totalRets.count()
     rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
     sum = 0
     f = file('displayRate.log','w')
@@ -75,8 +77,73 @@ def statics():
     print('PlayCount:', count, ' UserCount: ', userCount)
     pprint(timeRecords)
 
+from setting import clct_userDiscard,clct_user
+from bson import ObjectId
+def userBehavior():
+    rets = clct_userDiscard.find({})
+    count = rets.count()
+    sum = 0
+    mm = defaultdict(list)
+    for ret in rets:
+        sum += len(ret['discardList'])
+        for dislike in ret['discardList']:
+            if len(mm[dislike]) == 0:
+                resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
+                mm[dislike].append(resourceR['resourceName'])
+            else:
+                mm[dislike].append(mm[dislike][0])
+    sizes = []
+    labels = []
+    for k, v in mm.items():
+        if len(v) <= 50:
+            continue
+        sizes.append(len(v))
+        labels.append(v[0])
+        # The slices will be ordered and plotted counter-clockwise.
+    explode = [0]*len(sizes)
+    colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+    explode[1] = 0.1
+    plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%1.1f%%', shadow=True, startangle=90)
+    # Set aspect ratio to be equal so that pie is drawn as a circle.
+    plt.axis('equal')
+    plt.show()
+
+    print sum,' ', count, ' ', float(sum)/count
+
+    likeRets = clct_user.find({'likeList':{'$exists':True}})
+    likeCount = likeRets.count()
+    likeSum = 0
+    lmm = defaultdict(list)
+    for likeRet in likeRets:
+        likeSum += len(likeRet['likeList'])
+        for like in likeRet['likeList']:
+            if len(lmm[like]) == 0:
+                resourceR = clct_resource.find_one({'_id':ObjectId(like)})
+                lmm[like].append(resourceR['resourceName'])
+            else:
+                lmm[like].append(lmm[like][0])
+    lsizes = []
+    llabels = []
+    for k, v in lmm.items():
+        if len(v) <= 10:
+            continue
+        lsizes.append(len(v))
+        llabels.append(v[0])
+        # The slices will be ordered and plotted counter-clockwise.
+    lexplode = [0]*len(lsizes)
+    lcolors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+    lexplode[1] = 0.1
+    plt.pie(lsizes, explode=lexplode, labels=llabels, colors=lcolors,
+            autopct='%1.1f%%', shadow=True, startangle=90)
+    # Set aspect ratio to be equal so that pie is drawn as a circle.
+    plt.axis('equal')
+    plt.show()
+
+    print likeSum, ' ', likeCount, ' ', float(likeSum)/likeCount
 
 if __name__ == '__main__':
     #statics()
+    #userBehavior()
     displayRate()
     displayRateRange()
