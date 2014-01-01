@@ -171,16 +171,34 @@ def updateTag():
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             continue
 
+def updateExistTag():
+    rets = clct_resource.find({'tagList':{'$exists':True}})
+    for ret in rets:
+        if ret['tagList']:
+            for black in blacklist:
+                try:
+                    ret['tagList'].remove(black)
+                except ValueError:
+                    pass
+            clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
+            continue
+
 from collections import defaultdict
 def updateUserTag():
     rets = clct_userDiscard.find({})
+    resourceMM = defaultdict(list)
     for ret in rets:
         try:
             userTags = clct_user.find_one({'uuid':ret['uuid']}).get('tagList',[])
             mm = defaultdict(list)
             for dislike in ret['discardList']:
-                resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
-                for tag in resourceR['tagList']:
+                if not resourceMM[dislike]:
+                    resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
+                    resourceMM[dislike].append(resourceR['tagList'])
+                    tags = resourceR['tagList']
+                else:
+                    tags = resourceMM[dislike][0]
+                for tag in tags:
                     mm[tag].append(dislike)
             dislikeTags = []
             for k, v in mm.items():
@@ -206,6 +224,8 @@ if __name__ == '__main__':
     #setWeiboTag()
     #updateWeiboUpdateTime()
     #updateTag()
+    #updateUserTag()
+    #updateExistTag()
     #transferVideoInfoTask()
     #feedTag(initial_tags, True, '科幻')
     while True:

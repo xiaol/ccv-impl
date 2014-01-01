@@ -10,8 +10,8 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20131230000000'
-endTime = '20131231000000'
+startTime = '20131231000000'
+endTime = '20140101000000'
 
 def displayRate():
     totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
