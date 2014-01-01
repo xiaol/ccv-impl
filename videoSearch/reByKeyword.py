@@ -102,7 +102,7 @@ def similarWords(words,total=False,isSegment=False):
             continue
         if not total:
             random.shuffle(temp, random.random)
-            tempA = temp[:5];tempB = temp[-5:];tempA.extend(tempB)
+            tempA = temp[:5]#;tempB = temp[-2:];tempA.extend(tempB)
             result[tags_str] = tempA
         else:
             result[tags_str] = temp
