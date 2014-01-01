@@ -165,7 +165,7 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
     videos = []
     try:
         html = get_html(url)
-        ret = json.loads(html)['videos']
+        ret = json.loads(html)['videos'][0:2] #TODO 限制个数
         videos = buildVideoFromYouku(ret,reason, source,True,channelId, viewCount)
     except Exception,e:
         print e
