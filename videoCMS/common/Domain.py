@@ -245,6 +245,7 @@ class Topic(DomainBase):
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
     isIOS = False
+    scheduleGoOnline = ''
 
 
 

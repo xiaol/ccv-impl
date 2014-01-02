@@ -202,6 +202,10 @@ function OnSubmit()
 $(document).ready(function()
 {
    loadData();
+   $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR',
+      pick12HourFormat: false
+    });
 });
 
 
