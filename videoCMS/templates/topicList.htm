@@ -10,7 +10,7 @@
 <script src="/static/js/jquery-1.7.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/categoryList.js"></script>
+<script src="/static/js/topicList.js"></script>
 
 
 </head>
@@ -27,6 +27,11 @@
 		                    <div class="span9 topicItemRight">
 		                        <div class="row-fluid">
 		                            <a>{{topic.title}}</a>
+                                    {% if topic.isOnline%}
+		                            <a topicId="{{topic.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
+		                            {% else %}
+		                            <a topicId="{{topic.id}}" class="label"  onclick="toggleOnlineStatus(this)">下线</a>
+		                        	{% endif %}
                                     <span class="label label-warning">权{{topic.weight}}</span>
                                     {% if topic.isIOS %}<span class="label label-warning">IOS</span>{% endif %}
 		                            <span class="label label-warning" onclick="resetWeight({{topic.id}})" >重置权重</span>
@@ -35,8 +40,11 @@
 		                        </div>
 		                        <div class="row-fluid"></div>
 		                        <div class="row-fluid smallFont">
-		                            <div class="span6">{{topic.createTime}}</div>
-		                            <div class="span6">{{topic.modifyTime}}</div>
+		                            <div class="span6">创建时间：{{topic.createTime}}</div>
+		                            <div class="span6">修改时间：{{topic.modifyTime}}</div>
+                                </div>
+                                <div class="row-fluid smallFont">
+                                    <div class="span6">定时上线时间：{{topic.scheduleGoOnline}}</div>
 		                        </div>
 		                    </div>
 		                </div>

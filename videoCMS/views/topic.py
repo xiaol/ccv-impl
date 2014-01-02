@@ -63,6 +63,7 @@ def index(request):
         one['imageUrl'] = IMG_INTERFACE_FF%(96,96,one['picture'])
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
+        one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
 
 
@@ -192,3 +193,21 @@ def addScheduleGoOnline(topicId,cronTime):
         clct_cronJob.insert({'type':'BaBaGoOnline','topicId':topicId,'cronTime':cronTime})
     else:
         clct_cronJob.update({'type':'BaBaGoOnline','topicId':topicId},{'$set':{'cronTime':cronTime}})
+
+
+#==============================================================
+@NeedLogin
+def toggleOnlineStatus(request):
+    ret = {}
+    id = ObjectId(request.GET.get('id'))
+    topic = clct_topic.find_one({'_id':id})
+
+    if topic['isOnline'] == True:
+        clct_topic.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
+    else:
+        up = {'isOnline':True,'modifyTime':getCurTime()}
+        if topic['updateTime'] == '00000000000000':
+            up['updateTime'] = getCurTime()
+        clct_topic.update({'_id':id},{'$set':up})
+    ret['status'] = not topic['isOnline']
+    return HttpResponse(json.dumps(ret))
