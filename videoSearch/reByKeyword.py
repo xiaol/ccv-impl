@@ -77,6 +77,13 @@ def retrieveUserHistory(userId):
         entity['resourceName'] = re.sub('http://[\w\./]*','',entity['resourceName'])
     return records
 
+def retrieveUserLike(userId):
+    ret = clct_user.find_one({'uuid': userId})
+    items = []
+    for resourceId in ret.get('likeList', []):
+        items.append(clct_resource.find_one({'_id': ObjectId(resourceId)}))
+    return items
+
 def retrieveUserSearchHistory(userId):
     pass
 
@@ -95,7 +102,7 @@ def similarWords(words,total=False,isSegment=False):
             continue
         if not total:
             random.shuffle(temp, random.random)
-            tempA = temp[:5];tempB = temp[-5:];tempA.extend(tempB)
+            tempA = temp[:5]#;tempB = temp[-2:];tempA.extend(tempB)
             result[tags_str] = tempA
         else:
             result[tags_str] = temp
@@ -158,7 +165,7 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
     videos = []
     try:
         html = get_html(url)
-        ret = json.loads(html)['videos']
+        ret = json.loads(html)['videos'][0:2] #TODO 限制个数
         videos = buildVideoFromYouku(ret,reason, source,True,channelId, viewCount)
     except Exception,e:
         print e
@@ -177,7 +184,10 @@ def recommendByBaidu(words, reason, source, channelId=101758):
         html = re.sub(r'\\\'','\'',html)
         html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
-        ret = json.loads(html)['data']
+        result = json.loads(html)['data'][0:10]
+        random.shuffle(result, random.random)
+        ret = result[0:1]
+        #ret = json.loads(html)['data'][0:1]
         videos = buildVideoFromBaidu(ret,reason, source,True,channelId )
     except Exception,e:
         print e
@@ -375,6 +385,7 @@ def upload(videos, uuid):
             except Exception,e:
                 print e
             video['uuid'] = uuid
+            video['updateTime']
             ret = clct_userRecommend.insert(video , safe=True)
         except Exception,e:
             print("Insert Error!",e)
@@ -426,6 +437,22 @@ def process(uuid):
     similarDic = {}
     similarKeywordsDic = []
     videos = []
+
+    likeItems = retrieveUserLike(ret['uuid'])
+    for likeItem in likeItems:
+        itemTags = likeItem.get('tagList', []) #TODO 人工标签超过6个字 分词
+        try:
+            if itemTags:
+                encodedTags = [x.encode('utf-8') for x in itemTags]
+                source = ' '.join(encodedTags)
+                for encodedTag in encodedTags:
+                    videos.extend(recommendByBaidu([encodedTag], source, encodedTag, 101641))
+                shortTagDic = similarWords([' '.join(encodedTags)], False, True)
+                for (k,v) in shortTagDic.items():
+                    for tag in v:
+                        videos.extend(recommendByBaidu([tag], tag, k, 101641))
+        except Exception,e:
+            print e
 
     records = retrieveUserHistory(ret['uuid'])
     if  ret['sinaId'] == "":
