@@ -24,6 +24,7 @@ def searchImage(imageUrl):
     bestGuess = result[start:end]
     match = p_1.findall(bestGuess)
     print match
+    return match
 
 def retrieveUserLike(userId):
     ret = clct_user.find_one({'uuid': userId})
