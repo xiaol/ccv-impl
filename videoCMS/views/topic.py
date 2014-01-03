@@ -63,6 +63,7 @@ def index(request):
         one['imageUrl'] = IMG_INTERFACE_FF%(96,96,one['picture'])
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
+        one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
 
 
 
@@ -84,6 +85,7 @@ def POST2Topic(request):
     ret['isOnline'] = True if request.POST.get('isOnline') == u'是' else False
     ret['isIOS'] = True if request.POST.get('isIOS') == u'是' else False
     ret['content'] = json.loads(request.POST.get('content'))
+    ret['scheduleGoOnline'] = antiFormatHumanTime(request.POST.get('scheduleGoOnline',''))
 
     return ret
 
@@ -119,6 +121,7 @@ def update(request):
     topic = POST2Topic(request)
     topic['modifyTime'] = getCurTime()
 
+
         
     img = request.FILES.get('picture',None)
     if img:
@@ -126,6 +129,9 @@ def update(request):
     
     
     clct_topic.update({'_id':ObjectId(id)},{'$set':topic.getUpdateDict()})
+
+    addScheduleGoOnline(id,topic['scheduleGoOnline'])
+
     return HttpResponseRedirect('update?id='+id)
 
 
@@ -137,21 +143,23 @@ def add(request):
         DICT['navPage'] = 'topic'
         return render_to_response('topicUpdate.htm',DICT,context_instance=RequestContext(request))
     
-    resource = POST2Topic(request)
+    topic = POST2Topic(request)
     now = getCurTime()
-    resource['createTime'] = now
-    resource['modifyTime'] = now
-    resource['updateTime'] = now
+    topic['createTime'] = now
+    topic['modifyTime'] = now
+    topic['updateTime'] = now
 
-    if resource['title'] == '':raise Exception('专题名 不能为空')
+    if topic['title'] == '':raise Exception('专题名 不能为空')
 
     
-    id = clct_topic.insert(resource.getInsertDict())
+    id = clct_topic.insert(topic.getInsertDict())
     id = str(id)
     img = request.FILES.get('picture',None)
     if img:
         filename = saveTopicImage(img.read(),id)
         clct_resource.update({'_id':ObjectId(id)},{'$set':{'picture':filename}})
+
+    addScheduleGoOnline(id,topic['scheduleGoOnline'])
 
     return HttpResponseRedirect('update?id='+id)
 
@@ -176,3 +184,30 @@ def addResourceToNewestBaBa(request):
     item = {"resourceId": "52ab16bbcf99d64355e95b5b","type": "resource"}
     print clct_topic.update({'_id':topic['_id']},{'$push':{'content':item}})
     return HttpResponse('已经添加至 '+topic['title'])
+
+
+def addScheduleGoOnline(topicId,cronTime):
+    if cronTime == '' or cronTime < getCurTime():
+        return
+    if clct_cronJob.find_one({'type':'BaBaGoOnline','topicId':topicId}) == None:
+        clct_cronJob.insert({'type':'BaBaGoOnline','topicId':topicId,'cronTime':cronTime})
+    else:
+        clct_cronJob.update({'type':'BaBaGoOnline','topicId':topicId},{'$set':{'cronTime':cronTime}})
+
+
+#==============================================================
+@NeedLogin
+def toggleOnlineStatus(request):
+    ret = {}
+    id = ObjectId(request.GET.get('id'))
+    topic = clct_topic.find_one({'_id':id})
+
+    if topic['isOnline'] == True:
+        clct_topic.update({'_id':id},{'$set':{'isOnline':False,'modifyTime':getCurTime()}})
+    else:
+        up = {'isOnline':True,'modifyTime':getCurTime()}
+        if topic['updateTime'] == '00000000000000':
+            up['updateTime'] = getCurTime()
+        clct_topic.update({'_id':id},{'$set':up})
+    ret['status'] = not topic['isOnline']
+    return HttpResponse(json.dumps(ret))

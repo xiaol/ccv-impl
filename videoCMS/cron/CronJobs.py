@@ -26,7 +26,6 @@ class CronJobBase():
 
 class ResourceGoOnlineCronJob(CronJobBase):
     RUN_EVERY_MINS = 0.5
-
     def do(self):
         curTime = getCurTime()
         for one in clct_resource.find({'scheduleGoOnline':{'$ne':'','$lte':curTime}},{'scheduleGoOnline':1,'channelId':1},timeout=False):
