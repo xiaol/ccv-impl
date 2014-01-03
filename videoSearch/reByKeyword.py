@@ -429,6 +429,12 @@ def walk(reason, source):
         print e,' ',traceback.format_exc()
         return videos
 
+def renewOldRecommend(userId):
+    rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+    for ret in rets:
+        ret['createTime'] = getCurTime()
+        clct_userRecommend.update({'_id':ret['_id']}, {'$set':{'createTime':ret['createTime']}})
+
 from dataRecovery import  top_tags,initial_tags
 def process(uuid):
     ret = clct_user.find_one({'uuid':uuid})
@@ -437,6 +443,8 @@ def process(uuid):
     similarDic = {}
     similarKeywordsDic = []
     videos = []
+
+    renewOldRecommend(ret['uuid'])
 
     likeItems = retrieveUserLike(ret['uuid'])
     for likeItem in likeItems:
