@@ -16,7 +16,8 @@ p_number = re.compile('(\d+)')
 
 
 def handle(url, channelId, tvNumber):
-    tree = etree.HTML(get_html(url))
+    html = get_html(url)
+    tree = etree.HTML(html)
     
     links = tree.xpath('//div[@class="gut"]/div/div[1]/div/dl/dd/p/a')
     if len(links) == 0:
@@ -35,11 +36,8 @@ def handle(url, channelId, tvNumber):
         ret.append(buildResource(url,title,number,channelId,videoId))
 
     '''检测完结'''
-    title = tree.xpath('//title/text()')[0]
-    current_number = int(re.search(u'更新至(\d+)集', title).groups()[0])
-    total_number = int(re.search(u'共(\d+)集', title).groups()[0])
-
-    if current_number >= total_number:
+    current_number = re.search(u'更新至(\d+)集', html)
+    if not current_number:
         ret.append("over")
 
     return ret
@@ -61,5 +59,5 @@ def buildResource(url,title,number,channelId,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://so.letv.com/tv/87688.html',100055,-1))
-
+    pprint.pprint(handle('http://www.letv.com/tv/73868.html',100055,-1))
+    pprint.pprint(handle('http://www.letv.com/tv/93983.html',100055,-1))
