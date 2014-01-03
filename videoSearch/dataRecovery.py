@@ -217,6 +217,21 @@ def updateUserTag():
         except Exception,e:
             print e'''
 
+def updateResourceWithoutChannel():
+    rets = clct_resource.find({})
+    for ret in rets:
+        retC = clct_channel.find_one({'channelId':ret['channelId']})
+        if retC is None:
+            clct_resource.update({'_id':ret['_id']},{'$set':{'channelId': 101641}})
+
+def updateChannelSnapshot(channelId):
+    rets = clct_resource.find({'channelId':channelId})
+    for ret in rets:
+        url = 'http://47.weiweimeishi.com:8013/resource/refreshSnapshot?id=%s'%str(ret['_id'])
+        httpUtil = HttpUtil()
+        encoding = 'utf-8'
+        httpUtil.opener.addheaders.append(('Cookie','sessionid=33b88480a48a5490c8eb2a9c41541049'))
+        content = httpUtil.Get(url)
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -228,6 +243,8 @@ if __name__ == '__main__':
     #updateExistTag()
     #transferVideoInfoTask()
     #feedTag(initial_tags, True, '科幻')
+    #updateChannelSnapshot(100256)
+    #updateResourceWithoutChannel()
     while True:
         feedUserTag()
         addTagResource()
