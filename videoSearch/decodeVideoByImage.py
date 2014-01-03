@@ -19,7 +19,7 @@ def searchImage(imageUrl):
     start = result.find('对该图片的最佳猜测')
     if start == -1:
         print '找不到最佳匹配'
-        return
+        return []
     end = result.find('搜索结果', start)
     bestGuess = result[start:end]
     match = p_1.findall(bestGuess)
