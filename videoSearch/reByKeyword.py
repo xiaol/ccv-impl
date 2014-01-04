@@ -23,7 +23,7 @@ if not debug:
     redisUrl = 'h48'
 
 youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
-baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=3&sc=0&order=0&pn=0"
+baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
 blacklist = ['视频','在线','详情','点击','其他','电影', '最新']
 def retrieveUserTag(sinaToken,sinaId):
@@ -154,8 +154,8 @@ def recommend(words, source):
         videos = buildVideo(ret, ' '.join(words), source)
     except Exception,e:
         print e
-    videos.extend(recommendByYouku(words,' '.join(words), source))
-    #videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
+    #videos.extend(recommendByYouku(words,' '.join(words), source))
+    videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
     return videos
 
 def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count',viewCount=7000):
@@ -174,8 +174,8 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
 
 def recommendByBaidu(words, reason, source, channelId=101758):
     subCon = ' '.join(words)
-    #subCon = strQ2B(subCon)
     videos = []
+    #subCon = strQ2B(subCon)
     try:
         subCon = subCon.decode('utf-8').encode('gb2312')
         subCon = urllib2.quote(subCon)
@@ -188,11 +188,10 @@ def recommendByBaidu(words, reason, source, channelId=101758):
         random.shuffle(result, random.random)
         ret = result[0:1]
         #ret = json.loads(html)['data'][0:1]
-        videos = buildVideoFromBaidu(ret,reason, source,True,channelId )
+        videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId ))
     except Exception,e:
         print e
         return videos
-    return videos
 
 def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000):
     updateMap = {'updateTime':getCurTime()}
@@ -404,7 +403,7 @@ def walk(reason, source):
     if reason == '':
         return videos
     try:
-        rets = clct_userRecommend.find({'recommendReason':reason, 'isPlayed': 1})
+        rets = clct_userRecommend.find({'recommendReason':' '.join(reason), 'isPlayed': 1})
         if rets.count() != 0:
             for ret in rets:
                 reasonDic = similarWords([ret['recommendReason']])
@@ -412,17 +411,17 @@ def walk(reason, source):
                     for word in v:
                         if word == '' or cmp(word,ret['recommendReason'].encode('utf8')) == 0:
                             continue
-                        videos.extend(walk('%s %s'%(word, k.encode('utf8')),'%s %s'%(source, k)))
+                        videos.extend(walk([word, k.encode('utf8')],'%s %s'%(source, k)))
                 return videos
         else:
-            rets = clct_userRecommend.find({'recommendReason':reason}).sort("createTime", -1)
+            rets = clct_userRecommend.find({'recommendReason':' '.join(reason)}).sort("createTime", -1)
             if rets.count() == 0:
-                return recommend([reason], source)
+                return recommend(reason, source)
             else:
                 for oldRecommend in rets:
                     cooling = time.mktime(time.localtime()) - time.mktime(time.strptime(oldRecommend['createTime'],'%Y%m%d%H%M%S'))  > 3600*48
                     if cooling:
-                        return recommend([reason],source)
+                        return recommend(reason,source)
                     break
                 return videos
     except Exception,e:
@@ -470,7 +469,7 @@ def process(uuid):
         similarKeywordsDic = similarWords(record['resourceName'],total,True)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
-                video = walk(tag, k)
+                video = walk([tag], k)
                 if video: videos.extend(video)
 
     try:
@@ -495,7 +494,7 @@ def process(uuid):
                     similarSuggestionDic = similarWords(suggestionTag)
                     for (k,v) in similarSuggestionDic.items():
                         for tag in v:
-                            video = walk(tag, k)
+                            video = walk([tag], k)
                             if video: videos.extend(video)
                 print uuid,'Sina suggestion count: ',len(videos)
         except Exception,e:

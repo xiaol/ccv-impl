@@ -1,7 +1,7 @@
 #coding=utf-8
 __author__ = 'Ivan liu'
 from common.HttpUtil import get_html,HttpUtil
-import re
+import re, time
 from setting import clct_user, clct_resource
 from bson import ObjectId
 
@@ -11,12 +11,13 @@ p_1 = re.compile('>(.*)</a>')
 def searchImage(imageUrl):
     httpUtil = HttpUtil()
     httpUtil.opener.addheaders = headers
+
     content = httpUtil.Get('http://images.google.com/searchbyimage?image_url=%s'%imageUrl)
     if content:
         result = content.decode('utf-8','ignore')
     else:
         result = ''
-    start = result.find('对该图片的最佳猜测')
+    start = result.find('Best guess for this image')#'对该图片的最佳猜测')
     if start == -1:
         print '找不到最佳匹配'
         return []
@@ -44,6 +45,7 @@ def recommendBySnapshot():
             if resourceImageUrl != '':
                 imageUrl = snapshotUrl%resourceImageUrl
                 tags = searchImage(imageUrl)
+                time.sleep(3)
                 for tag in tags:
                     videos.extend(recommendByBaidu([tag], 'image', tag, 101641))
                 print len(videos)
