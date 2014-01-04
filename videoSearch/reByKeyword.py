@@ -192,6 +192,7 @@ def recommendByBaidu(words, reason, source, channelId=101758):
     except Exception,e:
         print e
         return videos
+    return videos
 
 def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000):
     updateMap = {'updateTime':getCurTime()}
