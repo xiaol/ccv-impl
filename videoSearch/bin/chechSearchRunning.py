@@ -3,7 +3,7 @@ __author__ = 'ding'
 import sys,os
 
 
-ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path += [ROOT_DIR]
 
 from common.sendMail import send_mail,server
