@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'klb3713'
 
-import os,sys
+import os,sys,re
 sys.path += [os.path.dirname(os.path.dirname(__file__))]
 import pprint
 from lxml import etree
@@ -9,6 +9,8 @@ from common.common import getCurTime
 from common.Domain import Resource
 from common.HttpUtil import get_html
 
+
+p_number = re.compile('_(\d+)_')
 
 def handle(url, channelId, tvNumber):
     videos = []
@@ -23,7 +25,12 @@ def handle(url, channelId, tvNumber):
     for video in videos:
         url = video.xpath('./@href')[0]
         title = video.xpath('./@title')[0]
-        item = buildResource(url, title, channelId, url)
+        try:
+            number = p_number.search(title).groups()[0]
+        except:
+            number = None
+
+        item = buildResource(url, title, channelId, url,number)
         ret.append(item)
 
     return ret
@@ -47,7 +54,7 @@ def getZongYi(url):
     return videos
 
 
-def buildResource(url, title, channelId, videoId):
+def buildResource(url, title, channelId, videoId, number = None):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
@@ -56,6 +63,7 @@ def buildResource(url, title, channelId, videoId):
     resource['videoType'] = 'wasu'
     resource['videoId'] = videoId
     resource['createTime'] = getCurTime()
+    if number!= None:resource['number'] = number
 
     return resource.getInsertDict()
 
