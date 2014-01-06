@@ -319,7 +319,7 @@ def handle(channelId,handleName,url):
     elif handleName == 'letvList':
         startSearch('handles.handle_letv_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvVar':
-        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot)
+        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot,updateTvNumber=True)
     elif handleName == 'yinyuetaiMV':
         startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
     elif handleName == '163Open':
@@ -346,4 +346,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(102210,'letvTv','http://www.letv.com/tv/93983.html')
+    handle(102230,'letvVar','http://so.letv.com/variety/95040.html')
