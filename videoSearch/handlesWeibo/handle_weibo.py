@@ -133,6 +133,8 @@ def pDecodeWeibo(video, sinaId, sinaName, getVideoIdUrl):
                 result = json.loads(content)
                 if result.get('videoId',None) is None:
                     continue
+                if result['videoId'] == '' or result['videoType'] == '':
+                    continue
 
                 item['videoType'] = result['videoType']
                 item['videoId'] = result['videoId']
@@ -207,6 +209,8 @@ def decodeWeibo(video, httpUtil, sinaId, sinaName):
                 content = response.decode()
                 result = json.loads(content)
                 if result.get('videoId',None) is None:
+                    continue
+                if result['videoId'] == '' or result['videoType'] == '':
                     continue
 
                 item['videoType'] = result['videoType']

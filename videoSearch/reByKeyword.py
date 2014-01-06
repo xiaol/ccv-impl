@@ -172,12 +172,12 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
         return videos
     return videos
 
-def recommendByBaidu(words, reason, source, channelId=101758):
+def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
     subCon = ' '.join(words)
     videos = []
     #subCon = strQ2B(subCon)
     try:
-        subCon = subCon.decode('utf-8').encode('gb2312')
+        subCon = subCon.decode('utf-8').encode(encode)
         subCon = urllib2.quote(subCon)
         url = baiduSearchUrl%subCon
         html = get_html(url, 'gbk')[10:-1]
@@ -202,7 +202,7 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
     t = getCurTime()
     result = []
     for entity in entities:
-        item = decodeVideo(entity.get('url',''))
+        item = decodeVideo(entity.get('url',''))  #TODO 百度返回的搜索会不会还有额外信息
         if not item:
             continue
         resource = buildResource(entity['url'],entity['ti'],channelId,item['videoType'],item['videoId'],'video')
@@ -225,15 +225,15 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
 
         try:
             ret = clct_resource.insert(resource , safe=True)
-            entity['resourceId'] = str(ret)
-            entity['snapshot'] = 'inQueue'
+            resource['resourceId'] = str(ret)
+            resource['snapshot'] = 'inQueue'
         except Exception,e:
             print("insert Error!",e)
             try:
                 retR  = clct_resource.find_one({'videoType':resource['videoType'], 'videoId':resource['videoId']})
-                entity['resourceId'] = str(retR['_id'])
+                resource['resourceId'] = str(retR['_id'])
                 if retR['isOnline']:
-                    entity['snapshot'] = 'done'
+                    resource['snapshot'] = 'done'
                 else: continue
             except Exception,x:
                 print x
@@ -243,6 +243,13 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
                 addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,goOnline=True)
+
+        resource['recommendSource'] = source
+        resource['recommendReason'] = reason
+        resource['isViewed'] = -1
+        resource['isPlayed'] = -1
+        resource['playTime'] = 0
+        resource['createTime'] = t
         result.append(resource)
 
     return result
@@ -274,6 +281,8 @@ def decodeVideo(videoUrl):
                 result = json.loads(content)
                 item['videoType'] = result['videoType']
                 item['videoId'] = result['videoId']
+                if item['videoType'] == '' or item['videoId'] == '':
+                    return {}
     except Exception,e:
         print e
     return item

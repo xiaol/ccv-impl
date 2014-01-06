@@ -10,8 +10,8 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20140104000000'
-endTime = '20140105000000'
+startTime = '20140106000000'
+endTime = '20140107000000'
 
 def displayRate():
     totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
@@ -95,7 +95,7 @@ def userBehavior():
     sizes = []
     labels = []
     for k, v in mm.items():
-        if len(v) <= 50:
+        if len(v) <= 100:
             continue
         sizes.append(len(v))
         labels.append(v[0])
@@ -126,7 +126,7 @@ def userBehavior():
     lsizes = []
     llabels = []
     for k, v in lmm.items():
-        if len(v) <= 10:
+        if len(v) <= 20:
             continue
         lsizes.append(len(v))
         llabels.append(v[0])
@@ -144,6 +144,6 @@ def userBehavior():
 
 if __name__ == '__main__':
     #statics()
-    #userBehavior()
+    userBehavior()
     displayRate()
     displayRateRange()
