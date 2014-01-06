@@ -52,7 +52,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
-                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1)
 
     print '频道: %d, 成功插入: %d,上线: %d,是否更新tvNumber: %s'%(channelId,len(InsertedList), onlineNum,updateTvNumber)
     #如果 成功有视频插入，则更新频道
