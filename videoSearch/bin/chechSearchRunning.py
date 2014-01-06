@@ -11,7 +11,7 @@ import time
 
 
 def main():
-    t = os.path.getmtime(ROOT_DIR + '/main.py')
+    t = os.path.getmtime(ROOT_DIR + '/main.log')
     lastModifySpan  = (time.time() - t)/3600
     if lastModifySpan > 3:
         content = '日志%.2f小时无输出，日志上次输出时间为：%s'%(lastModifySpan,time.strftime('%Y/%m/%d %H:%M:%S',time.localtime(t)))
