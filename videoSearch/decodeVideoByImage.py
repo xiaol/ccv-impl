@@ -60,6 +60,7 @@ def recommendBySnapshot():
 
 
 if __name__ == '__main__':
-    recommendBySnapshot()
+    while True:
+        recommendBySnapshot()
     #tags = searchImage('http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/videoCMS_channel_52ca130dd6a1e228f473dcf720140106102101.jpg')
     #recommendByBaidu(tags, 'image', ' '.join(tags), 101641)

@@ -144,6 +144,6 @@ def userBehavior():
 
 if __name__ == '__main__':
     #statics()
-    userBehavior()
+    #userBehavior()
     displayRate()
     displayRateRange()

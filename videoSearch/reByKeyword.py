@@ -181,8 +181,14 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
         subCon = urllib2.quote(subCon)
         url = baiduSearchUrl%subCon
         html = get_html(url, 'gbk')[10:-1]
-        html = re.sub(r'\\\'','\'',html)
-        html = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', html)
+        lines = html.split('\n')
+        resultLines = []
+        for line in lines:
+            line = re.sub(r'\\\'','\'',line)
+            line = re.sub(r'([A-za-z]+):(?!//)', r'"\1":', line, 1)
+            line = re.sub(r'([A-za-z]+):(?!//)\s*"', r'"\1":"', line)
+            resultLines.append(line)
+        html = '\n'.join(resultLines)
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
         result = json.loads(html)['data'][0:10]
         random.shuffle(result, random.random)
