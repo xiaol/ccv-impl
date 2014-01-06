@@ -44,19 +44,22 @@ def recommendBySnapshot():
             lmm[like].append(ret['uuid'])
 
     for k, v in lmm.items():
-        retR = clct_resource.find_one({'_id': ObjectId(k)})
-        resourceImageUrl = retR.get('resourceImageUrl','')
-        videos = []
-        if resourceImageUrl != '':
-            imageUrl = snapshotUrl%resourceImageUrl
-            tags = searchImage(imageUrl)
-            for tag in tags:
-                videos.extend(recommendByBaidu([tag], tag, tag, 101641, 'gbk'))
-            print len(videos)
-            if len(videos) != 0:
-                for userId in v:
-                    upload(videos, userId)
-
+        try:
+            retR = clct_resource.find_one({'_id': ObjectId(k)})
+            resourceImageUrl = retR.get('resourceImageUrl','')
+            videos = []
+            if resourceImageUrl != '':
+                imageUrl = snapshotUrl%resourceImageUrl
+                tags = searchImage(imageUrl)
+                for tag in tags:
+                    videos.extend(recommendByBaidu([tag], tag, tag, 101641, 'gbk'))
+                print len(videos)
+                if len(videos) != 0:
+                    for userId in v:
+                        upload(videos, userId)
+        except Exception, e:
+            print e
+            continue
 
 
 if __name__ == '__main__':
