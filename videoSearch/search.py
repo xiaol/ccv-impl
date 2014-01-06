@@ -346,4 +346,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(102008,'qqTv','http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html')
+    handle(102210,'letvTv','http://www.letv.com/tv/93983.html')
