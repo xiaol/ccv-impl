@@ -51,7 +51,7 @@ def recommendBySnapshot():
             imageUrl = snapshotUrl%resourceImageUrl
             tags = searchImage(imageUrl)
             for tag in tags:
-                videos.extend(recommendByBaidu([tag], 'image', tag, 101641, 'gbk'))
+                videos.extend(recommendByBaidu([tag], tag, tag, 101641, 'gbk'))
             print len(videos)
             if len(videos) != 0:
                 for userId in v:

@@ -197,6 +197,8 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
         videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId ))
     except Exception,e:
         print e
+        #import traceback
+        #print traceback.format_exc()
         return videos
     return videos
 
@@ -285,6 +287,8 @@ def decodeVideo(videoUrl):
             if response:
                 content = response.decode()
                 result = json.loads(content)
+                if result.get('videoId',None) is None:
+                    return {}
                 item['videoType'] = result['videoType']
                 item['videoId'] = result['videoId']
                 if item['videoType'] == '' or item['videoId'] == '':
