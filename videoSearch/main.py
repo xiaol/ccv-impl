@@ -18,7 +18,7 @@ def process_channel(channel):
     print '==================  start %s %s ========================='%(channel['channelId'],channel['channelName'])
     pprint(channel)
     try:
-        handleFrequents = int(channel['handleFrequents'])
+        handleFrequents = int(float(channel['handleFrequents']))
     except:
         print 'Wrong handleFrequents:',channel['handleFrequents']
         raise Exception('Wrong handleFrequents:' + str(channel['handleFrequents']))
