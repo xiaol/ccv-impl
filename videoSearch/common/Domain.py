@@ -196,6 +196,7 @@ class VideoInfoTask(DomainBase):
     force = False
     goOnline = False
     type = ''
+    priority = 0
 
 
 class CDNSyncTask(DomainBase):
