@@ -46,7 +46,7 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
-                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,goOnline=True)
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,goOnline=True,priority=1)
 
     return weiboList
 

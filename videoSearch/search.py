@@ -52,7 +52,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
-                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True)
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1)
 
     print '频道: %d, 成功插入: %d,上线: %d,是否更新tvNumber: %s'%(channelId,len(InsertedList), onlineNum,updateTvNumber)
     #如果 成功有视频插入，则更新频道
@@ -319,7 +319,7 @@ def handle(channelId,handleName,url):
     elif handleName == 'letvList':
         startSearch('handles.handle_letv_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvVar':
-        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot)
+        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot,updateTvNumber=True)
     elif handleName == 'yinyuetaiMV':
         startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
     elif handleName == '163Open':
@@ -346,4 +346,4 @@ if __name__ == '__main__':
 #    print sys.modules[name]
     #handle(100148,'youkuZongyi','http://www.youku.com/show_page/id_zc8725626907411e29498.html')
     #handle(100254,'youkuDongman','http://www.youku.com/show_page/id_z7f0f6662322e11e2b2ac.html')
-    handle(102008,'qqTv','http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html')
+    handle(102230,'letvVar','http://so.letv.com/variety/95040.html')

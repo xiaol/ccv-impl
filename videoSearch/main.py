@@ -9,6 +9,9 @@ from common.common import getCurTime
 from pprint import pprint
 from common.ParallelUtil import ThreadPool
 
+#设置全局超时时间
+import socket
+socket.setdefaulttimeout(60)
 
 
 def process_channel(channel):
