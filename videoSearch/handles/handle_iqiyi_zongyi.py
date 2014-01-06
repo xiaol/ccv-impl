@@ -12,10 +12,6 @@ from setting import clct_channel
 p_vid = re.compile('"videoId":"([^"]+)"')
 p_vid = re.compile('videoid="([^"]+)"')
 
-p_albumId = re.compile('"id":(\d+)[,}]')
-
-def get_group(p,s):
-    return p.search(s).groups()[0]
 
 def handle(url,channelId,tvNumber):
     data = getAlbumInfo(url)
@@ -35,10 +31,20 @@ def handle(url,channelId,tvNumber):
     return ret
     
 
-
 def getAlbumInfo(url):
     html = get_html(url)
-    albumId = get_group(p_albumId,html)
+    p_albumId = re.compile('"id":(\d+)[,}]')
+
+    albumId = p_albumId.search(html)
+    if not albumId:
+        p_albumId = re.compile('data-player-albumid="(\d+)"')
+        albumId = p_albumId.search(html)
+
+    if not albumId:
+        return []
+    else:
+        albumId = albumId.groups()[0]
+
     #获取最新一年
     url_yearMonthList = 'http://cache.video.qiyi.com/sdlst/6/%s/?cb=scDtListC' % albumId
     data  = json.loads(get_html(url_yearMonthList)[14:])
@@ -47,6 +53,7 @@ def getAlbumInfo(url):
     url_videoList = 'http://cache.video.qiyi.com/sdvlst/6/%s/%s/' % (albumId, year)
     data = get_html(url_videoList)
     return json.loads(data[16:])['data']
+
 
 def buildResource(url,title,number,channelId,videoId):
     resource = Resource()
@@ -65,4 +72,4 @@ def buildResource(url,title,number,channelId,videoId):
 
 if __name__ == '__main__':
     pprint.pprint(handle('http://www.iqiyi.com/zongyi/fcwr.html',100649,3))
-
+    pprint.pprint(handle('http://www.iqiyi.com/zongyi/kldby.html',100649,3))

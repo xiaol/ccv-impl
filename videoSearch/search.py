@@ -17,7 +17,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     #控制短视频的频率
     t_lastUpdateTime = time.mktime(time.strptime(channel['updateTime'],'%Y%m%d%H%M%S'))
     t_now = time.time()
-    insertLimit = (t_now - t_lastUpdateTime)/ 1800 * 1000
+    insertLimit = int((t_now - t_lastUpdateTime)/ 1800 * 1000)
     #短视频
     if channel['videoClass']  == 2 and insertLimit < len(resouceList):
         resouceList = resouceList[:insertLimit]
