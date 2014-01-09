@@ -24,7 +24,7 @@ def getStartEndDateTime(request):
     startDate = request.GET.get('startDate','')
     endDate = request.GET.get('endDate','')
     if startDate == "":
-        startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 7*24*3600))
+        startDate = time.strftime('%Y/%m/%d',time.localtime(time.time() - 1*24*3600))
     if endDate == "":
         endDate = time.strftime('%Y/%m/%d',time.localtime())
     if request.GET.get('today',None) != None:
