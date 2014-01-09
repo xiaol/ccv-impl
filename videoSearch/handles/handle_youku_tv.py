@@ -38,7 +38,7 @@ def handle(url,channelId,tvNumber):
     for video in videoList:
         title = etree.tostring(video,encoding="utf-8",method="html").decode("utf-8")
         title = p_title.search(title).groups()[0]
-        if title.endswith(u"预告"):
+        if title.find(u"预告") >= 0:
             continue
         url = video.xpath('./@href')[0]
         videoId = p_vid.search(url).groups()[0]

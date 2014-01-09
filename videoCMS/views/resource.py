@@ -75,7 +75,9 @@ def index(request):
         spec['resourceName'] = re.compile(name)
     elif channelId != '':
         spec['channelId'] = int(channelId)
-        DICT['title'] = clct_channel.find_one(spec)['channelName']
+        channel = clct_channel.find_one(spec)
+        if channel:
+            DICT['title'] = ['channelName']
         print DICT['title']
     elif videoType != '':
         spec['videoType'] = videoType
