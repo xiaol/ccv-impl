@@ -208,6 +208,8 @@ def updateUserTag():
             if resultTags != set(userTags):
                 clct_user.update({'uuid':ret['uuid']}, {'$set':{'tagList':list(resultTags)}})
         except Exception,e:
+            import traceback
+            print traceback.format_exc()
             print e
 '''def transferVideoInfoTask():
     rets = clct_videoInfoTask_bak.find({})
