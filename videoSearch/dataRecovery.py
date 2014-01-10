@@ -180,6 +180,10 @@ def updateExistTag():
                     ret['tagList'].remove(black)
                 except ValueError:
                     pass
+            try:
+                ret['tagList'].remove('')
+            except ValueError:
+                pass
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
             continue
 

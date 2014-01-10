@@ -129,7 +129,7 @@ def segment(sentences,isSegment=False):
 
 def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
     gateway = JavaGateway()
-    num = len(sentences/12)
+    num = len(sentences)/12
     if num == 0:
         num = 1
     keywords = gateway.entry_point.extractKeywords(sentences, num,True)
