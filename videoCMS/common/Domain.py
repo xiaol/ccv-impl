@@ -258,3 +258,8 @@ class TopicListPage(DomainBase):
     mongo = ''
     isOnline = False
     sort = ''
+
+
+
+class Setting(DomainBase):
+    hotSearch = []

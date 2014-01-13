@@ -106,4 +106,7 @@ urlpatterns = patterns('',
     url(r'^topic/showJson$', 'videoCMS.views.topic.showJson'),
     url(r'^topic/addResourceToNewestBaBa', 'videoCMS.views.topic.addResourceToNewestBaBa'),
     url(r'^topic/toggleOnlineStatus$', 'videoCMS.views.topic.toggleOnlineStatus'),
+
+
+    url(r'^setting/update$','videoCMS.views.setting.update'),
 )
