@@ -25,7 +25,7 @@ if not debug:
 youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
-blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看', '高清']
+blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看', '高清', '们能']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
@@ -225,6 +225,16 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
         resource['tagList'] = []
         for videoTag in entity['tag']:
             resource['tagList'].append(videoTag['name'])
+        if not entity['tag']:
+            if resource['resourceName']:
+                try:
+                    tags = segmentByNLP(resource['resourceName'])
+                    if not tags:
+                        tags = [resource['resourceName']]
+                    resource['tagList'].extend(tags)
+                except Exception,e:
+                    print e
+                    continue
         resource['tagList'].append(reason)
         for black in blacklist:
             try:
@@ -575,6 +585,6 @@ def main():
 
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
-    main()
-    #segmentByNLP("【大S怀孕3月台湾安胎 汪小菲夜会美女】http://t.cn/8kL7XWx 据台媒报道，大S老公汪小菲，昨遭爆料私会高瘦美女，据报道，大S目前在台安胎，汪小菲却在北京密会气质美女，对方脸型小、身材高挑，外型颇似大S。面对媒体质疑，大S的助理表示，“只是单纯与朋友聚会的饭局。详情：http://t.cn/8kL5OvW")
+    #main()
+    segmentByNLP("纤姿肚皮舞 排练了四节课的草裙")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

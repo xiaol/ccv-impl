@@ -10,10 +10,10 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20140110000000'
-endTime = '20140111000000'
+startTime = '20140113000000'
+endTime = '20140114000000'
 
-def displayRate():
+def displayRate(newUser=True):
     totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
     print 'total count', totalRets.count()
     rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
@@ -21,24 +21,40 @@ def displayRate():
     f = file('displayRate.log','w')
 
     print rets.count()
+    newUserCount = 0
     for ret in rets:
+        if newUser:
+            user = clct_user.find_one({'uuid': ret['uuid']})
+            if user is not None and user['createTime'] > startTime and user['createTime'] < endTime:
+                newUserCount = newUserCount + 1
+            else:
+                continue
         rate = float(ret['playNum'])/ret['viewNum']
         sum += rate
         f.write('playNum:'+ str(ret['playNum'])+ '  viewNum:'+ str(ret['viewNum'])+  ' rate:'+ '%.2f'%rate+ '        \t\t '+ret['uuid']+'\n')
 
     f.close()
+    if newUser:
+        print 'New users count: ', newUserCount
     print sum/rets.count()
 
 from collections import defaultdict
 import matplotlib.pyplot as plt
 
-def displayRateRange():
+def displayRateRange(newUser=True):
     rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
     sum = 0
     mm = defaultdict(list)
 
     print rets.count()
+    newUserCount = 0
     for ret in rets:
+        if newUser:
+            user = clct_user.find_one({'uuid': ret['uuid']})
+            if user is not None and user['createTime'] > startTime and user['createTime'] < endTime:
+                newUserCount = newUserCount + 1
+            else:
+                continue
         mm[ret['viewNum']].append(ret['playNum'])
 
     sizes = []
@@ -58,6 +74,31 @@ def displayRateRange():
     # Set aspect ratio to be equal so that pie is drawn as a circle.
     plt.axis('equal')
     plt.show()
+
+def quitByFirstSight():
+    rets = clct_playViewRateLog.find({'viewNum':0,'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    print rets.count()
+    newUserCount = 0
+    for ret in rets:
+        user = clct_user.find_one({'uuid': ret['uuid']})
+        if user is not None and user['createTime'] > startTime and user['createTime'] < endTime:
+            newUserCount = newUserCount + 1
+        else:
+            continue
+    print 'leaved users count : ', newUserCount
+
+def missedUser():
+    rets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    print rets.count()
+    count = 0
+    for ret in rets:
+        user = clct_user.find_one({'uuid': ret['uuid']},{'_id':1})
+        if user is None:
+            count = count +1
+            print ret['uuid']
+        else:
+            continue
+    print "lost users count: ", count
 
 def findHotMovies():
     pass
@@ -145,5 +186,7 @@ def userBehavior():
 if __name__ == '__main__':
     #statics()
     #userBehavior()
-    displayRate()
-    displayRateRange()
+    #missedUser()
+    #quitByFirstSight()
+    displayRate(False)
+    displayRateRange(False)
