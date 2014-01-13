@@ -585,6 +585,6 @@ def main():
 
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
-    #main()
-    segmentByNLP("纤姿肚皮舞 排练了四节课的草裙")
+    main()
+    #segmentByNLP("纤姿肚皮舞 排练了四节课的草裙")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
