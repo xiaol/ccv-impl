@@ -48,7 +48,11 @@
                     <div class="row hoverHighLight">
                         <div class="span10">
                             <blockquote>
-                              <p>{{ one.title }} <span style="font-size: 9px;color: #CCC;">{{ one.createTime|formatHumanTime }}</span></p>
+                              <p>
+                                  {{ one.title }}
+                                  <b style="font-size: 9px;color: #0088cc;">来自: {{ one.from}}</b>
+                                  <span style="font-size: 9px;color: #AAA;">{{ one.createTime|formatHumanTime }}</span>
+                              </p>
                               <small><span class="badge badge-warning">{{ one.extras.num }}</span> {{ one.content|safe }}</small>
                             </blockquote>
                         </div>
