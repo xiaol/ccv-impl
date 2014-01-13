@@ -181,7 +181,7 @@ def showJson(request):
 def addResourceToNewestBaBa(request):
     resourceId = request.GET.get('resourceId')
     topic = list(clct_topic.find({'isIOS':True}).sort([('updateTime',-1)]).limit(1))[0]
-    item = {"resourceId": "52ab16bbcf99d64355e95b5b","type": "resource"}
+    item = {"resourceId": resourceId,"type": "resource"}
     print clct_topic.update({'_id':topic['_id']},{'$push':{'content':item}})
     return HttpResponse('已经添加至 '+topic['title'])
 
