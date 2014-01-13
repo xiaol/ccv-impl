@@ -43,6 +43,10 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                     InsertedList.append(old['_id'])
                     if resource['isOnline']:
                         onlineNum += 1
+                    if snapShot:
+                        mp4box = True if resource['videoType'] == 'sohu_url' else False
+                        addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1)
+
 
         else:
             print("insert Ok!")

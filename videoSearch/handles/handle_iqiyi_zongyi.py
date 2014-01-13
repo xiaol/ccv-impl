@@ -45,6 +45,7 @@ def getAlbumInfo(url):
     else:
         albumId = albumId.groups()[0]
 
+    print 'albumId',albumId
     #获取最新一年
     url_yearMonthList = 'http://cache.video.qiyi.com/sdlst/6/%s/?cb=scDtListC' % albumId
     data  = json.loads(get_html(url_yearMonthList)[14:])
@@ -72,4 +73,5 @@ def buildResource(url,title,number,channelId,videoId):
 
 if __name__ == '__main__':
     pprint.pprint(handle('http://www.iqiyi.com/zongyi/fcwr.html',100649,3))
-    pprint.pprint(handle('http://www.iqiyi.com/zongyi/kldby.html',100649,3))
+    #pprint.pprint(handle('http://www.iqiyi.com/zongyi/kldby.html',100649,3))
+    #pprint.pprint(handle('http://www.iqiyi.com/zongyi/bbdkx.html',100649,3))
