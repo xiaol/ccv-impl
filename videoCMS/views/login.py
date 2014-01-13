@@ -41,7 +41,8 @@ def logout(request):
 
 def checkLogin(request):
     if 'username' not in request.session:
-        print 'check fail'
+
+        print '!!! check fail',request.path
         return False
     return True
 
