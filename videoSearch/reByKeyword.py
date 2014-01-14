@@ -25,7 +25,7 @@ if not debug:
 youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
-blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看', '高清', '们能']
+blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看', '高清',  '在线观看', '']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
@@ -586,5 +586,5 @@ def main():
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
-    #segmentByNLP("纤姿肚皮舞 排练了四节课的草裙")
+    #segmentByNLP("《新闻联播》 杨小玲：让舞蹈走进孩子的无声世界")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

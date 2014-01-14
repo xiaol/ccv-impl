@@ -79,7 +79,7 @@ def feedTag(tags, divide=False, fromWord = ''):
         if start or not divide:
             if entity == '':
                 continue
-            recommendByBaidu([entity], entity, 'Tags', 101758)
+            recommendByBaidu([entity], entity, 'Tags', 101758, 'gbk')
 
 def feedUserTag():
     rets = clct_user.find({'tagList':{'$exists':True}})
