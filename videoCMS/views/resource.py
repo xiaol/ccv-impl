@@ -77,8 +77,7 @@ def index(request):
         spec['channelId'] = int(channelId)
         channel = clct_channel.find_one(spec)
         if channel:
-            DICT['title'] = ['channelName']
-        print DICT['title']
+            DICT['title'] = channel['channelName']
     elif videoType != '':
         spec['videoType'] = videoType
     elif videoId != '':

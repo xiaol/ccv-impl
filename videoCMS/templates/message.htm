@@ -12,6 +12,7 @@
 <script src="/static/js/jquery-1.7.1.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/common.js"></script>
+<script src="/static/js/message.js"></script>
 </head>
 
 {% load formatHumanTime %}
@@ -57,7 +58,7 @@
                             </blockquote>
                         </div>
                         <div class="span2">
-                            <a href="/message/flagRead?id={{ one.id }}" ><i style="margin-top: 20px;" class="icon-ok"></i></a>
+                            <a style="cursor: pointer;"  onclick="flagRead(this,'{{ one.id }}')"> <i style="margin-top: 20px;" class="icon-ok"></i></a>
                         </div>
                     </div>
                 {% endfor %}
