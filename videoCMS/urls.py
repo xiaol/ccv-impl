@@ -97,6 +97,9 @@ urlpatterns = patterns('',
     url(r'^message/readed$', 'videoCMS.views.message.readed'),
     url(r'^message/all$', 'videoCMS.views.message.all'),
     url(r'^message/flagRead$', 'videoCMS.views.message.flagRead'),
+    url(r'^message/flagUnread', 'videoCMS.views.message.flagUnread'),
+    url(r'^message/markMessage', 'videoCMS.views.message.markMessage'),
+    url(r'^message/marked', 'videoCMS.views.message.marked'),
 
 
     url(r'^topic/index$', 'videoCMS.views.topic.index'),

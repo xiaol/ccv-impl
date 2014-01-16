@@ -34,6 +34,10 @@
                         <a href="/message">未读 <span class="badge badge-warning">{{ unreadMessageNum }}</span>
                         </a>
                     </li>
+                    <li {% ifequal request.path '/message/marked' %}class="active" {% endifequal %}>
+                        <a href="/message/marked">标记<span class="badge badge-warning">{{ markedMessageNum }}</span>
+                        </a>
+                    </li>
                     <li {% ifequal request.path '/message/readed' %}class="active" {% endifequal %} >
                         <a href="/message/readed">已读<span class="badge">{{ readedMessageNum }}</span>
                         </a>
@@ -42,6 +46,7 @@
                         <a href="/message/all">全部<span class="badge">{{ allMessageNum }}</span>
                         </a>
                     </li>
+
                 </ul>
 			</div>
             <div class="span8 offset1">
@@ -55,10 +60,31 @@
                                   <span style="font-size: 9px;color: #AAA;">{{ one.createTime|formatHumanTime }}</span>
                               </p>
                               <small><span class="badge badge-warning">{{ one.extras.num }}</span> {{ one.content|safe }}</small>
+                              {% if one.mark %}
+                              <p>
+                                {{one.mark}}
+                              </p>
+                              {% endif %}
                             </blockquote>
                         </div>
-                        <div class="span2">
-                            <a style="cursor: pointer;"  onclick="flagRead(this,'{{ one.id }}')"> <i style="margin-top: 20px;" class="icon-ok"></i></a>
+                        <div class="span2" style="position: relative;">
+                            <a href="#"  onclick="flagRead(this,'{{ one.id }}')" title="设已读">
+                                <i style="margin-top:20px;" class="icon-ok"></i>
+                            </a>
+                            <a href="#"  onclick="flagUnread(this,'{{ one.id }}')" title="设未读">
+                                <i style="margin-top:20px;" class="icon-time"></i>
+                            </a>
+                            <a href="#" onclick="showMark(this)" title="标记">
+                                <i style="margin-top:20px;" class="icon-tag"></i>
+                            </a>
+                            <div class="popover" style="top:40px;">
+                                <div class="arrow"></div>
+                                <h3 class="popover-title">标记</h3>
+                                <div class="popover-content">
+                                    <textarea></textarea>
+                                    <button onclick="markMessage(this,'{{one.id}}')">确定</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
