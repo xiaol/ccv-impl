@@ -338,6 +338,12 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_v1_list', url, channelId, snapShot=snapShot)
     elif handleName == 'v1Paike':
         startSearch('handles.handle_v1_paike', url, channelId, snapShot=snapShot)
+    elif handleName == 'm1905List':
+        startSearch('handles.handle_m1905_list', url, channelId, snapShot=snapShot)
+    elif handleName == 'm1905Top':
+        startSearch('handles.handle_m1905_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'm1905Yugao':
+        startSearch('handles.handle_m1905_yugao', url, channelId, snapShot=snapShot)
     else:
         raise Exception("not this handle"+handleName)
 

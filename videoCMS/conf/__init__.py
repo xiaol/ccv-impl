@@ -192,6 +192,9 @@ searchHandleListAll = [
 'search.wasuList',
 'search.v1List',
 'search.v1Paike',
+'search.m1905List',
+'search.m1905Top',
+'search.m1905Yugao',
 
 "searchGif.onegif",
 "searchGif.forgifs",
