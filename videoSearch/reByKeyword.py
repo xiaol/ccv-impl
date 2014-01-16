@@ -478,6 +478,10 @@ def process(uuid):
 
     renewOldRecommend(ret['uuid'])
 
+    remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+    if remainRecommendations.count() > 100:
+        return
+
     likeItems = retrieveUserLike(ret['uuid'])
     for likeItem in likeItems:
         itemTags = likeItem.get('tagList', []) #TODO 人工标签超过6个字 分词
@@ -586,5 +590,5 @@ def main():
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
-    #segmentByNLP("《新闻联播》 杨小玲：让舞蹈走进孩子的无声世界")
+    #segmentByNLP("裴俊浩在朝鲜服刑时间增加使华盛顿压力倍增")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
