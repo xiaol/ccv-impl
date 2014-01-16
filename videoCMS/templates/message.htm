@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li {% ifequal request.path '/message/marked' %}class="active" {% endifequal %}>
-                        <a href="/message/marked">标记<span class="badge">{{ markedMessageNum }}</span>
+                        <a href="/message/marked">标记<span class="badge badge-warning">{{ markedMessageNum }}</span>
                         </a>
                     </li>
                     <li {% ifequal request.path '/message/readed' %}class="active" {% endifequal %} >

@@ -19,7 +19,7 @@ def getMessageNum(request):
 def unread(request):
     DICT = {}
     username = request.session['username']
-    result = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False}}).sort([('_id',-1)])
+    result = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False},'mark':{'$exists':False}}).sort([('_id',-1)])
     result = list(result)
     for one in result:one['id'] = str(one['_id'])
     count = len(result)
