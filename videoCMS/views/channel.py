@@ -203,12 +203,15 @@ def update(request):
         clct_resource.update({'channelId':channel['channelId'],'resourceImageUrl':''},{'$set':{'resourceImageUrl':channel['resourceImageUrl']}},multi=True)
     
     #更新资源的 channelId关联
-    oldChannelId = clct_channel.find_one({'_id':ObjectId(id)})['channelId']
-    clct_resource.update({'channelId':oldChannelId},{'$set':{'channelId':channel['channelId']}},multi=True)
+    oldChannel = clct_channel.find_one({'_id':ObjectId(id)})
+
+    if channel['channelId'] != oldChannel['channelId']:
+        clct_resource.update({'channelId':oldChannel['channelId']},{'$set':{'channelId':channel['channelId']}},multi=True)
     
     #更新 cateogoryId
-    categoryId =  channel['channelType']
-    clct_resource.update({'channelId':channel['channelId']}, {'$set':{'categoryId':categoryId}},multi=True)
+    if channel['channelType'] != oldChannel['channelType']:
+        categoryId =  channel['channelType']
+        clct_resource.update({'channelId':channel['channelId']}, {'$set':{'categoryId':categoryId}},multi=True)
 
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)
