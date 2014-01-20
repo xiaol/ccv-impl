@@ -374,6 +374,7 @@ def search(request):
     L = list(clct_searchStatistic.find().sort([('value',-1)]).limit(limit))
     for one in L:
         one['id'] = one['_id']
+    DICT['sum'] = sum([one['value'] for one in L])
     DICT['result'] = L
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
