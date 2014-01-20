@@ -358,18 +358,27 @@ def search(request):
     mapScript = '''
     function()
     {
-        if(this.createTime >= "%s" && this.createTime < "%s")
         emit(this.keyword,1);
     }
-    '''%(startTime[:8],endTime[:8])
+    '''
     reduceScript= '''
     function(key,values)
     {
-        return values.length;
+        var sum = 0;
+        values.forEach(
+        function(v)
+        {
+            sum += v;
+        }
+        );
+        return sum;
     }
     '''
     print (startTime[:8],endTime[:8])
-    clct_searchStatistic = clct_searchLog.map_reduce(mapScript,reduceScript,"searchStatistics")
+    print mapScript
+    print reduceScript
+    clct_searchStatistic = clct_searchLog.map_reduce(mapScript,reduceScript,"searchStatistics",\
+                                                     query={"createTime":{"$gte":startTime[:8],"$lt":endTime[:8]}})
     print clct_searchStatistic
     L = list(clct_searchStatistic.find().sort([('value',-1)]))
     DICT['sum'] = int(sum([one['value'] for one in L]))
