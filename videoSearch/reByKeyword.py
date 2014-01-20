@@ -14,18 +14,19 @@ from common.videoInfoTask import addVideoInfoTask
 from py4j.java_gateway import JavaGateway
 
 
-redisUrl = '60.28.29.48'
+redisUrl = '60.28.29.7'
 contentUrl = 'http://60.28.29.46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
 segmentUrl = 'http://60.28.29.46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
 if not debug:
     contentUrl = 'http://h46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
     segmentUrl = 'http://h46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
-    redisUrl = 'h48'
+    redisUrl = 'h7'
 
 youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?client_id=1f6d9cfc3c9723fd&keyword=%s&paid=0&orderby=%s&page=1&count=1"
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
-blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看', '高清',  '在线观看', '', '新浪视频', '优酷娱乐']
+blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看',
+             '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '全部', '酷6','国内']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
