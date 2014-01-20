@@ -371,10 +371,15 @@ def search(request):
     print (startTime[:8],endTime[:8])
     clct_searchStatistic = clct_searchLog.map_reduce(mapScript,reduceScript,"searchStatistics")
     print clct_searchStatistic
-    L = list(clct_searchStatistic.find().sort([('value',-1)]).limit(limit))
+    L = list(clct_searchStatistic.find().sort([('value',-1)]))
+    DICT['sum'] = int(sum([one['value'] for one in L]))
+    DICT['length'] = len(L)
+
+    L = L[:limit]
     for one in L:
         one['id'] = one['_id']
-    DICT['sum'] = sum([one['value'] for one in L])
+
+    DICT['resultSum'] = sum([one['value'] for one in L])
     DICT['result'] = L
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
