@@ -62,6 +62,9 @@
                                     <td>
                                         <input type="text" name="limit" value="{{limit}}"/>
                                     </td>
+                                    <td>
+                                        搜索词数个数：{{length}}<br/> 总搜索次数：{{ sum }}
+                                    </td>
                                 </tr>
                                 <tr>
 
@@ -74,7 +77,7 @@
                     <table>
                         <tr>
                         <th width="300px">搜索词</th>
-                        <th>搜素次数</th>
+                        <th>搜素次数(合计：{{resultSum}})</th>
                         </tr>
                     {%for row in result%}
                         <tr>

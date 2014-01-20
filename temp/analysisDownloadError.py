@@ -8,7 +8,7 @@ con = Connection('h39:20010')
 clct_operationLog = con.tiercel.operationLog
 
 def main():
-    logs = clct_operationLog.find({'operationCode':{'$in':[30001,30005]}},{'operationCode':1,'msg':1})
+    logs = clct_operationLog.find({'operationCode':{'$in':[30001,30005]},'version':35},{'operationCode':1,'msg':1})
     num_30001 = 0
     num_30005 = 0
     S = {}
