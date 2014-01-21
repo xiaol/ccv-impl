@@ -11,7 +11,7 @@ from setting import clct_channel, clct_resource, GIF_SERVER, GIF_SERVER_PORT, GI
 
 redisUrl = 'localhost'
 if not debug:
-    redisUrl = 'h48'
+    redisUrl = 'h7'
 
 
 def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False):
