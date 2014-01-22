@@ -8,6 +8,7 @@ from videoCMS.common.Domain import Setting
 def POST2Setting(request):
     setting = Setting()
     setting['hotSearch'] = filter(lambda a:a!='',request.POST.get('hotSearch').strip().replace('，',',').split(','))
+    setting['firstTag'] = request.POST.get('firstTag')
     return setting
 
 def update(request):

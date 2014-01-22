@@ -263,3 +263,4 @@ class TopicListPage(DomainBase):
 
 class Setting(DomainBase):
     hotSearch = []
+    firstTag = ''
