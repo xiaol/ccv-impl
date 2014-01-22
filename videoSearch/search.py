@@ -95,10 +95,8 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
     module = sys.modules[handleName]
     channel = clct_channel.find_one({'channelId':channelId})
     tvNumber = channel['tvNumber']
-    resourceImageUrl = channel['resourceImageUrl']
     #抽取
     result = module.handle(url, channelId, tvNumber,**keyParams)
-    
     isOver = False
     for one in result:
         #完结
@@ -107,11 +105,12 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
             continue
         if channel['autoOnline'] == False:
             one['isOnline'] = False
-        one['resourceImageUrl'] = resourceImageUrl
+        one['resourceImageUrl'] = channel['resourceImageUrl']
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
         one['type'] = 'video'
         one['source'] = 'spider'
+        one['tagList'] = channel['tagList']
         
     pprint(result)
     result = filter(lambda a:a!="over",result)
