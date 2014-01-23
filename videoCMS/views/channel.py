@@ -214,8 +214,8 @@ def update(request):
         clct_resource.update({'channelId':channel['channelId']}, {'$set':{'categoryId':categoryId}},multi=True)
 
     if channel['tagList'] != oldChannel['tagList']:
-        clct_resource.update({'channelId':channel['channelId']},{'$pullAll':{'tagList':oldChannel['tagList']}})
-        clct_resource.update({'channelId':channel['channelId']},{'$pushAll':{'tagList':channel['tagList']}})
+        clct_resource.update({'channelId':channel['channelId']},{'$pullAll':{'tagList':oldChannel['tagList']}},multi=True)
+        clct_resource.update({'channelId':channel['channelId']},{'$pushAll':{'tagList':channel['tagList']}},multi=True)
 
 
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
