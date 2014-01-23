@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,mysql_con
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime
@@ -482,3 +482,35 @@ def resource(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '视频 下载/播放统计'
     return render_to_response('statisticsResource.htm',DICT,context_instance=RequestContext(request))
+
+
+
+def kaifang(request):
+    DICT= {}
+    if request.method == 'GET':
+        return render_to_response("kaifang.html",{})
+    cur = mysql_con.cursor()
+    mysql_con.select_db('hotel')
+
+    name = request.POST.get('name',None)
+    idNum = request.POST.get('idNum',None)
+
+    if name == None and idNum == None:
+
+        DICT['info'] = '查询条件不能为空'
+        return render_to_response("kaifang.htm",DICT)
+    if name != None:
+        sql = 'select * from kaifang where name = '+ name
+    elif idNum != None:
+        sql = 'select * from kaifang where ctfId = '+ idNum
+
+    cur.execute(sql)
+    results=cur.fetchall()
+    mysql_con.commit()
+    cur.close()
+
+    DICT['name'] = name
+    DICT['idNum'] = idNum
+    DICT['data'] = results
+    print results
+    return render_to_response('kaifang.htm',DICT)

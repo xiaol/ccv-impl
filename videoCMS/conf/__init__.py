@@ -30,6 +30,12 @@ clct_subscribeLog = con39.tiercel.subscribeLog
 clct_searchLog = con39.tiercel.searchLog
 clct_playLog = con39.tiercel.playLog
 
+#==================
+try:
+    import MySQLdb
+    mysql_con  = conn=MySQLdb.connect(host='h58',user='remote',passwd='123456',port=3306)
+except:
+    mysql_con = None
 
 #=======================  图片
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
