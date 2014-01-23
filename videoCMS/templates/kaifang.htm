@@ -18,12 +18,13 @@
 
 <body style="background-color: #CCC;">
 	{% include "nav.htm" %}
-	<div class="container" style="background-color: #FFF;padding-top: 30px;min-height: 500px;">
-		<div class="row-fluid">
+	<div class="" style="background-color: #FFF;padding-top: 30px;min-height: 500px;">
+		<div class="row-fluid ">
 			<div class="span12">
                 <form method="post">
-                    姓名：<input name="name" value=""/>
-                    身份证：<input name="idNum" value=""/>
+                    姓名：<input name="name" value="{{ name }}"/>
+                    身份证：<input name="idNum" value="{{ idNum }}"/>
+                    <input type="submit" name="查询"/>
                 </form>
                 <table>
                     <tr>
@@ -32,12 +33,22 @@
                         <th>身份证</th>
                         <th>年龄</th>
                         <th>地址</th>
-                        <th>开放日期</th>
+                        <th>日期</th>
+                        <th>mobile</th>
+                        <th>tel</th>
                         <th>email</th>
                     </tr>
                     {% for one in data %}
                     <tr>
-                        <td></td>
+                        <td>{{one.0}}</td>
+                        <td>{{one.5}}</td>
+                        <td>{{one.4}}</td>
+                        <td>{{one.6}}</td>
+                        <td>{{one.7}}</td>
+                        <td>{{one.31}}</td>
+                        <td>{{one.19}}</td>
+                        <td>{{one.20}}</td>
+                        <td>{{one.22}}</td>
                     </tr>
                     {% endfor %}
                 </table>

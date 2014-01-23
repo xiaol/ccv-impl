@@ -4,7 +4,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
 
 from pymongo import Connection
-
+import MySQLdb
 
 con = Connection('60.28.29.37:20010')
 #clct_channel  = con.iDown.yChannel
@@ -32,9 +32,11 @@ clct_playLog = con39.tiercel.playLog
 
 #==================
 try:
-    import MySQLdb
-    mysql_con  = conn=MySQLdb.connect(host='h58',user='remote',passwd='123456',port=3306)
-except:
+
+    pass
+except Exception,e:
+    import traceback
+    print traceback.format_exc()
     mysql_con = None
 
 #=======================  图片

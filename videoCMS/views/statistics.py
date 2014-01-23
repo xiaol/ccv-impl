@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import json,StringIO,re,time
 from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,mysql_con
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime
@@ -12,7 +12,7 @@ from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
 from videoSearch.common.videoInfoTask import addVideoInfoTask
-import urllib2,copy
+import urllib2,copy,MySQLdb
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 
@@ -488,7 +488,9 @@ def resource(request):
 def kaifang(request):
     DICT= {}
     if request.method == 'GET':
-        return render_to_response("kaifang.html",{})
+        return render_to_response("kaifang.htm",{})
+
+    mysql_con  = MySQLdb.connect(host='h58',user='remote',passwd='123456',charset="utf8",port=3306)
     cur = mysql_con.cursor()
     mysql_con.select_db('hotel')
 
@@ -499,15 +501,18 @@ def kaifang(request):
 
         DICT['info'] = '查询条件不能为空'
         return render_to_response("kaifang.htm",DICT)
-    if name != None:
-        sql = 'select * from kaifang where name = '+ name
-    elif idNum != None:
-        sql = 'select * from kaifang where ctfId = '+ idNum
 
+    if name != None:
+        sql = 'select * from kaifang where `name` = "%s"'% name
+    elif idNum != None:
+        sql = 'select * from kaifang where `ctfId` = "%s" '%idNum
+
+    print sql
     cur.execute(sql)
     results=cur.fetchall()
     mysql_con.commit()
     cur.close()
+    mysql_con.close()
 
     DICT['name'] = name
     DICT['idNum'] = idNum

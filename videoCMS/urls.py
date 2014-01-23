@@ -81,6 +81,7 @@ urlpatterns = patterns('',
     url(r'^statistics2/channelSub2$','videoCMS.views.statistics2.channelSub2'),
     url(r'^statistics/autoResource$','videoCMS.views.statistics.autoResource'),
     url(r'^statistics/resource$','videoCMS.views.statistics.resource'),
+    url(r'^statistics/kaifang$','videoCMS.views.statistics.kaifang'),
 
     url(r'^statistics2/category$','videoCMS.views.statistics2.category'),
     url(r'^statistics2/categoryDetail$','videoCMS.views.statistics2.categoryDetail'),
