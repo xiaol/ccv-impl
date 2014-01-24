@@ -31,21 +31,23 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             ret = clct_resource.insert(resource , safe=True)
         except:
             print("insert Error!")
-            '''检查 电视剧,综艺 资源是否被抢'''
-            if channel['videoClass'] in [1, 3]:
-                old = clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']})
-                if not old: continue
-                if type(old['number']) in [int,float] and  old['number'] <= 0:
-                    clct_resource.update({'_id':old['_id']},{'$set':{
-                        'resourceName':resource['resourceName'],'channelId':resource['channelId'],
-                        'number':resource['number']
-                        }})
-                    InsertedList.append(old['_id'])
-                    if resource['isOnline']:
-                        onlineNum += 1
-                    if snapShot:
-                        mp4box = True if resource['videoType'] == 'sohu_url' else False
-                        addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1,goOnline=True)
+            '''检查 电视剧,综艺 资源是否被抢， 检查黑洞（101758） 正在流行（1）'''
+            old = clct_resource.find_one({'videoType':resource['videoType'],'videoId':resource['videoId']})
+            if not old: continue
+            if (channel['videoClass'] in [1, 3] and type(old['number']) in [int,float] and  old['number'] <= 0) \
+                or old['channelId'] in [1,101758]:
+                clct_resource.update({'_id':old['_id']},{'$set':{
+                    'resourceName':resource['resourceName'],'channelId':resource['channelId'],
+                    'number':resource['number']
+                    }})
+                InsertedList.append(old['_id'])
+                if resource['isOnline']:
+                    onlineNum += 1
+                if snapShot:
+                    mp4box = True if resource['videoType'] == 'sohu_url' else False
+                    addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1,goOnline=True)
+
+
 
 
         else:
@@ -95,10 +97,8 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
     module = sys.modules[handleName]
     channel = clct_channel.find_one({'channelId':channelId})
     tvNumber = channel['tvNumber']
-    resourceImageUrl = channel['resourceImageUrl']
     #抽取
     result = module.handle(url, channelId, tvNumber,**keyParams)
-    
     isOver = False
     for one in result:
         #完结
@@ -107,11 +107,12 @@ def startSearch(handleName,url,channelId,snapShot=False, updateTvNumber=False , 
             continue
         if channel['autoOnline'] == False:
             one['isOnline'] = False
-        one['resourceImageUrl'] = resourceImageUrl
+        one['resourceImageUrl'] = channel['resourceImageUrl']
         one['duration'] = channel['duration']
         one['categoryId'] = channel['channelType']
         one['type'] = 'video'
         one['source'] = 'spider'
+        one['tagList'] = channel['tagList']
         
     pprint(result)
     result = filter(lambda a:a!="over",result)
@@ -282,6 +283,18 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_opera', url, channelId,snapShot = snapShot)
     elif handleName == '56Town':
         startSearch('handles.handle_56_town', url, channelId,snapShot = snapShot)
+    elif handleName == '56mm':
+        startSearch('handles.handle_56_mm', url, channelId, snapShot=snapShot)
+    elif handleName == '56Fashion':
+        startSearch('handles.handle_56_fashion', url, channelId, snapShot=snapShot)
+    elif handleName == 'sohuSo':
+        startSearch('handles.handle_sohu_so', url, channelId,snapShot = snapShot)
+    elif handleName == 'sohuTech':
+        startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
+    elif handleName == 'sohuBaby':
+        startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
+    elif handleName == 'sohuTrends':
+        startSearch('handles.handle_sohu_trends', url, channelId,snapShot = snapShot)
     elif handleName == 'ppsIpd':
         startSearch('handles.handle_pps_ipd', url, channelId,snapShot = snapShot)
     elif handleName == 'pptvList':
@@ -320,6 +333,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sina_ent_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvEntzt':
         startSearch('handles.handle_letv_ent_zt', url, channelId, snapShot=snapShot)
+    elif handleName == 'letvFashionzt':
+        startSearch('handles.handle_letv_fashion_zt', url, channelId, snapShot=snapShot)
     elif handleName == 'letvList':
         startSearch('handles.handle_letv_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvVar':

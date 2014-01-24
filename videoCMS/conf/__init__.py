@@ -4,7 +4,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
 
 from pymongo import Connection
-
+import MySQLdb
 
 con = Connection('60.28.29.37:20010')
 #clct_channel  = con.iDown.yChannel
@@ -30,6 +30,14 @@ clct_subscribeLog = con39.tiercel.subscribeLog
 clct_searchLog = con39.tiercel.searchLog
 clct_playLog = con39.tiercel.playLog
 
+#==================
+try:
+
+    pass
+except Exception,e:
+    import traceback
+    print traceback.format_exc()
+    mysql_con = None
 
 #=======================  图片
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/*/'
@@ -155,6 +163,12 @@ searchHandleListAll = [
 "search.56I",
 "search.56Opera",
 "search.56Town",
+"search.56mm",
+"search.56Fashion",
+"search.sohuSo",
+"search.sohuTech",
+"search.sohuTrends",
+"search.sohuBaby",
 "search.ppsIpd",
 "search.pptvList",
 "search.embed",
@@ -174,6 +188,7 @@ searchHandleListAll = [
 "search.qqCover",
 "search.sinaEntList",
 "search.letvEntzt",
+"search.letvFashionzt",
 "search.letvList",
 "search.letvVar",
 "search.yinyuetaiMV",

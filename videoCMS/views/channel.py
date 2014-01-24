@@ -135,7 +135,7 @@ def POST2Channel(request):
 
     channel['channelType'] = getCategoryIdByName(request.POST.get('channelType'))
     channel['categoryType'] = getCategoryTypeById(channel['channelType'])
-    channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').split(','))
+    channel['tagList'] = map(lambda a:a.strip(),request.POST.get('tagList').replace('，',',').split(','))
     channel['updateTime'] = request.POST.get('updateTime')
     if channel['updateTime'] == '':channel['updateTime'] = getCurTime()
     if not validateTimeStr(channel['updateTime']):raise Exception('updateTime 格式不正确')
@@ -212,6 +212,11 @@ def update(request):
     if channel['channelType'] != oldChannel['channelType']:
         categoryId =  channel['channelType']
         clct_resource.update({'channelId':channel['channelId']}, {'$set':{'categoryId':categoryId}},multi=True)
+
+    if channel['tagList'] != oldChannel['tagList']:
+        clct_resource.update({'channelId':channel['channelId']},{'$pullAll':{'tagList':oldChannel['tagList']}},multi=True)
+        clct_resource.update({'channelId':channel['channelId']},{'$pushAll':{'tagList':channel['tagList']}},multi=True)
+
 
     clct_channel.update({'_id':ObjectId(id)},{'$set':channel.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)

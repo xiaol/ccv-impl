@@ -12,7 +12,7 @@ from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 from videoCMS.views.channel import saveResourceImage
 from videoSearch.common.videoInfoTask import addVideoInfoTask
-import urllib2,copy
+import urllib2,copy,MySQLdb
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 
@@ -482,3 +482,40 @@ def resource(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '视频 下载/播放统计'
     return render_to_response('statisticsResource.htm',DICT,context_instance=RequestContext(request))
+
+
+
+def kaifang(request):
+    DICT= {}
+    if request.method == 'GET':
+        return render_to_response("kaifang.htm",{})
+
+    mysql_con  = MySQLdb.connect(host='h58',user='remote',passwd='123456',charset="utf8",port=3306)
+    cur = mysql_con.cursor()
+    mysql_con.select_db('hotel')
+
+    name = request.POST.get('name',None)
+    idNum = request.POST.get('idNum',None)
+
+    if name == None and idNum == None:
+
+        DICT['info'] = '查询条件不能为空'
+        return render_to_response("kaifang.htm",DICT)
+
+    if name != None:
+        sql = 'select * from kaifang where `name` = "%s"'% name
+    elif idNum != None:
+        sql = 'select * from kaifang where `ctfId` = "%s" '%idNum
+
+    print sql
+    cur.execute(sql)
+    results=cur.fetchall()
+    mysql_con.commit()
+    cur.close()
+    mysql_con.close()
+
+    DICT['name'] = name
+    DICT['idNum'] = idNum
+    DICT['data'] = results
+    print results
+    return render_to_response('kaifang.htm',DICT)

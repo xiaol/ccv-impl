@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>开放查询</title>
+<link href="/static/css/tagUpdate.css" rel="stylesheet"
+	type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/message.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/message.js"></script>
+</head>
+
+
+<body style="background-color: #CCC;">
+	{% include "nav.htm" %}
+	<div class="" style="background-color: #FFF;padding-top: 30px;min-height: 500px;">
+		<div class="row-fluid ">
+			<div class="span12">
+                <form method="post">
+                    姓名：<input name="name" value="{{ name }}"/>
+                    身份证：<input name="idNum" value="{{ idNum }}"/>
+                    <input type="submit" name="查询"/>
+                </form>
+                <table>
+                    <tr>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>身份证</th>
+                        <th>年龄</th>
+                        <th>地址</th>
+                        <th>日期</th>
+                        <th>mobile</th>
+                        <th>tel</th>
+                        <th>email</th>
+                    </tr>
+                    {% for one in data %}
+                    <tr>
+                        <td>{{one.0}}</td>
+                        <td>{{one.5}}</td>
+                        <td>{{one.4}}</td>
+                        <td>{{one.6}}</td>
+                        <td>{{one.7}}</td>
+                        <td>{{one.31}}</td>
+                        <td>{{one.19}}</td>
+                        <td>{{one.20}}</td>
+                        <td>{{one.22}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
