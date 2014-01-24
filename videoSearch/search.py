@@ -283,10 +283,14 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_56_town', url, channelId,snapShot = snapShot)
     elif handleName == '56mm':
         startSearch('handles.handle_56_mm', url, channelId, snapShot=snapShot)
+    elif handleName == '56Fashion':
+        startSearch('handles.handle_56_fashion', url, channelId, snapShot=snapShot)
     elif handleName == 'sohuSo':
         startSearch('handles.handle_sohu_so', url, channelId,snapShot = snapShot)
     elif handleName == 'sohuTech':
-        startSearch('handles.handle_sohu_tech', url, channelId,snapShot = snapShot)
+        startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
+    elif handleName == 'sohuBaby':
+        startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
     elif handleName == 'sohuTrends':
         startSearch('handles.handle_sohu_trends', url, channelId,snapShot = snapShot)
     elif handleName == 'ppsIpd':

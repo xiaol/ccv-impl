@@ -34,7 +34,13 @@ def handle(url, channelId, tvNumber):
         if not is_video or exist.get(url, False):
             continue
         exist[url] = True
-        title = video.xpath('./@title')[0]
+        title = video.xpath('./@title')
+        if not title:
+            title = video.xpath('./text()')
+        if title:
+            title = title[0]
+        else:
+            continue
         item = buildResource(url, title, channelId, url)
         ret.append(item)
 
@@ -56,4 +62,5 @@ def buildResource(url, title, channelId, videoId):
 
 if __name__ == '__main__':
     pprint.pprint(handle('http://tv.sohu.com/tech/',100649,3))
+    pprint.pprint(handle('http://tv.sohu.com/baby/',100649,3))
 
