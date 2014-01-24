@@ -14,7 +14,7 @@ from common.videoInfoTask import addVideoInfoTask
 from py4j.java_gateway import JavaGateway
 
 
-redisUrl = '60.28.29.7'
+redisUrl = '60.28.29.37'
 contentUrl = 'http://60.28.29.46:8080/solr/collection1/select?q=%s&rows=1&wt=json&indent=true'
 segmentUrl = 'http://60.28.29.46:8080/solr/collection1/analysis/field?wt=json&q=%s&analysis.fieldtype=text_cn&indent=true'
 if not debug:
@@ -463,7 +463,7 @@ def walk(reason, source):
         return videos
 
 def renewOldRecommend(userId):
-    rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+    rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}}).limit(100)
     for ret in rets:
         ret['createTime'] = getCurTime()
         clct_userRecommend.update({'_id':ret['_id']}, {'$set':{'createTime':ret['createTime']}})
