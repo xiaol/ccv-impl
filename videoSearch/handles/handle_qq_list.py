@@ -10,8 +10,8 @@ from common.Domain import Resource,Channel
 from common.HttpUtil import get_html
 from setting import clct_channel
 
-p_vid_1 = re.compile('/([^/]+)\.html')
-p_vid_2 = re.compile('vid=(\w+)')
+p_vid_2 = re.compile('/([^/]+)\.html')
+p_vid_1 = re.compile('vid=(\w+)')
 
 
 def handle(url, channelId, tvNumber):
