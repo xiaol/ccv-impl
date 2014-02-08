@@ -214,6 +214,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
     t = getCurTime()
     result = []
     for entity in entities:
+        if len(entity['ti']) < 3:
+            continue
         item = decodeVideo(entity.get('url',''))  #TODO 百度返回的搜索会不会还有额外信息
         if not item:
             continue
@@ -319,7 +321,7 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False,channelId=101
     t = getCurTime()
     result = []
     for entity in entities:
-        if entity['view_count'] < viewCount:
+        if entity['view_count'] < viewCount or len(entity['title']) < 6:
             continue
         resource = buildResource(entity['link'],entity['title'],channelId,'youku',entity['id'],'video')
         resource['createTime'] = t
