@@ -196,7 +196,7 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
         result = json.loads(html)['data'][0:10]
         random.shuffle(result, random.random)
-        ret = result[0:1]
+        ret = result[0:2]
         #ret = json.loads(html)['data'][0:1]
         videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId ))
     except Exception,e:
@@ -214,7 +214,7 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
     t = getCurTime()
     result = []
     for entity in entities:
-        if len(entity['ti']) < 3:
+        if len(entity['ti']) < 7:
             continue
         item = decodeVideo(entity.get('url',''))  #TODO 百度返回的搜索会不会还有额外信息
         if not item:
