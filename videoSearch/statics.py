@@ -41,7 +41,7 @@ def displayRate(newUser=True):
     if newUser:
         print 'New users count: ', newUserCount
     print ' ',count
-    print sum/count
+    print sum/(rets.count() - count)
 
 from collections import defaultdict
 import matplotlib.pyplot as plt

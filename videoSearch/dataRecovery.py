@@ -262,10 +262,10 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    filterRecommendations()
-    '''while True:
+    #filterRecommendations()
+    while True:
         feedUserTag()
         addTagResource()
         updateUserTag()
-        time.sleep(60*60)'''
+        time.sleep(60*60)
     #clearChannel(101758)
