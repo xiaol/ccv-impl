@@ -239,6 +239,17 @@ def updateChannelSnapshot(channelId):
         httpUtil.opener.addheaders.append(('Cookie','sessionid=33b88480a48a5490c8eb2a9c41541049'))
         content = httpUtil.Get(url)
 
+def filterRecommendations():
+    rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+
+    for ret in rets:
+        title = ret.get('resourceName',None)
+        if title is None:
+            title = ret.get('title', None)
+        if len(title) < 7:
+            print title
+            clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+
 if __name__ == '__main__':
     #createOrUpdateTags()
     #addTag()
@@ -251,9 +262,10 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    while True:
+    filterRecommendations()
+    '''while True:
         feedUserTag()
         addTagResource()
         updateUserTag()
-        time.sleep(60*60)
+        time.sleep(60*60)'''
     #clearChannel(101758)
