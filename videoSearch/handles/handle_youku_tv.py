@@ -87,5 +87,5 @@ def buildResource(url,title,number,channelId,videoId):
 
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.youku.com/show_page/id_z3f6eb098940f11e196ac.html',1,3))
-    pprint.pprint(handle('http://www.youku.com/show_page/id_z48d622de6b9e11e38b3f.html',100527,3))
+    pprint.pprint(handle('http://www.youku.com/show_page/id_z3a35da1c63ba11e3a705.html',100527,0))
 
