@@ -5,7 +5,10 @@ from videoCMS.conf import userList
 from videoCMS.conf import clct_channel,clct_resource
 from bson import ObjectId
 from videoCMS.common.HttpUtil import getVideoUrl
+import re
 
+p_Android = re.compile('android')
+p_IOS = re.compile('ipad|iphone')
 
 def index(request):
     DICT = {}
@@ -39,7 +42,10 @@ def index(request):
         else:
             DICT['videoUrl'] = resource['resourceUrl']
 
-    DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer.apk'
+        if p_IOS.search(request.META['HTTP_USER_AGENT'].lower()) != None:
+            DICT['ipaUrl'] = 'https://itunes.apple.com/cn/app/kou-dai-shi-pin-zi-dong-li/id737702962?ls=1&mt=8'
+        elif p_Android.search(request.META['HTTP_USER_AGENT'].lower()) != None:
+            DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer.apk'
     
     return render_to_response('share_resource.htm',DICT)
     
