@@ -9,7 +9,7 @@ from common.videoInfoTask import addVideoInfoTask
 from handlesWeibo.handle_weibo import handle, handleGif
 from setting import clct_channel, clct_resource, GIF_SERVER, GIF_SERVER_PORT, GIF_SERVER_DIR, GIF_TEMP_DIR
 
-redisUrl = 'localhost'
+redisUrl = '60.28.29.37'
 if not debug:
     redisUrl = 'h7'
 

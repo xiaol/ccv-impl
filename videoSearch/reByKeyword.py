@@ -194,7 +194,8 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
             resultLines.append(line)
         html = '\n'.join(resultLines)
         #html = re.sub(r'"(\w)"(?!,|)',r'\1',html)
-        result = json.loads(html)['data'][0:10]
+        result = json.loads(html)['data']
+        result = filterVideo(result)
         random.shuffle(result, random.random)
         ret = result[0:1]
         #ret = json.loads(html)['data'][0:1]
@@ -205,6 +206,14 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
         #print traceback.format_exc()
         return videos
     return videos
+
+def filterVideo(entities):
+    result = []
+    for entity in entities:
+        if len(entity['ti']) < 7:
+            continue
+        result.append(entity)
+    return result
 
 def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000):
     updateMap = {'updateTime':getCurTime()}
@@ -319,7 +328,7 @@ def buildVideoFromYouku(entities, reason, source, snapShot = False,channelId=101
     t = getCurTime()
     result = []
     for entity in entities:
-        if entity['view_count'] < viewCount:
+        if entity['view_count'] < viewCount or len(entity['title']) < 6:
             continue
         resource = buildResource(entity['link'],entity['title'],channelId,'youku',entity['id'],'video')
         resource['createTime'] = t
