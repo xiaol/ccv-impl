@@ -34,6 +34,11 @@ class DomainBase():
 
 
 
+
+
+
+
+
 class Resource(DomainBase):
     resourceSize = -1
     resourceUrl = ''
@@ -59,10 +64,8 @@ class Resource(DomainBase):
     videoFileName = ''
     snapshot = ''
     downloadType = ''
-    transcodeCoderate = ''
-    transcodeFramerate = ''
-    transcodeDimension = ''
-    transcodeOutputname = ''
+    v_br = -1
+    v_size = [0,0]
     weight = -1
     playNumber = 0
     downloadNumber = 0
