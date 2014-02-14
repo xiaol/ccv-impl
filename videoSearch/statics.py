@@ -10,8 +10,8 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20140208000000'
-endTime = '20140209000000'
+startTime = '20140214000000'
+endTime = '20140215000000'
 
 def displayRate(newUser=True):
     totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
@@ -135,6 +135,8 @@ def userBehavior():
         for dislike in ret['discardList']:
             if len(mm[dislike]) == 0:
                 resourceR = clct_resource.find_one({'_id':ObjectId(dislike)})
+                if resourceR is None:
+                    continue
                 mm[dislike].append(resourceR['resourceName'])
             else:
                 mm[dislike].append(mm[dislike][0])
@@ -188,10 +190,34 @@ def userBehavior():
 
     print likeSum, ' ', likeCount, ' ', float(likeSum)/likeCount
 
+def getSumOfLikeAndDiscard():
+    rets = clct_userDiscard.find({})
+    rets.sort('_id',1)
+    count = rets.count()
+    sum = 0
+    for ret in rets:
+        sum += len(ret['discardList'])
+        print sum
+    print sum,' ', count, ' ', float(sum)/count
+
+    likeRets = clct_user.find({'likeList':{'$exists':True}})
+    likeCount = likeRets.count()
+    likeSum = 0
+    for likeRet in likeRets:
+        likeSum += len(likeRet['likeList'])
+        print likeRet['likeList']
+    print likeSum, ' ', likeCount, ' ', float(likeSum)/likeCount
+
+def getTag():
+    rets = clct_user.find({'tagList':{'$exists':True}})
+    print rets.count()
+
 if __name__ == '__main__':
     #statics()
     #userBehavior()
     #missedUser()
     #quitByFirstSight()
+    getTag()
+    getSumOfLikeAndDiscard()
     displayRate(False)
     displayRateRange(False)

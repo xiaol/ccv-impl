@@ -234,7 +234,10 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
         resource['updateTime'] = getCurTime()
         resource['tagList'] = []
         for videoTag in entity['tag']:
-            resource['tagList'].append(videoTag['name'])
+            if not videoTag:
+                continue
+            videoTagName = re.sub('<[^<]+?>', '', videoTag['name'])
+            resource['tagList'].append(videoTagName)
         if not entity['tag']:
             if resource['resourceName']:
                 try:
@@ -600,5 +603,5 @@ def main():
 if __name__ == '__main__':
     #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
-    #segmentByNLP("裴俊浩在朝鲜服刑时间增加使华盛顿压力倍增")
+    #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")

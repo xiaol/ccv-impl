@@ -145,6 +145,25 @@ def updateWeiboUpdateTime():
         clct_resource.update({'_id':ret['_id']},{'$set':{'updateTime':ret['createTime']}})
 
 from reByKeyword import blacklist
+def stripTag():
+    rets = clct_resource.find({'tagList':{'$exists':True}})
+    for ret in rets:
+        if ret['tagList']:
+            stripTagList = []
+            hit = False
+            for tag in ret['tagList']:
+                if not tag:
+                    continue
+                if re.match('<[^<]+?>',tag):
+                    videoTag = re.sub('<[^<]+?>', '', tag)
+                    hit = True
+                else:
+                    videoTag = tag
+                if len(videoTag) < 6:
+                    stripTagList.append(videoTag)
+            if hit:
+                clct_resource.update({'_id':ret['_id']},{'$set':{'tagList': stripTagList}})
+
 def updateTag():
     rets = clct_resource.find({'tagList':{'$exists':True}})
     for ret in rets:
@@ -240,7 +259,8 @@ def updateChannelSnapshot(channelId):
         content = httpUtil.Get(url)
 
 def filterRecommendations():
-    rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+    #rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+    rets = clct_resource.find({'$or':[{'channelId':101641, 'isOnline':True},{'channelId':101758, 'isOnline':True}]})
 
     for ret in rets:
         title = ret.get('resourceName',None)
@@ -248,7 +268,8 @@ def filterRecommendations():
             title = ret.get('title', None)
         if len(title) < 7:
             print title
-            clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -263,6 +284,7 @@ if __name__ == '__main__':
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
     #filterRecommendations()
+    stripTag()
     while True:
         feedUserTag()
         addTagResource()
