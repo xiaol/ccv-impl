@@ -79,7 +79,7 @@ def feedTag(tags, divide=False, fromWord = ''):
         if start or not divide:
             if entity == '':
                 continue
-            recommendByBaidu([entity], entity, 'Tags', 101758, 'gbk')
+            recommendByBaidu([entity], entity, 'Tags', 101758, 'gbk', True)
 
 def feedUserTag():
     rets = clct_user.find({'tagList':{'$exists':True}})
@@ -162,6 +162,8 @@ def stripTag():
                 if len(videoTag) < 6:
                     stripTagList.append(videoTag)
             if hit:
+                if not stripTagList:
+                    stripTagList = segmentByNLP(ret['resourceName'])
                 clct_resource.update({'_id':ret['_id']},{'$set':{'tagList': stripTagList}})
 
 def updateTag():
@@ -270,6 +272,10 @@ def filterRecommendations():
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+        if re.search('\d{9,}', title) is not None:
+            print title
+            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -283,8 +289,8 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    #filterRecommendations()
-    stripTag()
+    filterRecommendations()
+    #stripTag()
     while True:
         feedUserTag()
         addTagResource()

@@ -176,7 +176,7 @@ def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count'
         return videos
     return videos
 
-def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
+def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312', tagReason = False):
     subCon = ' '.join(words)
     videos = []
     #subCon = strQ2B(subCon)
@@ -199,7 +199,7 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312'):
         random.shuffle(result, random.random)
         ret = result[0:1]
         #ret = json.loads(html)['data'][0:1]
-        videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId ))
+        videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId, tagReason ))
     except Exception,e:
         print e
         #import traceback
@@ -212,10 +212,12 @@ def filterVideo(entities):
     for entity in entities:
         if len(entity['ti']) < 7:
             continue
+        if re.search('\d{9,}', entity['ti']) is not None:
+            continue
         result.append(entity)
     return result
 
-def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000):
+def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000, tagReason = False):
     updateMap = {'updateTime':getCurTime()}
     clct_channel.update({'channelId':101641},{'$set':updateMap})
 
@@ -248,7 +250,10 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 except Exception,e:
                     print e
                     continue
-        resource['tagList'].append(reason)
+        if tagReason:
+            resource['tagList'].append(reason)
+        else:
+            resource['tagList'].insert(reason)
         for black in blacklist:
             try:
                 resource['tagList'].remove(black)
