@@ -73,14 +73,16 @@ def index(request):
         spec['_id'] = ObjectId(id)
     elif name != '':
         spec['resourceName'] = re.compile(name)
-    elif channelId != '':
+
+    if channelId != '':
         spec['channelId'] = int(channelId)
         channel = clct_channel.find_one(spec)
         if channel:
             DICT['title'] = channel['channelName']
-    elif videoType != '':
+
+    if videoType != '':
         spec['videoType'] = videoType
-    elif videoId != '':
+    if videoId != '':
         spec['videoId'] = videoId
 
 
