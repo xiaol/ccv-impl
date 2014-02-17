@@ -6,8 +6,8 @@ clct_channel = con.tiercel.channel
 clct_resource = con.tiercel.resource
 clct_user = con.tiercel.user
 
-CHANNEL_ID_FROM = 101654
-CHANNEL_ID_TO = 101273
+CHANNEL_ID_FROM = 100078
+CHANNEL_ID_TO = 100074
 
 clct_resource.update({'channelId':CHANNEL_ID_FROM},{'$set':{'channelId':CHANNEL_ID_TO}},multi=True)
 

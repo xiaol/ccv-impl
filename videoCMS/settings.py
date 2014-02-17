@@ -170,7 +170,7 @@ LOGGING = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = os.path.join(os.path.dirname(__file__),"session")
-SESSION_COOKIE_AGE = 3600 * 12
+SESSION_COOKIE_AGE = 3600 * 48
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 

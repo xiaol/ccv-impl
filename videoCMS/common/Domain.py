@@ -84,6 +84,7 @@ class Resource(DomainBase):
     likeNum = 0
     shareNum = 0
     dislikeNum = 0
+    editor = ''
 
 
 class Category(DomainBase):
