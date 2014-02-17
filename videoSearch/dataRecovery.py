@@ -270,7 +270,7 @@ def filterRecommendations():
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
-        if len(title) < 7:
+        if len(title.encode('utf8')) < 14:
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
@@ -278,6 +278,13 @@ def filterRecommendations():
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
+def offlineRecommendations():
+    rets = clct_userRecommend.find({})
+    for ret in rets:
+        resource = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
+        if resource and not resource.get('isOnline', None):
+            clct_userRecommend.remove({'resourceId':ret['resourceId']})
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -292,6 +299,7 @@ if __name__ == '__main__':
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
     #filterRecommendations()
+    #offlineRecommendations()
     #stripTag()
     while True:
         feedUserTag()
