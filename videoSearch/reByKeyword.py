@@ -251,9 +251,9 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                     print e
                     continue
         if tagReason:
-            resource['tagList'].append(reason)
-        else:
             resource['tagList'].insert(reason)
+        else:
+            resource['tagList'].append(reason)
         for black in blacklist:
             try:
                 resource['tagList'].remove(black)

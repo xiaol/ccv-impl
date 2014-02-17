@@ -154,8 +154,10 @@ def stripTag():
             for tag in ret['tagList']:
                 if not tag:
                     continue
-                if re.match('<[^<]+?>',tag):
+                if re.search('<[^<]+?>',tag) is not None:
+                    print tag
                     videoTag = re.sub('<[^<]+?>', '', tag)
+                    print videoTag
                     hit = True
                 else:
                     videoTag = tag
@@ -289,7 +291,7 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    filterRecommendations()
+    #filterRecommendations()
     #stripTag()
     while True:
         feedUserTag()
