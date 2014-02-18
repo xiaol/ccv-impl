@@ -270,20 +270,29 @@ def filterRecommendations():
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
-        if len(title.encode('utf8')) < 14:
-            print title
-            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-        if re.search('\d{9,}', title) is not None:
-            print title
-            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
         count = 0
-        for m in re.finditer(u'淘宝|教程|机', title, re.IGNORECASE):
+        for m in re.finditer(u'淘宝|教程|机|qq|dnf', title, re.IGNORECASE):
             count = count + 1
         if count > 2:
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+        if ret.get('v_size',None) is not None and ret['v_size'][0] != 0 and ret['v_size'][0] < 380:
+            print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+        if len(title.encode('utf8')) < 14:
+            print title
+            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+        if re.search('\d{9,}', title) is not None:
+            print title
+            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+
 
 
 def offlineRecommendations():
