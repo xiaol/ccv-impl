@@ -39,6 +39,14 @@ def getStartEndDateTime(request):
 
     return startDate,endDate,t_start,t_end,startTime,endTime
 
+def getDaySequence(t_start,t_end):
+    ret = []
+    while t_start < t_end:
+        ret.append(time.strftime('%Y%m%d', time.localtime(t_start)))
+        t_start += 24*3600
+    return ret
+
+
 #================================================
 
 
@@ -74,7 +82,7 @@ def CacheResources(resourceIdList):
             if not resource:
                 resource2channelMap[resourceId] = (None, None)
             else:
-                    resource2channelMap[resourceId] = (resource['channelId'],resource['categoryId'])
+                resource2channelMap[resourceId] = (resource['channelId'],resource['categoryId'])
             #print "channelId not hit"
         return resource2channelMap[resourceId][0]
 
@@ -146,7 +154,7 @@ def category(request):
     自动下载:      30004 获取地址失败， 30003 下载失败，  30002 下载成功
     本地播放:      30007 播放失败，  30006 播放成功
     '''
-    spec = {'date':{'$gte':startTime, '$lte':endTime},"operationCode":{"$in":[30010, 30009, 30008,30005,30001,30000,30004,30003,30002,30007,30006]}}
+    spec = {'date':{'$gte':startTime[:8], '$lt':endTime[:8]},"operationCode":{"$in":[30010, 30009, 30008,30005,30001,30000,30004,30003,30002,30007,30006]}}
     logs = list(clct_statisticsLog.find(spec,{'operationCode':1, 'date':1, 'resourceId':1, 'count':1}))
     print len(logs)
 
@@ -254,6 +262,7 @@ def channel(request):
 
     DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
     categoryName = request.GET.get('categoryName',"全部")
+    channelIdList = map(int,filter(lambda a:len(a)!=0,[one.strip() for one in request.GET.get('channelIdList',u'').replace(u'，',u',').split(',')]))
     limit = int(request.GET.get('limit',20))
     sort = request.GET.get('sort','downplayNum')
 
@@ -263,7 +272,7 @@ def channel(request):
     else:
         filterCategoryId = None
     print 'filterCategoryId:',filterCategoryId
-    spec['date'] = {'$gte':startTime, '$lte':endTime}
+    spec['date'] = {'$gte':startTime[:8], '$lt':endTime[:8]}
 
     '''
     在线播放:      30010 获取地址失败， 30009 播放失败，  30008 播放成功
@@ -278,6 +287,14 @@ def channel(request):
 
     print '初始化getChannelId'
     getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
+
+    print '初始化 新增视频MAP newResourceMap[channelId][resourceId]'
+    newResourceMap = {}
+
+    #初始化 按天统计 播放数量 resultDaily = {channelId:{20140101:1,20140102:3}}
+    resultDaily = {}
+    daySequence = getDaySequence(t_start,t_end)
+
 
     print '开始统计'
     result = {}
@@ -297,8 +314,10 @@ def channel(request):
         channelId = getChannelId(resourceId)
         if not channelId:
             continue
+        if len(channelIdList) >0 and channelId not in channelIdList:
+            continue
         if channelId not in result:
-            result[channelId] = [0,0,0]
+            result[channelId] = [0,0,0,0]
         #下载
         if log['operationCode'] in [30000]:
             result[channelId][0] += log['count']
@@ -308,6 +327,25 @@ def channel(request):
         #总数
         result[channelId][2] += log['count']
 
+        #新视频播放统计
+        if channelId not in newResourceMap:
+            newResourceMap[channelId] = {}
+            for resource in clct_resource.find({'channelId':channelId,\
+                                                'createTime':{'$gte':startTime,'$lt':'startTime'}},\
+                                                {'_id':1}):
+                newResourceMap[channelId][str(resource['_id'])] = None
+        if resourceId in newResourceMap[channelId]:
+            result[channelId][3] += log['count']
+
+        #按天播放统计
+        if channelId not in resultDaily:
+            resultDaily[channelId] = {}
+        if log['date'] not in resultDaily[channelId]:
+            resultDaily[channelId][log['date']] = 0
+        resultDaily[channelId][log['date']] += log['count']
+
+
+    print '开始处理结果'
     #将结果转化成 数组
     L = []
     for key in result:
@@ -326,6 +364,8 @@ def channel(request):
 
     L = L[:limit]
 
+    DICT['dataDaily'] = {}
+
     for one in L:
         channel = clct_channel.find_one({'channelId':one['channelId']})
         if not channel:
@@ -335,6 +375,9 @@ def channel(request):
         one['subscribeNum'] = channel['subscribeNum']
         one['categoryName'] = getCategoryNameById(channel['channelType'])
 
+        one['newResourceNum'] = len(newResourceMap[one['channelId']])
+        one['allResourceNum'] = clct_resource.find({'channelId':one['channelId']}).count()
+        DICT['dataDaily'][one['channelId']] = [resultDaily[one['channelId']].get(day,0) for day in daySequence]
 
     DICT['result'] = L
     DICT['categoryList'] = [u'全部'] + getCategoryList()
@@ -343,6 +386,10 @@ def channel(request):
     DICT['limit'] = limit
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
+    DICT['channelIdList'] = ','.join(map(str,channelIdList))
+    DICT['daySequence'] = json.dumps(daySequence)
+    DICT['dataDaily'] = json.dumps(DICT['dataDaily'])
+
     return render_to_response('statisticsChannel.htm',DICT,context_instance=RequestContext(request))
 
 
@@ -575,7 +622,7 @@ def resource(request):
     print 'filterCategoryId:',filterCategoryId
 
     spec = {}
-    spec['date'] = {'$gte':startTime, '$lte':endTime}
+    spec['date'] = {'$gte':startTime[:8], '$lt':endTime[:8]}
     #10001 手动下载成功  10004 播放成功
     spec["operationCode"] = {"$in":[30000,30008]}
 

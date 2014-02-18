@@ -15,7 +15,12 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/statisticsCategory.js"></script>
+<script src="/static/js/Chart.js"></script>
+<script src="/static/js/statisticsChannel.js"></script>
+<script type="text/javascript">
+    var daySequence = eval('({{ daySequence|safe }})');
+    var dataDaily = eval('({{ dataDaily|safe }})');
+</script>
 <!-- zencode 快捷键 ctrl opt enter  -->
 </head>
 <body style="background-color:#CCC;">
@@ -73,12 +78,20 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>频道ID筛选:</td>
+                                    <td></td>
+                                    <td>
+                                        <textarea name="channelIdList" rows="" cols="">{{ channelIdList }}</textarea>
+                                    </td>
                                     <td>排序</td>
                                     <td colspan="4">
                                         <input {%ifequal sort "downloadNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="downloadNum"/>下载数
                                         <input {%ifequal sort "playNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="playNum"/>播放数
                                         <input {%ifequal sort "downplayNum" %}checked="checked" {%endifequal%} type="radio" name="sort" value="downplayNum"/>下载+播放
                                     </td>
+                                </tr>
+                                <tr>
+
                                 </tr>
                             </table>
                             </div>
@@ -90,7 +103,8 @@
                         <th width="300px">频道\数据</th>
                         <th>分类</th>
                         <th>下载</th>
-                        <th>播放</th>
+                        <th>全部视频播放</th>
+                        <th>新增视频播放</th>
                         <th>总计</th>
                         <th>订阅</th>
                         </tr>
@@ -103,9 +117,15 @@
                                 {{row.categoryName}}
                             </td>
                             <td> {{row.data.0}}</td>
-                            <td> {{row.data.1}}</td>
+                            <td> 播:{{row.data.1}} &nbsp; (视频总数:{{row.allResourceNum}})</td>
+                            <td> 播:{{row.data.3}} &nbsp; (新增:{{row.newResourceNum}})</td>
                             <td> {{row.data.2}}</td>
                             <td>{{row.subscribeNum}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <canvas class="myChart" channelId="{{ row.channelId }}" width="900" height="400"></canvas>
+                            </td>
                         </tr>
                     {%endfor%}
                     </table>
