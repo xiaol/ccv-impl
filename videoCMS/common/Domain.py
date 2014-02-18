@@ -84,6 +84,7 @@ class Resource(DomainBase):
     likeNum = 0
     shareNum = 0
     dislikeNum = 0
+    editor = -1
 
 
 class Category(DomainBase):
@@ -267,3 +268,14 @@ class TopicListPage(DomainBase):
 class Setting(DomainBase):
     hotSearch = []
     firstTag = ''
+
+
+class Editor(DomainBase):
+    id = -1
+    role = ''
+    name = ''
+    password = ''
+    lastLoginTime = ''
+    lastLoginIp = ''
+    avatar = ''
+    email = ''

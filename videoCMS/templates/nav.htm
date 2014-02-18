@@ -49,7 +49,7 @@
                             <li><a href="/tag/add">添加标签</a></li>
                         </ul>
                     </li>
-                    <li style="position:relative;"  class="{%ifequal navPage "tag"%}active{%endifequal%}" >
+                    <li style="position:relative;"  class="{%ifequal navPage "topic"%}active{%endifequal%}" >
                         <a href="/topic/index" class="mydropdown">专题首页</a>
                         <ul class="dropdown-menu" >
                             <li><a href="/topic/add">添加专题</a></li>
@@ -57,7 +57,7 @@
                     </li>
 
                     <li style="position: relative;" class="">
-                       <a href="#" class="dropdown-toggle {%ifequal navPage "statistics"%} active {%endifequal%}" data-toggle="dropdown">
+                       <a href="#" class="dropdown-toggle mydropdown {%ifequal navPage "statistics"%} active {%endifequal%}" data-toggle="dropdown">
                         统计
                        <b class="caret"></b>
                        </a>
@@ -84,9 +84,9 @@
                     <li>
 
                     </li>
-					<li >
+					<li style="position: relative;">
 						{%if username%}
-                        <a class="mydropdown">{{ username }}</a>
+                        <a class="mydropdown" href="/user/index">{{ username }}</a>
                         <ul class="dropdown-menu">
                             <li><a href="/logout">退出</a></li>
                         </ul>
@@ -94,6 +94,13 @@
 						<a href="/login">登录</a>
 						{%endif%}
 					</li>
+                    <li style="position: relative;">
+                        <a href="#" class="dropdown-toggle mydropdown {%ifequal navPage "admin"%} active {%endifequal%}" >管理<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/add">新增用户</a></li>
+                            <li><a href="/user/list">用户列表</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="/message">通知
                         {% if MSG_COUNT %}

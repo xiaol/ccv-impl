@@ -13,7 +13,7 @@ from videoCMS.common.common import Obj2Str,getCurTime,formatHumanTime,validateTi
 from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
-import time
+import time,urllib
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -79,7 +79,10 @@ def index(request):
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['nextSearchTime'] = formatHumanTime(one['nextSearchTime'])
         one['channelType'] = CategoryIdMapName[one['channelType']]
-    
+        one['hasSearchSource'] = len(one['sourceList']) != 0
+        one['sourceSearchList'] = zip(map(lambda a:urllib.unquote(a.encode('utf-8')).decode('utf-8'),one['sourceList']),one['searchHandleList'])
+        #one['sourceSearchList'] = zip(map(lambda a:a,one['sourceList']),one['searchHandleList'])
+
 
     DICT['channelList'] = channelList
     

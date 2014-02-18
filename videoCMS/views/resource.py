@@ -67,7 +67,7 @@ def index(request):
     channelType = request.GET.get('channelType','')
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
-    sort = request.GET.get('sort','createTime')
+    sort = request.GET.get('sort','')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -103,9 +103,9 @@ def index(request):
         spec.update(json.loads(mongo))
 
     if sort == '':
-        sort = 'createTime'
+        sortParams = [('_id',-1)]
     if sort == 'weight':
-        sortParams = [('weight',-1),('number',-1),('createTime',-1)]
+        sortParams = [('weight',-1),('number',-1),('updateTime',-1)]
     elif sort == 'createTime':
         sortParams = [('createTime',-1)]
     elif sort == 'updateTime':

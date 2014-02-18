@@ -113,4 +113,9 @@ urlpatterns = patterns('',
 
 
     url(r'^setting/update$','videoCMS.views.setting.update'),
+
+
+    url(r'^user/index$','videoCMS.views.user.index'),
+    url(r'^user/add$','videoCMS.views.user.add'),
+    url(r'^user/list$','videoCMS.views.user.list'),
 )

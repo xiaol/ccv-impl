@@ -43,7 +43,7 @@ def index(request):
             DICT['videoUrl'] = resource['resourceUrl']
 
         if p_IOS.search(request.META['HTTP_USER_AGENT'].lower()) != None:
-            DICT['ipaUrl'] = 'https://itunes.apple.com/cn/app/kou-dai-shi-pin-zi-dong-li/id737702962?ls=1&mt=8'
+            DICT['ipaUrl'] = 'http://mp.weixin.qq.com/mp/redirect?url=https://itunes.apple.com/cn/app/kou-dai-shi-pin-zi-dong-li/id737702962?ls=1&mt=8'
         elif p_Android.search(request.META['HTTP_USER_AGENT'].lower()) != None:
             DICT['apkUrl'] = 'http://koudaiv.com/static/file/PocketPlayer.apk'
     

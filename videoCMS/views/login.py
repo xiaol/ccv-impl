@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
-from videoCMS.conf import userList,clct_cmsMessage
+from videoCMS.conf import userList,clct_cmsMessage,clct_cmsEditor
 
 def login(request):
     
@@ -21,8 +21,11 @@ def login(request):
             redirect = request.POST['redirect']
         user = request.POST['username']
         passwd = request.POST['password']
-        if (user,passwd) in userList:
+        editor = clct_cmsEditor.find_one({'name':user,'password':passwd})
+        if editor:
             request.session['username'] = user
+            request.session['id'] = editor['id']
+            request.session['role'] = editor['role']
             return HttpResponseRedirect(redirect)
         else:
             DICT['username'] = user
