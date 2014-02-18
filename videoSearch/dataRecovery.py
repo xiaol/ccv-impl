@@ -278,13 +278,20 @@ def filterRecommendations():
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+        count = 0
+        for m in re.finditer(u'淘宝|教程|机', title, re.IGNORECASE):
+            count = count + 1
+        if count > 2:
+            print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
 
 def offlineRecommendations():
     rets = clct_userRecommend.find({})
     for ret in rets:
         resource = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
         if resource and not resource.get('isOnline', None):
-            clct_userRecommend.remove({'resourceId':ret['resourceId']})
+            clct_userRecommend.remove({'_id':ret['_id']})
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -298,12 +305,12 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    #filterRecommendations()
-    #offlineRecommendations()
+    filterRecommendations()
+    offlineRecommendations()
     #stripTag()
-    while True:
-        feedUserTag()
-        addTagResource()
-        updateUserTag()
-        time.sleep(60*60)
+    #while True:
+    #    feedUserTag()
+    #    addTagResource()
+    #    updateUserTag()
+    #    time.sleep(60*60)
     #clearChannel(101758)

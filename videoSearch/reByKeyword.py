@@ -31,6 +31,9 @@ def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
                  'access_token=%s&uid=%s&page=%s&count=%s'%(sinaToken,sinaId,page,count)
+    friendsUrl = 'https://api.weibo.com/2/friendships/friends/ids.json?' \
+                 'access_token=%s&uid=%s&cursor=%s'%(sinaToken, sinaId, 0)
+
     result = []
     try:
         html = get_html(userTagUrl)
@@ -43,7 +46,52 @@ def retrieveUserTag(sinaToken,sinaId):
             if isinstance(v, basestring):
                 result.append(v)
 
-    return result
+    try:
+        html = get_html(friendsUrl)
+        friends = json.loads(html)
+    except Exception,e:
+        print e
+        return result
+
+    count = 0
+    friendsList = []
+    friendsTag = []
+    tagsAll = []
+    for friend in friends['ids']:
+        friendsList.append(friend)
+        if count%19 == 0:
+            tagBatchUrl = 'https://api.weibo.com/2/tags/tags_batch.json?' \
+                      'access_token=%s&uids=%s'%(sinaToken, urllib2.quote(','.join(map(str,friendsList))))
+            try:
+                html = get_html(tagBatchUrl)
+                tagBatch = json.loads(html)
+                tagsAll.extend(tagBatch)
+            except Exception,e:
+                print e
+            friendsList = []
+        count = count + 1
+
+    for friendTag in tagsAll:
+        for oneTag in friendTag['tags']:
+            for (k, v) in oneTag.items():
+                if k != u'weight':
+                    friendsTag.append(v)
+
+    for friendTag in tagsAll:
+        sinaFriendTag = []
+        hit = False
+        for oneTag in friendTag['tags']:
+            for (k, v) in oneTag.items():
+                if k != u'weight':
+                    sinaFriendTag.append(v)
+                    friendsTag.remove(v)
+                    if v in friendsTag:
+                        result.append(v)
+
+        #if hit:
+        #    result.extend(sinaFriendTag)
+
+    return set(result)
 
 def retrieveSuggestion(sinaToken):
     result = []
@@ -199,7 +247,7 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312', t
         random.shuffle(result, random.random)
         ret = result[0:1]
         #ret = json.loads(html)['data'][0:1]
-        videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId, tagReason ))
+        videos.extend(buildVideoFromBaidu(ret,reason, source,True,channelId, 7000, tagReason ))
     except Exception,e:
         print e
         #import traceback
@@ -213,6 +261,11 @@ def filterVideo(entities):
         if len(entity['ti'].encode('utf8')) < 14:
             continue
         if re.search('\d{9,}', entity['ti']) is not None:
+            continue
+        occurrencesCount = 0
+        for m in re.finditer(u'淘宝|教程|机', entity['ti']):
+            occurrencesCount = occurrencesCount + 1
+        if occurrencesCount > 2:
             continue
         result.append(entity)
     return result
@@ -251,7 +304,7 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                     print e
                     continue
         if tagReason:
-            resource['tagList'].insert(reason)
+            resource['tagList'].insert(0,reason)
         else:
             resource['tagList'].append(reason)
         for black in blacklist:
@@ -493,11 +546,10 @@ def process(uuid):
     similarDic = {}
     similarKeywordsDic = []
     videos = []
-
     renewOldRecommend(ret['uuid'])
 
     remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$in':['done','gifDone']}})
-    if remainRecommendations.count() > 100:
+    if remainRecommendations.count() > 47:
         return
 
     likeItems = retrieveUserLike(ret['uuid'])
@@ -508,7 +560,7 @@ def process(uuid):
                 encodedTags = [x.encode('utf-8') for x in itemTags]
                 source = ' '.join(encodedTags)
                 for encodedTag in encodedTags:
-                    videos.extend(recommendByBaidu([encodedTag], source, encodedTag, 101641))
+                    videos.extend(recommendByBaidu([encodedTag], encodedTag, encodedTag, 101641))
                 shortTagDic = similarWords([' '.join(encodedTags)], False, True)
                 for (k,v) in shortTagDic.items():
                     for tag in v:
@@ -530,12 +582,22 @@ def process(uuid):
     try:
         if ret['sinaId'] != "":
             userTags = retrieveUserTag(ret['sinaToken'],ret['sinaId'])
+            userTags = list(userTags)
             if userTags:
-                similarDic = similarWords(userTags)
-                for (k,v) in similarDic.items():
-                    for tag in v:
-                        video = walk(tag, k)
-                        if video: videos.extend(video)
+                random.shuffle(userTags, random.random)
+                userTags = userTags[0:7]
+                try:
+                    encodedUserTags = [x.encode('utf-8') for x in userTags]
+                    for encodedTag in encodedUserTags:
+                        videos.extend(recommendByBaidu([encodedTag], encodedTag, encodedTag, 101641, 'gb2312', True))
+                except Exception,e:
+                    print e
+                if len(videos) < 5:
+                    similarDic = similarWords(userTags)
+                    for (k,v) in similarDic.items():
+                        for tag in v:
+                            video = walk(tag, k)
+                            if video: videos.extend(video)
     except Exception,e:
         print e
 
@@ -610,3 +672,4 @@ if __name__ == '__main__':
     main()
     #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
+
