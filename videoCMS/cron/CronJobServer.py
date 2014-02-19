@@ -17,27 +17,32 @@ class CronJobServer():
 
     def run(self,asyn = False):
         while True:
-            curTime = getCurTime()
-            print curTime,'live'
-            task = clct_cronJob.find_one({'cronTime':{'$lte':curTime},'error':{'$exists':False}})
-            if not task:
-                time.sleep(self.RUN_EVERY_MINS * 60)
-                continue
             try:
-                print 'Get Task:',str(task)
-                if asyn:
-                    t = threading.Thread(target=self.taskMap[task['type']],args=(task,))
-                    t.start()
+                curTime = getCurTime()
+                print curTime,'live'
+                task = clct_cronJob.find_one({'cronTime':{'$lte':curTime},'error':{'$exists':False}})
+                if not task:
+                    time.sleep(self.RUN_EVERY_MINS * 60)
+                    continue
+                try:
+                    print 'Get Task:',str(task)
+                    if asyn:
+                        t = threading.Thread(target=self.taskMap[task['type']],args=(task,))
+                        t.start()
+                    else:
+                        self.taskMap[task['type']](task)
+                except:
+                    clct_cronJob.update({'_id':task['_id']},{'$set':{'error':traceback.format_exc()}})
+                    print traceback.format_exc()
                 else:
-                    self.taskMap[task['type']](task)
-            except:
-                clct_cronJob.update({'_id':task['_id']},{'$set':{'error':traceback.format_exc()}})
-                print traceback.format_exc()
-            else:
-                clct_cronJob.remove({'_id':task['_id']})
-                continue
+                    clct_cronJob.remove({'_id':task['_id']})
+                    continue
 
-            time.sleep(self.RUN_EVERY_MINS * 60)
+                time.sleep(self.RUN_EVERY_MINS * 60)
+            except:
+                import traceback
+                print traceback.format_exc()
+                time.sleep(self.RUN_EVERY_MINS * 60)
 
 
 
