@@ -278,7 +278,7 @@ def filterRecommendations():
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue
-        if ret.get('v_size',None) is not None and ret['v_size'][0] != 0 and ret['v_size'][0] < 380:
+        if ret.get('v_size',None) is not None and ret['v_size'][0] != 0 and ret['v_size'][0] < 480:
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue
@@ -314,12 +314,12 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    filterRecommendations()
-    offlineRecommendations()
+    #filterRecommendations()
+    #offlineRecommendations()
     #stripTag()
-    #while True:
-    #    feedUserTag()
-    #    addTagResource()
-    #    updateUserTag()
-    #    time.sleep(60*60)
+    while True:
+        feedUserTag()
+        addTagResource()
+        updateUserTag()
+        time.sleep(60*60)
     #clearChannel(101758)
