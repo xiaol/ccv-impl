@@ -743,3 +743,8 @@ def playTime(request):
     result =  sorted(R.items(),key=lambda a:a[0],reverse=True)
     DICT = {'result':result}
     return render_to_response("statisticsPlayTime.htm",DICT,context_instance=RequestContext(request))
+
+
+
+def apiFeed(request):
+    return render_to_response("statisticsAPI.htm",{},context_instance=RequestContext(request))

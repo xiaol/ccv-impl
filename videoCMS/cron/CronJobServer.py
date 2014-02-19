@@ -43,7 +43,7 @@ class CronJobServer():
 
 def handleAndroidPush(task):
     pushType = task['pushType']
-    channelId = task['pushChannelId']
+    #channelId = task['pushChannelId']
     title = task['pushTitle']
     content = task['pushContent']
     extras = task['extras']
