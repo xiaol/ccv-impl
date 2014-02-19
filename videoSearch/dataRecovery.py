@@ -271,6 +271,12 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
+        if len(title.encode('utf8')) < 20:
+            print title
+            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
+            #clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+        '''
         count = 0
         for m in re.finditer(u'淘宝|教程|机|qq|dnf', title, re.IGNORECASE):
             count = count + 1
@@ -282,16 +288,12 @@ def filterRecommendations():
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue
-        if len(title.encode('utf8')) < 14:
-            print title
-            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
+
         if re.search('\d{9,}', title) is not None:
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
+            continue'''
 
 
 
@@ -301,6 +303,21 @@ def offlineRecommendations():
         resource = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
         if resource and not resource.get('isOnline', None):
             clct_userRecommend.remove({'_id':ret['_id']})
+
+def predictDefinition():
+    rets = clct_resource.find({'v_size':{'$exists':True}, 'isOnline':True})
+    for ret in rets:
+
+        definition = ret['v_size'][0]*ret['v_size'][1]/(ret['v_br']+2)
+        print ret['v_size'][0], ' ', ret['v_size'][1], ' ', ret['v_br']
+        print definition
+        if definition > 1000:
+            print 'wait'
+            print ret['_id']
+        '''if definition < 550:
+            print 'hello'
+        if ret['v_size'][0]>600 and definition < 550 and definition > 450:
+            print ret['_id']'''
 
 if __name__ == '__main__':
     #createOrUpdateTags()
@@ -317,6 +334,7 @@ if __name__ == '__main__':
     #filterRecommendations()
     #offlineRecommendations()
     #stripTag()
+    #predictDefinition()
     while True:
         feedUserTag()
         addTagResource()
