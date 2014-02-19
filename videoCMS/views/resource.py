@@ -423,7 +423,7 @@ def pushResource(request):
     from videoCMS.conf import jPushClient,JPUSH_APP_KEY
 
     cronTime = request.GET.get('cronTime')
-    resourceId = int(request.GET.get('pushResourceId'))
+    resourceId = request.GET.get('pushResourceId')
     title = request.GET.get('pushTitle')
     content = request.GET.get('pushContent')
     resource = clct_resource.find_one({'_id':ObjectId(resourceId)})

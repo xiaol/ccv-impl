@@ -55,7 +55,7 @@ urlpatterns = patterns('',
     url(r'^resource/unsetInvalid$', 'videoCMS.views.resource.unsetInvalid'),
     url(r'^resource/search$', 'videoCMS.views.resource.search'),
     url(r'^resource/searchResourceId', 'videoCMS.views.resource.searchId'),
-    url(r'^resource/pushResource$', 'videoCMS.views.resource.pushResource$'),
+    url(r'^resource/pushResource$', 'videoCMS.views.resource.pushResource'),
 
 
     url(r'^resourceGif/add$', 'videoCMS.views.resource_gif.add'),
