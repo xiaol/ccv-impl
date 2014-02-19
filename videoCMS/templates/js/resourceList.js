@@ -125,3 +125,14 @@ function addToBaBa(object,resourceId)
 		}
 	});
 }
+
+
+function init()
+{
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR',
+      pick12HourFormat: false
+    });
+}
+
+$(document).ready(init);

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> {{title}}</title>
+
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/statisticsChannel.css" rel="stylesheet" type="text/css" />
+
+
+<!--<script src="/static/js/jquery-1.8.3.min.js"></script>-->
+<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/Chart.js"></script>
+<script type="text/javascript">
+    var labels = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
+    var datas = [2342, 1442, 1003, 583, 424, 373, 711, 1272, 1700, 1539, 1717, 1853, 2202, 1925, 1799, 2014, 1925, 1862, 1805, 2367, 2911, 203, 3030, 3860];
+    $('document').ready(function(){
+        var ctx = $(".myChart")[0].getContext("2d");
+        var data = {
+        labels : labels,
+        datasets : [
+            {
+                fillColor : "rgba(151,187,205,0.5)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                data : datas
+            }
+        ]
+        };
+        var myNewChart = new Chart(ctx).Line(data);
+
+    });
+
+</script>
+<!-- zencode 快捷键 ctrl opt enter  -->
+</head>
+<body style="background-color:#CCC;">
+    {% include "nav.htm" %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12 paddingWrap" style="background-color:#FFF;">
+                <canvas class="myChart" width="900" height="400"></canvas>
+            </div>
+		</div>
+	</div>
+</body>
+</html>

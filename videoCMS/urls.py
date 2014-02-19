@@ -55,6 +55,7 @@ urlpatterns = patterns('',
     url(r'^resource/unsetInvalid$', 'videoCMS.views.resource.unsetInvalid'),
     url(r'^resource/search$', 'videoCMS.views.resource.search'),
     url(r'^resource/searchResourceId', 'videoCMS.views.resource.searchId'),
+    url(r'^resource/pushResource$', 'videoCMS.views.resource.pushResource'),
 
 
     url(r'^resourceGif/add$', 'videoCMS.views.resource_gif.add'),
@@ -90,6 +91,7 @@ urlpatterns = patterns('',
     url(r'^statistics2/weiboUser$','videoCMS.views.statistics2.weiboUser'),
     url(r'^statistics2/search','videoCMS.views.statistics2.search'),
     url(r'^statistics2/playTime','videoCMS.views.statistics2.playTime'),
+    url(r'^statistics2/apiFeed','videoCMS.views.statistics2.apiFeed'),
 
 
     url(r'^about$','videoCMS.views.about.index'),

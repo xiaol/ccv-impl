@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import json,StringIO,re
 from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_topic
+from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_topic,clct_cronJob
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
 from videoCMS.common.common import Obj2Str,getCurTime,antiFormatHumanTime,formatHumanTime
@@ -418,7 +418,33 @@ def searchId(request):
     return HttpResponse(json.dumps(ret))
 
 
+@NeedLogin
+def pushResource(request):
+    from videoCMS.conf import jPushClient,JPUSH_APP_KEY
 
+    cronTime = request.GET.get('cronTime')
+    resourceId = request.GET.get('pushResourceId')
+    title = request.GET.get('pushTitle')
+    content = request.GET.get('pushContent')
+    resource = clct_resource.find_one({'_id':ObjectId(resourceId)})
+    channel = clct_channel.find_one({'channelId':resource['channelId']})
+    extras = \
+    {
+        'action':"OpenChannel",
+        'resourceId':resourceId,
+        'channelId':channel['channelId'],
+        'videoClass':channel['videoClass']
+    }
+
+    if cronTime == "":
+        jPushClient.send_notification_by_appkey(JPUSH_APP_KEY, 1, 'des',title,content, 'android',extras=extras)
+    else:
+        task = {"type":"AndroidPush","pushTitle":title,"pushContent":content,"extras":extras}
+        task['pushType'] = 'AppKey'
+        task['cronTime'] = antiFormatHumanTime(cronTime)
+        task['createTime'] = getCurTime()
+        clct_cronJob.insert(task)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 #==============================================================
 '''
