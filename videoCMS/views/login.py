@@ -2,6 +2,7 @@
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from videoCMS.conf import userList,clct_cmsMessage,clct_cmsEditor
+from videoCMS.common.common import  getCurTime
 
 def login(request):
     
@@ -24,8 +25,9 @@ def login(request):
         editor = clct_cmsEditor.find_one({'name':user,'password':passwd})
         if editor:
             request.session['username'] = user
-            request.session['id'] = editor['id']
+            request.session['id'] = int(editor['id'])
             request.session['role'] = editor['role']
+            clct_cmsEditor.update({'name':user},{'$set':{'lastLoginTime':getCurTime()}})
             return HttpResponseRedirect(redirect)
         else:
             DICT['username'] = user
