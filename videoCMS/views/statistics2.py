@@ -262,7 +262,7 @@ def channel(request):
 
     DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
     categoryName = request.GET.get('categoryName',"全部")
-    channelIdList = map(int,filter(lambda a:len(a)!=0,[one.strip() for one in request.GET.get('channelIdList',u'').replace(u'，',u',').split(',')]))
+    channelIdList = map(int,filter(lambda a:len(a)!=0,[one.strip() for one in request.GET.get('channelIdList',u'').replace(u'，',',').split(',')]))
     limit = int(request.GET.get('limit',20))
     sort = request.GET.get('sort','downplayNum')
 

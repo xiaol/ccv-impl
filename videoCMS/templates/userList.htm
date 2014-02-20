@@ -26,42 +26,20 @@
     <div class="row-fluid smallFont">
         <!--  左部分  -->
         <div class="span12 whitepanel">
-            {% ifequal request.path "/user/index" %}
-            <div class="row-fluid">
-                <div class="span12">
-                    <div>
-                        <h2>{{ name }}</h2>
-                    </div>
-                    <div>
-                        <span>上次登录时间：{{ lastLoginTime }}</span>
-                    </div>
-                </div>
-            </div>
-            {% endifequal %}
 
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">最近添加的视频(<a href="/resource/index?editor={{ uid }}">全部:{{ resourceNum }})</a></legend>
+                    <legend class="">用户列表</legend>
                 </div>
                 <div>
                     <ul>
-                    {% for resource in resourceList %}
-                        <li>
-                            <a href="/resource/index?id={{ resource.id }}">{{ resource.resourceName }}</a>
-                            <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
-                        </li>
+                    {% for user in userList %}
+                        <li><a href="/user/index?id={{ user.id }}">{{ user.name }}</a> <span>{{ user.role }}</span></li>
                     {% endfor %}
                     </ul>
                 </div>
             </fieldset>
-            <fieldset>
-                <div id="legend" class="">
-                    <legend class="">最近播放量</legend>
-                </div>
-                <div>
-                    ddd
-                </div>
-            </fieldset>
+
         </div>
     </div>
 </div>

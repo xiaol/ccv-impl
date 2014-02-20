@@ -68,6 +68,7 @@ def index(request):
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
     sort = request.GET.get('sort','')
+    editor = int(request.GET.get('editor',-1))
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -95,6 +96,8 @@ def index(request):
         if 'createTime' not in spec:
             spec['createTime'] = {}
         spec['createTime'].update({"$lte":endTime})
+    if editor != -1:
+        spec['editor'] = editor
     if isOnline == 'true':
         spec['isOnline'] = True
     elif isOnline == 'false':
@@ -133,6 +136,13 @@ def index(request):
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
+        if 'v_size' in one:
+            if  one['v_size'] == [0,0]:
+                one['resolution'] = None
+            else:
+                one['resolution'] = one['v_size'][0]*one['v_size'][1]/one['v_br']
+            one['resourceSize'] = one['resourceSize'] / 1000
+            one['br'] = one['resourceSize']/one['duration']
 
 
 
@@ -235,6 +245,8 @@ def add(request):
         return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     resource = POST2Resource(request)
+    resource['editor'] = request.session['id']
+
     now = getCurTime()
     resource['createTime'] = now
     resource['modifyTime'] = now
