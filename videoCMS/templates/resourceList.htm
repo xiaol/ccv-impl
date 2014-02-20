@@ -29,7 +29,13 @@
                                     <span class="label label-inverse">{{ resource.videoType }}</span>
 		                    	</div>
 		                        <img class="resourceImage" src="{{resource.resourceImageUrl}}" />
-                                <img class="bigResourceImage" src="{{resource.resourceImageUrlOri}}"/>
+                                <div class="bigResourceImage" >
+                                    <span class="resolution" style=" ">
+                                        {{ resource.v_size }}，{{ resource.v_br }}kbs，
+                                        大小：{{ resource.resourceSize }}KB，时长：{{ resource.duration }}S，码率：{{ resource.br }} KB/S
+                                    </span>
+                                    <img src="{{resource.resourceImageUrlOri}}"/>
+                                </div>
 		                    </div>
 		                    <div class="span9 topicItemRight">
 		                        <div class="row-fluid">
