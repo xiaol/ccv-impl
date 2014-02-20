@@ -258,6 +258,8 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312', t
 def filterVideo(entities):
     result = []
     for entity in entities:
+        if re.search('aipai.com', entity['url']) is not None:
+            continue
         if len(entity['ti'].encode('utf8')) < 20:
             continue
         if re.search('\d{9,}', entity['ti']) is not None:
