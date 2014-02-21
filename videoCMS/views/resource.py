@@ -241,6 +241,8 @@ def add(request):
         DICT['typeList'] = getCategoryList()
         DICT['navPage'] = 'resource'
         DICT['number'] = -1
+        DICT['weight'] = -1
+        DICT['channelId'] = 1
         DICT['username'] = request.session['username']
         return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     

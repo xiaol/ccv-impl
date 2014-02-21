@@ -183,6 +183,7 @@ class Channel(DomainBase):
     type = ''
     snapShot = False
     recReason = ''
+    editor = -1
 
 
 class Tag(DomainBase):

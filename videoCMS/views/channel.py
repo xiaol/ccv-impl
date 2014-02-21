@@ -39,6 +39,7 @@ def index(request):
     channelId = request.GET.get('channelId','')
     id = request.GET.get('id','')
     channelType = request.GET.get('channelType','')
+    editor = request.GET.get('editor','')
     sort = request.GET.get('sort','')
     skip = limit * (page - 1)
     sortList = [('_id',-1)]
@@ -55,6 +56,8 @@ def index(request):
         spec['channelType'] = getCategoryIdByName(channelType)
     if processed != "":
         spec['processed'] = True if processed=="true" else False
+    if editor != '':
+        spec['editor'] = int(editor)
     if sort != "":
         if sort == 'createTime':
             sortList = [('createTime',-1)]
@@ -100,6 +103,7 @@ def index(request):
     DICT['processed'] = processed
     DICT['navPage'] = 'channel'
     DICT['sort'] = sort
+    DICT['editor'] = editor
     return render_to_response('channelList.htm',DICT,context_instance=RequestContext(request))
 
 
@@ -121,6 +125,7 @@ def POST2Channel(request):
         pass
 
     channel['createTime'] = request.POST.get('createTime')
+    channel['editor'] = int(request.POST.get('editor',-1))
     channel['identifer'] = int(request.POST.get('identifer'))
     channel['duration'] = int(-1 if request.POST.get('duration') == '' else request.POST.get('duration'))
     channel['daysAhead'] = int(-1 if request.POST.get('daysAhead') == '' else request.POST.get('daysAhead'))
@@ -235,6 +240,7 @@ def add(request):
         DICT['autoOnline'] = True
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         DICT['username'] = request.session['username']
+        DICT['editor'] = -1
         return render_to_response('channelUpdate.htm',DICT,context_instance=RequestContext(request))
     
     channel = POST2Channel(request)
