@@ -11,7 +11,39 @@
     <script src="/static/js/jquery-1.7.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/common.js"></script>
+    <script src="/static/js/Chart.js"></script>
 </head>
+
+<script type="text/javascript">
+    var labels = eval('({{ daySequeue|safe }})');
+    var datas = eval('({{ statistics|safe }})');
+    $('document').ready(function(){
+        var ctx = $(".myChart")[0].getContext("2d");
+        var data = {
+        labels : labels,
+        datasets : [
+            {
+                fillColor : "rgba(41,43,54,0.5)",
+                strokeColor : "rgba(41,43,54,1)",
+                pointColor : "rgba(41,43,54,1)",
+                pointStrokeColor : "#fff",
+                data : datas[1]
+            },
+            {
+                fillColor : "rgba(7,89,156,0.5)",
+                strokeColor : "rgba(7,89,156,1)",
+                pointColor : "rgba(7,89,156,1)",
+                pointStrokeColor : "#fff",
+                pointStrokeColor : "#fff",
+                data : datas[0]
+            }
+        ]
+        };
+        var myNewChart = new Chart(ctx).Line(data);
+
+    });
+</script>
+
 
 <body style="background-color: #CCC;">
 {% include "nav.htm" %}
@@ -59,7 +91,7 @@
                     <legend class="">最近播放量</legend>
                 </div>
                 <div>
-                    ddd
+                    <canvas class="myChart" width="900" height="400"></canvas>
                 </div>
             </fieldset>
         </div>

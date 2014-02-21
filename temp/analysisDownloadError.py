@@ -1,10 +1,10 @@
 #coding=utf-8
 __author__ = 'ding'
 
-from pymongo import Connection
+from pymongo import MongoClient
 import time,json
 
-con = Connection('h39:20010')
+con = MongoClient('h39:20010')
 clct_operationLog = con.tiercel.operationLog
 
 def main():

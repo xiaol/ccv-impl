@@ -120,5 +120,5 @@ urlpatterns = patterns('',
     url(r'^user/index$','videoCMS.views.user.index'),
     url(r'^user/edit','videoCMS.views.user.edit'),
     url(r'^user/add$','videoCMS.views.user.add'),
-    url(r'^user/list$','videoCMS.views.user.list'),
+    url(r'^user/list$','videoCMS.views.user.list_'),
 )
