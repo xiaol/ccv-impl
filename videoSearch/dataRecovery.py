@@ -271,9 +271,12 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
-        if re.search('aipai.com', ret['resourceUrl']):
+        if re.search(u'\d+集',title):
             print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
+        '''if re.search('aipai.com', ret['resourceUrl']):
+            print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})'''
 
 
         '''if len(title.encode('utf8')) < 20:
@@ -336,13 +339,13 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    filterRecommendations()
-    offlineRecommendations()
+    #filterRecommendations()
+    #offlineRecommendations()
     #stripTag()
     #predictDefinition()
-    #while True:
-    #    feedUserTag()
-    #    addTagResource()
-    #    updateUserTag()
-    #    time.sleep(60*60)
+    while True:
+        feedUserTag()
+        addTagResource()
+        updateUserTag()
+        time.sleep(60*60)
     #clearChannel(101758)

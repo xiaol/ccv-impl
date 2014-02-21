@@ -205,9 +205,10 @@ def recommend(words, source):
         ret = json.loads(html)['response']['docs']
         videos = buildVideo(ret, ' '.join(words), source)
     except Exception,e:
-        print e
+        print 'not found in ours', ' ',e
+    if not videos:
+        videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
     #videos.extend(recommendByYouku(words,' '.join(words), source))
-    videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
     return videos
 
 def recommendByYouku(words,reason, source,channelId=101641, orderBy='view-count',viewCount=7000):
