@@ -285,8 +285,8 @@ def channel(request):
     #开始统计
     logs = list(clct_statisticsLog.find(spec,{'className':0, 'msg':0}))
 
-    print '初始化getChannelId'
-    getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
+    #print '初始化getChannelId'
+    #getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
 
     print '初始化 新增视频MAP newResourceMap[channelId][resourceId]'
     newResourceMap = {}
@@ -308,10 +308,12 @@ def channel(request):
         resourceId = log['resourceId']
         if resourceId == 'default':
             continue
-        categoryId = getCategorylId(resourceId)
-        if filterCategoryId and filterCategoryId != categoryId:
-            continue 
-        channelId = getChannelId(resourceId)
+        #按照类别过滤
+        #categoryId = getCategorylId(resourceId)
+        #if filterCategoryId and filterCategoryId != categoryId:
+        #    continue
+        #channelId = getChannelId(resourceId)
+        channelId =log.get('channelId',None)
         if not channelId:
             continue
         if len(channelIdList) >0 and channelId not in channelIdList:

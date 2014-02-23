@@ -1,50 +1,111 @@
+#coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from videoCMS.conf import *
 from login import NeedLogin
 import time,collections,json
-from statistics2 import  getDaySequence
+from statistics2 import  getDaySequence,getStartEndDateTime
 
 
-def staticResourceByUid(uid,days=7):
-    t_start = time.time()- 7*24*3600
-    t_end = time.time()
-    startDate = time.strftime('%Y%m%d',time.localtime(t_start))
-    endDate = time.strftime('%Y%m%d',time.localtime(t_end))
-    resourceList = clct_resource.find({'editor':uid,'createTime':{'$gte':startDate,'$lte':endDate}},{'_id':1})
+
+
+def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
+
+    channelList = list(clct_channel.find({'editor':uid},{'_id':0,'channelId':1,'channelName':1}))
+    channelIdList = [one['channelId'] for one in channelList]
+
+    resourceList = clct_resource.find({'$or':[{'editor':uid},{'channelId':{'$in':channelIdList}}],'createTime':{'$gte':startTime,'$lt':endTime}},{'_id':1})
     resourceSet = set([str(one['_id']) for one in resourceList])
 
-    print startDate,endDate
-    logs = [one for one in clct_statisticsLog.find({'date':{'$gte':startDate, '$lte':endDate,}, "operationCode":{"$in":[30008,30000]}})]
+    print startTime,endTime
+    logs = [one for one in clct_statisticsLog.find({'date':{'$gte':startTime[:8], '$lt':endTime[:8],}, "operationCode":{"$in":[30008,30000]}})]
 
     result = {}
+    '''
+    {
+        10010:
+        {
+            '20140101':[0,0],
+            '20140102':[0,0]
+        }
+    }
+    '''
+    resultSum = {}
+    '''
+    {
+        '20140101':[0,0],
+        '20140102':[0,0]
+    }
+    '''
+    #为 编辑负责的频道创建默认的统计数据
+    for channelId in channelIdList:
+        result[channelId] = {}
+    #统计日志
     for log in logs:
         if log['resourceId'] not in resourceSet:
             continue
-        if log['date'] not in result:
-            result[log['date']] = [0,0]
+        #按频道统计
+        if log['channelId'] not in result:
+            result[log['channelId']] = {}
+        if log['date'] not in result[log['channelId']]:
+            result[log['channelId']][log['date']] = [0,0]
         if log['operationCode'] == 30000:
-            result[log['date']][0] += log['count']
+            result[log['channelId']][log['date']][0] += log['count']
         elif log['operationCode'] == 30008:
-            result[log['date']][1] += log['count']
+            result[log['channelId']][log['date']][1] += log['count']
+
+        #合计统计
+        if log['date'] not in resultSum:
+            resultSum[log['date']] = [0,0]
+        if log['operationCode'] == 30000:
+            resultSum[log['date']][0] += log['count']
+        elif log['operationCode'] == 30008:
+            resultSum[log['date']][1] += log['count']
 
 
     daySequence = getDaySequence(t_start,t_end)
-    s = []
+    s_sum = []
     for day in daySequence:
-        s.append(result.get(day,[0,0]))
+        s_sum.append(resultSum.get(day,[0,0]))
+    #从 [[1,1],[2,2],[3,3]] 转换为 [[1,2,3],[1,2,3]]
+    s_sum = map(list,zip(*s_sum))
 
-    print s,daySequence,result
-    return daySequence,s
+    s_channel = {}
+    s_channel = {}
+    for channel in result:
+        s_channel[channel] = {}
+        data = []
+        for day in daySequence:
+            data.append(result[channel].get(day,[0,0]))
+        #从 [[1,1],[2,2],[3,3]] 转换为 [[1,2,3],[1,2,3]]
+        data = map(list,zip(*data))
+        s_channel[channel]['data'] = data
+        s_channel[channel]['download'] = sum(data[0])
+        s_channel[channel]['play'] = sum(data[1])
+
+
+    print daySequence
+    print s_sum
+    print s_channel
+    print channelList
+    return daySequence,s_sum,s_channel,channelList
 
 
 @NeedLogin
 def index(request):
     DICT = {}
     DICT['info'] = ''
-
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
     uid = int(request.GET.get('id',-1))
+    DICT['timespan'] = request.GET.get('timespan',u'天')
+    if DICT['timespan']  == u'天':
+        timespan = 24*3600
+    elif DICT['timespan']  == u'周':
+        timespan = 7*24*3600
+
+
+
     if uid == -1: uid = request.session['id']
     editor = clct_cmsEditor.find_one({'id':uid})
     DICT.update(editor)
@@ -58,12 +119,16 @@ def index(request):
         one['id'] =str(one['_id'])
         DICT['resourceList'].append(one)
 
-    daySequeue,statistics = staticResourceByUid(uid,7)
+    #统计数据
 
-    DICT['daySequeue'] = json.dumps(daySequeue)
-    DICT['statistics'] = json.dumps(map(list,zip(*statistics)))
+    labels,s_sum,s_channel,channelList = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
 
-    print DICT['statistics']
+    DICT['labels'] = json.dumps(labels)
+    DICT['s_sum'] = json.dumps(s_sum)
+    DICT['s_channel'] = json.dumps(s_channel)
+    DICT['channelList'] = channelList
+    DICT['channelListStr'] = json.dumps(channelList)
+    print DICT
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
 

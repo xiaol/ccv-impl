@@ -5,43 +5,26 @@
     <title>个人中心</title>
     <link href="/static/css/tagUpdate.css" rel="stylesheet"
           type="text/css" />
+
     <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="/static/css/common.css" rel="stylesheet" type="text/css" />
 
-    <script src="/static/js/jquery-1.7.1.js"></script>
+    <script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/static/js/common.js"></script>
     <script src="/static/js/Chart.js"></script>
+    <script src="/static/js/userIndex.js"></script>
 </head>
 
 <script type="text/javascript">
-    var labels = eval('({{ daySequeue|safe }})');
-    var datas = eval('({{ statistics|safe }})');
-    $('document').ready(function(){
-        var ctx = $(".myChart")[0].getContext("2d");
-        var data = {
-        labels : labels,
-        datasets : [
-            {
-                fillColor : "rgba(41,43,54,0.5)",
-                strokeColor : "rgba(41,43,54,1)",
-                pointColor : "rgba(41,43,54,1)",
-                pointStrokeColor : "#fff",
-                data : datas[1]
-            },
-            {
-                fillColor : "rgba(7,89,156,0.5)",
-                strokeColor : "rgba(7,89,156,1)",
-                pointColor : "rgba(7,89,156,1)",
-                pointStrokeColor : "#fff",
-                pointStrokeColor : "#fff",
-                data : datas[0]
-            }
-        ]
-        };
-        var myNewChart = new Chart(ctx).Line(data);
+    var labels = eval('({{ labels|safe }})');
+    var s_sum = eval('({{ s_sum|safe }})');
+    var s_channel = eval('({{ s_channel|safe }})');
+    var channelList = eval('({{ channelListStr|safe }})');
 
-    });
+
 </script>
 
 
@@ -70,6 +53,51 @@
                 </div>
             </div>
             {% endifequal %}
+            <div class="row-fluid" id="nav">
+
+                <form>
+                    <div class="well">
+                    <table>
+                        <tr>
+                            <td>时间区间:</td>
+                            <td>
+                                <span>开始时间</span>
+                            </td>
+                            <td>
+                                <div id="datetimepicker1" class="input-append date" >
+                                    <input data-format="yyyy/MM/dd" name="startDate" type="text" value="{{startDate}}"></input>
+                                    <span class="add-on">
+                                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <span>结束时间</span>
+                            </td>
+                            <td>
+                                <div id="datetimepicker2" class="input-append">
+                                    <input data-format="yyyy/MM/dd" name="endDate" type="text" value="{{endDate}}"></input>
+                                    <span class="add-on">
+                                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td >
+                               <select>
+                                   <option>天</option>
+                                   <option>周</option>
+                                   <option>月</option>
+                               </select>
+                            </td>
+                            <td >
+                                <input type="submit" value="查询">
+                            </td>
+                        </tr>
+
+                    </table>
+                    </div>
+                </form>
+        </div>
 
             <fieldset>
                 <div id="legend" class="">
@@ -91,8 +119,25 @@
                     <legend class="">最近播放量</legend>
                 </div>
                 <div>
-                    <canvas class="myChart" width="900" height="400"></canvas>
+                    <canvas id="myChart" width="900" height="400"></canvas>
                 </div>
+            </fieldset>
+
+            <fieldset>
+                <div id="legend" class="">
+                    <legend class="">频道播放量</legend>
+                </div>
+                {% for channel in channelList %}
+                <div class="{{ channel.channelId }} channelSS">
+                    <div>
+                        <a href="/channel/index?channelId={{ channel.channelId }}">{{ channel.channelName }} </a>
+                        <span class="info"></span>
+                        <a onclick="showCanvas(this)">显示曲线图</a>
+                    </div>
+                    <canvas class="channelStatistic hidden" width="900" height="400"></canvas>
+                </div>
+                {% endfor %}
+
             </fieldset>
         </div>
     </div>

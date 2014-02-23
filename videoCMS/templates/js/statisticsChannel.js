@@ -18,7 +18,7 @@ function initChart()
                 data : dataDaily[$(chart).attr('channelId')]
             }
         ]
-        }
+        };
         var myNewChart = new Chart(ctx).Line(data);
     });
 

@@ -68,7 +68,7 @@ def index(request):
     startTime = request.GET.get('startTime','')
     endTime = request.GET.get('endTime','')
     sort = request.GET.get('sort','')
-    editor = int(request.GET.get('editor',-1))
+    editor = request.GET.get('editor','')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -96,8 +96,8 @@ def index(request):
         if 'createTime' not in spec:
             spec['createTime'] = {}
         spec['createTime'].update({"$lte":endTime})
-    if editor != -1:
-        spec['editor'] = editor
+    if editor != '':
+        spec['editor'] = int(editor)
     if isOnline == 'true':
         spec['isOnline'] = True
     elif isOnline == 'false':
