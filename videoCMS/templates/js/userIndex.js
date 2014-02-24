@@ -14,8 +14,10 @@ function init()
     {
         var channelId = channelList[i].channelId;
         var dom = $('.'+channelId);
-        dom.find('.info').text('播'+s_channel[channelId]['play']+'/下'+s_channel[channelId]['download']);
-        var ctx = dom.find('.channelStatistic')[0].getContext("2d");
+        dom.find('.download').text('下'+s_channel[channelId]['download']);
+        dom.find('.play').text('播'+s_channel[channelId]['play']);
+
+        var ctx = dom.next().find('.channelStatistic')[0].getContext("2d");
         var data = {
         labels : labels,
         datasets : [
@@ -69,7 +71,7 @@ function init()
 
 function showCanvas(object)
 {
-    $(object).parents('.channelSS').find('canvas').toggle();
+    $(object).parents('tr').next().find('canvas').toggle();
 }
 
 $('document').ready(init)

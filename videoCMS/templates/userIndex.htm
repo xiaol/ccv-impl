@@ -116,7 +116,7 @@
             </fieldset>
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">最近播放量</legend>
+                    <legend class="">最近播放量({{ startDate }}-{{ endDate }})</legend>
                 </div>
                 <div>
                     <canvas id="myChart" width="900" height="400"></canvas>
@@ -125,20 +125,43 @@
 
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">频道播放量</legend>
+                    <legend class="">频道播放量  手动+自动 ({{ startDate }}-{{ endDate }})</legend>
                 </div>
-                {% for channel in channelList %}
-                <div class="{{ channel.channelId }} channelSS">
-                    <div>
-                        <a href="/channel/index?channelId={{ channel.channelId }}">{{ channel.channelName }} </a>
-                        <span class="info"></span>
-                        <a onclick="showCanvas(this)">显示曲线图</a>
-                    </div>
-                    <canvas class="channelStatistic hidden" width="900" height="400"></canvas>
-                </div>
-                {% endfor %}
+                <table  class="table table-bordered">
+                    <tr>
+                        <th>频道</th>
+                        <th>播放</th>
+                        <th>下载</th>
+                        <th>操作</th>
+                    </tr>
 
+                    {% for channel in channelList %}
+                    <tr class="{{ channel.channelId }} channelSS">
+                        <td>
+                            <a href="/channel/index?channelId={{ channel.channelId }}">{{ channel.channelName }} </a>
+                        </td>
+                        <td>
+                            <span class="play"></span>
+                        </td>
+                        <td>
+                            <span class="download"></span>
+                        </td>
+
+                        <td>
+                            <a class="label label-important" onclick="showCanvas(this)">显示曲线图</a>
+                            <a class="label label-important" href="/statistics2/channel?channelIdList={{ channel.channelId }}">详细统计</a>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <canvas class="channelStatistic hidden" width="900" height="400"></canvas>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </fieldset>
+            <div style="height: 100px;"></div>
         </div>
     </div>
 </div>

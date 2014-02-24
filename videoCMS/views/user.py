@@ -46,14 +46,15 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         if log['resourceId'] not in resourceSet:
             continue
         #按频道统计
-        if log['channelId'] not in result:
-            result[log['channelId']] = {}
-        if log['date'] not in result[log['channelId']]:
-            result[log['channelId']][log['date']] = [0,0]
-        if log['operationCode'] == 30000:
-            result[log['channelId']][log['date']][0] += log['count']
-        elif log['operationCode'] == 30008:
-            result[log['channelId']][log['date']][1] += log['count']
+        if 'channelId' in log:
+            if log['channelId'] not in result:
+                result[log['channelId']] = {}
+            if log['date'] not in result[log['channelId']]:
+                result[log['channelId']][log['date']] = [0,0]
+            if log['operationCode'] == 30000:
+                result[log['channelId']][log['date']][0] += log['count']
+            elif log['operationCode'] == 30008:
+                result[log['channelId']][log['date']][1] += log['count']
 
         #合计统计
         if log['date'] not in resultSum:
@@ -89,7 +90,7 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     print s_sum
     print s_channel
     print channelList
-    return daySequence,s_sum,s_channel,channelList
+    return daySequence,s_sum,s_channel,channelList,len(resourceSet)
 
 
 @NeedLogin
@@ -121,13 +122,14 @@ def index(request):
 
     #统计数据
 
-    labels,s_sum,s_channel,channelList = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
+    labels,s_sum,s_channel,channelList,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
 
     DICT['labels'] = json.dumps(labels)
     DICT['s_sum'] = json.dumps(s_sum)
     DICT['s_channel'] = json.dumps(s_channel)
     DICT['channelList'] = channelList
     DICT['channelListStr'] = json.dumps(channelList)
+    DICT['newNum'] = newNum
     print DICT
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
