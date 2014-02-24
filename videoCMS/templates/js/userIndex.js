@@ -71,7 +71,7 @@ function init()
 
 function showCanvas(object)
 {
-    $(object).parents('tr').next().find('canvas').toggle();
+    $(object).parents('tr').next().find('canvas').slideToggle();
 }
 
 $('document').ready(init)

@@ -2,7 +2,7 @@
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from videoCMS.conf import userList,clct_cmsMessage,clct_cmsEditor
-from videoCMS.common.common import  getCurTime
+from videoCMS.common.common import  getCurTime,formatHumanTime
 
 def login(request):
     

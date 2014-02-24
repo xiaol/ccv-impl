@@ -13,7 +13,7 @@
     <script src="/static/js/common.js"></script>
 </head>
 
-
+{% load formatHumanTime %}
 
 <body style="background-color: #CCC;">
 {% include "nav.htm" %}
@@ -34,11 +34,22 @@
                     <legend class="">用户列表</legend>
                 </div>
                 <div>
-                    <ul>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>ID</th>
+                            <th>name</th>
+                            <th>用户组</th>
+                            <th>上次登录时间</th>
+                        </tr>
                     {% for user in userList %}
-                        <li>{{ user.id }} <a href="/user/index?id={{ user.id }}">{{ user.name }}</a> <span>{{ user.role }}</span></li>
+                        <tr>
+                            <td>{{ user.id }} </td>
+                            <td><a href="/user/index?id={{ user.id }}">{{ user.name }}</a></td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.lastLoginTime | formatHumanTime}}</td>
+                        </tr>
                     {% endfor %}
-                    </ul>
+                    </table>
                 </div>
             </fieldset>
 

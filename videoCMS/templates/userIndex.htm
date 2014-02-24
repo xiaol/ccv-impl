@@ -17,7 +17,7 @@
     <script src="/static/js/Chart.js"></script>
     <script src="/static/js/userIndex.js"></script>
 </head>
-
+{% load formatHumanTime %}
 <script type="text/javascript">
     var labels = eval('({{ labels|safe }})');
     var s_sum = eval('({{ s_sum|safe }})');
@@ -48,7 +48,7 @@
                         <h2>{{ name }}</h2>
                     </div>
                     <div>
-                        <span>上次登录时间：{{ lastLoginTime }}</span>
+                        <span>上次登录时间：{{ lastLoginTime|formatHumanTime }}</span>
                     </div>
                 </div>
             </div>
@@ -148,8 +148,8 @@
                         </td>
 
                         <td>
-                            <a class="label label-important" onclick="showCanvas(this)">显示曲线图</a>
-                            <a class="label label-important" href="/statistics2/channel?channelIdList={{ channel.channelId }}">详细统计</a>
+                            <a class="label label-important" onclick="showCanvas(this)"><i class="icon-chevron-down icon-white"></i>显示曲线图</a>
+                            <a class="label label-primary" href="/statistics2/channel?channelIdList={{ channel.channelId }}">详细统计</a>
                         </td>
 
                     </tr>
