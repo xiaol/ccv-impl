@@ -22,6 +22,8 @@ import os
 import sys
 
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
+print sys.path
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "videoCMS.settings")
 

@@ -4,7 +4,7 @@ import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
 
 from pymongo import Connection
-import MySQLdb
+#import MySQLdb
 
 con = Connection('60.28.29.37:20010')
 #clct_channel  = con.iDown.yChannel
