@@ -379,6 +379,7 @@ def channel(request):
 
         one['newResourceNum'] = len(newResourceMap[one['channelId']])
         one['allResourceNum'] = clct_resource.find({'channelId':one['channelId']}).count()
+        one['averagePlay'] = 0 if one['newResourceNum'] ==0 else round(one['data'][3]/one['newResourceNum'],2)
         DICT['dataDaily'][one['channelId']] = [resultDaily[one['channelId']].get(day,0) for day in daySequence]
 
     DICT['result'] = L

@@ -130,6 +130,7 @@ def index(request):
     DICT['channelList'] = channelList
     DICT['channelListStr'] = json.dumps(channelList)
     DICT['newNum'] = newNum
+    DICT['averagePlay'] = round(sum(s_sum[1]) *1.0/ newNum,2)
     print DICT
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
