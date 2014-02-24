@@ -223,6 +223,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sina_sports', url, channelId,snapShot = snapShot, updateTvNumber=False)
     elif handleName =='aipai':
         startSearch('handles.handle_aipai', url, channelId,snapShot = snapShot, updateTvNumber=False)
+    elif handleName =='cntvLM':
+        startSearch('handles.handle_cntv_lm', url, channelId, snapShot=snapShot, updateTvNumber=False)
         '''=================  其他 ======================'''
     elif handleName == 'youkuPlayList':
         startSearch('handles.handle_youku_playlist',url ,channelId,snapShot = snapShot)

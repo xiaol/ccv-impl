@@ -133,6 +133,7 @@ searchHandleListAll = [
 'search.iqiyiSport',
 'search.sinaSport',
 'search.aipai',
+'search.cntvLM',
 
 'search.youkuPlayList',
 'search.youkuSoku',
