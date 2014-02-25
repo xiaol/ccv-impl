@@ -10,6 +10,14 @@
 
 function init()
 {
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR'
+    });
+    $('#datetimepicker2').datetimepicker({
+      language: 'pt-BR'
+    });
+
+    
     for(var i=0;i<channelList.length ; i++)
     {
         var channelId = channelList[i].channelId;

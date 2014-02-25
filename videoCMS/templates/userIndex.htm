@@ -56,6 +56,7 @@
             <div class="row-fluid" id="nav">
 
                 <form>
+                    <input name="id" type="hidden" value="{{ uid }}"/>
                     <div class="well">
                     <table>
                         <tr>
@@ -65,7 +66,7 @@
                             </td>
                             <td>
                                 <div id="datetimepicker1" class="input-append date" >
-                                    <input data-format="yyyy/MM/dd" name="startDate" type="text" value="{{startDate}}"></input>
+                                    <input data-format="yyyy/MM/dd" name="startDate" type="text" value="{{startDate}}"/>
                                     <span class="add-on">
                                         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                     </span>
@@ -76,7 +77,7 @@
                             </td>
                             <td>
                                 <div id="datetimepicker2" class="input-append">
-                                    <input data-format="yyyy/MM/dd" name="endDate" type="text" value="{{endDate}}"></input>
+                                    <input data-format="yyyy/MM/dd" name="endDate" type="text" value="{{endDate}}" />
                                     <span class="add-on">
                                         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                     </span>
