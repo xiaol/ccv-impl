@@ -111,14 +111,17 @@ def retrieveSuggestion(sinaToken):
     return result
 
 def retrieveUserHistory(userId):
-    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': "0" }}).sort("operationTime", -1).limit(7)
+    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': "0" }}).sort("operationTime", -1).limit(15)
     records = []
     for ret in rets:
         records.append(ret['resourceId'])
     reSet = set(records)
     records = []
+    finalList = list(reSet)
+    random.shuffle(finalList, random.random)
+    finalList = finalList[0:2]
 
-    for record in reSet:
+    for record in finalList:
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
     for entity in records:
         retC = clct_channel.find_one({'channelId':entity['channelId']})
@@ -142,9 +145,22 @@ def similarWords(words,total=False,isSegment=False):
     result = {}
     for word in words:
         if not isSegment:
-            tags_str = word
+            rebuiltTags = word.split(' ')
+            rebuiltNTags = []
+            for rebuiltTag in rebuiltTags:
+                if re.match("^[A-Za-z]*$", rebuiltTag):
+                    rebuiltNTags.append(strB2Q(rebuiltTag))
+                else: rebuiltNTags.append(rebuiltTag)
+            tags_str = ' '.join(rebuiltNTags)
         else:
-            tags_str = " ".join(segment(word,isSegment))
+            segmentTags = segment(word, isSegment)
+            segmentNTags = []
+            for segmentTag in segmentTags:
+                if re.match("^[A-Za-z]*$", segmentTag):
+                    segmentNTags.append(strB2Q(segmentTag))
+                else:
+                    segmentNTags.append(segmentTag)
+            tags_str = " ".join(segmentNTags)
         temp = distance.similar('',tags_str.encode('utf8'))
         if temp[0] == '':
             result[tags_str] = [word.encode('utf8')]
@@ -552,22 +568,30 @@ def process(uuid):
     renewOldRecommend(ret['uuid'])
 
     remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$in':['done','gifDone']}})
-    if remainRecommendations.count() > 47:
+    if remainRecommendations.count() > 17:
         return
 
     likeItems = retrieveUserLike(ret['uuid'])
+    random.shuffle(likeItems, random.random)
+    likeItems = likeItems[0:7]
     for likeItem in likeItems:
         itemTags = likeItem.get('tagList', []) #TODO 人工标签超过6个字 分词
         try:
             if itemTags:
                 encodedTags = [x.encode('utf-8') for x in itemTags]
-                source = ' '.join(encodedTags)
-                for encodedTag in encodedTags:
-                    videos.extend(recommendByBaidu([encodedTag], encodedTag, encodedTag, 101641))
-                shortTagDic = similarWords([' '.join(encodedTags)], False, True)
+                source = ' '.join(encodedTags[0:3])
+                likeItemVideos = recommendByBaidu(encodedTags[0:3], source, source, 101641)
+                if not likeItemVideos:
+                    continue
+                videos.extend(likeItemVideos)
+                shortTagDic = similarWords(source)
+                if len(shortTagDic.itervalues().next()) == 1: continue
                 for (k,v) in shortTagDic.items():
                     for tag in v:
-                        videos.extend(recommendByBaidu([tag], tag, k, 101641))
+                        tempTags = []
+                        tempTags.extend(encodedTags[0:3])
+                        tempTags.append(tag)
+                        videos.extend(recommendByBaidu(tempTags, tag, k, 101641))
         except Exception,e:
             print e
 
@@ -577,9 +601,14 @@ def process(uuid):
     else: total = False
     for record in records:
         similarKeywordsDic = similarWords(record['resourceName'],total,True)
+        titleTags = segment(record['resourceName'], True)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
-                video = walk([tag], k)
+                tempTags = []
+                titleTags = [x.encode('utf-8') for x in titleTags[0:3]]
+                tempTags.extend(titleTags)
+                tempTags.append(tag)
+                video = walk(tempTags, k)
                 if video: videos.extend(video)
 
     try:
@@ -596,11 +625,15 @@ def process(uuid):
                 except Exception,e:
                     print e
                 if len(videos) < 5:
-                    similarDic = similarWords(userTags)
-                    for (k,v) in similarDic.items():
-                        for tag in v:
-                            video = walk(tag, k)
-                            if video: videos.extend(video)
+                    for userTag in userTags:
+                        similarDic = similarWords(userTag)
+                        for (k,v) in similarDic.items():
+                            for tag in v:
+                                tempTags = []
+                                tempTags.append(userTag.encode('utf-8'))
+                                tempTags.append(tag)
+                                video = walk(tempTags, k)
+                                if video: videos.extend(video)
     except Exception,e:
         print e
 
@@ -609,13 +642,17 @@ def process(uuid):
         retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
         try:
             if  retR is None and ret['sinaId'] != "":
-                suggestionTag = retrieveSuggestion(ret['sinaToken'])
-                if suggestionTag is not None:
-                    similarSuggestionDic = similarWords(suggestionTag)
-                    for (k,v) in similarSuggestionDic.items():
-                        for tag in v:
-                            video = walk([tag], k)
-                            if video: videos.extend(video)
+                suggestionTags = retrieveSuggestion(ret['sinaToken'])
+                if suggestionTags is not None:
+                    for suggestionTag in suggestionTags:
+                        similarSuggestionDic = similarWords(suggestionTag)
+                        for (k,v) in similarSuggestionDic.items():
+                            for tag in v:
+                                tempTags = []
+                                tempTags.append(suggestionTag.encode('utf-8'))
+                                tempTags.append(tag)
+                                video = walk(tempTags, k)
+                                if video: videos.extend(video)
                 print uuid,'Sina suggestion count: ',len(videos)
         except Exception,e:
             print e
