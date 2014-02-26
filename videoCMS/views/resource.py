@@ -13,11 +13,12 @@ from videoCMS.common.ImageUtil import imgconvert
 from videoCMS.common.db import getCategoryList
 #from videoCMS.views.channel import saveResourceImage
 from videoSearch.common.videoInfoTask import addVideoInfoTask
-import urllib2
+import urllib2,os
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 from login import NeedLogin
+
 
 def getSkipLimit(DICT,skip=0,limit=10):
     _skip = DICT.get('skip',skip)
@@ -295,8 +296,16 @@ def saveChannelImage(img, id):
     return filename.replace('/', '_')
 '''
 def saveResourceImage(img, id):
-    filename = 'videoCMS/resource/%s.jpg'%(id + getCurTime())
-    with open(IMAGE_DIR + '/' + filename, 'wb') as f:
+    date = getCurTime()[:8]
+    filename = 'videoCMS/resource/%s/%s.jpg'%(date, id+getCurTime())
+
+    fullpath = IMAGE_DIR + '/' + filename
+    dir  = os.path.dirname(fullpath)
+
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+    with open(fullpath, 'wb') as f:
         f.write(img)
     return filename.replace('/', '_')
 

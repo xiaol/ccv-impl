@@ -69,6 +69,11 @@ def get_html(url,encoding='utf-8'):
     content = httpUtil.Get(url).decode(encoding)
     return content
 
+def get_raw_data(url):
+    httpUtil = HttpUtil()
+    content = httpUtil.Get(url)
+    return content
+
 def getVideoIdByUrl(url):
     httpUtil = HttpUtil()
     data = {'url':url}
