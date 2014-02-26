@@ -25,3 +25,9 @@
 {
     position: absolute;
 }
+
+.vjs-big-play-button
+{
+    left:240px !important;
+    top:180px !important;
+}
