@@ -70,7 +70,6 @@ function onDrop(e)
             $('#submit').removeClass('disabled'):
             $('#submit').addClass('disabled');
 
-        console.log(checkAlright());
     }
 }
 
@@ -85,10 +84,10 @@ function allowDrop(ev)
     ev.preventDefault();
 }
 
-
+// 切换样式
 function changeStyle(event)
 {
-    console.log('show');
+    //将 预览数据 更新到 表单
     $('.preview .active img').each(function(i,e){
         var src = $(e).attr('src');
         //阻止默认图
@@ -99,8 +98,9 @@ function changeStyle(event)
         $('[name="'+$(e).attr('target')+'"]').val(src);
     });
 
-
+    //设置 style 数据
     $('[name="style"]').val($(event.target).attr('sty'));
+    //设置保存按钮状态
     checkAlright() ?
             $('#submit').removeClass('disabled'):
             $('#submit').addClass('disabled');
@@ -125,6 +125,8 @@ function checkAlright()
     return false;
 }
 
+
+
 function addPasteListener()
 {
     $('.snapshot img').live('dragstart',onDragStart);
@@ -133,6 +135,10 @@ function addPasteListener()
     $('.preview img').bind('dragover',allowDrop);
 
     $('.style a[data-toggle="tab"]').on('shown',changeStyle);
+    $('.main-tabs a').bind('mouseenter',function(){
+        $(this).tab('show');
+    });
+
     $('#snap_content').bind('paste',ReadClipboardData);
 }
 
