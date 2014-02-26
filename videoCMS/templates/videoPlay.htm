@@ -1,81 +1,132 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{{videoTitle}}</title>
-<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="/static/css/login.css" rel="stylesheet" type="text/css" />
-<!--
-<link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.0/video.js"></script>-->
-<link href="/static/css/video-js.css" rel="stylesheet">
-<script src="/static/js/video.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{{videoTitle}}</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/login.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/videoPlay.css" rel="stylesheet" type="text/css" />
+    <!--
+    <link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/4.0/video.js"></script>-->
+    <link href="/static/css/video-js.css" rel="stylesheet">
+    <script src="/static/js/video.js"></script>
 
-<script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/pasteImage.js"></script>
+    <script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/pasteImage.js"></script>
 
 </head>
 <body>
-<div style="float: left; width: 640px;">
-    <video id="example_video_1" class="video-js vjs-default-skin"
-      controls preload="auto" width="640" height="480"
-      poster="http://video-js.zencoder.com/oceans-clip.png"
-      data-setup='{"example_option":true}'>
-     <source src="{{videoUrl}}" type='video/flv' />
-    </video>
-</div>
-<div style="float: left; width: 640px; margin-left: 10px;">
-    <h1>当前封面</h1>
-    <div>
-        <img src={{ curImage }} />
-    </div>
-    <h1>更新封面</h1>
-    <form method="post">
 
-        <input type="hidden" name="image"/>
-        <div id="snap_content" contenteditable="true" style="height: 400px; width: 100%; outline: 0; overflow: auto; border: 3px gray dashed;">
-
-        </div>
-        <input type="submit" value="保存封面图">
-    </form>
-</div>
+{%include "nav.htm" %}
 <div class="container">
-    <div class="row-fluid" style="height: 600px;border: 3px solid ;">
-        <div class="span3">
-            <img src=""/>
-        </div>
-        <div class="span9 tabbable">
-            <div class="row-fluid tab-content preview" style="height: 450px;">
-                <div class="tab-pane active" id="tab1">
-                  <img src="/static/img/green_1.png" style="width:650px;height: 450px;">
+    <div class="row-fluid">
+        <div class="span12 tablable">
+            <ul class="nav nav-tabs main-tabs">
+                <li class="active"><a href="#video" data-toggle="tab">预览</a></li>
+                <li><a href="#curSnapshot" data-toggle="tab">当前截图</a></li>
+                <li><a href="#updateSnapshot" data-toggle="tab">更新截图</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- 一、 预览 -->
+                <div class="tab-pane active" id="video">
+                    <video id="example_video_1" class="video-js vjs-default-skin"
+                           controls preload="auto" width="640" height="480"
+                           poster="http://video-js.zencoder.com/oceans-clip.png"
+                           data-setup='{"example_option":true}'>
+                        <source src="{{videoUrl}}" type='video/flv' />
+                    </video>
                 </div>
-                <div class="tab-pane" id="tab2">
-                  <p>Howdy, I'm in Section 2.</p>
+                <!-- 二、 当前截图 -->
+                <div class="tab-pane" id="curSnapshot">
+                    <div>
+                        <img src={{ curImage }} />
+                    </div>
+
                 </div>
-                <div class="tab-pane" id="tab3">
-                  <p>Howdy, I'm in Section 2.</p>
-                </div>
-            </div>
-            <div class="row-fluid pattern nav nav-tabs">
-                <div class="span4" >
-                    <a href="#tab1" data-toggle="tab">
-                        <img src="/static/img/model_1.png"/> 单图
-                    </a>
-                </div>
-                <div class="span4">
-                    <a href="#tab2" data-toggle="tab">
-                        <img src="/static/img/model_1_1_1.png"/> 多图1
-                    </a>
-                </div>
-                <div class="span4">
-                    <a href="#tab3" data-toggle="tab">
-                        <img src="/static/img/model_1_2.png"/>  多图2
-                    </a>
+                <!-- 三、 更新截图 -->
+                <div class="tab-pane" id="updateSnapshot">
+                    <!-- 候选图 -->
+                    <div class="span3">
+                        <div class="snapshot" style="height: 450px;overflow: auto;">
+                            <!--
+                            <img id="snapshot_1" src="http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/videoCMS_resource_1_20140225_530c73cecf99d669618187e9.jpg" />
+                            -->
+                        </div>
+                        <div id="snap_content" style="background-image: url(/static/img/ctrv.png);height: 150px;" contenteditable="true">
+
+                        </div>
+                    </div>
+                    <!-- 编辑区 -->
+                    <div class="span9 tabbable">
+                        <!-- 效果预览 -->
+                        <div class="row-fluid tab-content preview" style="height: 450px;">
+                            <div class="tab-pane active" id="tab1">
+                                <div class="mask" style="position:absolute;left:0;width:640px;height: 360px;">
+                                    <img id="preview_1" target="image1" src="/static/img/green_1.png" style="width:640px;height: 360px;" />
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab2" >
+                                <div class="mask" style="position:absolute;left:0;width:213px;height: 360px;">
+                                    <img id="preview_2_1" target="image1"  src="/static/img/green_1.png"  />
+                                </div>
+                                <div class="mask" style="position:absolute;left:223px;width:213px;height: 360px;" >
+                                    <img id="preview_2_2" target="image2"  src="/static/img/green_2.png"/>
+                                </div>
+                                <div class="mask" style="position:absolute;left:446px;width:213px;height: 360px;">
+                                    <img id="preview_2_3" target="image3"  src="/static/img/green_3.png" />
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab3" >
+                                <div class="mask" style="position:absolute;left:0;width:400px;height: 360px;">
+                                    <img id="preview_3_1" target="image1" src="/static/img/green_1.png"  />
+                                </div>
+                                <div class="mask" style="position:absolute;left:410px;width:240px;height: 175px;" >
+                                    <img id="preview_3_2" target="image2" src="/static/img/green_2.png" />
+                                </div>
+                                <div class="mask" style="position:absolute;left:410px;top:185px;width:240px;height: 175px;">
+                                    <img id="preview_3_3" target="image3" src="/static/img/green_3.png"  />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 样式控制 -->
+                        <div class="row-fluid style nav nav-tabs">
+                            <div class="span4" >
+                                <a href="#tab1" data-toggle="tab" sty="1">
+                                    <img src="/static/img/model_1.png" />
+                                </a>
+                            </div>
+                            <div class="span4">
+                                <a href="#tab2" data-toggle="tab" sty="2">
+                                    <img src="/static/img/model_1_1_1.png"/>
+                                </a>
+                            </div>
+                            <div class="span4">
+                                <a href="#tab3" data-toggle="tab" sty="3">
+                                    <img src="/static/img/model_1_2.png"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <form method="post" enctype="multipart/form-data" onsubmit="return checkAlright()">
+                                <input type="hidden" name="style" value="1" />
+                                <input type="hidden" name="image1" />
+                                <input type="hidden" name="image2" />
+                                <input type="hidden" name="image3" />
+                                <input id="submit" class="btn btn-primary btn-block btn-large disabled" type="submit" value="保存"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 </body>
 </html>

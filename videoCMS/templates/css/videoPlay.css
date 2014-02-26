@@ -1,0 +1,27 @@
+.tab-pane
+{
+    position: relative;
+}
+.snapshot img
+{
+    /*border: 3px #fbb450 dashed;*/
+    margin-top: 3px;
+
+}
+
+.mask
+{
+    overflow: hidden;
+}
+
+.mask img
+{
+    max-width: none ;
+    width: 100%;
+    height: 100%;
+}
+
+.preview img
+{
+    position: absolute;
+}
