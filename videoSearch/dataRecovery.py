@@ -271,7 +271,7 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
-        if re.search(u'\d+集',title):
+        if re.search(u'\d+集',title) and len(title.encode('utf8')) < 20:
             print title
 
         '''if re.search('aipai.com', ret['resourceUrl']):
@@ -340,12 +340,12 @@ if __name__ == '__main__':
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
     #filterRecommendations()
-    #offlineRecommendations()
+    offlineRecommendations()
     #stripTag()
     #predictDefinition()
-    while True:
+    '''while True:
         feedUserTag()
         addTagResource()
         updateUserTag()
-        time.sleep(60*60)
+        time.sleep(60*60)'''
     #clearChannel(101758)
