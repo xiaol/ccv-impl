@@ -47,9 +47,9 @@
                         <!-- 候选图 -->
                         <div class="span3">
                             <div class="snapshot" style="height: 450px;overflow: auto;">
-                                <!--
-                                <img id="snapshot_1" src="http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/videoCMS_resource_1_20140225_530c73cecf99d669618187e9.jpg" />
-                                -->
+                                {% for imgUrl in imgList %}
+                                <img id="snapshot_{{ forloop.counter }}" src="http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/{{imgUrl}}" />
+                                {% endfor %}
                             </div>
                             <div id="snap_content" style="background-image: url(/static/img/ctrv.png);height: 150px;" contenteditable="true">
 

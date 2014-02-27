@@ -135,9 +135,9 @@ function addPasteListener()
     $('.preview img').bind('dragover',allowDrop);
 
     $('.style a[data-toggle="tab"]').on('shown',changeStyle);
-    $('.main-tabs a').bind('mouseenter',function(){
+    /*$('.main-tabs a').bind('mouseenter',function(){
         $(this).tab('show');
-    });
+    });*/
 
     $('#snap_content').bind('paste',ReadClipboardData);
 }

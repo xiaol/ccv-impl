@@ -70,6 +70,7 @@ def play(request):
 
     if request.method == 'GET':
         DICT['curImage'] = IMG_INTERFACE_FF%('600','*',resource['resourceImageUrl'])
+        DICT.update(resource)
 
         urls = getVideoUrl(videoType,videoId)
         if urls:
