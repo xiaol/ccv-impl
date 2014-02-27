@@ -67,7 +67,18 @@ function onSubmit()
     return true;
 }
 
+function checkTextLength()
+{
 
+    var input = $('[name="resourceName"]');
+
+    $('#resourceNameLeft').text(40-input.val().length);
+    if(input.val().length > 40)
+    {
+
+    }
+
+}
 
 function init()
 {
@@ -75,5 +86,6 @@ function init()
       language: 'pt-BR',
       pick12HourFormat: false
     });
+    checkTextLength();
 }
 $(document).ready(init);

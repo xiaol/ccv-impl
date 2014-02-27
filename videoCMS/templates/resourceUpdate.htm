@@ -39,8 +39,11 @@
 						<input type="hidden" name="id" value="{{id}}" />
 						<table class="mainTable">
 							<tr>
-								<td style="width: 100px">资源名称</td>
-								<td><textarea name="resourceName" style="width:330px;">{{resourceName}}</textarea>
+								<td style="width: 100px">资源名称<br/>
+                                    还剩<span style="font-family: Constantia, Georgia;font-size: 22px;" id="resourceNameLeft">x</span>字
+                                </td>
+								<td><textarea name="resourceName" style="width:330px;"
+                                              oninput="checkTextLength()">{{resourceName}}</textarea>
                                     集数：<input type="text" class="input-small" name="number" value="{{number}}"/>
                                 </td>
 							</tr>
