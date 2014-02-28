@@ -80,6 +80,7 @@ class Resource(DomainBase):
     shareNum = 0
     dislikeNum = 0
     editor = -1
+    review = 0 #0 待审核，-1 审核不通过, 1 审核通过
 
 
 class Category(DomainBase):

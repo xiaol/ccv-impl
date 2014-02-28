@@ -695,7 +695,7 @@ window.Chart = function(context){
 	var Pie = function(data,config,ctx){
 		var segmentTotal = 0;
 		
-		//In case we have a canvas that is not a square. Minus 5 pixels as padding round the edge.
+		//In case we have a canvas that is not a icheck-square. Minus 5 pixels as padding round the edge.
 		var pieRadius = Min([height/2,width/2]) - 5;
 		
 		for (var i=0; i<data.length; i++){
@@ -739,7 +739,7 @@ window.Chart = function(context){
 	var Doughnut = function(data,config,ctx){
 		var segmentTotal = 0;
 		
-		//In case we have a canvas that is not a square. Minus 5 pixels as padding round the edge.
+		//In case we have a canvas that is not a icheck-square. Minus 5 pixels as padding round the edge.
 		var doughnutRadius = Min([height/2,width/2]) - 5;
 		
 		var cutoutRadius = doughnutRadius * (config.percentageInnerCutout/100);

@@ -133,6 +133,11 @@ function init()
       language: 'pt-BR',
       pick12HourFormat: false
     });
+
+    /*$('input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-blue',
+  });*/
 }
 
 $(document).ready(init);

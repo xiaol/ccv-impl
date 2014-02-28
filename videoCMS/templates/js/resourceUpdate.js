@@ -72,8 +72,8 @@ function checkTextLength()
 
     var input = $('[name="resourceName"]');
 
-    $('#resourceNameLeft').text(40-input.val().length);
-    if(input.val().length > 40)
+    $('#resourceNameLeft').text(60-input.val().length);
+    if(input.val().length > 60)
     {
 
     }

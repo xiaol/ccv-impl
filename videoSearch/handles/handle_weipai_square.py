@@ -46,4 +46,4 @@ def buildResource(url,title,number,channelId,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://www.weipai.cn/square/',100527,3))
+    pprint.pprint(handle('http://www.weipai.cn/icheck-square/',100527,3))
