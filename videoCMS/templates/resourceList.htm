@@ -89,6 +89,9 @@
                                             {%  ifequal resource.snapshot "small" %} <i class="icon-resize-small"></i>{%  endifequal  %}
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#{{ resource.id }}_3" data-toggle="tab">标签</a>
+                                    </li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -115,6 +118,11 @@
                                             </div>
                                             {% endif %}
                                         </div>
+                                    </div>
+                                    <div class="tab-pane" id="{{ resource.id }}_3">
+                                        {% for tag in resource.tagList %}
+                                            {{ tag }}
+                                        {% endfor %}
                                     </div>
 
                                 </div>
