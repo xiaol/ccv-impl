@@ -127,6 +127,29 @@ function addToBaBa(object,resourceId)
 }
 
 
+function changeMode(reviewMode)
+{
+    $('[name="review"]').val(reviewMode);
+    $('#form_nav').submit();
+}
+
+function review(resourceId,review)
+{
+    $.ajax({
+		type:'get',
+		url:'/resource/review',
+		data:{'id':resourceId,'review':review},
+		success:function(data,textStatus)
+		{
+
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
+}
+
 function init()
 {
     $('#datetimepicker1').datetimepicker({
@@ -134,10 +157,27 @@ function init()
       pick12HourFormat: false
     });
 
-    /*$('input').iCheck({
-    checkboxClass: 'icheckbox_square-blue',
-    radioClass: 'iradio_square-blue',
-  });*/
+    $('.topicItem input').iCheck({
+    checkboxClass: 'icheckbox_square-purple',
+    radioClass: 'iradio_square-purple'
+    });
+
+    $('.review-status input').iCheck({
+    checkboxClass: 'icheckbox_square-purple',
+    radioClass: 'iradio_square-purple'
+    });
+
+    // 审核
+    $('.topicItem input').on('ifChecked', function(event){
+        var target = $(event.target);
+        review(target.attr('id').substring(3), target.attr('review'))
+    });
+
+    //切换状态
+    $('.review-status input').on('ifChecked', function(event){
+        var target = $(event.target);
+        changeMode(target.val());
+    });
 }
 
 $(document).ready(init);

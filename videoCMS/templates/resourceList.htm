@@ -6,7 +6,7 @@
 <link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<link href="/static/css/icheck-square/blue.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/purple.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/common.css" rel="stylesheet" type="text/css" />
 
 
@@ -116,16 +116,52 @@
                                             {% endif %}
                                         </div>
                                     </div>
+
                                 </div>
 
 
 		                    </div>
+                            {% if review %}
+                            <div style="width:60px;float: left;">
+                                <input id="to_{{ resource.id }}" type="radio" review="0" name="review_{{ resource.id }}" {% ifequal resource.review 0 %}checked="checked"{% endifequal %} />
+                                <label for="to_{{ resource.id }}">待审</label><br/><br/>
+                                <input id="ac_{{ resource.id }}" type="radio" review="1" name="review_{{ resource.id }}" {% ifequal resource.review 1 %}checked="checked"{% endifequal %} />
+                                <label for="ac_{{ resource.id }}">通过</label><br/><br/>
+                                <input id="rj_{{ resource.id }}" type="radio" review="-1" name="review_{{ resource.id }}" {% ifequal resource.review -1 %}checked="checked"{% endifequal %}/>
+                                <label for="rj_{{ resource.id }}">不过</label>
+                            </div>
+                            {% endif %}
 		                </div>
 			            {%endfor%}
 			</div>
 			
-			<div class="span4 paddingWrap" style="background-color:#FFF;">
+			<div class="span4" >
                 <form id="form_nav">
+                <!--<input type="hidden" name="review" value="{{ review }}"/>-->
+                <div class="edit-mode">
+                    <div class="edit-mode-item {% if not review %}selected{% endif %}" onclick="changeMode('')" >
+                        普通模式
+                    </div>
+                    <div class="edit-mode-item {% if review %}selected{% endif %}" onclick="changeMode('待审核')">
+                        审核模式
+                    </div>
+                </div>
+                {% if review %}
+                <div class="review-status">
+                    <div class="review-status-item" >
+                        <input id="onReview" type="radio" name="_rr" value="待审核"  {% ifequal review "待审核" %} checked="checked"{% endifequal %}  /> &nbsp;
+                        <label for="onReview" >待审核</label>
+                    </div>
+                    <div class="review-status-item" >
+                        <input id="ReviewReject" type="radio" name="_rr" value="审核悲剧" {% ifequal review "审核悲剧" %} checked="checked"{% endifequal %} />&nbsp;
+                        <label for="ReviewReject">审核悲剧</label>
+                    </div>
+                </div>
+                {% endif %}
+                <input type="hidden" name="review" value="{{ review }}"/>
+
+                <div class="paddingWrap" style="background-color:#FFF;">
+
                     <div id="nav_div">
                     <table>
                         <tr>
@@ -210,6 +246,8 @@
                         </tr>
                     </table>
                     </div>
+
+              </div>
               </form>
             </div>
 		</div>

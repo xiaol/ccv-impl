@@ -98,6 +98,11 @@ text-decoration: none;
     margin-bottom:20px;
 }
 
+.topicImage label
+{
+    text-align: middle;
+}
+
 .topicImage
 {
     padding:5px;

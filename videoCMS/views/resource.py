@@ -70,6 +70,7 @@ def index(request):
     endTime = request.GET.get('endTime','')
     sort = request.GET.get('sort','')
     editor = request.GET.get('editor','')
+    review = request.GET.get('review','')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -103,6 +104,10 @@ def index(request):
         spec['isOnline'] = True
     elif isOnline == 'false':
         spec['isOnline'] = False
+    if review == u'待审核':
+        spec['review'] = 0
+    elif review  == u'审核悲剧':
+        spec['review'] = -1
     if mongo != '':
         spec.update(json.loads(mongo))
 
@@ -468,6 +473,14 @@ def pushResource(request):
         task['createTime'] = getCurTime()
         clct_cronJob.insert(task)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+@NeedLogin
+def review(request):
+    id = request.GET['id']
+    review = int(request.GET['review'])
+    clct_resource.update({'_id':ObjectId(id)},{'$set':{'review':review}})
+    return HttpResponse('ok')
 
 #==============================================================
 '''

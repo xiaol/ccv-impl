@@ -22,3 +22,48 @@
     background-color:white;
     position: absolute;
 }
+
+.edit-mode
+{
+    height: 70px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.edit-mode-item
+{
+    float:left;
+    height:100%;
+    width: 50%;
+    background-color: rgb(86,61,124);
+    line-height: 70px;
+    cursor: pointer;
+}
+
+.edit-mode-item.selected
+{
+    background-color: rgb(70,50,101);
+}
+
+.review-status
+{
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.review-status-item
+{
+    float:left;
+    height:100%;
+    width: 50%;
+    background-color: rgb(120,81,144);
+    line-height: 40px;
+}
+
+label:hover
+{
+    cursor: pointer;
+}
