@@ -281,6 +281,8 @@ def filterVideo(entities):
             continue
         if re.search('\d{9,}', entity['ti']) is not None:
             continue
+        if re.search(u'\d+集',entity['ti']):
+            continue
         occurrencesCount = 0
         for m in re.finditer(u'淘宝|教程|机', entity['ti']):
             occurrencesCount = occurrencesCount + 1
