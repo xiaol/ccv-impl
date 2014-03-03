@@ -27,7 +27,6 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
         resource['editor'] = channel['editor']
         resource['createTime'] = t
         resource['weight'] = -1
-        resource['source'] = 'search'
 
         print("insert ",resource['videoType'],resource['videoId'])
 

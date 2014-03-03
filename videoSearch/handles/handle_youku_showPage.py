@@ -69,7 +69,7 @@ def buildResource(url,title,hot,channelId):
     resource['channelId'] = channelId
     #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
-    resource['source'] = 'indexYouku'
+    #resource['source'] = 'indexYouku'
     resource['videoType'] = 'youku'
     resource['videoId'] =  p_vid.search(url).groups()[0]
     resource['createTime'] = getCurTime()

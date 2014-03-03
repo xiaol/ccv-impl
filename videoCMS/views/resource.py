@@ -262,6 +262,7 @@ def add(request):
     resource['createTime'] = now
     resource['modifyTime'] = now
     resource['updateTime'] = now
+    resource['source'] = 'manual'
 
     for tag in resource['tagList']:
         addTag(tag, 1)
