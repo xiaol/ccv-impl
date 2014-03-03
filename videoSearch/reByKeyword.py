@@ -324,10 +324,12 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 except Exception,e:
                     print e
                     continue
+            tempReason = reason.split(' ')
+            tempReason = '|'.join(tempReason)
         if tagReason:
-            resource['tagList'].insert(0,reason)
+            resource['tagList'].insert(0,tempReason)
         else:
-            resource['tagList'].append(reason)
+            resource['tagList'].append(tempReason)
         for black in blacklist:
             try:
                 resource['tagList'].remove(black)
