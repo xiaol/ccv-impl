@@ -127,6 +127,8 @@ def index(request):
         sortParams = [('createTime',-1)]
     elif sort == 'updateTime':
         sortParams = [('updateTime',-1)]
+    elif sort == 'updateTimeAsc':
+        sortParams = [('updateTime',1)]
     elif sort == 'playNumber':
         sortParams = [('playNumber',-1)]
     elif sort == 'downloadNumber':
@@ -499,6 +501,11 @@ def review(request):
         #发送审核失败消息
         if resource['editor'] != -1:
             sendReviewFailMessage(request.session['username'],resource)
+        #如果是推荐视频，同时发送消息给 苏俊杰（uid：4）
+        if resource['isRecommend']:
+            resource['editor'] = 4
+            sendReviewFailMessage(request.session['username'],resource)
+
     elif review == 1:
         clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
     clct_resource.update({'_id':ObjectId(id)},{'$set':update})
