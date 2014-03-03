@@ -24,9 +24,13 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
 
     #入库
     for resource in resouceList:
+        resource['editor'] = channel['editor']
         resource['createTime'] = t
-        print("insert ",resource['videoType'],resource['videoId'])
         resource['weight'] = -1
+        resource['source'] = 'search'
+
+        print("insert ",resource['videoType'],resource['videoId'])
+
         try:
             ret = clct_resource.insert(resource , safe=True)
         except:
@@ -46,10 +50,6 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                 if snapShot:
                     mp4box = True if resource['videoType'] == 'sohu_url' else False
                     addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1,goOnline=True)
-
-
-
-
         else:
             print("insert Ok!")
             InsertedList.append(ret)
