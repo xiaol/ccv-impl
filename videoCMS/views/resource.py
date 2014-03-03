@@ -499,6 +499,8 @@ def review(request):
         #发送审核失败消息
         if resource['editor'] != -1:
             sendReviewFailMessage(request.session['username'],resource)
+    elif review == 1:
+        clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
     clct_resource.update({'_id':ObjectId(id)},{'$set':update})
     return HttpResponse('ok')
 

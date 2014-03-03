@@ -157,9 +157,17 @@ function init()
       pick12HourFormat: false
     });
 
-    $('.topicItem input').iCheck({
-    checkboxClass: 'icheckbox_square-purple',
-    radioClass: 'iradio_square-purple'
+    $('input[review="0"]').iCheck({
+        checkboxClass: 'icheckbox_square-aero',
+        radioClass: 'iradio_square-aero'
+    });
+    $('input[review="1"]').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+    });
+    $('input[review="-1"]').iCheck({
+        checkboxClass: 'icheckbox_square-red',
+        radioClass: 'iradio_square-red'
     });
 
 
