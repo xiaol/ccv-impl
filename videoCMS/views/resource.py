@@ -148,7 +148,10 @@ def index(request):
             else:
                 one['resolution'] = one['v_size'][0]*one['v_size'][1]/one['v_br']
             one['resourceSize'] = one['resourceSize'] / 1000
-            one['br'] = one['resourceSize']/one['duration']
+            if 'duration' not in one:
+                one['br'] = None
+            else:
+                one['br'] = one['resourceSize']/one['duration']
 
 
 
