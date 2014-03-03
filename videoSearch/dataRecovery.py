@@ -341,13 +341,13 @@ if __name__ == '__main__':
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
     #updateResourceWithoutChannel()
-    filterRecommendations()
-    offlineRecommendations()
+    #filterRecommendations()
     #stripTag()
     #predictDefinition()
-    #while True:
+    while True:
         #feedUserTag()
         #addTagResource()
         #updateUserTag()
-        #time.sleep(60*60)
+        offlineRecommendations()
+        time.sleep(12*60*60)
     #clearChannel(101758)
