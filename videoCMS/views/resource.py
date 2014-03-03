@@ -71,6 +71,8 @@ def index(request):
     sort = request.GET.get('sort','')
     editor = request.GET.get('editor','')
     review = request.GET.get('review','')
+    source = request.GET.get('source','')
+    editorExists = request.GET.get('editorExists','')
     
     if id != '':
         spec['_id'] = ObjectId(id)
@@ -100,6 +102,9 @@ def index(request):
         spec['createTime'].update({"$lte":endTime})
     if editor != '':
         spec['editor'] = int(editor)
+    elif editorExists != '':
+        spec['editor'] = {'$exists':True,'$ne':-1}
+
     if isOnline == 'true':
         spec['isOnline'] = True
     elif isOnline == 'false':
@@ -108,6 +113,9 @@ def index(request):
         spec['review'] = 0
     elif review  == u'审核悲剧':
         spec['review'] = -1
+    if source != '':
+        spec['source'] = source
+
     if mongo != '':
         spec.update(json.loads(mongo))
 
@@ -125,6 +133,7 @@ def index(request):
         sortParams = [('downloadNumber',-1)]
     elif sort == 'invalidTime':
         sortParams = [('validTime',-1)]
+
         
 
     resourceList = list(clct_resource.find(spec).sort(sortParams).skip(skip).limit(limit))

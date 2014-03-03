@@ -206,7 +206,13 @@
                         </tr>
                         <tr>
                             <td>编辑ID</td>
-                            <td><input name="editor" type="text" style="width:110px" value="{{editor}}"/></td>
+                            <td>
+                                <input name="editor" type="text" style="width:60px" value="{{editor}}"/>&nbsp;
+                                <input style="margin: 0px;" type="checkbox" name="editorExists" {% if editorExists %}checked="checked" {% endif %} value="1" /> &nbsp;非空
+                            </td>
+                            <td>
+
+                            </td>
                         </tr>
                         <tr>
                             <td>mongo</td>
@@ -231,8 +237,13 @@
                             <td>来源</td>
                             <td>
                                 <input type="radio" name="source" value=""  {%ifequal source "" %}checked="checked" {%endifequal%}/>全部
-                                <input type="radio" name="source" value="搜索"  {%ifequal source "" %}checked="checked" {%endifequal%}/>默认
-                                <input type="radio" name="source" value=""  {%ifequal source "" %}checked="checked" {%endifequal%}/>默认
+                                <input type="radio" name="source" value="manual"  {%ifequal source "manual" %}checked="checked" {%endifequal%}/>人工
+
+                                <input type="radio" name="source" value="spider"  {%ifequal source "spider" %}checked="checked" {%endifequal%}/>自动
+                                <br/>
+                                <input type="radio" name="source" value="weibo"  {%ifequal source "weibo" %}checked="checked" {%endifequal%}/>微博
+
+                                <input type="radio" name="source" value="recommend"  {%ifequal source "recommend" %}checked="checked" {%endifequal%}/>推荐
 
                             </td>
                         </tr>
@@ -240,15 +251,15 @@
                             <td>排序</td>
                             <td>
                                 <input type="radio" name="sort" value=""  {%ifequal sort "" %}checked="checked" {%endifequal%}/>默认
-                                <input type="radio" name="sort" value="updateTime"  {%ifequal sort "updateTime" %}checked="checked" {%endifequal%}/>更新时间
+                                <input type="radio" name="sort" value="updateTime"  {%ifequal sort "updateTime" %}checked="checked" {%endifequal%}/>更新
+
+                                <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建
                                 <br/>
-                                <input type="radio" name="sort" value="createTime"  {%ifequal sort "createTime" %}checked="checked" {%endifequal%}/>创建时间
                                 <input type="radio" name="sort" value="weight" {%ifequal sort "weight" %}checked="checked" {%endifequal%}/>权重
+                                <input type="radio" name="sort" value="playNumber" {%ifequal sort "playNumber" %}checked="checked" {%endifequal%}/>播放
+                                <input type="radio" name="sort" value="downloadNumber" {%ifequal sort "downloadNumber" %}checked="checked" {%endifequal%}/>下载
                                 <br/>
-                                <input type="radio" name="sort" value="playNumber" {%ifequal sort "playNumber" %}checked="checked" {%endifequal%}/>播放数
-                                <input type="radio" name="sort" value="downloadNumber" {%ifequal sort "downloadNumber" %}checked="checked" {%endifequal%}/>下载数
-                                <br/>
-                                <input type="radio" name="sort" value="invalidTime" {%ifequal sort "invalidTime" %}checked="checked" {%endifequal%}/>失效时间
+                                <input type="radio" name="sort" value="invalidTime" {%ifequal sort "invalidTime" %}checked="checked" {%endifequal%}/>失效
                             </td>
                         </tr>
                         <tr>
