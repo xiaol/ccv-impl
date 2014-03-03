@@ -162,6 +162,7 @@ function init()
     radioClass: 'iradio_square-purple'
     });
 
+
     $('.review-status input').iCheck({
     checkboxClass: 'icheckbox_square-purple',
     radioClass: 'iradio_square-purple'

@@ -495,8 +495,20 @@ def review(request):
     update = {'review':review}
     if review == -1:
         update['isOnline'] = False
+        resource = clct_resource.find_one({'_id':ObjectId(id)})
+        #发送审核失败消息
+        if resource['editor'] != -1:
+            sendReviewFailMessage(request.session['username'],resource)
     clct_resource.update({'_id':ObjectId(id)},{'$set':update})
     return HttpResponse('ok')
+
+def sendReviewFailMessage(_from,resource):
+
+    content ='<a href="%s">%s</a>'%(str(resource['_id']),resource['resourceName'])
+    msg = {'from':_from,'to':resource['editor'],'title':'审核失败','content':content,'createTime':getCurTime(),'type':'reviewFail',
+           'extras':{'resourceId':str(resource['_id'])}}
+
+    clct_cmsMessage.insert(msg)
 
 #==============================================================
 '''

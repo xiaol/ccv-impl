@@ -1,3 +1,4 @@
+#coding=utf-8
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -6,25 +7,17 @@ from login import NeedLogin
 from bson import ObjectId
 from videoCMS.common.common import  getCurTime
 
-def sendReviewFailMessage(_from,to,resourceId):
 
-    msg = {'from':_from,'to':to,'title':'审核失败','content':'<a href="">'++'</a>','createTime':getCurTime,'type':type,
-           'extras':extras}
-
-    #spec = {'type':'videoDetetFail','from':_from,'extras.resourceId':str(resource['_id'])}
-    #if clct_cmsMessage.find_one(spec) != None:
-    #    clct_cmsMessage.update(spec,{'$inc':{'extras.num':1},'$unset':{'readed':1}},True)
-    #else:
-    clct_cmsMessage.insert(msg)
 
 
 
 
 def getMessageNum(request):
     username = request.session['username']
-    unreadNum = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False},'mark':{'$exists':False}}).count()
-    readedNum = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':True}).count()
-    markedNum = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False},'mark':{'$exists':True}}).count()
+    uid = int(request.session['id'])
+    unreadNum = clct_cmsMessage.find({'to':{'$in':['',uid]},'readed':{'$exists':False},'mark':{'$exists':False}}).count()
+    readedNum = clct_cmsMessage.find({'to':{'$in':['',uid]},'readed':True}).count()
+    markedNum = clct_cmsMessage.find({'to':{'$in':['',uid]},'readed':{'$exists':False},'mark':{'$exists':True}}).count()
     return {'unreadMessageNum':unreadNum,'readedMessageNum':readedNum,'allMessageNum':unreadNum+readedNum,'markedMessageNum':markedNum}
 
 
@@ -32,8 +25,8 @@ def getMessageNum(request):
 @NeedLogin
 def unread(request):
     DICT = {}
-    username = request.session['username']
-    result = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False},'mark':{'$exists':False}}).sort([('_id',-1)])
+    uid = request.session['id']
+    result = clct_cmsMessage.find({'to':{'$in':['',uid]},'readed':{'$exists':False},'mark':{'$exists':False}}).sort([('_id',-1)])
     result = list(result)
     for one in result:one['id'] = str(one['_id'])
     count = len(result)
@@ -44,8 +37,8 @@ def unread(request):
 @NeedLogin
 def readed(request):
     DICT = {}
-    username = request.session['username']
-    result = clct_cmsMessage.find({'to':{'$in':['',username]}, 'readed':True}).sort([('_id',-1)])
+    uid = request.session['id']
+    result = clct_cmsMessage.find({'to':{'$in':['',uid]}, 'readed':True}).sort([('_id',-1)])
     result = list(result)
     for one in result:one['id'] = str(one['_id'])
     count = len(result)
@@ -56,8 +49,8 @@ def readed(request):
 @NeedLogin
 def all(request):
     DICT = {}
-    username = request.session['username']
-    result = clct_cmsMessage.find({'to':{'$in':['',username]}}).sort([('_id',-1)])
+    uid = request.session['id']
+    result = clct_cmsMessage.find({'to':{'$in':['',uid]}}).sort([('_id',-1)])
     result = list(result)
     for one in result:one['id'] = str(one['_id'])
     count = len(result)
@@ -84,8 +77,8 @@ def markMessage(request):
 @NeedLogin
 def marked(request):
     DICT = {}
-    username = request.session['username']
-    result = clct_cmsMessage.find({'to':{'$in':['',username]},'readed':{'$exists':False},'mark':{'$exists':True}}).sort([('_id',-1)])
+    uid = request.session['id']
+    result = clct_cmsMessage.find({'to':{'$in':['',uid]},'readed':{'$exists':False},'mark':{'$exists':True}}).sort([('_id',-1)])
     result = list(result)
     for one in result:one['id'] = str(one['_id'])
     count = len(result)
