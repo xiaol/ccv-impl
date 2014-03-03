@@ -4,6 +4,20 @@ from django.template import RequestContext
 from videoCMS.conf import userList,clct_cmsMessage
 from login import NeedLogin
 from bson import ObjectId
+from videoCMS.common.common import  getCurTime
+
+def sendReviewFailMessage(_from,to,resourceId):
+
+    msg = {'from':_from,'to':to,'title':'审核失败','content':'<a href="">'++'</a>','createTime':getCurTime,'type':type,
+           'extras':extras}
+
+    #spec = {'type':'videoDetetFail','from':_from,'extras.resourceId':str(resource['_id'])}
+    #if clct_cmsMessage.find_one(spec) != None:
+    #    clct_cmsMessage.update(spec,{'$inc':{'extras.num':1},'$unset':{'readed':1}},True)
+    #else:
+    clct_cmsMessage.insert(msg)
+
+
 
 
 def getMessageNum(request):

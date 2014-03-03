@@ -492,7 +492,10 @@ def pushResource(request):
 def review(request):
     id = request.GET['id']
     review = int(request.GET['review'])
-    clct_resource.update({'_id':ObjectId(id)},{'$set':{'review':review}})
+    update = {'review':review}
+    if review == -1:
+        update['isOnline'] = False
+    clct_resource.update({'_id':ObjectId(id)},{'$set':update})
     return HttpResponse('ok')
 
 #==============================================================
