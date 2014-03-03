@@ -146,6 +146,7 @@
 			<div class="span4" >
                 <form id="form_nav">
                 <!--<input type="hidden" name="review" value="{{ review }}"/>-->
+                {% ifequal  username "admin"%}
                 <div class="edit-mode">
                     <div class="edit-mode-item {% if not review %}selected{% endif %}" onclick="changeMode('')" >
                         普通模式
@@ -154,6 +155,7 @@
                         审核模式
                     </div>
                 </div>
+                {% endifequal %}
                 {% if review %}
                 <div class="review-status">
                     <div class="review-status-item" >
