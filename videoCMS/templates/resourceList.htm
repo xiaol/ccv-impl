@@ -6,7 +6,10 @@
 <link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<link href="/static/css/icheck-square/purple.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/aero.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/blue.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/red.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/green.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/common.css" rel="stylesheet" type="text/css" />
 
 
@@ -262,6 +265,7 @@
                                 <input type="radio" name="sort" value="downloadNumber" {%ifequal sort "downloadNumber" %}checked="checked" {%endifequal%}/>下载
                                 <br/>
                                 <input type="radio" name="sort" value="invalidTime" {%ifequal sort "invalidTime" %}checked="checked" {%endifequal%}/>失效
+                                <input type="radio" name="sort" value="updateTimeAsc" {%ifequal sort "updateTimeAsc" %}checked="checked" {%endifequal%}/>更升
                             </td>
                         </tr>
                         <tr>

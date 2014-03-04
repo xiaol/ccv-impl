@@ -74,8 +74,11 @@ def NeedLogin(func):
 def custom_proc(request):
     DICT = {}
     DICT['username'] = request.session.get('username','')
+    DICT['uid'] = int(request.session.get('id',0))
 
-    msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['username']]},'readed':{'$exists':False}}).count()
+    print DICT
+
+    msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['uid']]},'readed':{'$exists':False}}).count()
     DICT['MSG_COUNT'] = msgCount
 
     return DICT

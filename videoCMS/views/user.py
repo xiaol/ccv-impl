@@ -111,12 +111,12 @@ def index(request):
     editor = clct_cmsEditor.find_one({'id':uid})
     DICT.update(editor)
 
-    resourceList = clct_resource.find({'editor':uid})
+    resourceList = clct_resource.find({'editor':uid,'source':'manual'})
 
     DICT['resourceNum'] = resourceList.count()
     DICT['resourceList'] = []
     DICT['uid'] = uid
-    for one in clct_resource.find({'editor':uid}).sort([('_id',-1)]).limit(10):
+    for one in resourceList.sort([('_id',-1)]).limit(10):
         one['id'] =str(one['_id'])
         DICT['resourceList'].append(one)
 
