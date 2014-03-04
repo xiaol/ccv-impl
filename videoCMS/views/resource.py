@@ -49,9 +49,6 @@ def addTag(name,addNum=1):
 def index(request):
     spec = {}
     DICT = {}
-    
-    if checkLogin(request):
-        DICT['username'] = request.session['username']
         
     
     page = int(request.GET['page']) if request.GET.get('page','') != '' else 1
@@ -165,7 +162,7 @@ def index(request):
                 one['br'] = one['resourceSize']/one['duration']
 
 
-
+    DICT['singleReview'] = True if source=='' or source == 'manual' else False
     DICT['nextPage'] = page + 1
     DICT['prePage'] = page-1 if page>1 else 1
     DICT['findNum'] = clct_resource.find(spec).count()
@@ -215,7 +212,6 @@ def update(request):
         resource['resourceImageUrl2'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl2'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
-        DICT['username'] = request.session['username']
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'resource'
@@ -263,7 +259,6 @@ def add(request):
         DICT['number'] = -1
         DICT['weight'] = -1
         DICT['channelId'] = 1
-        DICT['username'] = request.session['username']
         return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     resource = POST2Resource(request)
@@ -490,26 +485,6 @@ def pushResource(request):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-@NeedLogin
-def review(request):
-    id = request.GET['id']
-    review = int(request.GET['review'])
-    update = {'review':review}
-    if review == -1:
-        update['isOnline'] = False
-        resource = clct_resource.find_one({'_id':ObjectId(id)})
-        #发送审核失败消息
-        if resource['editor'] != -1:
-            sendReviewFailMessage(request.session['username'],resource)
-        #如果是推荐视频，同时发送消息给 苏俊杰（uid：4）
-        if resource['isRecommend']:
-            resource['editor'] = 4
-            sendReviewFailMessage(request.session['username'],resource)
-
-    elif review == 1:
-        clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
-    clct_resource.update({'_id':ObjectId(id)},{'$set':update})
-    return HttpResponse('ok')
 
 def sendReviewFailMessage(_from,resource):
 
@@ -518,6 +493,42 @@ def sendReviewFailMessage(_from,resource):
            'extras':{'resourceId':str(resource['_id'])}}
 
     clct_cmsMessage.insert(msg)
+
+def review_one(id,review,username):
+    update = {'review':review}
+    if review == -1:
+        update['isOnline'] = False
+        resource = clct_resource.find_one({'_id':ObjectId(id)})
+        #发送审核失败消息
+        if resource['editor'] != -1:
+            sendReviewFailMessage(username,resource)
+        #如果是推荐视频，同时发送消息给 苏俊杰（uid：4）
+        if resource['isRecommend']:
+            resource['editor'] = 4
+            sendReviewFailMessage(username,resource)
+    elif review == 1:
+        clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
+    clct_resource.update({'_id':ObjectId(id)},{'$set':update})
+
+
+@NeedLogin
+def review(request):
+    id = request.GET['id']
+    review = int(request.GET['review'])
+    username = request.session['username']
+    review_one(id,review,username)
+    return HttpResponse('ok')
+
+@NeedLogin
+def batch_review(request):
+    username = request.session['username']
+    for id in request.POST.getlist('tobeList[]'):
+        review_one(id,0,username)
+    for id in request.POST.getlist('acceptList[]'):
+        review_one(id,1,username)
+    for id in request.POST.getlist('rejectList[]'):
+        review_one(id,-1,username)
+    return HttpResponse('ok')
 
 #==============================================================
 '''

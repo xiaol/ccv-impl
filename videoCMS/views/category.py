@@ -67,7 +67,6 @@ def index(request):
     DICT['findNum'] = clct_category.find(spec).count()
     DICT['navPage'] = 'category'
     DICT['sort'] = sort
-    DICT['username'] = request.session['username']
 
     return render_to_response('categoryList.htm',DICT,context_instance=RequestContext(request))
 
@@ -93,7 +92,6 @@ def update(request):
                 DICT['videoClass'] = k
                 
         DICT['navPage'] = 'category'
-        DICT['username'] = request.session['username']
         return render_to_response('categoryUpdate.htm',DICT,context_instance=RequestContext(request))
     
     oldCategory = clct_category.find_one({'_id':ObjectId(id)})
@@ -146,7 +144,6 @@ def add(request):
         DICT['categoryTypeList'] = CATEGORY_TYPE_MAP.keys()
         DICT['videoClassList'] = CATEGORY_VIDEO_CLASS_MAP.keys()
         DICT['navPage'] = 'category'
-        DICT['username'] = request.session['username']
         return render_to_response('categoryUpdate.htm',DICT,context_instance=RequestContext(request))
     
     category  = Category()

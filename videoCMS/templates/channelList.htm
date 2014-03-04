@@ -74,7 +74,7 @@
                                             <li><a onclick="updateNow({{channel.channelId}})">立即更新</a></li>
                                             <li><a  onclick="resetWeight({{channel.channelId}})" >重置权重</a></li>
                                             <li><a onclick="setCompleted({{channel.channelId}})" >设置完结</a></li>
-                                            {%ifequal username "admin"%}
+                                            {%ifequal role "admin"%}
                                                 <li><a  onclick="deleteAllResource({{channel.channelId}})">删除所属视频</a></li>
                                                 <li><a onclick="deleteChannel({{channel.channelId}})">删除</a></li>
                                                 <li><a  onclick="pushChannel({{channel.channelId}},'{{channel.channelName}}')">Push</a></li>

@@ -63,7 +63,43 @@
     line-height: 40px;
 }
 
+
 label:hover
 {
     cursor: pointer;
+}
+/*=-====----==-=-=-==*/
+
+.batch-operation
+{
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.batch-operation-item
+{
+    float:left;
+    height:100%;
+    width: 33.33%;
+    background-color: rgb(140, 101, 164);
+    line-height: 40px;
+    cursor: pointer;
+}
+
+
+.batch-operation-save
+{
+    float:left;
+    height:100%;
+    width: 100%;
+    background-color: rgb(140, 101, 164);
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.batch-operation-item:hover,.batch-operation-save:hover
+{
+    background-color: rgb(120,81,144);
 }

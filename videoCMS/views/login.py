@@ -75,6 +75,7 @@ def custom_proc(request):
     DICT = {}
     DICT['username'] = request.session.get('username','')
     DICT['uid'] = int(request.session.get('id',0))
+    DICT['role'] = request.session.get('role','')
 
     print DICT
 
