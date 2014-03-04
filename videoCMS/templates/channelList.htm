@@ -40,11 +40,11 @@
 		                        	<span>{{channel.channelId}}</span>
 		                            <a  href="/resource/index?channelId={{channel.channelId}}">{{channel.channelName}}</a>
 		                            
-		                            <span class="label label-info">{{channel.tvNumber}}集/{{channel.channelType}}/权{{channel.weight}}/订{{channel.subscribeNum}}</span>
+		                            <span class="label label-primary">{{channel.tvNumber}}集/{{channel.channelType}}/权{{channel.weight}}/订{{channel.subscribeNum}}</span>
                                     {% if channel.processed %}
-                                        <a channelId="{{channel.channelId}}" class="label label-info" onclick="toggleProcessed(this)">在线</a>
+                                        <a href="#" channelId="{{channel.channelId}}" class="label label-info" onclick="toggleProcessed(this)">在线</a>
                                     {% else %}
-                                        <a channelId="{{channel.channelId}}" class="label" onclick="toggleProcessed(this)">下线</a>
+                                        <a href="#" channelId="{{channel.channelId}}" class="label" onclick="toggleProcessed(this)">下线</a>
                                     {% endif %}
 
 		                            {% if channel.isNewest %}
@@ -58,9 +58,9 @@
 		                            {% endifequal %}
 
                                     {% if channel.isRecommend%}
-		                            <a channelId="{{channel.channelId}}" class="label label-warning" onclick="toggleRec(this)">已荐</a>
+		                            <a href="#" channelId="{{channel.channelId}}" class="label label-warning" onclick="toggleRec(this)">已荐</a>
 		                            {% else %}
-		                            <a channelId="{{channel.channelId}}" class="label"  onclick="toggleRec(this)">未荐</a>
+		                            <a href="#" channelId="{{channel.channelId}}" class="label"  onclick="toggleRec(this)">未荐</a>
 		                        	{% endif %}
                                     <a class="label label-warning"  target="_blank" href="showJson?id={{channel.id}}">JSON</a>
 
