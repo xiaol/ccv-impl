@@ -26,9 +26,6 @@ def index(request):
     spec = {}
     DICT = {}
 
-    if checkLogin(request):
-        DICT['username'] = request.session['username']
-
     
     page = int(request.GET['page']) if request.GET.get('page','') != '' else 1
     limit =int(request.GET['len']) if request.GET.get('len','') != '' else 10
@@ -191,7 +188,6 @@ def update(request):
         DICT['update'] = True
         DICT['navPage'] = 'channel'
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
-        DICT['username'] = request.session['username']
         return render_to_response('channelUpdate.htm',DICT,context_instance=RequestContext(request))
     
     #更新
@@ -239,7 +235,6 @@ def add(request):
         DICT['navPage'] = 'channel'
         DICT['autoOnline'] = True
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
-        DICT['username'] = request.session['username']
         DICT['editor'] = -1
         return render_to_response('channelUpdate.htm',DICT,context_instance=RequestContext(request))
     

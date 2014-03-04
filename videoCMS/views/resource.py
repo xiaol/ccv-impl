@@ -49,9 +49,6 @@ def addTag(name,addNum=1):
 def index(request):
     spec = {}
     DICT = {}
-    
-    if checkLogin(request):
-        DICT['username'] = request.session['username']
         
     
     page = int(request.GET['page']) if request.GET.get('page','') != '' else 1
@@ -215,7 +212,6 @@ def update(request):
         resource['resourceImageUrl2'] = IMG_INTERFACE_FF%(250,150,resource['resourceImageUrl2'])
         resource['scheduleGoOnline'] = formatHumanTime(resource['scheduleGoOnline'])
         DICT = Obj2Str(resource)
-        DICT['username'] = request.session['username']
         DICT['info'] = ''
         DICT['update'] = True
         DICT['navPage'] = 'resource'
@@ -263,7 +259,6 @@ def add(request):
         DICT['number'] = -1
         DICT['weight'] = -1
         DICT['channelId'] = 1
-        DICT['username'] = request.session['username']
         return render_to_response('resourceUpdate.htm',DICT,context_instance=RequestContext(request))
     
     resource = POST2Resource(request)

@@ -80,7 +80,7 @@
                                             <li><a resourceId="{{resource.id}}" onclick="stopSnapshot(this)">取消截图</a></li>
                                             <li><a resourceId="{{resource.id}}" onclick="setTobeReview(this)">提交待审</a></li>
 
-                                            {%ifequal username "admin"%}
+                                            {%ifequal role "admin"%}
                                             <li><a onclick="pushResource('{{resource.id}}','{{resource.resourceName}}')">Push</a></li>
                                             <li><a onclick="deleteResource('{{resource.id}}')">删除</a></li>
                                             {%endifequal%}
@@ -161,7 +161,7 @@
 			<div class="span4" >
                 <form id="form_nav">
                 <!--<input type="hidden" name="review" value="{{ review }}"/>-->
-                {% ifequal  username "admin"%}
+                {% ifequal role "admin"%}
                 <div class="edit-mode">
                     <div class="edit-mode-item {% if not review %}selected{% endif %}" onclick="changeMode('')" >
                         普通模式
