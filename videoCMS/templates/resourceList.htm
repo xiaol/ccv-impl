@@ -6,6 +6,7 @@
 <link href="/static/css/channelList.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/icheck-square/purple.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/icheck-square/aero.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/icheck-square/blue.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/icheck-square/red.css" rel="stylesheet" type="text/css" />
@@ -20,7 +21,9 @@
 <script src="/static/js/common.js"></script>
 <script src="/static/js/resourceList.js"></script>
 
-
+<script type="text/javascript">
+    var singleReview = {% if singleReview %}true{% else %}false{% endif %};
+</script>
 </head>
 <body style="background-color:#CCC;">
     {% include "nav.htm" %}
@@ -31,7 +34,6 @@
 			            <div class="row-fluid topicItem">
 		                    <div class="topicImage">		                    	
 		                    	<div style="position:absolute;">
-		                    		<a class="label label-info" href="/resource/index?channelId={{resource.channelId}}">{{resource.channelName}}</a><br/>
                                     <span class="label label-inverse">{{ resource.videoType }}</span>
 		                    	</div>
 		                        <img class="resourceImage" src="{{resource.resourceImageUrl}}" />
@@ -45,8 +47,13 @@
 		                    </div>
 		                    <div class="span9 topicItemRight">
 		                        <div class="row-fluid">
-                                    <a class="label label-info" href="/channel/index?channelId={{resource.channelId}}">频道{{resource.channelId}}</a>
-    		                        <a href="{{resource.resourceUrl}}">{{resource.resourceName}}</a>
+                                    <a class="label label-info" href="/channel/index?channelId={{resource.channelId}}">{{resource.channelName}} {{resource.channelId}}</a>
+                                    <span class="label label-success">
+                                        {% ifequal resource.source "manual" %}人工{% endifequal %}
+                                        {% ifequal resource.source "spider" %}自动{% endifequal %}
+                                        {% ifequal resource.source "weibo" %}微博{% endifequal %}
+                                        {% ifequal resource.source "recommend" %}推荐{% endifequal %}
+                                    </span> &nbsp;
                                     <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
 		                            {% if resource.isOnline%}
 		                            <a resourceId="{{resource.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
@@ -71,6 +78,8 @@
                                             <li><a  onclick="addToBaBa(this,'{{ resource.id }}')">+Baba视频</a></li>
                                             <li><a resourceId="{{resource.id}}" onclick="refreshSnapshot(this)">更新截图</a></li>
                                             <li><a resourceId="{{resource.id}}" onclick="stopSnapshot(this)">取消截图</a></li>
+                                            <li><a resourceId="{{resource.id}}" onclick="setTobeReview(this)">提交待审</a></li>
+
                                             {%ifequal username "admin"%}
                                             <li><a onclick="pushResource('{{resource.id}}','{{resource.resourceName}}')">Push</a></li>
                                             <li><a onclick="deleteResource('{{resource.id}}')">删除</a></li>
@@ -78,6 +87,9 @@
                                             <li></li>
                                         </ul>
                                     </div>
+
+                                    <br/>
+                                    <a href="{{resource.resourceUrl}}">{{resource.resourceName}}</a>
 
 		                        </div>
 
@@ -158,10 +170,10 @@
                         审核模式
                     </div>
                 </div>
-                {% endifequal %}
+
                 {% if review %}
                 <div class="review-status">
-                    <div class="review-status-item" >
+                    <div class="review-status-item " >
                         <input id="onReview" type="radio" name="_rr" value="待审核"  {% ifequal review "待审核" %} checked="checked"{% endifequal %}  /> &nbsp;
                         <label for="onReview" >待审核</label>
                     </div>
@@ -170,7 +182,28 @@
                         <label for="ReviewReject">审核悲剧</label>
                     </div>
                 </div>
+                {% if not singleReview %}
+                <div class="batch-operation">
+                    <div class="batch-operation-item" onclick="pendAll()">
+                        全部待审
+                    </div>
+                    <div class="batch-operation-item" onclick="acceptAll()">
+                        全部通过
+                    </div>
+                    <div class="batch-operation-item" onclick="rejectAll()">
+                        全部不过
+                    </div>
+                </div>
+
+                <div class="batch-operation">
+                    <div class="batch-operation-save" onclick="batch_review()">
+                        保存
+                    </div>
+                </div>
                 {% endif %}
+                {% endif %}
+
+                {% endifequal %}
                 <input type="hidden" name="review" value="{{ review }}"/>
 
                 <div class="paddingWrap" style="background-color:#FFF;">

@@ -53,7 +53,7 @@ function refreshSnapshot(object)
 			if(data != 'ok')
 			{
 				alert('请求失败');
-				
+
 			}else
 			{
 				alert('请求成功');
@@ -71,6 +71,25 @@ function stopSnapshot(object)
 {
 	var id = $(object).attr('resourceId');
 	window.location = "/resource/stopSnapshot?id=" + id;
+}
+
+function setTobeReview(object)
+{
+	var resourceId = $(object).attr('resourceId');
+
+    $.ajax({
+		type:'get',
+		url:'/resource/review',
+		data:{'id':resourceId,'review':0},
+		success:function(data,textStatus)
+		{
+            alert('放入审核成功，等待管理员审核..');
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
 }
 
 
@@ -150,6 +169,57 @@ function review(resourceId,review)
 	});
 }
 
+function pendAll()
+{
+    $('[review="0"]').iCheck('check');
+}
+
+function acceptAll()
+{
+    $('[review="1"]').iCheck('check');
+}
+
+function rejectAll()
+{
+    $('[review="-1"]').iCheck('check');
+}
+
+function batch_review()
+{
+    var tobeList = [];
+    $('[review="0"]:checked').each(function()
+    {
+        tobeList.push($(this).attr('id').substring(3));
+    });
+    var acceptList = [];
+    $('[review="1"]:checked').each(function()
+    {
+        acceptList.push($(this).attr('id').substring(3));
+    });
+    var rejectList = [];
+    $('[review="-1"]:checked').each(function()
+    {
+        rejectList.push($(this).attr('id').substring(3));
+    });
+    $('.batch-operation-save').text('正在保存...');
+    $('.batch-operation-save')[0].onclick = undefined;
+    $.ajax({
+		type:'post',
+		url:'/resource/batch_review',
+		data:{'tobeList':tobeList,'acceptList':acceptList,'rejectList':rejectList},
+		success:function(data,textStatus)
+		{
+            window.location = window.location;
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
+
+}
+
+
 function init()
 {
     $('#datetimepicker1').datetimepicker({
@@ -176,11 +246,13 @@ function init()
     radioClass: 'iradio_square-purple'
     });
 
-    // 审核
+    // 单个审核
+    if(singleReview)
     $('.topicItem input').on('ifChecked', function(event){
         var target = $(event.target);
         review(target.attr('id').substring(3), target.attr('review'))
     });
+    //批量审核
 
     //切换状态
     $('.review-status input').on('ifChecked', function(event){
