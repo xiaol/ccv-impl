@@ -271,9 +271,21 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
-        if re.search(u'[\u4e00-\u9fa5]+\d+$', title) and len(title.encode('utf8')) < 27:
+        #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
+        #    print title
+
+        '''titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
+        sum = 0
+        for titleSeg in titleSegs:
+            sum = sum + len(titleSeg.encode('utf8'))
+            #print titleSeg
+
+        if sum < 20 and len(titleSegs) == 2:
+            print title'''
+
+        '''if re.search(u'[\u4e00-\u9fa5]+\d+$', title) and len(title.encode('utf8')) < 27:
             print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})'''
         '''if re.search(u'\d+集',title):# and len(title.encode('utf8')) < 20:
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
@@ -300,13 +312,17 @@ def filterRecommendations():
         if ret.get('v_size',None) is not None and ret['v_size'][0] != 0 and ret['v_size'][0] < 480:
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
+            continue'''
 
-        if re.search('\d{9,}', title) is not None:
+        if re.search('\d{6,}', title) is not None:
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue'''
+            tempTitle = re.sub('\d{6,}', '', title)
+            if len(tempTitle.encode('utf8')) < 20:
+                clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            else:
+                clct_resource.update({'_id':ret['_id']}, {'$set':{'resourceName': tempTitle}})
+            continue
 
 
 
@@ -349,7 +365,7 @@ if __name__ == '__main__':
     #while True:
         #feedUserTag()
         #addTagResource()
-        #updateUserTag()
+        #updateUsrTag()
     filterRecommendations()
     offlineRecommendations()
     #    time.sleep(12*60*60)

@@ -285,6 +285,22 @@ def filterVideo(entities):
             continue
         if re.search(u'[\u4e00-\u9fa5]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 27:
             continue
+        titleSegs =  re.split(u'[^\u4e00-\u9fa5]+', entity['ti'])
+        titleSum = 0
+        for titleSeg in titleSegs:
+            titleSum = titleSum + len(titleSeg.encode('utf8'))
+            #print titleSeg
+
+        if sum < 20 and len(titleSegs) == 1:
+            continue
+
+        if re.search('\d{6,}', entity['ti']) is not None:
+            tempTitle = re.sub('\d{6,}', '', entity['ti'])
+            if len(tempTitle.encode('utf8')) < 20:
+                continue
+            else:
+                entity['ti'] = tempTitle
+            continue
         occurrencesCount = 0
         for m in re.finditer(u'淘宝|教程|机', entity['ti']):
             occurrencesCount = occurrencesCount + 1
