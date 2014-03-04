@@ -346,11 +346,11 @@ if __name__ == '__main__':
     #updateResourceWithoutChannel()
     #stripTag()
     #predictDefinition()
-    while True:
+    #while True:
         #feedUserTag()
         #addTagResource()
         #updateUserTag()
-        filterRecommendations()
-        offlineRecommendations()
-        time.sleep(12*60*60)
+    filterRecommendations()
+    offlineRecommendations()
+    #    time.sleep(12*60*60)
     #clearChannel(101758)
