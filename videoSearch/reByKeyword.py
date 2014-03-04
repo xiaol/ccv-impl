@@ -283,6 +283,8 @@ def filterVideo(entities):
             continue
         if re.search(u'\d+集',entity['ti']):
             continue
+        if re.search(u'[\u4e00-\u9fa5]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 27:
+            continue
         occurrencesCount = 0
         for m in re.finditer(u'淘宝|教程|机', entity['ti']):
             occurrencesCount = occurrencesCount + 1
@@ -313,6 +315,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
             if not videoTag:
                 continue
             videoTagName = re.sub('<[^<]+?>', '', videoTag['name'])
+            videoTagName = videoTagName.split(' ')
+            videoTagName = '|'.join(videoTagName)
             resource['tagList'].append(videoTagName)
         if not entity['tag']:
             if resource['resourceName']:
