@@ -102,12 +102,16 @@
 
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">手动添加的视频(<a href="/resource/index?source=manual&editor={{ uid }}">全部:{{ resourceNum }})</a></legend>
+                    <legend class="">人工视频 ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }}新增： {{ periodResourceNum }}个，
+                        今日：{{ todayResourceNum }}个，昨日：{{ yesterdayResourceNum }}个，
+                        <a href="/resource/index?source=manual&editor={{ uid }}">全部:{{ resourceNum }}</a>)
+                    </legend>
                 </div>
                 <div>
                     <ul>
                     {% for resource in resourceList %}
                         <li>
+                            {{ resource.createTime|formatHumanTime|slice:"5:" }}
                             <a href="/resource/index?id={{ resource.id }}">{{ resource.resourceName }}</a>
                             <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
                         </li>
@@ -117,16 +121,18 @@
             </fieldset>
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">最近播放量({{ startDate }}-{{ endDate }} 新增：{{ newNum }}个 平均播放：{{averagePlay}}次/个）</legend>
+                    <legend class="">近期播放量 人工+自动 ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }}新增：{{ newNum }}个，平均播放：{{averagePlay}}次/个）</legend>
                 </div>
                 <div>
                     <canvas id="myChart" width="900" height="400"></canvas>
                 </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset id="channelStatistic">
                 <div id="legend" class="">
-                    <legend class="">频道播放量  手动+自动 ({{ startDate }}-{{ endDate }})</legend>
+                    <legend class="">频道播放量  人工+自动 ({{ startDate|slice:"5:"  }}—{{ endDate|slice:"5:"  }})
+                        <button class="btn btn-primary btn-small" onclick="toggleChannel(this)">全部展开</button>
+                    </legend>
                 </div>
                 <table  class="table table-bordered">
                     <tr>

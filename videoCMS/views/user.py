@@ -73,7 +73,6 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     s_sum = map(list,zip(*s_sum))
 
     s_channel = {}
-    s_channel = {}
     for channel in result:
         s_channel[channel] = {}
         data = []
@@ -86,10 +85,10 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         s_channel[channel]['play'] = sum(data[1])
 
 
-    print daySequence
-    print s_sum
-    print s_channel
-    print channelList
+    #print daySequence
+    #print s_sum
+    #print s_channel
+    #print channelList
     return daySequence,s_sum,s_channel,channelList,len(resourceSet)
 
 
@@ -111,15 +110,24 @@ def index(request):
     editor = clct_cmsEditor.find_one({'id':uid})
     DICT.update(editor)
 
+    #手工添加的视频
     resourceList = clct_resource.find({'editor':uid,'source':'manual'})
-
     DICT['resourceNum'] = resourceList.count()
     DICT['resourceList'] = []
     DICT['uid'] = uid
     for one in resourceList.sort([('_id',-1)]).limit(10):
         one['id'] =str(one['_id'])
         DICT['resourceList'].append(one)
+    #选择日期内 手工视频
+    DICT['periodResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','createTime':{'$gte':startTime,'$lt':endTime}}).count()
+    #今日昨日视频数
+    yesterdayStart = time.strftime("%Y%m%d000000",time.localtime(time.time()-24*3600))
+    todayStart= time.strftime("%Y%m%d000000",time.localtime(time.time()))
+    todayEnd= time.strftime("%Y%m%d000000",time.localtime(time.time()+24*3600))
+    #print yesterdayStart,todayStart,todayEnd
 
+    DICT['yesterdayResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','createTime':{'$gte':yesterdayStart,'$lt':todayStart}}).count()
+    DICT['todayResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','createTime':{'$gte':todayStart,'$lt':todayEnd}}).count()
     #统计数据
 
     labels,s_sum,s_channel,channelList,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
@@ -132,7 +140,7 @@ def index(request):
     DICT['newNum'] = newNum
     DICT['averagePlay'] =  round(sum(s_sum[1]) *1.0/ newNum,2) if newNum else 0
     DICT['uid'] = uid
-    print DICT
+    #print DICT
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
 
