@@ -47,7 +47,7 @@
 		                    </div>
 		                    <div class="span9 topicItemRight">
 		                        <div class="row-fluid">
-                                    <a class="label label-info" href="/channel/index?channelId={{resource.channelId}}">{{resource.channelName}} {{resource.channelId}}</a>
+                                    <a class="label label-primary" href="/channel/index?channelId={{resource.channelId}}">{{resource.channelName}} {{resource.channelId}}</a>
                                     <span class="label label-success">
                                         {% ifequal resource.source "manual" %}人工{% endifequal %}
                                         {% ifequal resource.source "spider" %}自动{% endifequal %}
@@ -56,9 +56,9 @@
                                     </span> &nbsp;
                                     <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
 		                            {% if resource.isOnline%}
-		                            <a resourceId="{{resource.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
+		                            <a href="#" resourceId="{{resource.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
 		                            {% else %}
-		                            <a resourceId="{{resource.id}}" class="label"  onclick="toggleOnlineStatus(this)">下线</a>
+		                            <a href="#" resourceId="{{resource.id}}" class="label"  onclick="toggleOnlineStatus(this)">下线</a>
 		                        	{% endif %}
                                     <a target="_blank" class="label label-warning" href="showJson?id={{resource.id}}">JSON</a>
 

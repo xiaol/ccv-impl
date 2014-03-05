@@ -82,4 +82,18 @@ function showCanvas(object)
     $(object).parents('tr').next().find('canvas').slideToggle();
 }
 
+function toggleChannel(object)
+{
+    var object = $(object);
+    if(object.text() == "全部展开")
+    {
+        $('#channelStatistic canvas').slideDown();
+        object.text('全部收起');
+    }else
+    {
+        $('#channelStatistic canvas').slideUp();
+        object.text('全部展开');
+    }
+}
+
 $('document').ready(init)

@@ -12,6 +12,3 @@ def formatHumanTime(s):
         return s
 
 register.filter('formatHumanTime',formatHumanTime)
-print dir(register)
-print register.filters
-print 'dddddddddddddddd'
