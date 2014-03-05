@@ -282,6 +282,7 @@ def filterRecommendations():
             print lCommonResult
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
 
         titleLen = len(title)
         if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
@@ -294,11 +295,13 @@ def filterRecommendations():
                     print lCommonResult
                     print title
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+                    continue
                 elif ratio < 3.0:
                     print ratio
                     print lCommonResult
                     print title
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+                    continue
 
 
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
