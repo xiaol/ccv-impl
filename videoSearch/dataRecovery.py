@@ -277,7 +277,7 @@ def filterRecommendations():
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
         sumTitle = 0
         for titleSeg in titleSegs:
-            if titleSeg == u'' and len(titleSegs) ==3:
+            if titleSeg == u'' and len(titleSegs) <=3:
                 titleSegs.remove(u'')
                 continue
             sumTitle = sumTitle + len(titleSeg.encode('utf8'))
