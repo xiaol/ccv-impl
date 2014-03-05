@@ -287,16 +287,14 @@ def filterVideo(entities):
         if re.search(u'[\u4e00-\u9fa5]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 27:
             continue
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+', entity['ti'])
-        titleSum = 0
-        for titleSeg in titleSegs:
-            if titleSeg == u'' and len(titleSegs) <= 3:
-                titleSegs.remove(u'')
-                continue
-            titleSum = titleSum + len(titleSeg.encode('utf8'))
-            #print titleSeg
+        stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
 
-        if sum < 20 and len(titleSegs) == 1:
-            continue
+        if len(stripSegs) == 1:
+            for titleSeg in stripSegs:
+                sumTitle = len(titleSeg.encode('utf8'))
+                if sumTitle < 20:
+                    if not re.search(u'-|—|——', entity['ti']) and len(entity['ti'].encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
+                        continue
 
         if len(titleSegs) == 1:
             for onePiece in titleSegs:

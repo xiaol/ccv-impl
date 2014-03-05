@@ -273,17 +273,16 @@ def filterRecommendations():
             title = ret.get('title', None)
 
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
-        sumTitle = 0
-        for titleSeg in titleSegs:
-            if titleSeg == u'' and len(titleSegs) <=3:
-                titleSegs.remove(u'')
-                continue
-            sumTitle = sumTitle + len(titleSeg.encode('utf8'))
+        stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
 
-        if sumTitle < 20 and len(titleSegs) == 1:
-            print  title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
+        if  len(stripSegs) == 1:
+            for titleSeg in stripSegs:
+                sumTitle = len(titleSeg.encode('utf8'))
+                if sumTitle < 20:
+                    if not re.search(u'-|—|——', title) and len(title.encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
+                        print  title
+                        clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+                        continue
 
         if len(titleSegs) == 1:
             for onePiece in titleSegs:
