@@ -279,7 +279,7 @@ def filterRecommendations():
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
                     continue
 
-        '''lCommonResult =  saApp.longest(title)
+        lCommonResult =  saApp.longest(title)
         if lCommonResult == '':
             continue
         templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
@@ -308,7 +308,7 @@ def filterRecommendations():
                     print lCommonResult
                     print title
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue'''
+                    continue
 
 
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
