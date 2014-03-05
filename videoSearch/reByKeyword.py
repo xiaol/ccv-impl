@@ -289,6 +289,9 @@ def filterVideo(entities):
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+', entity['ti'])
         titleSum = 0
         for titleSeg in titleSegs:
+            if titleSeg == u'':
+                titleSegs.remove(u'')
+                continue
             titleSum = titleSum + len(titleSeg.encode('utf8'))
             #print titleSeg
 

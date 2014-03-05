@@ -271,7 +271,18 @@ def filterRecommendations():
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
+
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
+        sumTitle = 0
+        for titleSeg in titleSegs:
+            if titleSeg == u'':
+                titleSegs.remove(u'')
+                continue
+            sumTitle = sumTitle + len(titleSeg.encode('utf8'))
+
+        if sumTitle < 20 and len(titleSegs) == 1:
+            print  title
+
         if len(titleSegs) == 1:
             for onePiece in titleSegs:
                 if len(onePiece) > 20:
@@ -314,14 +325,7 @@ def filterRecommendations():
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
         #    print title
 
-        '''titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
-        sum = 0
-        for titleSeg in titleSegs:
-            sum = sum + len(titleSeg.encode('utf8'))
-            #print titleSeg
 
-        if sum < 20 and len(titleSegs) == 2:
-            print title'''
 
         '''if re.search(u'[\u4e00-\u9fa5]+\d+$', title) and len(title.encode('utf8')) < 27:
             print title
