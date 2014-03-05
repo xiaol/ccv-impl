@@ -295,6 +295,11 @@ def filterVideo(entities):
         if sum < 20 and len(titleSegs) == 1:
             continue
 
+        if len(titleSegs) == 1:
+            for onePiece in titleSegs:
+                if len(onePiece) > 20:
+                    continue
+
         if re.search('\d{6,}', entity['ti']) is not None:
             tempTitle = re.sub('\d{6,}', '', entity['ti'])
             if len(tempTitle.encode('utf8')) < 20:

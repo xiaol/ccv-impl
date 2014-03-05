@@ -271,8 +271,15 @@ def filterRecommendations():
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
+        titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
+        if len(titleSegs) == 1:
+            for onePiece in titleSegs:
+                if len(onePiece) > 20:
+                    print title
+                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+                    continue
 
-        lCommonResult =  saApp.longest(title)
+        '''lCommonResult =  saApp.longest(title)
         if lCommonResult == '':
             continue
         templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
@@ -301,7 +308,7 @@ def filterRecommendations():
                     print lCommonResult
                     print title
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue
+                    continue'''
 
 
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
