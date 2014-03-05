@@ -244,7 +244,11 @@ def update(request):
     if img:
         resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
-    
+    #更新 作者
+    if 'editor' not in oldresource or oldresource['editor'] == -1:
+        resource['editor'] = int(request.session['uid'])
+
+
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
     return HttpResponseRedirect('update?id='+id)
 
