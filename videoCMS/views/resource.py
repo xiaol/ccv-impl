@@ -247,6 +247,7 @@ def update(request):
     #更新 作者
     if 'editor' not in oldresource or oldresource['editor'] == -1:
         resource['editor'] = int(request.session['id'])
+        resource['source'] = 'manual'
 
 
     clct_resource.update({'_id':ObjectId(id)},{'$set':resource.getUpdateDict()})
