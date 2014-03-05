@@ -11,7 +11,7 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
     channel = clct_channel.find_one({'channelId':channelId})
     '''入库'''
     t = getCurTime()
-    InsertedList  = []
+    InsertedList = []
     onlineNum = 0
 
     #控制短视频的频率
@@ -48,7 +48,8 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
                     onlineNum += 1
                 if snapShot:
                     mp4box = True if resource['videoType'] == 'sohu_url' else False
-                    addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1,goOnline=True)
+                    addVideoInfoTask(resource['channelId'],str(old['_id']),resource['videoId'],resource['videoType'],mp4box,\
+                                     force=True,priority=1,goOnline=True)
         else:
             print("insert Ok!")
             InsertedList.append(ret)
@@ -57,7 +58,8 @@ def insertResouce(resouceList,channelId,snapShot = False, updateTvNumber = False
             '''新增 截图任务'''
             if snapShot:
                 mp4box = True if resource['videoType'] == 'sohu_url' else False
-                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],mp4box,force=True,priority=1)
+                addVideoInfoTask(resource['channelId'],str(ret),resource['videoId'],resource['videoType'],\
+                                 mp4box,force=True,priority=1,goOnline=channel.get('snapShotGoOnline',False))
 
     print '频道: %d, 成功插入: %d,上线: %d,是否更新tvNumber: %s'%(channelId,len(InsertedList), onlineNum,updateTvNumber)
     #如果 成功有视频插入，则更新频道

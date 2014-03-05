@@ -138,7 +138,7 @@ class Channel(DomainBase):
     handleName = ''
     handleArgs = ''
     handleFrequents = ''
-    autoOnline = True
+    autoOnline = False
     subtitle = ''
     duration = -1
     daysAhead = 2
@@ -183,6 +183,7 @@ class Channel(DomainBase):
     isRecommend = False
     type = ''
     snapShot = False
+    snapShotGoOnline = False
     recReason = ''
     editor = -1
 

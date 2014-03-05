@@ -242,7 +242,7 @@
                         	</td>
                         </tr>
                         <tr>
-                        	<td><a href="#" data-content="此频道自动更新后的资源，是直接上线，还是处于下线状态等待人工审核"  data-title="描述"  data-toggle="popover">自动上线</a></td>
+                        	<td><a href="#" data-content="此频道自动更新后的资源，直接上线，再慢慢截图"  data-title="描述"  data-toggle="popover">先上线后截图</a></td>
                         	<td>
                         		<select name="autoOnline"  style="width:90px">
                         			<option>是</option>
@@ -274,6 +274,13 @@
                                 <select name="snapShot"  style="width:90px">
                                     <option>是</option>
                                     <option {% if not snapShot %}selected="selected"{% endif %}>否</option>
+                                </select>
+
+                            截图成功后上线
+
+                                <select name="snapShotGoOnline"  style="width:90px">
+                                    <option>是</option>
+                                    <option {% if not snapShotGoOnline %}selected="selected"{% endif %}>否</option>
                                 </select>
                             </td>
                         </tr>

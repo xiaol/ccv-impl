@@ -152,6 +152,7 @@ def POST2Channel(request):
     channel['autoSub'] = True if request.POST.get('autoSub') == u'是' else False
     channel['onSquare'] = True if request.POST.get('onSquare') == u'是' else False
     channel['snapShot'] = True if request.POST.get('snapShot') == u'是' else False
+    channel['snapShotGoOnline'] = True if request.POST.get('snapShotGoOnline') == u'是' else False
     channel['weight'] = 0 if request.POST.get('weight') == '' else int(request.POST.get('weight'))
     channel['nextSearchTime'] = request.POST.get('nextSearchTime')
     if channel['nextSearchTime'] == "":channel['nextSearchTime'] = '99990101000000'
