@@ -262,6 +262,7 @@ def updateChannelSnapshot(channelId):
         httpUtil.opener.addheaders.append(('Cookie','sessionid=33b88480a48a5490c8eb2a9c41541049'))
         content = httpUtil.Get(url)
 
+import suffixArrayApplications as saApp
 def filterRecommendations():
     #rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
     rets = clct_resource.find({'$or':[{'channelId':101641, 'isOnline':True},{'channelId':101758, 'isOnline':True}]})
@@ -270,6 +271,35 @@ def filterRecommendations():
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
+
+        lCommonResult =  saApp.longest(title)
+        if lCommonResult == '':
+            continue
+        templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
+        tempResultLen = len(templCommonResult)
+        resultLen = len(lCommonResult)
+        if tempResultLen > 10 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
+            print lCommonResult
+            print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
+        titleLen = len(title)
+        if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
+            occurences = saApp.search2(lCommonResult, title)
+            occurencesCount =  len(occurences)
+            if occurencesCount > 2 or resultLen > 3:
+                ratio = float(titleLen)/(len(lCommonResult)*len(occurences))
+                if resultLen > 4 and ratio < 2.8:
+                    print ratio
+                    print lCommonResult
+                    print title
+                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+                elif ratio < 3.0:
+                    print ratio
+                    print lCommonResult
+                    print title
+                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+
 
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
         #    print title
@@ -301,20 +331,9 @@ def filterRecommendations():
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue'''
-        '''
-        count = 0
-        for m in re.finditer(u'淘宝|教程|机|qq|dnf', title, re.IGNORECASE):
-            count = count + 1
-        if count > 2:
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
-        if ret.get('v_size',None) is not None and ret['v_size'][0] != 0 and ret['v_size'][0] < 480:
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue'''
 
-        if re.search('\d{6,}', title) is not None:
+
+        '''if re.search('\d{6,}', title) is not None:
             print title
             #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
             tempTitle = re.sub('\d{6,}', '', title)
@@ -322,7 +341,8 @@ def filterRecommendations():
                 clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             else:
                 clct_resource.update({'_id':ret['_id']}, {'$set':{'resourceName': tempTitle}})
-            continue
+            continue'''
+
 
 
 
@@ -366,6 +386,7 @@ if __name__ == '__main__':
         #feedUserTag()
         #addTagResource()
         #updateUsrTag()
+
     filterRecommendations()
     offlineRecommendations()
     #    time.sleep(12*60*60)

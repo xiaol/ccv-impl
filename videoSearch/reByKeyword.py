@@ -12,6 +12,7 @@ from common.common import getCurTime,strB2Q,strQ2B
 from common.Domain import Resource
 from common.videoInfoTask import addVideoInfoTask
 from py4j.java_gateway import JavaGateway
+import suffixArrayApplications as saApp
 
 
 redisUrl = '60.28.29.37'
@@ -301,11 +302,24 @@ def filterVideo(entities):
             else:
                 entity['ti'] = tempTitle
             continue
-        occurrencesCount = 0
-        for m in re.finditer(u'淘宝|教程|机', entity['ti']):
-            occurrencesCount = occurrencesCount + 1
-        if occurrencesCount > 2:
-            continue
+
+        lCommonResult =  saApp.longest(entity['ti'])
+        resultLen = len(lCommonResult)
+        if lCommonResult != '' and resultLen < 3:
+            templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
+            tempResultLen = len(templCommonResult)
+            if tempResultLen > 10 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
+                continue
+            titleLen = len(entity['ti'])
+            if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
+                occurrences = saApp.search2(lCommonResult, entity['ti'])
+                occurrencesCount =  len(occurrences)
+                if occurrencesCount > 2 or resultLen > 3:
+                    ratio = float(titleLen)/(len(lCommonResult)*len(occurrences))
+                    if resultLen > 4 and ratio < 2.8:
+                        continue
+                    elif ratio < 3.0:
+                        continue
         result.append(entity)
     return result
 
