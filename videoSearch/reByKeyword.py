@@ -293,7 +293,7 @@ def filterVideo(entities):
             for titleSeg in stripSegs:
                 sumTitle = len(titleSeg.encode('utf8'))
                 if sumTitle < 20:
-                    if not re.search(u'-|—|——', entity['ti']) and len(entity['ti'].encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
+                    if not re.search(u'-|—|——|MV', entity['ti'], re.IGNORECASE) and len(entity['ti'].encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
                         continue
 
         if len(titleSegs) == 1:

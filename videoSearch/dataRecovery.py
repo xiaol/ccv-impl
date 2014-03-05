@@ -279,7 +279,7 @@ def filterRecommendations():
             for titleSeg in stripSegs:
                 sumTitle = len(titleSeg.encode('utf8'))
                 if sumTitle < 20:
-                    if not re.search(u'-|—|——', title) and len(title.encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
+                    if not re.search(u'-|—|——|MV', title, re.IGNORECASE) and len(title.encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
                         print  title
                         clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
                         continue
