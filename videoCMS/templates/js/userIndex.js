@@ -30,9 +30,9 @@ function init()
         labels : labels,
         datasets : [
             {
-                fillColor : "rgba(41,43,54,0.5)",
-                strokeColor : "rgba(41,43,54,1)",
-                pointColor : "rgba(41,43,54,1)",
+                fillColor : "rgba(91,182,222,0.5)",
+                strokeColor : "rgba(91,182,222,1)",
+                pointColor : "rgba(91,182,222,1)",
                 pointStrokeColor : "#fff",
                 data : s_channel[channelId]['data'][1]
             },
@@ -57,9 +57,9 @@ function init()
     labels : labels,
     datasets : [
         {
-            fillColor : "rgba(41,43,54,0.5)",
-            strokeColor : "rgba(41,43,54,1)",
-            pointColor : "rgba(41,43,54,1)",
+            fillColor : "rgba(91,182,222,0.5)",
+            strokeColor : "rgba(91,182,222,1)",
+            pointColor : "rgba(91,182,222,1)",
             pointStrokeColor : "#fff",
             data : s_sum[1]
         },
