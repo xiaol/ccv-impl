@@ -272,16 +272,20 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
+        title = u'2005艾弗森对战迈阿密热火队'
+
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
         sumTitle = 0
         for titleSeg in titleSegs:
-            if titleSeg == u'':
+            if titleSeg == u'' and len(titleSegs) ==3:
                 titleSegs.remove(u'')
                 continue
             sumTitle = sumTitle + len(titleSeg.encode('utf8'))
 
         if sumTitle < 20 and len(titleSegs) == 1:
             print  title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
 
         if len(titleSegs) == 1:
             for onePiece in titleSegs:
