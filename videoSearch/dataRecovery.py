@@ -272,8 +272,6 @@ def filterRecommendations():
         if title is None:
             title = ret.get('title', None)
 
-        title = u'2005艾弗森对战迈阿密热火队'
-
         titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
         sumTitle = 0
         for titleSeg in titleSegs:
