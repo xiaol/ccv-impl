@@ -112,7 +112,7 @@ def retrieveSuggestion(sinaToken):
     return result
 
 def retrieveUserHistory(userId):
-    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$ne': "0" }}).sort("operationTime", -1).limit(15)
+    rets = clct_playLog.find({'uuid': userId, 'playTime': { '$gte': "600000" }}).sort("operationTime", -1)
     records = []
     for ret in rets:
         records.append(ret['resourceId'])
