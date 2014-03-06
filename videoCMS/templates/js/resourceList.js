@@ -180,6 +180,7 @@ function rejectWithReason(resourceId,object)
     review(resourceId,-1,reason);
     console.log(rejectReason.parent('.rejectItem').prev().prev().find('input'));
     rejectReason.prev().prev().find('input').iCheck('check');
+    rejectReason.hide();
 }
 
 function pendAll()
