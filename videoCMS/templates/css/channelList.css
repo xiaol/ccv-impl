@@ -103,3 +103,27 @@ label:hover
 {
     background-color: rgb(120,81,144);
 }
+
+
+.rejectItem
+{
+    position: relative;
+}
+
+.rejectReason
+{
+    position: absolute;
+    display: none;
+    background-color: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 236px;
+    padding: 8px;
+    z-index: 1000;
+
+}
+
+.rejectItem:hover
+.rejectReason
+{
+    display: block;
+}

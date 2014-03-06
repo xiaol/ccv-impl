@@ -493,22 +493,22 @@ def pushResource(request):
 
 
 
-def sendReviewFailMessage(_from,resource):
+def sendReviewFailMessage(_from,resource,reason):
 
-    content ='<a href="/resource/index?id=%s">%s</a>'%(str(resource['_id']),resource['resourceName'])
+    content ='[%s]<a href="/resource/index?id=%s">%s</a>'%(reason,str(resource['_id']),resource['resourceName'])
     msg = {'from':_from,'to':resource['editor'],'title':'审核失败','content':content,'createTime':getCurTime(),'type':'reviewFail',
            'extras':{'resourceId':str(resource['_id'])}}
 
     clct_cmsMessage.insert(msg)
 
-def review_one(id,review,username):
+def review_one(id,review,username,reason):
     update = {'review':review}
     if review == -1:
         update['isOnline'] = False
         resource = clct_resource.find_one({'_id':ObjectId(id)})
         #发送审核失败消息
         if resource['editor'] != -1:
-            sendReviewFailMessage(username,resource)
+            sendReviewFailMessage(username,resource,reason)
         #如果是推荐视频，同时发送消息给 苏俊杰（uid：4）
         if resource['isRecommend']:
             resource['editor'] = 4
@@ -523,7 +523,8 @@ def review(request):
     id = request.GET['id']
     review = int(request.GET['review'])
     username = request.session['username']
-    review_one(id,review,username)
+    reason = request.GET['reason']
+    review_one(id,review,username,reason)
     return HttpResponse('ok')
 
 @NeedLogin

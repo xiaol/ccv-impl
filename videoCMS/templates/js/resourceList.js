@@ -152,12 +152,12 @@ function changeMode(reviewMode)
     $('#form_nav').submit();
 }
 
-function review(resourceId,review)
+function review(resourceId,review,reason)
 {
     $.ajax({
 		type:'get',
 		url:'/resource/review',
-		data:{'id':resourceId,'review':review},
+		data:{'id':resourceId,'review':review,'reason':reason},
 		success:function(data,textStatus)
 		{
 
@@ -167,6 +167,19 @@ function review(resourceId,review)
 			alert(errorThrown);
 		}
 	});
+}
+
+function rejectWithReason(resourceId,object)
+{
+    var rejectReason = $(object).parent();
+    var reason = rejectReason.find('input:checked').next().text();
+    if(reason == "12 其他")
+    {
+        reason = rejectReason.find('[name="customReason"]').val();
+    }
+    review(resourceId,-1,reason);
+    console.log(rejectReason.parent('.rejectItem').prev().prev().find('input'));
+    rejectReason.prev().prev().find('input').iCheck('check');
 }
 
 function pendAll()
@@ -250,7 +263,8 @@ function init()
     if(singleReview)
     $('.topicItem input').on('ifChecked', function(event){
         var target = $(event.target);
-        review(target.attr('id').substring(3), target.attr('review'))
+        console.log('event',event);
+        //review(target.attr('id').substring(3), target.attr('review'),'')
     });
     //批量审核
 
