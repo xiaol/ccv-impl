@@ -148,8 +148,14 @@
                             <div style="width:60px;float: left;">
                                 <input id="to_{{ resource.id }}" type="radio" review="0" name="review_{{ resource.id }}" {% ifequal resource.review 0 %}checked="checked"{% endifequal %} />
                                 <label for="to_{{ resource.id }}">待审</label><br/><br/>
-                                <input id="ac_{{ resource.id }}" type="radio" review="1" name="review_{{ resource.id }}" {% ifequal resource.review 1 %}checked="checked"{% endifequal %} />
-                                <label for="ac_{{ resource.id }}">通过</label><br/><br/>
+                                <div class="" classs="position:relative;">
+                                    <input id="ac_{{ resource.id }}" type="radio" review="1" name="review_{{ resource.id }}" {% ifequal resource.review 1 %}checked="checked"{% endifequal %} />
+                                    <label for="ac_{{ resource.id }}">通过</label><br/><br/>
+                                    <div class="position:absolute;">
+                                        <input type="radio" name="rejectReason" value=""/> 标题
+                                        <input type="radio" name="rejectReason" value=""/> 标题
+                                    </div>
+                                </div>
                                 <input id="rj_{{ resource.id }}" type="radio" review="-1" name="review_{{ resource.id }}" {% ifequal resource.review -1 %}checked="checked"{% endifequal %}/>
                                 <label for="rj_{{ resource.id }}">不过</label>
                             </div>

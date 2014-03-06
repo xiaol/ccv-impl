@@ -244,9 +244,11 @@ def update(request):
     if img:
         resource['resourceImageUrl2'] = saveResourceImage(img.read(),id+'-2-')
     
-    #更新 作者
+    #修改自动源-> 变成人工
     if 'editor' not in oldresource or oldresource['editor'] == -1:
         resource['editor'] = int(request.session['id'])
+        resource['source'] = 'manual'
+    if oldresource.get('editor') == request.session['id'] and oldresource['source'] == 'spider':
         resource['source'] = 'manual'
 
 
@@ -493,7 +495,7 @@ def pushResource(request):
 
 def sendReviewFailMessage(_from,resource):
 
-    content ='<a href="%s">%s</a>'%(str(resource['_id']),resource['resourceName'])
+    content ='<a href="/resource/index?id=%s">%s</a>'%(str(resource['_id']),resource['resourceName'])
     msg = {'from':_from,'to':resource['editor'],'title':'审核失败','content':content,'createTime':getCurTime(),'type':'reviewFail',
            'extras':{'resourceId':str(resource['_id'])}}
 
