@@ -523,7 +523,7 @@ def review(request):
     id = request.GET['id']
     review = int(request.GET['review'])
     username = request.session['username']
-    reason = request.GET['reason']
+    reason = request.GET.get('reason','')
     review_one(id,review,username,reason)
     return HttpResponse('ok')
 
