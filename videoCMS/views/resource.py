@@ -531,11 +531,11 @@ def review(request):
 def batch_review(request):
     username = request.session['username']
     for id in request.POST.getlist('tobeList[]'):
-        review_one(id,0,username)
+        review_one(id,0,username,'')
     for id in request.POST.getlist('acceptList[]'):
-        review_one(id,1,username)
+        review_one(id,1,username,'')
     for id in request.POST.getlist('rejectList[]'):
-        review_one(id,-1,username)
+        review_one(id,-1,username,'')
     return HttpResponse('ok')
 
 #==============================================================
