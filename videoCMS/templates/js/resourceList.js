@@ -264,7 +264,8 @@ function init()
     $('.topicItem input').on('ifChecked', function(event){
         var target = $(event.target);
         console.log('event',event);
-        //review(target.attr('id').substring(3), target.attr('review'),'')
+        if(target.attr('review') != "-1")
+        review(target.attr('id').substring(3), target.attr('review'),'')
     });
     //批量审核
 
