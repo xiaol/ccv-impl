@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>关于</title>
+<link href="/static/css/tagUpdate.css" rel="stylesheet"
+	type="text/css" />
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/common.css" rel="stylesheet" type="text/css" />
+
+<script src="/static/js/jquery-1.7.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
+</head>
+
+<body style="background-color: #CCC;">
+	{% include "nav.htm" %}
+	<div class="container">
+		{% ifnotequal info "" %}
+		<div class="row-fluid">
+			<div class="span10 offset1">
+				<div class="alert {{info_class}}">{{info|safe}}</div>
+			</div>
+		</div>
+		{%endifnotequal%}
+		<div class="row-fluid smallFont">
+			<!--  左部分  -->
+			<div class="span12 whitepanel">
+                 <a href="http://www.youku.com">优酷</a>
+                 <a href="http://www.iqiyi.com">爱奇艺</a>
+                 <a href="http://www.letv.com">乐视</a>
+                 <a href="http://www.56.com">56</a>
+                 <a href="http://www.funshion.com">风行</a>
+                 <a href="http://v.163.com">网易</a>
+                 <a href="http://www.aipai.com">爱拍</a>v
+                 <a href="http://v.ifeng.com">凤凰</a>
+                 <a href="http://v.qq.com">腾讯</a>
+                 <a href="http://yinyuetai.com">音悦台</a>
+                 <a href="http://video.sina.com.cn">新浪</a>
+                 <a href="http://tv.sohu.com">搜狐</a>
+                 <a href="http://www.boosj.com">播视</a>
+                 <a href="http://baomihua.com">爆米花</a>
+                 <a href="http://wasu.cn">华数TV</a>
+                 <a href="http://acfun.tv">ACFUN</a>
+                 <a href="http://www.v1.cn">第一视频</a>
+                 <a href="http://www.ku6.com">酷6</a>
+                 <a href="http://www.kankanews.com/">kankannews</a>
+                 <a href="http://tv.cntv.cn/">cntv</a>
+                 <a href="http://xiyou.cntv.cn/">爱西柚</a>
+			</div>
+
+			<!--  右部分  -->
+			<div class="span3">
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

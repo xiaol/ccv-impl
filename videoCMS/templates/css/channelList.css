@@ -127,3 +127,23 @@ label:hover
 {
     display: block;
 }
+
+
+.container
+{
+    position: relative;
+}
+.supportedWebsite
+{
+    left: -150px;
+
+    background-color: #FFF;
+    width: 110px;
+    position: absolute;
+    padding: 10px;
+}
+
+.supportedWebsite a
+{
+    display: block;
+}
