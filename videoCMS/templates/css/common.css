@@ -186,3 +186,10 @@ box-shadow: white 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.0980392) 0px 0px 15px 0
     width:30px;
     padding:1px;
 }
+
+.pointer:hover
+{
+    cursor: pointer;
+    color: #ffffff;
+    text-decoration: none;
+}

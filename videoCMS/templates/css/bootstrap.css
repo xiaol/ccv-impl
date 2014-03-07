@@ -5406,8 +5406,8 @@ a.badge:hover {
   background-color: #999;
 }
 
-.label[href]:hover,
-.label[href]:focus {
+.label:hover,
+.label:focus {
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
@@ -5426,8 +5426,8 @@ a.badge:hover {
   background-color: #999999;
 }
 
-.label-default[href]:hover,
-.label-default[href]:focus {
+.label-default:hover,
+.label-default:focus {
   background-color: #808080;
 }
 
@@ -5435,8 +5435,8 @@ a.badge:hover {
   background-color: #428bca;
 }
 
-.label-primary[href]:hover,
-.label-primary[href]:focus {
+.label-primary:hover,
+.label-primary:focus {
   background-color: #3071a9;
 }
 
@@ -5444,8 +5444,8 @@ a.badge:hover {
   background-color: #5cb85c;
 }
 
-.label-success[href]:hover,
-.label-success[href]:focus {
+.label-success:hover,
+.label-success:focus {
   background-color: #449d44;
 }
 
@@ -5453,8 +5453,8 @@ a.badge:hover {
   background-color: #5bc0de;
 }
 
-.label-info[href]:hover,
-.label-info[href]:focus {
+.label-info:hover,
+.label-info:focus {
   background-color: #31b0d5;
 }
 
@@ -5462,8 +5462,8 @@ a.badge:hover {
   background-color: #f0ad4e;
 }
 
-.label-warning[href]:hover,
-.label-warning[href]:focus {
+.label-warning:hover,
+.label-warning:focus {
   background-color: #ec971f;
 }
 
@@ -5471,8 +5471,8 @@ a.badge:hover {
   background-color: #d9534f;
 }
 
-.label-danger[href]:hover,
-.label-danger[href]:focus {
+.label-danger:hover,
+.label-danger:focus {
   background-color: #c9302c;
 }
 

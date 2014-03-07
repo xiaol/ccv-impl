@@ -223,7 +223,7 @@ function batch_review()
 		data:{'tobeList':tobeList,'acceptList':acceptList,'rejectList':rejectList},
 		success:function(data,textStatus)
 		{
-            window.location = window.location;
+            window.location.reload();
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown)
 		{

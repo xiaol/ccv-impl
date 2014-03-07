@@ -56,9 +56,9 @@
                                     </span> &nbsp;
                                     <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
 		                            {% if resource.isOnline%}
-		                            <a href="#" resourceId="{{resource.id}}" class="label label-warning" onclick="toggleOnlineStatus(this)">在线</a>
+		                            <a resourceId="{{resource.id}}" class="label label-warning pointer" onclick="toggleOnlineStatus(this)">在线</a>
 		                            {% else %}
-		                            <a href="#" resourceId="{{resource.id}}" class="label"  onclick="toggleOnlineStatus(this)">下线</a>
+		                            <a resourceId="{{resource.id}}" class="label pointer"  onclick="toggleOnlineStatus(this)">下线</a>
 		                        	{% endif %}
                                     <a target="_blank" class="label label-warning" href="showJson?id={{resource.id}}">JSON</a>
 
@@ -73,7 +73,7 @@
 
                                     <!-- 操作下拉菜单 -->
                                     <div class="btn-group" style="display: inline-block;">
-                                        <a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#">操作<span class="caret"></span></a>
+                                        <a class="btn dropdown-toggle btn-mini pointer" data-toggle="dropdown"  href=>操作<span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <li><a  onclick="addToBaBa(this,'{{ resource.id }}')">+Baba视频</a></li>
                                             <li><a resourceId="{{resource.id}}" onclick="refreshSnapshot(this)">更新截图</a></li>
@@ -122,7 +122,7 @@
                                     <div class="tab-pane" id="{{ resource.id }}_2">
 
                                         <div class="row-fluid smallFont">
-                                            截图状态：<a href="#" title="{{resource.snapshotMsg}}" >{{resource.snapshot}}</a>
+                                            截图状态：<a class="pointer" title="{{resource.snapshotMsg}}" >{{resource.snapshot}}</a>
                                             <a target="_blank" href="/resource/getVideoUrl?videoType={{resource.videoType}}&videoId={{resource.videoId}}" class="label label-warning">检测视频地址</a>
                                             <a target="_blank" href="/video/play?videoType={{resource.videoType}}&videoId={{resource.videoId}}" class="label label-warning" >预览</a>
 
