@@ -643,7 +643,7 @@ def walk(reason, source):
         return videos
 
 def renewOldRecommend(userId):
-    rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$in':['done','gifDone']}}).limit(100)
+    rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$in':['done','gifDone']}}).limit(1)
     for ret in rets:
         ret['createTime'] = getCurTime()
         clct_userRecommend.update({'_id':ret['_id']}, {'$set':{'createTime':ret['createTime']}})
