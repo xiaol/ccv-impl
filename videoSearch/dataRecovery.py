@@ -14,15 +14,23 @@ from bson.objectid import ObjectId
 
 __author__ = 'Ivan liu'
 
+from PIL import Image
+import urllib2 as urllib
+import io
+
 def updateSnapshot():
-    rets = clct_userRecommend.find({'isViewed':-1,'snapshot':"doingGif"})
+    rets = clct_resource.find({'v_size':{'$exists': False}, 'isOnline':True, 'channelId':{'$in': [101641, 101758]}})
 
     for ret in rets:
-        retR = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
-        if retR['isOnline']:
-            clct_userRecommend.update({'uuid':ret['uuid'], 'resourceId':ret['resourceId']},{'$set':{'snapshot':'done'}})
+        fd = urllib.urlopen('http://60.28.29.47/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/'+ret['resourceImageUrl'])
+        image_file = io.BytesIO(fd.read())
+        im = Image.open(image_file)
+        (w,h) = im.size
+        if w < 480:
+            clct_resource.update({'_id':ret['_id']},{'$set':{'isOnline':False, 'snapshot':'small', 'v_size': [w, h]}})
         else:
-            clct_userRecommend.update({'uuid':ret['uuid'], 'resourceId':ret['resourceId']},{'$set':{'snapshot':retR['snapshot']}})
+            clct_resource.update({'_id':ret['_id']},{'$set':{'snapshot':'done', 'v_size': [w, h]}})
+
 
 def clearChannel(channelId):
     rets = clct_resource.remove({'channelId':channelId})
@@ -408,7 +416,8 @@ if __name__ == '__main__':
         #feedUserTag()
         #addTagResource()
         #updateUsrTag()
-    filterRecommendations()
+    updateSnapshot()
+    #filterRecommendations()
     offlineRecommendations()
     #    time.sleep(12*60*60)
     #clearChannel(101758)
