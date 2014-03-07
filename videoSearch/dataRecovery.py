@@ -194,10 +194,18 @@ def updateTag():
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':tags}})
             continue
 
+from py4j.java_gateway import JavaGateway
 def updateExistTag():
     rets = clct_resource.find({'tagList':{'$exists':True}})
+    gateway = JavaGateway()
     for ret in rets:
         if ret['tagList']:
+            for tag in ret['tagList']:
+                if tag == u'':
+                    continue
+                if re.match('\d+', tag):
+                    print tag
+                gateway.entry_point.POS(tag)
             for black in blacklist:
                 try:
                     ret['tagList'].remove(black)
@@ -206,9 +214,8 @@ def updateExistTag():
             try:
                 ret['tagList'].remove('')
             except ValueError:
-                pass
+                continue
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
-            continue
 
 from collections import defaultdict
 def updateUserTag():
@@ -401,7 +408,6 @@ if __name__ == '__main__':
         #feedUserTag()
         #addTagResource()
         #updateUsrTag()
-
     filterRecommendations()
     offlineRecommendations()
     #    time.sleep(12*60*60)

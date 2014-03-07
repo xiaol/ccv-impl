@@ -7,6 +7,7 @@ import org.fnlp.app.keyword.WordExtract;
 
 import edu.fudan.nlp.cn.tag.CWSTagger;
 import edu.fudan.nlp.corpus.StopWords;
+import edu.fudan.nlp.cn.tag.POSTagger;
 import java.util.Map;
 
 
@@ -16,16 +17,18 @@ public class NLPEntryPoint {
     private static StopWords sw = null;
     private static CWSTagger seg = null;
     private static AbstractExtractor key = null;
+    private static POSTagger tag = null;
 
     public NLPEntryPoint() {
         
     }
 
     public static void init() throws Exception{
-        if(sw == null || seg == null || key == null){
+        if(sw == null || seg == null || key == null || tag == null){
             sw= new StopWords("models/stopwords");
-            seg = new CWSTagger("models/seg.m");
-            key = new WordExtract(seg,sw); 
+            seg = new CWSTagger("models/seg.m",new Dictionary("models/dict.txt"));
+            key = new WordExtract(seg,sw);
+            tag = new POSTagger("models/pos.m");
         }
     }
 
@@ -34,20 +37,43 @@ public class NLPEntryPoint {
         Map<String,Integer> keywordsMap =  key.extract(sentencs,num);
         String result = "";
         int count = 0;
-        for(Map.Entry<String, Integer> entry : keywordsMap.entrySet()){
-            if(count == 0)
-                result = entry.getKey();
-            else
-                result += " " + entry.getKey();
-            count++;
+
+        String[] keys = keywordsMap.keySet().toArray(new String[0]);
+        String[] s1 = tag.tagSeged(keys);
+        for(int i = 0; i < s1.length; i++){
+             if(s1[i].equals("副词") || s1[i].equals("形容词") || 
+                    s1[i].equals("动词") || s1[i].equals("数词") || s1[i].equals("序数词") 
+                    || s1[i].equals("表情符") || s1[i].equals("限定词")|| s1[i].equals("介词") || s1[i].equals("指示代词")){
+             }else{
+                System.out.print(keys[i]+"/"+s1[i]+" ");
+                if(count == 0){
+                    result = keys[i];
+                    count ++;
+                }else
+                    result += " " + keys[i];
+             }
         }
         return result;
     }
+
+    public static boolean POS(String tags) throws Exception{
+            init();
+            String[] keys = tags.split(" ");
+            String[] s1 = tag.tagSeged(keys);
+            for(int i = 0; i < s1.length; i++){
+                if(s1[i].equals("副词") || s1[i].equals("形容词") || 
+                    s1[i].equals("动词") || s1[i].equals("数词") || s1[i].equals("序数词") 
+                    || s1[i].equals("表情符") || s1[i].equals("限定词")|| s1[i].equals("介词") || s1[i].equals("指示代词")  ){
+                }else{
+                    return true;
+                }
+            }
+            return false;
+        }
 
     public static void main(String[] args) throws Exception{
         GatewayServer gatewayServer = new GatewayServer(new NLPEntryPoint());
         gatewayServer.start();
         System.out.println("Gateway Server Started");
     }
-
 }

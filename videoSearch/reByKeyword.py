@@ -195,7 +195,7 @@ def segment(sentences,isSegment=False):
 
 def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
     gateway = JavaGateway()
-    num = len(sentences)/12
+    num = len(sentences)/6
     if num == 0:
         num = 1
     keywords = gateway.entry_point.extractKeywords(sentences, num,True)
@@ -222,7 +222,7 @@ def recommend(words, source):
         ret = json.loads(html)['response']['docs']
         videos = buildVideo(ret, ' '.join(words), source)
     except Exception,e:
-        print 'not found in ours', ' ',e
+        print 'Not found in ours', ' ',e
     if not videos:
         videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
     #videos.extend(recommendByYouku(words,' '.join(words), source))
@@ -332,6 +332,7 @@ def filterVideo(entities):
 def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000, tagReason = False):
     updateMap = {'updateTime':getCurTime()}
     clct_channel.update({'channelId':101641},{'$set':updateMap})
+    gateway = JavaGateway()
 
     '''入库'''
     t = getCurTime()
@@ -347,34 +348,50 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
         resource['source'] = 'recommend'
         resource['updateTime'] = getCurTime()
         resource['tagList'] = []
+        humanTags = []
         for videoTag in entity['tag']:
             if not videoTag:
                 continue
             videoTagName = re.sub('<[^<]+?>', '', videoTag['name'])
             videoTagName = videoTagName.split(' ')
-            videoTagName = '|'.join(videoTagName)
-            resource['tagList'].append(videoTagName)
-        if not entity['tag']:
+            strippedVideoTag = []
+            for videoTagName2 in videoTagName:
+                if len(videoTagName2.encode('utf8')) < 14 and gateway.entry_point.POS(videoTagName2):
+                    strippedVideoTag.append(videoTagName2)
+                else:
+                    strippedVideoTag.append(videoTagName2)
+            if strippedVideoTag:
+                resultVideoTag = '|'.join(strippedVideoTag)
+                humanTags.append(resultVideoTag)
+        if humanTags:
+            resource['tagList'].append('|'.join(humanTags))
+
+        if not resource['tagList']:
             if resource['resourceName']:
                 try:
                     tags = segmentByNLP(resource['resourceName'])
                     if not tags:
                         tags = [resource['resourceName']]
-                    resource['tagList'].extend(tags)
+                    tags = '|'.join(tags)
+                    resource['tagList'].append(tags)
                 except Exception,e:
                     print e
                     continue
-            tempReason = reason.split(' ')
-            tempReason = '|'.join(tempReason)
+        mReasons = reason.split(' ')
+        resultReason = '|'.join(mReasons)
         if tagReason:
-            resource['tagList'].insert(0,tempReason)
+            resource['tagList'].insert(0, resultReason)
         else:
-            resource['tagList'].append(tempReason)
+            if len(mReasons) > 1 and len(resultReason) > (3*len(mReasons) + len(mReasons) -1):
+                resource['tagList'].insert(0, resultReason)
+            else:
+                resource['tagList'].append(resultReason)
         for black in blacklist:
             try:
                 resource['tagList'].remove(black)
             except ValueError:
                 pass
+        resource['supervised'] = 1
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
 
@@ -389,6 +406,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 resource['resourceId'] = str(retR['_id'])
                 if retR['isOnline']:
                     resource['snapshot'] = 'done'
+                if retR.get('supervised',0) == 0:
+                    clct_resource.update({'_id':retR['_id']}, {'$set':{'supervised':1, 'tagList':resource['tagList']}})
                 else: continue
             except Exception,x:
                 print x
@@ -530,6 +549,34 @@ def buildVideo(entities, reason, source):
         del entity['_id']
         entity['createTime'] = t
         entity['snapshot'] = 'done'
+        if entity.get('supervised',0) == 0 and (entity.get('channelId',0) == 101641 or entity.get('channelId',0) == 1 or entity.get('channelId',0) == 101758):
+            gateway = JavaGateway()
+            resultTags = []
+            if not entity.get('tagList', None):
+                for tag in entity['tagList']:
+                    if not tag:
+                        continue
+                    mTags = re.split(r'[ |]',tag)
+                    mResult = []
+                    for mTag in mTags:
+                        if gateway.entry_point.POS(tag):
+                            mResult.append(mTag)
+                    if not mResult:
+                        resultTags.append('|'.join(mResult))
+            if not resultTags:
+                if entity['resourceName']:
+                    try:
+                        tags = segmentByNLP(entity['resourceName'])
+                        if not tags:
+                            tags = [entity['resourceName']]
+                        tags = '|'.join(tags)
+                        resultTags.append(tags)
+                    except Exception,e:
+                        print e
+                        continue
+            if  resultTags:
+                clct_resource.update({'_id':entity['_id']},{'$set':{'tagList': resultTags, 'supervised':1}})
+
     return entities
 
 def retrieveVideo(keywords):
@@ -611,6 +658,7 @@ def process(uuid):
     videos = []
     renewOldRecommend(ret['uuid'])
 
+
     remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$in':['done','gifDone']}})
     if remainRecommendations.count() > 17:
         return
@@ -622,9 +670,14 @@ def process(uuid):
         itemTags = likeItem.get('tagList', []) #TODO 人工标签超过6个字 分词
         try:
             if itemTags:
-                encodedTags = [x.encode('utf-8') for x in itemTags]
-                source = ' '.join(encodedTags[0:3])
-                likeItemVideos = recommendByBaidu(encodedTags[0:3], source, source, 101641)
+                encodedTags = []
+                for mItemTag in itemTags:
+                    if len(mItemTag.encode('utf8'))>12:
+                        encodedTags.extend(segmentByNLP(mItemTag.encode('utf8')))
+                    else:
+                        encodedTags.append(mItemTag.encode('utf-8'))
+                source = ' '.join(encodedTags)
+                likeItemVideos = recommendByBaidu(encodedTags, source, source, 101641)
                 if not likeItemVideos:
                     continue
                 videos.extend(likeItemVideos)
