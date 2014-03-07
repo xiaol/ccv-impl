@@ -22,7 +22,7 @@ def updateSnapshot():
     rets = clct_resource.find({'v_size':{'$exists': False}, 'isOnline':True, 'channelId':{'$in': [101641, 101758]}})
 
     for ret in rets:
-        fd = urllib.urlopen('http://60.28.29.47/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/'+ret['resourceImageUrl'])
+        fd = urllib.urlopen('h47/huohua_v2/imageinterfacev2/api/interface/image/disk/get/*/*/'+ret['resourceImageUrl'])
         image_file = io.BytesIO(fd.read())
         im = Image.open(image_file)
         (w,h) = im.size
