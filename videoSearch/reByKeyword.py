@@ -286,7 +286,7 @@ def filterVideo(entities):
             continue
         if re.search(u'[\u4e00-\u9fa5]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 27:
             continue
-        titleSegs =  re.split(u'[^\u4e00-\u9fa5]+', entity['ti'])
+        titleSegs =  re.split(u'[^0-9a-zA-Z\u4e00-\u9fa5]+', entity['ti'])
         stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
 
         if len(stripSegs) == 1:
@@ -805,7 +805,7 @@ def main():
             print e
 
 if __name__ == '__main__':
-    #print(process('sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
+    #print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
