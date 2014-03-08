@@ -150,7 +150,7 @@ def index(request):
         one['createTime'] = formatHumanTime(one['createTime'])
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
-        if 'v_size' in one:
+        if 'v_size' in one and 'v_br' in one:
             if  one['v_size'] == [0,0]:
                 one['resolution'] = None
             else:
