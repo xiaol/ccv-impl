@@ -53,9 +53,16 @@ def insertResouce(weiboList, channelId, snapShot = False, updateTvNumber = False
 def insertWeibo(weiboList):
     t = getCurTime()
 
+    tStep = 10000
+    tRemain = int(t)%1000000
+    tBase = int(t) - tRemain
     for weibo in weiboList:
         userWeibo = weibo['userWeibo']
-        userWeibo['createTime'] = t
+        tRemain = tRemain - tStep
+        if tRemain < 0:
+            userWeibo['createTime'] = str(tBase)
+        else:
+            userWeibo['createTime'] = str(tBase + tRemain)
         try:
             ret = clct_userWeibo.insert(userWeibo , safe=True)
         except Exception,e:
@@ -124,3 +131,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
