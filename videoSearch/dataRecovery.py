@@ -387,6 +387,9 @@ def offlineRecommendations():
         if resource and not resource.get('isOnline', None):
             clct_userRecommend.remove({'_id':ret['_id']})
 
+def offlineRecommendationsByTime():
+    rets = clct_userRecommend.remove({'createTime':{'$lte':'20140301000000'}, 'isViewed':-1})
+
 def predictDefinition():
     rets = clct_resource.find({'v_size':{'$exists':True}, 'isOnline':True})
     for ret in rets:
@@ -420,8 +423,8 @@ if __name__ == '__main__':
         #feedUserTag()
         #addTagResource()
         #updateUsrTag()
-    updateSnapshot()
+    #updateSnapshot()
     #filterRecommendations()
-    offlineRecommendations()
+    offlineRecommendationsByTime()
     #    time.sleep(12*60*60)
     #clearChannel(101758)

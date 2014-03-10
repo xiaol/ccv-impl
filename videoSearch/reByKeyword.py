@@ -120,7 +120,7 @@ def retrieveUserHistory(userId):
     records = []
     finalList = list(reSet)
     random.shuffle(finalList, random.random)
-    finalList = finalList[0:2]
+    finalList = finalList[0:1]
 
     for record in finalList:
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
@@ -320,6 +320,8 @@ def filterVideo(entities):
             if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
                 occurrences = saApp.search2(lCommonResult, entity['ti'])
                 occurrencesCount =  len(occurrences)
+                if occurrencesCount > 5 and resultLen >1:
+                    continue
                 if occurrencesCount > 2 or resultLen > 3:
                     ratio = float(titleLen)/(len(lCommonResult)*len(occurrences))
                     if resultLen > 4 and ratio < 2.8:
@@ -586,6 +588,7 @@ def upload(videos, uuid):
     insertErrorCount = 0
     for video in videos:
         try:
+            video['createTime'] = str(int(getCurTime()) - 1000000)
             retR = clct_resource.find_one({'_id':ObjectId(video['resourceId'])})
             if retR is not None:
                 if retR.get('snapshot','') == 'done':
@@ -664,7 +667,7 @@ def process(uuid):
 
 
     remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$in':['done','gifDone']}})
-    if remainRecommendations.count() > 17:
+    if remainRecommendations.count() > 7:
         return
 
     likeItems = retrieveUserLike(ret['uuid'])
@@ -718,14 +721,14 @@ def process(uuid):
             userTags = list(userTags)
             if userTags:
                 random.shuffle(userTags, random.random)
-                userTags = userTags[0:7]
+                userTags = userTags[0:3]
                 try:
                     encodedUserTags = [x.encode('utf-8') for x in userTags]
                     for encodedTag in encodedUserTags:
                         videos.extend(recommendByBaidu([encodedTag], encodedTag, encodedTag, 101641, 'gb2312', True))
                 except Exception,e:
                     print e
-                if len(videos) < 5:
+                if len(videos) < 3:
                     for userTag in userTags:
                         similarDic = similarWords(userTag)
                         for (k,v) in similarDic.items():
@@ -809,6 +812,7 @@ def main():
             print e
 
 if __name__ == '__main__':
+
     #print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
