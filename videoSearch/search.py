@@ -217,6 +217,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_weipai_square',url ,channelId,snapShot = snapShot)
     elif handleName =='chaoku4List':
         startSearch('handles.handle_chaoku4_list', url, channelId,snapShot = snapShot)
+    elif handleName =='PocoWo':
+        startSearch('handles.handle_poco_wo', url, channelId, snapShot=snapShot)
         '''==============  体育游戏 ======================='''
     elif handleName =='iqiyiSport':
         startSearch('handles.handle_iqiyi_list',url ,channelId,snapShot = snapShot)
