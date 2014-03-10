@@ -586,9 +586,18 @@ def retrieveVideo(keywords):
 
 def upload(videos, uuid):
     insertErrorCount = 0
+    t = getCurTime()
+
+    tStep = 10000
+    tRemain = int(t)%1000000
+    tBase = int(t) - tRemain
     for video in videos:
         try:
-            video['createTime'] = str(int(getCurTime()) - 1000000)
+            tRemain = tRemain - tStep
+            if tRemain < 0:
+                video['createTime'] = str(tBase)
+            else:
+                video['createTime'] = str(tBase + tRemain)
             retR = clct_resource.find_one({'_id':ObjectId(video['resourceId'])})
             if retR is not None:
                 if retR.get('snapshot','') == 'done':
