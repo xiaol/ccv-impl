@@ -645,8 +645,12 @@ def walk(reason, source):
 def renewOldRecommend(userId):
     rets = clct_userRecommend.find({'uuid':userId,'isViewed':-1,'snapshot':{'$in':['done','gifDone']}}).limit(1)
     for ret in rets:
-        ret['createTime'] = getCurTime()
-        clct_userRecommend.update({'_id':ret['_id']}, {'$set':{'createTime':ret['createTime']}})
+        retR = clct_resource.find_one({'_id':ObjectId(ret['resourceId'])})
+        if not retR or retR['isOnline'] is False:
+            clct_userRecommend.remove({'_id':ret['_id']})
+        else:
+            ret['createTime'] = getCurTime()
+            clct_userRecommend.update({'_id':ret['_id']}, {'$set':{'createTime':ret['createTime']}})
 
 from dataRecovery import  top_tags,initial_tags
 def process(uuid):
