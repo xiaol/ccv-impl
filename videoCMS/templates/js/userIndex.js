@@ -84,39 +84,47 @@ function init()
     };
 
 
-    // 显示合计下载播放数据
-
-    var ctx = $('#myChart')[0].getContext("2d");
+    // 显示合计播放数据
+    var ctx = $('#playStatistics')[0].getContext("2d");
     var data = {
     labels : labels,
     datasets : [
         {
-                fillColor : "rgba("+downManualColor+",0.5)",
-                strokeColor : "rgba("+downManualColor+",1)",
-                pointColor : "rgba("+downManualColor+",1)",
-                pointStrokeColor : "#fff",
-                data : s_sum[0]
-            },
-            {
-                fillColor : "rgba("+downSpiderColor+",0.5)",
-                strokeColor : "rgba("+downSpiderColor+",1)",
-                pointColor : "rgba("+downSpiderColor+",1)",
-                pointStrokeColor : "#fff",
-                data : s_sum[1]
-            },
-            {
-                fillColor : "rgba("+playManualColor+",0.5)",
+                fillColor : "rgba("+playManualColor+",0.2)",
                 strokeColor : "rgba("+playManualColor+",1)",
                 pointColor : "rgba("+playManualColor+",1)",
                 pointStrokeColor : "#fff",
                 data : s_sum[2]
             },
             {
-                fillColor : "rgba("+playSpiderColor+",0.5)",
+                fillColor : "rgba("+playSpiderColor+",0.2)",
                 strokeColor : "rgba("+playSpiderColor+",1)",
                 pointColor : "rgba("+playSpiderColor+",1)",
                 pointStrokeColor : "#fff",
                 data : s_sum[3]
+            }
+    ]
+    };
+    var myNewChart = new Chart(ctx).Line(data);
+
+    // 显示合计下载数据
+    var ctx = $('#downStatistics')[0].getContext("2d");
+    var data = {
+    labels : labels,
+    datasets : [
+        {
+                fillColor : "rgba("+downManualColor+",0.2)",
+                strokeColor : "rgba("+downManualColor+",1)",
+                pointColor : "rgba("+downManualColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[0]
+            },
+            {
+                fillColor : "rgba("+downSpiderColor+",0.2)",
+                strokeColor : "rgba("+downSpiderColor+",1)",
+                pointColor : "rgba("+downSpiderColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[1 ]
             }
     ]
     };
