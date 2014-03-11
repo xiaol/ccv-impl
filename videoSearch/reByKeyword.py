@@ -200,7 +200,12 @@ def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
         num = 1
     if sentences == '':
         return []
-    keywords = gateway.entry_point.extractKeywords(sentences, num,True)
+    sentences = re.sub(u'[^a-zA-Z\u4e00-\u9fa5]+',' ',sentences)
+    try:
+        keywords = gateway.entry_point.extractKeywords(sentences, num, True)
+    except Exception,e:
+        print e
+        return [re.sub(u' ', '', sentences)]
     keywordsList = keywords.split(' ')
     for black in blacklist:
         try:
@@ -706,7 +711,7 @@ def process(uuid):
                 encodedTags = []
                 for mItemTag in itemTags:
                     if len(mItemTag.encode('utf8'))>12:
-                        encodedTags.extend(segmentByNLP(mItemTag.encode('utf8')))
+                        encodedTags.extend(segmentByNLP(mItemTag))
                     else:
                         encodedTags.append(mItemTag.encode('utf-8'))
                 source = ' '.join(encodedTags)
