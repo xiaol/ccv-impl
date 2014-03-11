@@ -1,0 +1,32 @@
+
+<script type="text/javascript">
+    var daySequence = eval('({{ daySequence|safe }})');
+    var dataDaily = eval('({{ dataDaily|safe }})');
+</script>
+<table>
+    <tr>
+        <th width="200px">频道\数据</th>
+        <th>分类</th>
+        <th>全部视频下载&播放</th>
+        <th>新增视频下载&播放</th>
+        <th>总订阅</th>
+    </tr>
+    {%for row in result%}
+        <tr>
+            <td>
+                <a target="_blank" href='/channel/index?channelId={{row.channelId}}'>{{row.channelName}}</a>
+            </td>
+            <td>
+                {{row.categoryName}}
+            </td>
+            <td> 下:{{row.data.0}} 播:{{row.data.1}} 下&播:{{row.data.2}} &nbsp; (视频总数:{{row.allResourceNum}})</td>
+            <td> 下&播:{{row.data.3}} &nbsp; (新增:{{row.newResourceNum}}) 均：{{ row.averagePlay }}次/个</td>
+            <td>{{row.subscribeNum}}</td>
+        </tr>
+        <tr>
+            <td colspan="7">
+                <canvas class="myChart" channelId="{{ row.channelId }}" width="900" height="400"></canvas>
+            </td>
+        </tr>
+    {%endfor%}
+</table>

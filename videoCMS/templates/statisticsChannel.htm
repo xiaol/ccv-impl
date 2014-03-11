@@ -99,37 +99,8 @@
                         </form>
                 </div>
                 <div class="row-fluid" id="content">
-                    <table>
-                        <tr>
-                        <th width="300px">频道\数据</th>
-                        <th>分类</th>
-                        <th>下载</th>
-                        <th>全部视频播放</th>
-                        <th>新增视频播放</th>
-                        <th>总计</th>
-                        <th>订阅</th>
-                        </tr>
-                    {%for row in result%}
-                        <tr>
-                            <td>
-                                <a target="_blank" href='/channel/index?channelId={{row.channelId}}'>{{row.channelName}}</a>
-                            </td>
-                            <td>
-                                {{row.categoryName}}
-                            </td>
-                            <td> {{row.data.0}}</td>
-                            <td> 播:{{row.data.1}} &nbsp; (视频总数:{{row.allResourceNum}})</td>
-                            <td> 播:{{row.data.3}} &nbsp; (新增:{{row.newResourceNum}}) 均：{{ row.averagePlay }}次/个</td>
-                            <td> {{row.data.2}}</td>
-                            <td>{{row.subscribeNum}}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="7">
-                                <canvas class="myChart" channelId="{{ row.channelId }}" width="900" height="400"></canvas>
-                            </td>
-                        </tr>
-                    {%endfor%}
-                    </table>
+
+
                 </div>
             </div>
 		</div>

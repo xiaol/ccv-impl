@@ -6,10 +6,26 @@
  * To change this template use File | Settings | File Templates.
  */
 
+function showTips(e)
+{
+	$(e.target).tooltip('show');
+}
 
+function hideTips(e)
+{
+	$(e.target).tooltip('hide');
+}
+
+function initTips()
+{
+	$('[data-toggle="tooltip"]').bind("mouseover",showTips);
+	$('[data-toggle="tooltip"]').bind("mouseout",hideTips);
+}
 
 function init()
 {
+    initTips();
+
     $('#datetimepicker1').datetimepicker({
       language: 'pt-BR'
     });
@@ -26,23 +42,41 @@ function init()
         dom.find('.play').text('播'+s_channel[channelId]['play']);
 
         var ctx = dom.next().find('.channelStatistic')[0].getContext("2d");
+
+        var downManualColor = '238,123,0';
+        var downSpiderColor = '238,123,0';
+        var playManualColor = '56,119,189';
+        var playSpiderColor = '56,119,189';
         var data = {
         labels : labels,
         datasets : [
             {
-                fillColor : "rgba(91,182,222,0.5)",
-                strokeColor : "rgba(91,182,222,1)",
-                pointColor : "rgba(91,182,222,1)",
+                fillColor : "rgba("+downManualColor+",0.5)",
+                strokeColor : "rgba("+downManualColor+",1)",
+                pointColor : "rgba("+downManualColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_channel[channelId]['data'][0]
+            },
+            {
+                fillColor : "rgba("+downSpiderColor+",0.5)",
+                strokeColor : "rgba("+downSpiderColor+",1)",
+                pointColor : "rgba("+downSpiderColor+",1)",
                 pointStrokeColor : "#fff",
                 data : s_channel[channelId]['data'][1]
             },
             {
-                fillColor : "rgba(7,89,156,0.5)",
-                strokeColor : "rgba(7,89,156,1)",
-                pointColor : "rgba(7,89,156,1)",
+                fillColor : "rgba("+playManualColor+",0.5)",
+                strokeColor : "rgba("+playManualColor+",1)",
+                pointColor : "rgba("+playManualColor+",1)",
                 pointStrokeColor : "#fff",
+                data : s_channel[channelId]['data'][2]
+            },
+            {
+                fillColor : "rgba("+playSpiderColor+",0.5)",
+                strokeColor : "rgba("+playSpiderColor+",1)",
+                pointColor : "rgba("+playSpiderColor+",1)",
                 pointStrokeColor : "#fff",
-                data : s_channel[channelId]['data'][0]
+                data : s_channel[channelId]['data'][3]
             }
         ]
         };
@@ -50,30 +84,62 @@ function init()
     };
 
 
-    // 显示合计数据
+    // 显示合计下载播放数据
 
     var ctx = $('#myChart')[0].getContext("2d");
     var data = {
     labels : labels,
     datasets : [
         {
-            fillColor : "rgba(91,182,222,0.5)",
-            strokeColor : "rgba(91,182,222,1)",
-            pointColor : "rgba(91,182,222,1)",
-            pointStrokeColor : "#fff",
-            data : s_sum[1]
-        },
-        {
-            fillColor : "rgba(7,89,156,0.5)",
-            strokeColor : "rgba(7,89,156,1)",
-            pointColor : "rgba(7,89,156,1)",
-            pointStrokeColor : "#fff",
-            pointStrokeColor : "#fff",
-            data : s_sum[0]
-        }
+                fillColor : "rgba("+downManualColor+",0.5)",
+                strokeColor : "rgba("+downManualColor+",1)",
+                pointColor : "rgba("+downManualColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[0]
+            },
+            {
+                fillColor : "rgba("+downSpiderColor+",0.5)",
+                strokeColor : "rgba("+downSpiderColor+",1)",
+                pointColor : "rgba("+downSpiderColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[1]
+            },
+            {
+                fillColor : "rgba("+playManualColor+",0.5)",
+                strokeColor : "rgba("+playManualColor+",1)",
+                pointColor : "rgba("+playManualColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[2]
+            },
+            {
+                fillColor : "rgba("+playSpiderColor+",0.5)",
+                strokeColor : "rgba("+playSpiderColor+",1)",
+                pointColor : "rgba("+playSpiderColor+",1)",
+                pointStrokeColor : "#fff",
+                data : s_sum[3]
+            }
     ]
     };
     var myNewChart = new Chart(ctx).Line(data);
+
+    // 显示 合计
+    var ctx = $('#createStatistics')[0].getContext("2d");
+    var data = {
+    labels : labels,
+    datasets : [
+        {
+                fillColor : "rgba("+downManualColor+",0.5)",
+                strokeColor : "rgba("+downManualColor+",1)",
+                data : s_create_sum[0]
+            },
+            {
+                fillColor : "rgba("+playManualColor+",0.5)",
+                strokeColor : "rgba("+playManualColor+",1)",
+                data : s_create_sum[1]
+            }
+    ]
+    };
+    var myNewChart = new Chart(ctx).Bar(data);
 }
 
 
