@@ -17,7 +17,7 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     channelList = list(clct_channel.find({'editor':uid},{'_id':0,'channelId':1,'channelName':1}))
     channelIdList = [one['channelId'] for one in channelList]
 
-    fieldMap = {'_id':1,'updateTime':1,'source':1}
+    fieldMap = {'_id':1,'updateTime':1,'source':1,'channelId':1}
 
     #注意 这里所有的视频都是 属于此uid的，其他作者的不做统计
     resourceList = list(clct_resource.find({'editor':uid,'updateTime':{'$gte':startTime,'$lt':endTime}},fieldMap))
@@ -103,11 +103,13 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         #从 [[1,1],[2,2],[3,3]] 转换为 [[1,2,3],[1,2,3]]
         data = map(list,zip(*data))
         s_channel[channel]['data'] = data
+        s_channel[channel]['sum'] = map(sum,data)
         s_channel[channel]['download'] = sum(data[0]) + sum(data[1])
         s_channel[channel]['play'] = sum(data[2]) + sum(data[3])
+        s_channel[channel]['resourceManualNum'] = 0
+        s_channel[channel]['resourceSpiderNum'] = 0
 
-    if timespan != 1:
-        pass
+
 
     '''===================== 统计视频增量 ====================='''
     createSum = {}
@@ -117,12 +119,24 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         day = resource['updateTime'][:8]
         if resource['source'] == 'manual':
             createSum[day][0] += 1
+            s_channel[resource['channelId']]['resourceManualNum'] += 1
         elif resource['source'] == 'spider':
             createSum[day][1] += 1
+            s_channel[resource['channelId']]['resourceSpiderNum'] += 1
     s_create_sum = [item[1] for item in sorted(createSum.items(),key=lambda a:a[0])]
     s_create_sum = map(list,zip(*s_create_sum))
 
-    return daySequence,s_sum,s_channel,channelList,s_create_sum,len(resourceManualSet),len(resourceSpiderSet),len(resourceSet)
+
+    '''===========  合并频道统计到 channelList  =========='''
+    for channel in channelList:
+        channelId = channel['channelId']
+        s_channel[channelId]['newNum'] = s_channel[channelId]['resourceManualNum'] + s_channel[channelId]['resourceSpiderNum']
+        channel.update(s_channel[channelId])
+
+    if timespan != 1:
+        pass
+
+    return daySequence,s_sum,channelList,s_create_sum,len(resourceManualSet),len(resourceSpiderSet),len(resourceSet)
 
 
 
@@ -148,7 +162,7 @@ def index(request):
 
     #统计数据
 
-    labels,s_sum,s_channel,channelList,s_create_sum,newManualNum,newSpiderNum,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
+    labels,s_sum,channelList,s_create_sum,newManualNum,newSpiderNum,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
 
     #====  通用数据
     DICT['uid'] = uid
@@ -174,9 +188,8 @@ def index(request):
     DICT['sumNumAverage'] = map(round,DICT['sumNumAverage'],[1]*6)
 
     #======== 分频道统计===========
-    DICT['channelList'] = channelList
+    DICT['channelList'] = channelList # 分频道统计
     DICT['channelListStr'] = json.dumps(channelList) # 频道列表
-    DICT['s_channel'] = json.dumps(s_channel) # 分频道统计
 
 
     print DICT
