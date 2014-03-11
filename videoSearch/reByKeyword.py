@@ -126,7 +126,7 @@ def retrieveUserHistory(userId):
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
     for entity in records:
         retC = clct_channel.find_one({'channelId':entity['channelId']})
-        entity['resourceName'] = entity['resourceName']+' ' + retC.get('channelName','')+' '+retC.get('detailDescription','')
+        entity['resourceName'] = entity['resourceName']
         entity['resourceName'] = re.sub('http://[\w\./]*','',entity['resourceName'])
     return records
 
@@ -198,6 +198,8 @@ def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
     num = len(sentences)/6
     if num == 0:
         num = 1
+    if sentences == '':
+        return []
     keywords = gateway.entry_point.extractKeywords(sentences, num,True)
     keywordsList = keywords.split(' ')
     for black in blacklist:
@@ -371,6 +373,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
             videoTagName = videoTagName.split(' ')
             strippedVideoTag = []
             for videoTagName2 in videoTagName:
+                if videoTagName2 == '':
+                    continue
                 if len(videoTagName2.encode('utf8')) < 14 and gateway.entry_point.POS(videoTagName2):
                     strippedVideoTag.append(videoTagName2)
                 else:
@@ -835,7 +839,7 @@ def main():
 
 if __name__ == '__main__':
 
-    #print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
+    print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
