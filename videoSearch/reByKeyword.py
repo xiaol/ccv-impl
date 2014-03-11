@@ -279,6 +279,9 @@ def filterVideo(entities):
         title = entity['ti']
         if re.search('aipai.com', entity['url']) is not None:
             continue
+        if re.search(u'&.{1,6};', title):
+            entity['ti'] =  re.sub(u'&.{1,6};','',title)
+            title = entity['ti']
         if len(entity['ti'].encode('utf8')) < 20:
             continue
         if re.search('\d{9,}', entity['ti']) is not None:

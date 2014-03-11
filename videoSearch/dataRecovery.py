@@ -295,6 +295,13 @@ def filterRecommendations():
 
         #nerMap = gateway.entry_point.NERTag(title)
         #print nerMap
+
+        if re.search(u'&.{1,6};', title):
+            sTitle =  re.sub(u'&.{1,6};','',title)
+            print sTitle
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'resourceName': sTitle}})
+
+        '''
         paraTitles =  re.split(u'[ ,.。，:》　」]',title)
         tParas = re.split(u'[的]', title)
         dParas = re.split(u'_', title)
@@ -315,7 +322,8 @@ def filterRecommendations():
         if len(paraTitles) == 1 and len(tParas) == 1 and len(title.encode('utf8')) < 32:
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
+            continue'''
+
         '''if re.search(u'[\u4e00-\u9fa5]+县|市|村',title):
             print title'''
 
@@ -445,6 +453,6 @@ if __name__ == '__main__':
     #updateSnapshot()
     filterRecommendations()
     #offlineRecommendationsByTime()
-    offlineRecommendations()
+    #offlineRecommendations()
     #    time.sleep(12*60*60)
     #clearChannel(101758)
