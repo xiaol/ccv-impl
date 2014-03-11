@@ -119,10 +119,12 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         day = resource['updateTime'][:8]
         if resource['source'] == 'manual':
             createSum[day][0] += 1
-            s_channel[resource['channelId']]['resourceManualNum'] += 1
+            if resource['channelId'] in s_channel:
+                s_channel[resource['channelId']]['resourceManualNum'] += 1
         elif resource['source'] == 'spider':
             createSum[day][1] += 1
-            s_channel[resource['channelId']]['resourceSpiderNum'] += 1
+            if resource['channelId'] in s_channel:
+                s_channel[resource['channelId']]['resourceSpiderNum'] += 1
     s_create_sum = [item[1] for item in sorted(createSum.items(),key=lambda a:a[0])]
     s_create_sum = map(list,zip(*s_create_sum))
 
