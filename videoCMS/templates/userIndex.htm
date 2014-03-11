@@ -117,17 +117,6 @@
                 </div>
                 <div>
                     <canvas id="createStatistics" width="900" height="400"></canvas>
-
-                    <!--
-                    <ul>
-                    {% for resource in resourceList %}
-                        <li>
-                            {{ resource.createTime|formatHumanTime|slice:"5:" }}
-                            <a href="/resource/index?id={{ resource.id }}">{{ resource.resourceName }}</a>
-                            <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
-                        </li>
-                    {% endfor %}
-                    </ul>-->
                 </div>
             </fieldset>
             <fieldset>
@@ -135,7 +124,21 @@
                     <legend class="">
                         <a href="#" data-toggle="tooltip"  data-title="指定时间范围内新增的视频的播放量">新增播放</a>
                         ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }})
-                        合计：{{ playSumNum }}次,平均播放：{{averagePlay}}次/个
+                        合计：{{ sumNum.3 }}次<small>(人工{{ sumNum.4 }},爬虫{{ sumNum.5 }})</small>,
+                        平均下载：{{sumNumAverage.3}}次/个<small>(人工{{ sumNumAverage.4 }},爬虫{{ sumNumAverage.5 }})</small>
+                    </legend>
+                </div>
+                <div>
+                    <canvas id="myChart" width="900" height="400"></canvas>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div id="legend" class="">
+                    <legend class="">
+                        <a href="#" data-toggle="tooltip"  data-title="指定时间范围内新增的视频的下载量">新增下载</a>
+                        ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }})
+                        合计：{{ sumNum.0 }}次<small>(人工{{ sumNum.1 }},爬虫{{ sumNum.2 }})</small>,
+                        平均下载：{{sumNumAverage.0}}次/个<small>(人工{{ sumNumAverage.1 }},爬虫{{ sumNumAverage.2 }})</small>
                     </legend>
                 </div>
                 <div>

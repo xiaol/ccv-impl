@@ -322,7 +322,7 @@ def channelAjax(request):
         if channelId not in newResourceMap:
             newResourceMap[channelId] = {}
             for resource in clct_resource.find({'channelId':channelId,\
-                                                'createTime':{'$gte':startTime,'$lt':'startTime'}},\
+                                                'updateTime':{'$gte':startTime,'$lt':endTime}},\
                                                 {'_id':1}):
                 newResourceMap[channelId][str(resource['_id'])] = None
         if resourceId in newResourceMap[channelId]:

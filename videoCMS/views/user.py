@@ -19,6 +19,7 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
 
     fieldMap = {'_id':1,'updateTime':1,'source':1}
 
+    #注意 这里所有的视频都是 属于此uid的，其他作者的不做统计
     resourceList = list(clct_resource.find({'editor':uid,'updateTime':{'$gte':startTime,'$lt':endTime}},fieldMap))
     resourceSet = set([str(one['_id']) for one in resourceList])
     resourceManualList = list(clct_resource.find({'editor':uid,'source':'manual','updateTime':{'$gte':startTime,'$lt':endTime}},fieldMap))
@@ -27,11 +28,13 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     resourceSpiderSet = set([str(one['_id']) for one in resourceSpiderList])
 
 
-    '''===================== 统计视频下载/播放 ====================='''
+    '''===================== 原始统计 ===================='''
     print startTime,endTime
     '''30000 下载  30008 播放
     '''
-    logs = [one for one in clct_statisticsLog.find({'date':{'$gte':startTime[:8], '$lt':endTime[:8],}, "operationCode":{"$in":[30008,30000]}})]
+    fieldMap = {'_id':0}
+    logs = [one for one in clct_statisticsLog.find(\
+        {'date':{'$gte':startTime[:8], '$lt':endTime[:8],}, "operationCode":{"$in":[30008,30000]}},fieldMap)]
 
     result = {}
     '''
@@ -68,6 +71,8 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
                 elif log['resourceId'] in resourceSpiderSet:
                     result[log['channelId']][log['date']][3] += log['count']
 
+
+    '''===================== 下载/播放 合计统计 ===================='''
     #获取日期序列
     daySequence = getDaySequence(t_start,t_end)
     # 合计统计
@@ -88,7 +93,7 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     s_sum = [item[1] for item in sorted(resultSum.items(),key=lambda a:a[0])]
     s_sum = map(list,zip(*s_sum))
 
-    # 按频道内 统计
+    ''' ========= 按频道内 统计 =============== '''
     s_channel = {}
     for channel in result:
         s_channel[channel] = {}
@@ -103,12 +108,6 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
 
     if timespan != 1:
         pass
-
-
-    #print daySequence
-    #print s_sum
-    #print s_channel
-    #print channelList
 
     '''===================== 统计视频增量 ====================='''
     createSum = {}
@@ -147,43 +146,40 @@ def index(request):
     editor = clct_cmsEditor.find_one({'id':uid})
     DICT.update(editor)
 
-    #手工添加的视频
-    resourceList = clct_resource.find({'editor':uid,'source':'manual'})
-    DICT['resourceNum'] = resourceList.count()
-    '''
-    DICT['resourceList'] = []
-    DICT['uid'] = uid
-    for one in resourceList.sort([('_id',-1)]).limit(10):
-        one['id'] =str(one['_id'])
-        DICT['resourceList'].append(one)
-    #选择日期内 手工视频
-    DICT['periodResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','updateTime':{'$gte':startTime,'$lt':endTime}}).count()
-    #今日昨日视频数
-    yesterdayStart = time.strftime("%Y%m%d000000",time.localtime(time.time()-24*3600))
-    todayStart= time.strftime("%Y%m%d000000",time.localtime(time.time()))
-    todayEnd= time.strftime("%Y%m%d000000",time.localtime(time.time()+24*3600))
-    #print yesterdayStart,todayStart,todayEnd
-
-    DICT['yesterdayResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','updateTime':{'$gte':yesterdayStart,'$lt':todayStart}}).count()
-    DICT['todayResourceNum'] =clct_resource.find({'editor':uid,'source':'manual','updateTime':{'$gte':todayStart,'$lt':todayEnd}}).count()
-    '''
     #统计数据
 
     labels,s_sum,s_channel,channelList,s_create_sum,newManualNum,newSpiderNum,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
 
+    #====  通用数据
+    DICT['uid'] = uid
     DICT['labels'] = json.dumps(labels) # 日期序列
-    DICT['s_sum'] = json.dumps(s_sum)   # 下载播放合计统计
-    DICT['s_channel'] = json.dumps(s_channel) # 分频道统计
-    DICT['channelList'] = channelList
-    DICT['channelListStr'] = json.dumps(channelList) # 频道列表
-    DICT['s_create_sum'] = s_create_sum #新增视频详细统计
+
+
+    #======= 新增视频 合计统计  =============
     DICT['newNum'] = newNum #新增视频数量
     DICT['newManualNum'] = newManualNum #新增人工视频数量
     DICT['newSpiderNum'] = newSpiderNum #新增爬虫视频数量
-    DICT['playSumNum'] = sum(s_sum[1])
-    DICT['averagePlay'] =  round(sum(s_sum[1]) *1.0/ newNum,2) if newNum else 0
-    DICT['uid'] = uid
-    #print DICT
+    DICT['s_create_sum'] = s_create_sum #新增视频详细统计
+
+    #======= 下载/播放 合计统计  =============
+    DICT['s_sum'] = json.dumps(s_sum)   # 下载播放合计统计 [[下载(人工)...],[下载(爬虫)...],[播放(人工)...],[播放(爬虫)...]]
+    #临时变量
+    _s0=sum(s_sum[0]); _s1=sum(s_sum[1]); _s2=sum(s_sum[2]); _s3=sum(s_sum[3])
+    # [下载合计，下载合计(人工),下载合计(爬虫),播放合计，播放合计(人工), 播放(爬虫)合计]
+    DICT['sumNum'] = [_s0+_s1, _s0, _s1, _s2+_s3, _s2, _s3 ]
+    # [平均下载(合计)，平均下载(人工),平均下载(爬虫) ,平均播放(合计), 平均播放(人工), 平均播放(爬虫)]
+    DICT['sumNumAverage'] = [(_s0+_s1)/max(newNum*1.0,1.0), _s0/max(newManualNum*1.0,1.0), _s1/max(newSpiderNum*1.0,1.0), \
+                             (_s2+_s3)/max(newNum*1.0,1.0), _s2/max(newManualNum*1.0,1.0), _s3/max(newSpiderNum*1.0,1.0) ]
+
+    DICT['sumNumAverage'] = map(round,DICT['sumNumAverage'],[1]*6)
+
+    #======== 分频道统计===========
+    DICT['channelList'] = channelList
+    DICT['channelListStr'] = json.dumps(channelList) # 频道列表
+    DICT['s_channel'] = json.dumps(s_channel) # 分频道统计
+
+
+    print DICT
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
 
