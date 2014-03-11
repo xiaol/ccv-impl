@@ -308,12 +308,12 @@ def filterRecommendations():
 
 
         if re.search('^\d+',title):
-            #print title
+            print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue
 
         if len(paraTitles) == 1 and len(tParas) == 1 and len(title.encode('utf8')) < 32:
-            #print title
+            print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
             continue
         '''if re.search(u'[\u4e00-\u9fa5]+县|市|村',title):
