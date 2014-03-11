@@ -24,6 +24,35 @@ function initChart()
 
 }
 
+function requestChannelChart()
+{
+    var data = {}
+    data.startDate = $('[name="startDate"]').val();
+    data.endDate = $('[name="endDate"]').val();
+    data.limit = $('[name="limit"]').val();
+    data.channelIdList = $('[name="channelIdList"]').val();
+    data.sort = $('[name="sort"]').val();
+
+
+    $.ajax({
+    type:'get',
+    url:'/statistics2/channelAjax',
+    data:data,
+    success:function(html,textStatus)
+    {
+        $('#content').html(html);
+        //初始化图标
+        initChart();
+    },
+    error:function(XMLHttpRequest, textStatus, errorThrown)
+    {
+        alert(errorThrown);
+    }
+    });
+
+
+}
+
 function init()
 {
 	$('#datetimepicker1').datetimepicker({
@@ -32,8 +61,7 @@ function init()
     $('#datetimepicker2').datetimepicker({
       language: 'pt-BR'
     });
+    requestChannelChart();
 
-    //初始化图标
-    initChart();
 }
 $(document).ready(init);

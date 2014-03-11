@@ -257,21 +257,16 @@ def categoryDetail(request):
     return render_to_response("statisticsCategory2Detail.htm",DICT,context_instance=RequestContext(request))
 
 
-def channel(request):
+def channelAjax(request):
     DICT = {}
 
     DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
-    categoryName = request.GET.get('categoryName',"全部")
     channelIdList = map(int,filter(lambda a:len(a)!=0,[one.strip() for one in request.GET.get('channelIdList',u'').replace(u'，',',').split(',')]))
     limit = int(request.GET.get('limit',20))
     sort = request.GET.get('sort','downplayNum')
 
     spec = {}
-    if categoryName != u"全部":
-        filterCategoryId = getCategoryIdByName(categoryName)
-    else:
-        filterCategoryId = None
-    print 'filterCategoryId:',filterCategoryId
+
     spec['date'] = {'$gte':startTime[:8], '$lt':endTime[:8]}
 
     '''
@@ -285,8 +280,6 @@ def channel(request):
     #开始统计
     logs = list(clct_statisticsLog.find(spec,{'className':0, 'msg':0}))
 
-    #print '初始化getChannelId'
-    #getChannelId,getCategorylId = CacheResources([one['resourceId'] for one in logs])
 
     print '初始化 新增视频MAP newResourceMap[channelId][resourceId]'
     newResourceMap = {}
@@ -308,17 +301,13 @@ def channel(request):
         resourceId = log['resourceId']
         if resourceId == 'default':
             continue
-        #按照类别过滤
-        #categoryId = getCategorylId(resourceId)
-        #if filterCategoryId and filterCategoryId != categoryId:
-        #    continue
-        #channelId = getChannelId(resourceId)
         channelId =log.get('channelId',None)
         if not channelId:
             continue
         if len(channelIdList) >0 and channelId not in channelIdList:
             continue
         if channelId not in result:
+            '''[下载数, 播放数, 总数, 新资源下载+播放]'''
             result[channelId] = [0,0,0,0]
         #下载
         if log['operationCode'] in [30000]:
@@ -376,13 +365,33 @@ def channel(request):
         one['channelName'] = channel['channelName']
         one['subscribeNum'] = channel['subscribeNum']
         one['categoryName'] = getCategoryNameById(channel['channelType'])
-
         one['newResourceNum'] = len(newResourceMap[one['channelId']])
         one['allResourceNum'] = clct_resource.find({'channelId':one['channelId']}).count()
-        one['averagePlay'] = 0 if one['newResourceNum'] ==0 else round(one['data'][3]/one['newResourceNum'],2)
+        one['averagePlay'] = 0 if one['newResourceNum'] ==0 else round(one['data'][3]*1.0/one['newResourceNum'],2)
         DICT['dataDaily'][one['channelId']] = [resultDaily[one['channelId']].get(day,0) for day in daySequence]
 
     DICT['result'] = L
+    DICT['sort'] = sort
+    DICT['limit'] = limit
+    DICT['navPage'] = 'statistics'
+    DICT['channelIdList'] = ','.join(map(str,channelIdList))
+    DICT['daySequence'] = json.dumps(daySequence)
+    DICT['dataDaily'] = json.dumps(DICT['dataDaily'])
+
+    return render_to_response('statisticsChannelAjax.htm',DICT,context_instance=RequestContext(request))
+
+
+
+def channel(request):
+    DICT = {}
+
+    DICT["startDate"],DICT["endDate"],t_start,t_end,startTime,endTime = getStartEndDateTime(request)
+    categoryName = request.GET.get('categoryName',"全部")
+    channelIdList = map(int,filter(lambda a:len(a)!=0,[one.strip() for one in request.GET.get('channelIdList',u'').replace(u'，',',').split(',')]))
+    limit = int(request.GET.get('limit',20))
+    sort = request.GET.get('sort','downplayNum')
+
+
     DICT['categoryList'] = [u'全部'] + getCategoryList()
     DICT['categoryName'] = categoryName
     DICT['sort'] = sort
@@ -390,8 +399,7 @@ def channel(request):
     DICT['navPage'] = 'statistics'
     DICT['title'] = '频道下载/播放统计'
     DICT['channelIdList'] = ','.join(map(str,channelIdList))
-    DICT['daySequence'] = json.dumps(daySequence)
-    DICT['dataDaily'] = json.dumps(DICT['dataDaily'])
+
 
     return render_to_response('statisticsChannel.htm',DICT,context_instance=RequestContext(request))
 

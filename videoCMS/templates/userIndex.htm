@@ -13,6 +13,7 @@
     <script src="/static/js/jquery.min.1.8.3.cdn.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/bootstrap-tooltip.js"></script>
     <script src="/static/js/common.js"></script>
     <script src="/static/js/Chart.js"></script>
     <script src="/static/js/userIndex.js"></script>
@@ -24,6 +25,7 @@
     var s_channel = eval('({{ s_channel|safe }})');
     var channelList = eval('({{ channelListStr|safe }})');
 
+    var s_create_sum = eval('({{ s_create_sum|safe }})');
 
 </script>
 
@@ -102,12 +104,21 @@
 
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">人工视频 ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }}新增： {{ periodResourceNum }}个，
-                        今日：{{ todayResourceNum }}个，昨日：{{ yesterdayResourceNum }}个，
-                        <a href="/resource/index?source=manual&editor={{ uid }}">全部:{{ resourceNum }}</a>)
+                    <legend class="">
+                        <a href="#" data-toggle="tooltip"  data-title="指定时间范围内新增的视频">新增视频</a>
+                        ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }}) 合计：
+                        <a href="/resource/index?editor={{ uid }}">{{ newNum }}个</a>
+                        <small>
+                        ( <a href="/resource/index?source=manual&editor={{ uid }}">人工 {{ newManualNum }} </a>/
+                         <a href="/resource/index?source=spider&editor={{ uid }}">自动 {{ newSpiderNum }}</a> )
+                        </small>
+
                     </legend>
                 </div>
                 <div>
+                    <canvas id="createStatistics" width="900" height="400"></canvas>
+
+                    <!--
                     <ul>
                     {% for resource in resourceList %}
                         <li>
@@ -116,12 +127,16 @@
                             <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
                         </li>
                     {% endfor %}
-                    </ul>
+                    </ul>-->
                 </div>
             </fieldset>
             <fieldset>
                 <div id="legend" class="">
-                    <legend class="">近期播放量 人工+自动 ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }}新增：{{ newNum }}个，播放：{{ playSumNum }}次,平均播放：{{averagePlay}}次/个）</legend>
+                    <legend class="">
+                        <a href="#" data-toggle="tooltip"  data-title="指定时间范围内新增的视频的播放量">新增播放</a>
+                        ({{ startDate|slice:"5:" }}—{{ endDate|slice:"5:" }})
+                        合计：{{ playSumNum }}次,平均播放：{{averagePlay}}次/个
+                    </legend>
                 </div>
                 <div>
                     <canvas id="myChart" width="900" height="400"></canvas>
@@ -130,7 +145,7 @@
 
             <fieldset id="channelStatistic">
                 <div id="legend" class="">
-                    <legend class="">频道播放量  人工+自动 ({{ startDate|slice:"5:"  }}—{{ endDate|slice:"5:"  }})
+                    <legend class="">频道播放 ({{ startDate|slice:"5:"  }}—{{ endDate|slice:"5:"  }})
                         <button class="btn btn-primary btn-small" onclick="toggleChannel(this)">全部展开</button>
                     </legend>
                 </div>
