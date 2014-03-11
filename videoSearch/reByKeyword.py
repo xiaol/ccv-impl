@@ -590,7 +590,7 @@ def buildVideo(entities, reason, source):
                         print e
                         continue
             if  resultTags:
-                clct_resource.update({'_id':entity['_id']},{'$set':{'tagList': resultTags, 'supervised':1}})
+                clct_resource.update({'_id':entity['resourceId']},{'$set':{'tagList': resultTags, 'supervised':1}})
 
     return entities
 
