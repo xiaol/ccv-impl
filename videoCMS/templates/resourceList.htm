@@ -23,6 +23,12 @@
 
 <script type="text/javascript">
     var singleReview = {% if singleReview %}true{% else %}false{% endif %};
+    {% if review and not singleReview %}
+        window.onbeforeunload = function()
+        {
+             return "是否需要保存？";
+        };
+    {% endif %}
 </script>
 </head>
 <body style="background-color:#CCC;">
