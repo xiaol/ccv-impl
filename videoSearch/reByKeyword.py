@@ -282,13 +282,13 @@ def filterVideo(entities):
         if re.search(u'&.{1,6};', title):
             entity['ti'] =  re.sub(u'&.{1,6};','',title)
             title = entity['ti']
-        if len(entity['ti'].encode('utf8')) < 20:
+        if len(entity['ti'].encode('utf8')) < 26:
             continue
         if re.search('\d{9,}', entity['ti']) is not None:
             continue
         if re.search(u'\d+集',entity['ti']):
             continue
-        if re.search(u'[\u4e00-\u9fa5 ]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 32:
+        if re.search(u'[\u4e00-\u9fa5 ]-_]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 32:
             continue
         if re.search('^\d+',title):
             continue
@@ -309,8 +309,8 @@ def filterVideo(entities):
                     if not re.search(u'-|—|——|MV', entity['ti'], re.IGNORECASE) and len(entity['ti'].encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
                         continue
 
-        if len(titleSegs) == 1:
-            for onePiece in titleSegs:
+        if len(stripSegs) == 1:
+            for onePiece in stripSegs:
                 if len(onePiece) > 20:
                     continue
 
