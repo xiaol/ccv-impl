@@ -282,16 +282,44 @@ def updateChannelSnapshot(channelId):
         content = httpUtil.Get(url)
 
 import suffixArrayApplications as saApp
+from py4j.java_gateway import JavaGateway
 def filterRecommendations():
     #rets = clct_userRecommend.find({'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
     rets = clct_resource.find({'$or':[{'channelId':101641, 'isOnline':True},{'channelId':101758, 'isOnline':True}]})
+    gateway = JavaGateway()
 
     for ret in rets:
         title = ret.get('resourceName',None)
         if title is None:
             title = ret.get('title', None)
 
-        titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
+        #nerMap = gateway.entry_point.NERTag(title)
+        #print nerMap
+        paraTitles =  re.split(u'[ ,.。，:》　」]',title)
+        tParas = re.split(u'[的]', title)
+        dParas = re.split(u'_', title)
+        sParas = re.split(u' ', title)
+
+
+        if re.search(u'[\u4e00-\u9fa5 ]+\d+$', title) and len(title.encode('utf8')) < 32:
+            print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+
+
+        if re.search('^\d+',title):
+            #print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+
+        if len(paraTitles) == 1 and len(tParas) == 1 and len(title.encode('utf8')) < 32:
+            #print title
+            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
+            continue
+        '''if re.search(u'[\u4e00-\u9fa5]+县|市|村',title):
+            print title'''
+
+        '''titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
         stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
 
         if  len(stripSegs) == 1:
@@ -339,7 +367,7 @@ def filterRecommendations():
                     print lCommonResult
                     print title
                     clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue
+                    continue'''
 
 
         #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
@@ -347,24 +375,15 @@ def filterRecommendations():
 
 
 
-        '''if re.search(u'[\u4e00-\u9fa5]+\d+$', title) and len(title.encode('utf8')) < 27:
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})'''
-        '''if re.search(u'\d+集',title):# and len(title.encode('utf8')) < 20:
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue'''
+
+
 
         '''if re.search('aipai.com', ret['resourceUrl']):
             print title
             clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})'''
 
 
-        '''if len(title.encode('utf8')) < 20:
-            print title
-            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue'''
+
 
 
         '''if re.search('\d{6,}', title) is not None:
@@ -424,7 +443,8 @@ if __name__ == '__main__':
         #addTagResource()
         #updateUsrTag()
     #updateSnapshot()
-    #filterRecommendations()
-    offlineRecommendationsByTime()
+    filterRecommendations()
+    #offlineRecommendationsByTime()
+    offlineRecommendations()
     #    time.sleep(12*60*60)
     #clearChannel(101758)

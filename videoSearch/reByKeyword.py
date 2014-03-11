@@ -276,6 +276,7 @@ def recommendByBaidu(words, reason, source, channelId=101758, encode='gb2312', t
 def filterVideo(entities):
     result = []
     for entity in entities:
+        title = entity['ti']
         if re.search('aipai.com', entity['url']) is not None:
             continue
         if len(entity['ti'].encode('utf8')) < 20:
@@ -284,8 +285,17 @@ def filterVideo(entities):
             continue
         if re.search(u'\d+集',entity['ti']):
             continue
-        if re.search(u'[\u4e00-\u9fa5]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 27:
+        if re.search(u'[\u4e00-\u9fa5 ]+\d+$', entity['ti']) and len(entity['ti'].encode('utf8')) < 32:
             continue
+        if re.search('^\d+',title):
+            continue
+
+        paraTitles =  re.split(u'[ ,.。，:》　」]',title)
+        tParas = re.split(u'[的]', title)
+
+        if len(paraTitles) == 1 and len(tParas) == 1 and len(title.encode('utf8')) < 32:
+            continue
+
         titleSegs =  re.split(u'[^0-9a-zA-Z\u4e00-\u9fa5]+', entity['ti'])
         stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
 
