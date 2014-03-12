@@ -27,7 +27,7 @@ youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?cl
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
 blacklist = ['视频','在线','详情','点击','其他','电影', '最新', '视频在线观看',
-             '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '全部', '酷6','国内']
+             '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '优酷网', '酷6','资讯']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
@@ -814,7 +814,7 @@ def process(uuid):
                 randomCount = 0
                 for initialTag in initial_tags:
                     topRecommendVideo = clct_resource.find_one({'tagList':initialTag}, sort=[("createTime", -1)])
-                    videos.extend(buildVideo([topRecommendVideo],topTag,topTag))
+                    videos.extend(buildVideo([topRecommendVideo], initialTag,initialTag))
                     randomCount = randomCount + 1
                     if randomCount > 10:
                         break
@@ -845,7 +845,7 @@ def main():
 if __name__ == '__main__':
 
     #print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
-    main()
-    #segmentByNLP("台豪华灵位聘名设计师配“样板房”")
+    #main()
+    segmentByNLP(u"孙政才会见中国铁建董事长孟凤朝、总裁张宗言")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
 
