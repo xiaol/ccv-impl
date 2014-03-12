@@ -321,7 +321,7 @@ def channelAjax(request):
         #新视频播放统计
         if channelId not in newResourceMap:
             newResourceMap[channelId] = {}
-            for resource in clct_resource.find({'channelId':channelId,\
+            for resource in clct_resource.find({'channelId':channelId,'isOnline':True,\
                                                 'updateTime':{'$gte':startTime,'$lt':endTime}},\
                                                 {'_id':1}):
                 newResourceMap[channelId][str(resource['_id'])] = None

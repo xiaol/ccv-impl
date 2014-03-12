@@ -22,7 +22,6 @@
 <script type="text/javascript">
     var labels = eval('({{ labels|safe }})');
     var s_sum = eval('({{ s_sum|safe }})');
-    var s_channel = eval('({{ s_channel|safe }})');
     var channelList = eval('({{ channelListStr|safe }})');
 
     var s_create_sum = eval('({{ s_create_sum|safe }})');
@@ -157,6 +156,7 @@
                         <th>频道</th>
                         <th>播放</th>
                         <th>下载</th>
+                        <th>新增</th>
                         <th>操作</th>
                     </tr>
 
@@ -166,10 +166,13 @@
                             <a href="/channel/index?channelId={{ channel.channelId }}">{{ channel.channelName }} </a>
                         </td>
                         <td>
-                            <span class="play"></span>
+                             {{ channel.play }}<small>（人工：{{ channel.sum.2 }}，爬虫：{{ channel.sum.3 }}）</small>
                         </td>
                         <td>
-                            <span class="download"></span>
+                             {{ channel.download }}<small>（人工：{{ channel.sum.0 }}，爬虫：{{ channel.sum.1 }}）</small>
+                        </td>
+                        <td>
+                             {{ channel.newNum }}(人工：{{ channel.resourceManualNum }},爬虫：{{ channel.resourceSpiderNum }})
                         </td>
 
                         <td>
@@ -179,7 +182,7 @@
 
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="5">
                             <canvas class="channelStatistic hidden" width="900" height="400"></canvas>
                         </td>
                     </tr>

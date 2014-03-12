@@ -110,6 +110,8 @@ def index(request):
         spec['review'] = 0
     elif review  == u'审核悲剧':
         spec['review'] = -1
+    elif review == u'二审':
+        spec['review'] = -2
     if source != '':
         spec['source'] = source
 

@@ -250,6 +250,10 @@
                         <input id="ReviewReject" type="radio" name="_rr" value="审核悲剧" {% ifequal review "审核悲剧" %} checked="checked"{% endifequal %} />&nbsp;
                         <label for="ReviewReject">审核悲剧</label>
                     </div>
+                    <div class="review-status-item" >
+                        <input id="onReviewAgain" type="radio" name="_rr" value="二审" {% ifequal review "二审" %} checked="checked"{% endifequal %} />&nbsp;
+                        <label for="onReviewAgain">二审</label>
+                    </div>
                 </div>
                 {% if not singleReview %}
                 <div class="batch-operation">

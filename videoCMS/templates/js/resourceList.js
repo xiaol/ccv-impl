@@ -80,7 +80,7 @@ function setTobeReview(object)
     $.ajax({
 		type:'get',
 		url:'/resource/review',
-		data:{'id':resourceId,'review':0},
+		data:{'id':resourceId,'review':-2},
 		success:function(data,textStatus)
 		{
             alert('放入审核成功，等待管理员审核..');
