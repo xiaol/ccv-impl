@@ -514,7 +514,7 @@ def review_one(id,review,username,reason):
         #如果是推荐视频，同时发送消息给 苏俊杰（uid：4）
         if resource['isRecommend']:
             resource['editor'] = 4
-            sendReviewFailMessage(username,resource)
+            sendReviewFailMessage(username,resource,reason)
     elif review == 1:
         clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
     clct_resource.update({'_id':ObjectId(id)},{'$set':update})
