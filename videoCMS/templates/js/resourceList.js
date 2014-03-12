@@ -146,7 +146,7 @@ function addToBaBa(object,resourceId)
 }
 
 
-function changeMode(reviewMode)
+function changeReviewMode(reviewMode)
 {
     $('[name="review"]').val(reviewMode);
     $('#form_nav').submit();
@@ -273,7 +273,7 @@ function init()
     //切换状态
     $('.review-status input').on('ifChecked', function(event){
         var target = $(event.target);
-        changeMode(target.val());
+        changeReviewMode(target.val());
     });
 }
 

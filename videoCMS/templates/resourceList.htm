@@ -229,13 +229,14 @@
 			
 			<div class="span4" >
                 <form id="form_nav">
-                <!--<input type="hidden" name="review" value="{{ review }}"/>-->
+
+                <!----------------  审核菜单 ----------------->
                 {% ifequal role "admin"%}
                 <div class="edit-mode">
-                    <div class="edit-mode-item {% if not review %}selected{% endif %}" onclick="changeMode('')" >
+                    <div class="edit-mode-item {% if not review %}selected{% endif %}" onclick="changeReviewMode('')" >
                         普通模式
                     </div>
-                    <div class="edit-mode-item {% if review %}selected{% endif %}" onclick="changeMode('待审核')">
+                    <div class="edit-mode-item {% if review %}selected{% endif %}" onclick="changeReviewMode('待审核')">
                         审核模式
                     </div>
                 </div>
@@ -275,10 +276,12 @@
                 </div>
                 {% endif %}
                 {% endif %}
-
                 {% endifequal %}
                 <input type="hidden" name="review" value="{{ review }}"/>
 
+
+
+                <!----------------  筛选条件 ----------------->
                 <div class="paddingWrap" style="background-color:#FFF;">
 
                     <div id="nav_div">

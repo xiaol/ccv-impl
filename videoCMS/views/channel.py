@@ -159,7 +159,7 @@ def POST2Channel(request):
     if not validateTimeStr(channel['nextSearchTime']):raise Exception('nextSearchTime 格式不正确')
     channel['handleName'] = request.POST.get('handleName')
     channel['handleArgs'] = request.POST.get('handleArgs')
-    channel['handleFrequents'] = request.POST.get('handleFrequents')
+    channel['handleFrequents'] = int(request.POST.get('handleFrequents',))
     #同步类别的视频类型 到 频道
     channel['videoClass'] = clct_category.find_one({'categoryId':channel['channelType']})['videoClass']
     #检查 字段
@@ -414,7 +414,7 @@ def pushChannel(request):
 def updateSearchNow(request):
     channelId = int(request.GET['channelId'])
     channel = clct_channel.find_one({'channelId':channelId})
-    handleFrequents = int(channel['handleFrequents'])
+    handleFrequents = int(float(channel['handleFrequents']))
     tCur = time.time()
     tPreNext = time.mktime(time.strptime(channel['nextSearchTime'],'%Y%m%d%H%M%S'))
     
