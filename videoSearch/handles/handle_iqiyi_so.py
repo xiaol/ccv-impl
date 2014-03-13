@@ -3,15 +3,15 @@ __author__ = 'klb3713'
 
 import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
+
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
-from common.Domain import Resource,Channel
+from common.Domain import Resource
 from common.HttpUtil import get_html
-from setting import clct_channel
 
 p_vid = re.compile('data-player-videoid="(\w+?)"')
+p_tvId = re.compile(r'tvId:(\d+)')
 pps_vid = re.compile(r'"video_id":"(\d+)"')
 
 '''
@@ -31,7 +31,11 @@ def handle(url, channelId, tvNumber):
                 video_type = "pps"
                 ret.append(buildResource(url, title, channelId, videoId, video_type))
             else:
-                videoId = p_vid.search(get_html(url)).groups()[0]
+                html = get_html(url)
+                videoId = p_vid.search(html).groups()[0]
+                tvid = p_tvId.search(html).groups()[0]
+                videoId = tvid + '__' + videoId
+
                 ret.append(buildResource(url, title, channelId, videoId))
         except Exception, e:
             print e
@@ -45,10 +49,9 @@ def buildResource(url, title, channelId, videoId, videoType='iqiyi'):
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['channelId'] = channelId
-    #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
     resource['videoType'] = videoType
-    resource['videoId'] =  videoId
+    resource['videoId'] = videoId
     resource['createTime'] = getCurTime()
 
     return resource.getInsertDict()

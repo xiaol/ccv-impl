@@ -14,6 +14,7 @@ from common.HttpUtil import get_html
 from setting import clct_channel
 
 p_vid = re.compile('data-player-videoid="(\w+?)"')
+p_tvId = re.compile(r'tvId:(\d+)')
 pps_vid = re.compile(r'"video_id":"(\d+)"')
 
 '''
@@ -34,7 +35,10 @@ def handle(url, channelId, tvNumber):
                 video_type = "pps"
                 ret.append(buildResource(url, title, channelId, videoId, video_type))
             else:
-                videoId = p_vid.search(get_html(url)).groups()[0]
+                html = get_html(url)
+                videoId = p_vid.search(html).groups()[0]
+                tvid = p_tvId.search(html).groups()[0]
+                videoId = tvid + '__' + videoId
                 ret.append(buildResource(url, title, channelId, videoId))
         except Exception, e:
             print e
