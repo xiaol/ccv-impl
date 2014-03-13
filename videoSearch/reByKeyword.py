@@ -295,6 +295,9 @@ def filterVideo(entities):
         if re.search(ur'-在线播放' ,title):
             entity['ti'] =  title[0:re.search(ur'-在线播放', title).start()]
             title = entity['ti']
+        if re.search(ur'—在线播放', title):
+            entity['ti'] =  title[0:re.search(ur'—在线播放', title).start()]
+            title = entity['ti']
         if re.search(u'_视频在线观看', title):
             entity['ti'] =  title[0:re.search(ur'_视频在线观看', title).start()]
             title = entity['ti']
