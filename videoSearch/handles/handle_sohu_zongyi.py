@@ -39,6 +39,7 @@ def getAlbumInfo(url):
     playlistid = p_playlistid.search(html).groups()[0]
     #获取最新一年
     url_yearList = 'http://hot.vrs.sohu.com/pl/videolist?playlistid=%s&year=%s' %(playlistid, year)
+    print url_yearList
     data  = json.loads(get_html(url_yearList,'gbk'))
     url_videoList = data["videos"]
     return url_videoList
@@ -59,6 +60,7 @@ def buildResource(url,title,number,channelId,videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://tv.sohu.com/jsfcwr/',100649,3))
-    pprint.pprint(handle('http://tv.sohu.com/wmyhbj/',100649,3))
+    #pprint.pprint(handle('http://tv.sohu.com/jsfcwr/',100649,3))
+    #pprint.pprint(handle('http://tv.sohu.com/wmyhbj/',100649,3))
+    pprint.pprint(handle('http://tv.sohu.com/s2014/ellen/',100649,0))
 
