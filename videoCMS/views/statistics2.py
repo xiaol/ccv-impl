@@ -337,8 +337,7 @@ def channelAjax(request):
     #将结果转化成 数组
     L = []
     for channelId in result:
-        if len(channelIdList) >0 and channelId not in channelIdList:
-            continue
+
         item = {}
         item['channelId'] = channelId
         item['data'] = result[channelId]
@@ -359,6 +358,10 @@ def channelAjax(request):
     for channel in L:
         channel['percentageDownPlay'] = round(channel['data'][2]*100.0 / DICT['totalDownPlay'],2)
         channel['percentageNewDownPlay'] =round(channel['data'][3]*100.0 / DICT['totalnewDownPlay'],2)
+
+    #筛选频道
+    if len(channelIdList) >0:
+        L = filter(lambda a:a['channelId'] in channelIdList,L)
 
     L = L[:limit]
 
