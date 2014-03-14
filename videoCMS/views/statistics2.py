@@ -304,8 +304,7 @@ def channelAjax(request):
         channelId =log.get('channelId',None)
         if not channelId:
             continue
-        if len(channelIdList) >0 and channelId not in channelIdList:
-            continue
+
         if channelId not in result:
             '''[下载数, 播放数, 总数, 新资源下载+播放]'''
             result[channelId] = [0,0,0,0]
@@ -337,10 +336,12 @@ def channelAjax(request):
     print '开始处理结果'
     #将结果转化成 数组
     L = []
-    for key in result:
+    for channelId in result:
+        if len(channelIdList) >0 and channelId not in channelIdList:
+            continue
         item = {}
-        item['channelId'] = key
-        item['data'] = result[key]
+        item['channelId'] = channelId
+        item['data'] = result[channelId]
         L.append(item)
     #排序
     if sort == 'downplayNum':
