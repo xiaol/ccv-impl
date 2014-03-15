@@ -1,0 +1,143 @@
+==================电视剧================
+http://www.youku.com/show_page/id_\w+.html youkuTv
+http://www.funshion.com/subject/\d+/ funshionTv
+http://www.letv.com/tv/\d+.html letvTv
+http://www.iqiyi.com/dianshiju/\w+.html iqiyiTv
+
+http://tv.sohu.com/s\d{4}/\w+/ sohuTv
+http://tv.sohu.com/s\d{4}/\d+/s\d+/ sohuTv
+
+http://www.pptv.com/page/\d+.html pptvTv
+http://v.qq.com/detail/\w/\w+.html qqTv
+http://v.pps.tv/splay_\d+.html ppsTv
+http://www.wasu.cn/Tele/index/id/\d+ wasuTv
+
+==================综艺================
+http://www.youku.com/show_page/id_\w+.html youkuZongyi
+http://www.iqiyi.com/zongyi/\w+.html iqiyiZongyi
+http://tv.sohu.com/\w+/ sohuZongyi
+http://www.funshion.com/subject/\d+/ funshionZongyi
+http://www.pptv.com/page/\d+.html pptvZongyi
+http://v.qq.com/variety/column/column_\d+.html qqZongyi
+
+==================动漫================
+http://www.youku.com/show_page/id_\w+.html youkuDongman
+http://www.tudou.com/albumcover/[^/]+.html tudouDongman
+
+http://tv.sohu.com/s\d{4}/\w+/ sohuDongman
+http://tv.sohu.com/s\d{4}/\d+/s\d+/ sohuDongman
+
+http://www.iqiyi.com/dongman/\w+.html iqiyiDongman
+http://www.funshion.com/subject/\d+/ funshionDongman
+http://www.letv.com/tv/\d+.html letvDongman
+
+============ HOT ====================
+http://www.mtime.com/trailer/ mtimeTrailer
+http://www.youku.com/show_page/id_\w+.html youkuNews
+jimu
+weibo
+youkuTop
+funshionTop
+http://top.letv.com/\w+.html letvTop
+http://top.iqiyi.com/\w+.html iqiyiTop
+163Top
+56Top
+ku6Top
+sohuTop
+http://tops.wasu.cn/show/cid/\d+ wasuTop
+http://hot.weibo.com/.*?v=\d+ weiboHot
+http://www.m1905.com/rank/top/\d+/ m1905Top
+
+============ 纪录片 ====================
+http://www.youku.com/show_page/id_\w+.html youkuJilupian
+http://tv.sohu.com/s\d{4}/\w+/ sohuJilupian
+http://www.iqiyi.com/jilupian/\w+.html iqiyiJilupian
+
+============== 福利 =======================
+http://app.baomihua.com/u/1772 welfareBaomihua
+http://www.weipai.cn/icheck-square/ weipaiSquare
+http://www.chaoku4.com/list/index\d+.html chaoku4List
+http://wo.poco.cn/alluregirls PocoWo
+
+==============  体育 =======================
+http://list.iqiyi.com/www/\d+/[\d-]+.html iqiyiSport
+http://sports.sina.com.cn/.* sinaSport
+http://cctv.cntv.cn/lm/tianxiazuqiu/ cntvLM
+
+
+==============  游戏 =======================
+http://www.aipai.com/game_gameid-\d+.html aipai
+http://kan.duowan.com/1212/m_\d+.html duowan
+http://v.qq.com/games/list/.* qqList
+
+============== 专辑 List =======================
+http://www.youku.com/playlist_show/id_\d+.html youkuPlayList
+http://www.56.com/w\d+/album-aid-\d+.html 56Album
+http://www.tudou.com/albumplay/\w+.html tudouAlbum
+http://fun.56.com/\w+/ 56list
+http://i.youku.com/u/\w+/videos youkuIyouku
+http://\w+.youku.com/\w+ youkuList
+http://www.tudou.com/cate/[\w-]+.html tudouCate
+http://v.ku6.com/playlist/index_\d+.html ku6Playlist
+http://list.iqiyi.com/www/\d+/[\d-]+.html iqiyiList
+http://type.boosj.com/list/\d+/ boosjList
+http://subject.boosj.com/subject_\d+.html boosjSubject
+http://v.ifeng.com/vlist/nav/\w+/update/1/list.shtml ifengList
+http://www.asmou.cn/videolist-do-tag-id-\d+.html asmouList
+http://www.acfun.tv/tag/\d+.aspx acfunTag
+http://i.56.com/\w+/videos/.* 56I
+http://video.56.com/opera/\d+.html 56Opera
+http://z.56.com/\d+ 56Town
+http://fashion.56.com/\w+/ 56Fashion
+http://ipd.pps.tv/\d+ ppsIpd
+http://list.pptv.com/sort_list/[\d-]+.html pptvList
+embed
+http://www.pet-weibo.com/video/list-\d+.html petweiboList
+http://\w+.joy.cn/videolist/[\d_]+/1.htm joyList
+http://v.qq.com/cover/\d+/\w+.html qqCover
+http://ent.sina.com.cn/bn/.* sinaEntList
+http://list.letv.com/list/.*.html letvList
+http://so.letv.com/variety/\d+.html letvVar
+http://www.wasu.cn/Column/show/column/\d+ wasuList
+http://www.wasu.cn/list/index/cid/\d+ wasuList
+http://www.v1.cn/roll/1001/1.shtml v1Paike
+http://www.v1.cn/roll/\d+/1.shtml v1List
+http://www.m1905.com/video/list/c\d+.html m1905List
+
+
+============== 主页视频 =======================
+http://www.youku.com/ youkuIndex
+http://news.tudou.com/ tudouNewsIndex
+http://fun.56.com/ 56fun
+http://travel.youku.com/food/ youkuTravel
+http://life.youku.com/cooking youkuLife
+http://tech.youku.com/tansuo youkuTech
+http://life.tudou.com/labeltop/zcal2rvv1oindwyq_s0p1.html tudouLife
+http://domestic.kankanews.com/ kankanews
+http://mm.56.com/ 56mm
+http://tv.sohu.com/tech/ sohuTech
+http://tv.sohu.com/baby/ sohuBaby
+http://tv.sohu.com/trends/\w+/ sohuTrends
+http://www.everyshare.cn/category/wei/fun everyshare
+http://kengdie.com/category/fun/ kengdie
+http://www.o2gzs.com/category/o2video o2gzs
+http://g.tingcd.com/xiangsheng.html tingcd
+http://www.tom61.com/xsxpfj/xssp/ tom61
+http://life.21cn.com/tv/list1.shtml 21cnLife
+http://v.766.com/other 766
+http://www.baomihua.com/funny_212 baomihuaFunny
+http://www.zealer.com/ zealer
+http://ent.letv.com/zt/scene/index.shtml letvEntzt
+http://fashion.letv.com/zt/mfkt/index.shtml letvFashionzt
+http://mv.yinyuetai.com/all yinyuetaiMV
+http://v.163.com/special/.*.html 163Open
+http://v.163.com/paike/ 163Paike
+http://www.m1905.com/video/prevues/ m1905Yugao
+
+============== 视频搜索 =======================
+http://www.soku.com/search_video/.* youkuSoku
+http://so.iqiyi.com/so/q_.* iqiyiSo
+http://so.56.com/video/.* 56So
+http://so.tv.sohu.com/mts?.* sohuSo
+http://www.wasu.cn/Search/show\?k\=.* wasuSearch
+
