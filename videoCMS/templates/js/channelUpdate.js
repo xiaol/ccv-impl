@@ -101,6 +101,40 @@ function setHandleFrequentMinutes(object)
 }
 
 
+function matchSearchUrl(object)
+{
+    var obj = $(object);
+    var value = obj.val();
+    var select = obj.next('select');
+
+    if(searchHandleListAllRe == undefined)
+    {
+        searchHandleListAllRe = [];
+        console.log('init');
+        for(var i=0;i<searchHandleListAll.length; ++i)
+        {
+            var url = searchHandleListAll[i][0];
+            var handle = searchHandleListAll[i][1];
+            searchHandleListAllRe.push([new RegExp(url),handle]);
+        }
+    }
+
+    select.find('option').remove();
+    var matchedList = [];
+    for(var i=0;i<searchHandleListAllRe.length; ++i)
+    {
+        var pattern = searchHandleListAllRe[i][0];
+        var handle = searchHandleListAllRe[i][1];
+        if (value.match(pattern))
+        {
+            matchedList.push(handle);
+            select.append('<option>'+handle+'</option>');
+        }
+    }
+    console.log(matchedList);
+
+}
+
 
 
 function showTips(e)
@@ -112,6 +146,9 @@ function hideTips(e)
 {
 	$(e.target).popover('hide');
 }
+
+
+
 
 function init()
 {
