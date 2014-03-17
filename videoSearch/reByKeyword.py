@@ -27,7 +27,7 @@ youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?cl
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
 blacklist = ['视频','在线','详情','其他','电影',  '视频在线观看',
-             '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '优酷网', '酷6','资讯', '新浪体育']
+             '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '优酷网', '酷6','资讯', '新浪体育', '超清']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
     userTagUrl = 'https://api.weibo.com/2/tags.json?' \
@@ -430,11 +430,7 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 resource['tagList'].insert(0, resultReason)
             else:
                 resource['tagList'].append(resultReason)
-        for black in blacklist:
-            try:
-                resource['tagList'].remove(black)
-            except ValueError:
-                pass
+        resource['tagList'] = list(set(resource['tagList']) - set(blacklist))
         resource['supervised'] = 1
         print("insert ",resource['videoType'],resource['videoId'], resource['resourceUrl'])
         resource['weight'] = -1
@@ -622,6 +618,7 @@ def buildVideo(entities, reason, source):
                     except Exception,e:
                         print e
                         continue
+            resultTags = list(set(resultTags) - set(blacklist))
             if  resultTags:
                 clct_resource.update({'_id':entity['resourceId']},{'$set':{'tagList': resultTags, 'supervised':1}})
 
