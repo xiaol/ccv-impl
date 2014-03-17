@@ -596,6 +596,10 @@ def buildVideo(entities, reason, source):
         if entity.get('supervised',0) == 0 and (entity.get('channelId',0) == 101641 or entity.get('channelId',0) == 1 or entity.get('channelId',0) == 101758):
             gateway = JavaGateway()
             resultTags = []
+            if entity.get('channelId',0) == 1:
+                hashtag = re.findall(r"#(\S+)#",entity['resourceName'])
+                if  hashtag:
+                    resultTags.append(hashtag)
             if not entity.get('tagList', None):
                 for tag in entity['tagList']:
                     if not tag:
