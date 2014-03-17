@@ -54,7 +54,7 @@ http://tv.sohu.com/s\d{4}/\w+/ sohuJilupian
 http://www.iqiyi.com/jilupian/\w+.html iqiyiJilupian
 
 ============== 福利 =======================
-http://app.baomihua.com/u/1772 welfareBaomihua
+http://app.baomihua.com/u/\d+ welfareBaomihua
 http://www.weipai.cn/icheck-square/ weipaiSquare
 http://www.chaoku4.com/list/index\d+.html chaoku4List
 http://wo.poco.cn/alluregirls PocoWo
