@@ -82,6 +82,7 @@ class Resource(DomainBase):
     editor = -1
     review = 0 #0 待审核，-1 审核不通过, 1 审核通过
     supervised = 0 #标签审查级别
+    hasDanmu = False
 
 
 class Category(DomainBase):

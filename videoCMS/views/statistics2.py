@@ -304,8 +304,7 @@ def channelAjax(request):
         channelId =log.get('channelId',None)
         if not channelId:
             continue
-        if len(channelIdList) >0 and channelId not in channelIdList:
-            continue
+
         if channelId not in result:
             '''[下载数, 播放数, 总数, 新资源下载+播放]'''
             result[channelId] = [0,0,0,0]
@@ -334,15 +333,14 @@ def channelAjax(request):
         if log['date'] not in resultDaily[channelId]:
             resultDaily[channelId][log['date']] = 0
         resultDaily[channelId][log['date']] += log['count']
-
-
     print '开始处理结果'
     #将结果转化成 数组
     L = []
-    for key in result:
+    for channelId in result:
+
         item = {}
-        item['channelId'] = key
-        item['data'] = result[key]
+        item['channelId'] = channelId
+        item['data'] = result[channelId]
         L.append(item)
     #排序
     if sort == 'downplayNum':
@@ -352,6 +350,18 @@ def channelAjax(request):
     elif sort == 'playNum':
         L.sort(key=lambda a:a['data'][1], reverse=True)
 
+    #统计总下播
+    DICT['totalDownPlay'] = sum([one['data'][2] for one in L])
+    DICT['totalnewDownPlay'] = sum([one['data'][3] for one in L])
+
+    #统计每个频道的比例
+    for channel in L:
+        channel['percentageDownPlay'] = round(channel['data'][2]*100.0 / DICT['totalDownPlay'],2)
+        channel['percentageNewDownPlay'] =round(channel['data'][3]*100.0 / DICT['totalnewDownPlay'],2)
+
+    #筛选频道
+    if len(channelIdList) >0:
+        L = filter(lambda a:a['channelId'] in channelIdList,L)
 
     L = L[:limit]
 

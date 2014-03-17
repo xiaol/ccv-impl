@@ -1,19 +1,17 @@
 #coding=utf-8
 import sys,os
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
+
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
-from common.Domain import Resource,Channel
+from common.Domain import Resource
 from common.HttpUtil import get_html
-from setting import clct_channel
 
 p_vids = [re.compile('"videoId":"([^"]+)"'),
          re.compile('videoid="([^"]+)"')]
-
+p_tvId = re.compile(r'tvId:(\d+)')
 p_number = re.compile('\[(\d+)\]')
-
 
 
 def handle(url,channelId,tvNumber):
@@ -29,21 +27,28 @@ def handle(url,channelId,tvNumber):
         title = video.xpath('./a/img/@title')[0]
         number = int(p_number.search(video.xpath('./p/a/@title')[0]).groups()[0])
         
-        if not number > tvNumber:
-            return []
-        print url
+        if number <= tvNumber:
+            continue
+
         videoId = None
+        html = get_html(url)
+        tvid = p_tvId.search(html).groups()[0]
         for p_vid in p_vids:
             try:
-                videoId = p_vid.search(get_html(url)).groups()[0]
+                videoId = p_vid.search(html).groups()[0]
                 break
             except:
                 pass
         if videoId == None:
             continue
+        else:
+            videoId = tvid + '__' + videoId
+
         ret.append(buildResource(url,title,number,channelId,videoId))
+
     return ret
-    
+
+
 def getAllEpisode(url):
     tree = etree.HTML(get_html(url))
     urls = tree.xpath('//div[@j-tab-cnt="pagelist"]//div[contains(@id,"j-album")]/text()')
@@ -62,15 +67,13 @@ def buildResource(url,title,number,channelId,videoId):
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
-    #resource['categoryId'] = clct_channel.find_one({'channelId':resource['channelId']})['channelType']
     resource['type'] = 'video'
     resource['videoType'] = 'iqiyi'
-    resource['videoId'] =  videoId
+    resource['videoId'] = videoId
     resource['createTime'] = getCurTime()
     
     return resource.getInsertDict()
     
 if __name__ == '__main__':
-    #pprint.pprint(handle('http://www.iqiyi.com/jilupian/jqgc.html',1,1))
-    pprint.pprint(handle('http://www.iqiyi.com/dongman/mztkngyb.html',100249 ,1))
+    pprint.pprint(handle('http://www.iqiyi.com/jilupian/jqgc.html',1,1))
 
