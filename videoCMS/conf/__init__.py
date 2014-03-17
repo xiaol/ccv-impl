@@ -99,12 +99,12 @@ userList = [
 searchHandleListAll = [
 # ==================电视剧================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuTv'),
-(r'http://www.funshion.com/subject/\\d+/','search.funshionTv'),
+(r'http://www.funshion.com/subject/\\d+','search.funshionTv'),
 (r'http://www.letv.com/tv/\\d+.html','search.letvTv'),
 (r'http://www.iqiyi.com/dianshiju/\\w+.html','search.iqiyiTv'),
 #
 (r'http://tv.sohu.com/s\\d{4}/\\w+/','search.sohuTv'),
-(r'http://tv.sohu.com/s\\d{4}/\\d+/s\\d+/','search.sohuTv'),
+(r'http://tv.sohu.com/s\\d{4}/\\d+/s\\d+','search.sohuTv'),
 #
 (r'http://www.pptv.com/page/\\d+.html','search.pptvTv'),
 (r'http://v.qq.com/detail/\\w/\\w+.html','search.qqTv'),
@@ -115,7 +115,7 @@ searchHandleListAll = [
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuZongyi'),
 (r'http://www.iqiyi.com/zongyi/\\w+.html','search.iqiyiZongyi'),
 (r'http://tv.sohu.com/\\w+/','search.sohuZongyi'),
-(r'http://www.funshion.com/subject/\\d+/','search.funshionZongyi'),
+(r'http://www.funshion.com/subject/\\d+','search.funshionZongyi'),
 (r'http://www.pptv.com/page/\\d+.html','search.pptvZongyi'),
 (r'http://v.qq.com/variety/column/column_\\d+.html','search.qqZongyi'),
 #
@@ -124,10 +124,10 @@ searchHandleListAll = [
 (r'http://www.tudou.com/albumcover/[^/]+.html','search.tudouDongman'),
 #
 (r'http://tv.sohu.com/s\\d{4}/\\w+/','search.sohuDongman'),
-(r'http://tv.sohu.com/s\\d{4}/\\d+/s\\d+/','search.sohuDongman'),
+(r'http://tv.sohu.com/s\\d{4}/\\d+/s\\d+','search.sohuDongman'),
 #
 (r'http://www.iqiyi.com/dongman/\\w+.html','search.iqiyiDongman'),
-(r'http://www.funshion.com/subject/\\d+/','search.funshionDongman'),
+(r'http://www.funshion.com/subject/\\d+','search.funshionDongman'),
 (r'http://www.letv.com/tv/\\d+.html','search.letvDongman'),
 #
 # ============ HOT ====================
@@ -145,7 +145,7 @@ searchHandleListAll = [
 # sohuTop
 (r'http://tops.wasu.cn/show/cid/\\d+','search.wasuTop'),
 (r'http://hot.weibo.com/.*?v=\\d+','search.weiboHot'),
-(r'http://www.m1905.com/rank/top/\\d+/','search.m1905Top'),
+(r'http://www.m1905.com/rank/top/\\d+','search.m1905Top'),
 #
 # ============ 纪录片 ====================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuJilupian'),
@@ -154,14 +154,14 @@ searchHandleListAll = [
 #
 # ============== 福利 =======================
 (r'http://app.baomihua.com/u/\\d+','search.welfareBaomihua'),
-(r'http://www.weipai.cn/icheck-square/','search.weipaiSquare'),
+(r'http://www.weipai.cn/icheck-square','search.weipaiSquare'),
 (r'http://www.chaoku4.com/list/index\\d+.html','search.chaoku4List'),
 (r'http://wo.poco.cn/alluregirls','search.PocoWo'),
 #
 # ==============  体育 =======================
 (r'http://list.iqiyi.com/www/\\d+/[\\d-]+.html','search.iqiyiSport'),
 (r'http://sports.sina.com.cn/.*','search.sinaSport'),
-(r'http://cctv.cntv.cn/lm/tianxiazuqiu/','search.cntvLM'),
+(r'http://cctv.cntv.cn/lm/tianxiazuqiu','search.cntvLM'),
 #
 #
 # ==============  游戏 =======================
