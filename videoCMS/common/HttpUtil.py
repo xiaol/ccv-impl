@@ -90,6 +90,14 @@ def getVideoUrl(videoType,videoId):
     result = json.loads(ret)["response-body"]["getVideoUrl"]
     return result["list"]
 
+def getDanmu(videoType,videoId):
+    httpUtil = HttpUtil()
+    data = {"videoType":videoType,"videoId":videoId}
+    data = json.dumps(data)
+    ret = httpUtil.Post('http://60.28.29.38:9090/api/getDanmu',data)
+    result = json.loads(ret)
+    return result
+
 if __name__ =='__main__':
     httpUtil = HttpUtil()
     content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
