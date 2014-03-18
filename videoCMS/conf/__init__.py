@@ -133,16 +133,17 @@ searchHandleListAll = [
 # ============ HOT ====================
 (r'http://www.mtime.com/trailer/','search.mtimeTrailer'),
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuNews'),
-# jimu
-# weibo
-# youkuTop
-# funshionTop
-(r'http://top.letv.com/\\w+.html','search.letvTop'),
-(r'http://top.iqiyi.com/\\w+.html','search.iqiyiTop'),
-# 163Top
-# 56Top
-# ku6Top
-# sohuTop
+# Todo
+# search.jimu
+# search.weibo
+(r'http://\\w+.youku.com', 'search.youkuTop'),
+(r'http://www.funshion.com/list/.*', 'search.funshionTop'),
+(r'http://top.letv.com/\\w+.html', 'search.letvTop'),
+(r'http://top.iqiyi.com/\\w+.html', 'search.iqiyiTop'),
+(r'http://v.163.com/zixun', 'search.163Top'),
+(r'http://\\w+.56.com', 'search.56Top'),
+(r'http://\\w+.ku6.com', 'search.ku6Top'),
+(r'http://tv.sohu.com/hotyule', 'search.sohuTop'),
 (r'http://tops.wasu.cn/show/cid/\\d+','search.wasuTop'),
 (r'http://hot.weibo.com/.*?v=\\d+','search.weiboHot'),
 (r'http://www.m1905.com/rank/top/\\d+','search.m1905Top'),
