@@ -307,7 +307,9 @@ def add(request):
     #增加字幕抓取任务
     if resource['videoType'] == 'bilibili':
         danmu = getDanmu(resource['videoType'],resource['videoId'])
+
         clct_danmu.insert({'resourceId':str(id),'content':danmu})
+        clct_resource.update({'_id':ObjectId(id)},{'$set':{'hasDanmu':True}})
 
     #更新 频道更新时间
     clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':getCurTime()}})
