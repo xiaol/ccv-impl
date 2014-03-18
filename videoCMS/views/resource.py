@@ -515,6 +515,8 @@ def review_one(id,review,username,reason):
         if resource['isRecommend']:
             resource['editor'] = 4
             sendReviewFailMessage(username,resource,reason)
+        #标记打回次数
+        update['rejected'] = True
     elif review == 1:
         clct_cmsMessage.remove({'extras.resourceId':id},multi=True)
     clct_resource.update({'_id':ObjectId(id)},{'$set':update})

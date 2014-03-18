@@ -162,6 +162,10 @@ def index(request):
     editor = clct_cmsEditor.find_one({'id':uid})
     DICT.update(editor)
 
+
+
+
+
     #统计数据
 
     labels,s_sum,channelList,s_create_sum,newManualNum,newSpiderNum,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
@@ -193,8 +197,12 @@ def index(request):
     DICT['channelList'] = channelList # 分频道统计
     DICT['channelListStr'] = json.dumps(channelList) # 频道列表
 
+    #======== 统计一审通过率
+    reviewedNum = clct_resource.find({'editor':uid,'source':'manual','review':{'$ne':0},'updateTime':{'$gte':startTime,'$lt':endTime}}).count()
+    reviewedAcceptImmediateNum = clct_resource.find({'editor':uid,'source':'manual','rejected':{'$exists':False},'review':{'$ne':0},'updateTime':{'$gte':startTime,'$lt':endTime}}).count()
+    reviewedAcceptImmediateRate = round(100.0*reviewedAcceptImmediateNum/max(reviewedNum,1),2)
 
-    print DICT
+    DICT.update(locals())
     return render_to_response('userIndex.htm',DICT,context_instance=RequestContext(request))
 
 
