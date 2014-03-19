@@ -1,4 +1,7 @@
 __author__ = 'ding'
+import sys
+sys.path += ['/usr/local/apache2/djangoapp/videoCMS']
+print sys.path
 
 from pymongo import Connection
 import re,urlparse
