@@ -22,16 +22,10 @@ class HttpUtil():
 
 
     def Get(self,url,times=1,timeout=30):
-        for i in range(times):
-            try:
-                resp = self.opener.open(url,timeout=timeout)
-                return resp.read()
-            except:
-                time.sleep(1)
-                print traceback.format_exc()
-                continue
-        
-        return None
+
+        resp = self.opener.open(url,timeout=timeout)
+        return resp.read()
+
     
     def Post(self,url,data,times=1, timeout=30):
         for i in range(times):
