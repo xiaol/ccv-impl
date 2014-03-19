@@ -50,7 +50,9 @@ def getAllEpisode(url):
     urlList = tree.xpath('//div[@j-tab-cnt="pagelist"]//div[contains(@id,"j-album")]/text()')
     urlList = ['http://www.iqiyi.com'+ url for url in urlList]
     ret = '<html>'
+    p = re.compile('#.*?$')
     for url in urlList:
+        url = p.sub('',url)
         content  = get_html(url)
         ret += content
     return ret+ '</html>'

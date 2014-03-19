@@ -1,3 +1,4 @@
+#不要在这里继续添加，到conf/__init__.py
 ==================电视剧================
 http://www.youku.com/show_page/id_\w+.html youkuTv
 http://www.funshion.com/subject/\d+/ funshionTv

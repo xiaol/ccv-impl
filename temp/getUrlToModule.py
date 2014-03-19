@@ -4,7 +4,7 @@ __author__ = 'ding'
 
 
 def main():
-    with open('../videoSearch/url_to_module.txt') as f:
+    with open('../videoSearch/url_to_module.txt.del') as f:
         lines = f.readlines()
         for line in lines:
             line = line.strip()
