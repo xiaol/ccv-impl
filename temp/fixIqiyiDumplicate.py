@@ -1,9 +1,13 @@
 __author__ = 'ding'
+
 from pymongo import Connection
 import re,urlparse
+from gevent import monkey
+monkey.patch_socket()
 from videoCMS.common.HttpUtil import get_html
 from urllib2 import HTTPError
 from gevent.pool import Pool
+
 
 con = Connection('h37:20010')
 clct_resource= con.tiercel.resource
