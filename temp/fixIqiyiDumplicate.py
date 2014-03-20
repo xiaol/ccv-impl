@@ -24,7 +24,7 @@ def r1(pattern, text):
 
 def get_videoId(url):
     html = get_html(url)
-    videoId = r1(r'''["']{0,1}video[Ii]d["']{0,1}[:=]["']([^"']+)["']''', html)
+    videoId = r1(r'''["']{0,1}video[Ii]d["']{0,1}[:=]["']([\w\d]+)["']''', html)
     tvId = r1(r'''tv[iI]d[:=]["']{0,1}(\d+)''',html)
     return tvId+'__'+videoId
 
@@ -93,5 +93,17 @@ def changeOldVideoId():
     print pool.map(changeOldVideoId_proc,result)
 
 
-changeOldVideoId()
+'''
+修复 videoId出错的视频
+'''
+
+def fixVideoIdJAVA():
+    result = clct_resource.find({'videoType':'iqiyi','videoId':{'$regex':'Object'}},{'videoId':1,'resourceUrl':1})
+    for resource in result:
+        videoId = get_videoId(resource['resourceUrl'])
+        print resource['videoId'],'=>',videoId
+
+
+#changeOldVideoId()
 #changeNewVideoId()
+fixVideoIdJAVA()
