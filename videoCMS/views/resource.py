@@ -3,7 +3,7 @@ from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 import json,StringIO,re
-from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
+from videoCMS.conf import clct_resource,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync,clct_danmu
 from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_topic,clct_cronJob
 from bson import ObjectId
 from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
@@ -18,6 +18,7 @@ from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCatego
 from videoCMS.views.login import *
 from videoCMS.common.anquanbao import PrefetchCache,GetProgress
 from login import NeedLogin
+from videoCMS.common.HttpUtil import getDanmu
 
 
 def getSkipLimit(DICT,skip=0,limit=10):
@@ -302,6 +303,14 @@ def add(request):
     #增加截图任务
     if resource['videoType'] not in [u'bt',u'huohua']:
         ret = addVideoInfoTask(resource['channelId'],str(id),resource['videoId'],resource['videoType'],force=True)
+
+    #增加字幕抓取任务
+    if resource['videoType'] == 'bilibili':
+        danmu = getDanmu(resource['videoType'],resource['videoId'])
+
+        clct_danmu.insert({'resourceId':str(id),'content':danmu})
+        clct_resource.update({'_id':ObjectId(id)},{'$set':{'hasDanmu':True}})
+
     #更新 频道更新时间
     clct_channel.update({'channelId':resource['channelId']},{'$set':{'updateTime':getCurTime()}})
     return HttpResponseRedirect('update?id='+id)

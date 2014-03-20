@@ -5,7 +5,6 @@ sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
 from common.Domain import Resource,Channel
 from common.HttpUtil import get_html
 from setting import clct_channel

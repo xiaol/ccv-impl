@@ -12,4 +12,7 @@ def migrateChannel(fromId,toId):
     clct_user.update({'subscribedChannelList':fromId},{'$pull':{'subscribedChannelList':fromId}},multi=True)
 
 
-migrateChannel(101652,101657)
+migrateChannel(101797,101803)
+migrateChannel(101789,101803)
+migrateChannel(101804,101800)
+migrateChannel(101822,101801)

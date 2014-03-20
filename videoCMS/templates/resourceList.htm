@@ -86,6 +86,9 @@
                                         {% ifequal resource.source "recommend" %}推荐{% endifequal %}
                                     </span> &nbsp;
                                     <span class="label label-info">播{{resource.playNumber}}/下{{resource.downloadNumber}}</span>
+                                    {% if resource.hasDanmu %}
+                                    <span class="label label-danger">字幕</span>
+                                    {% endif %}
 		                            {% if resource.isOnline%}
 		                            <a resourceId="{{resource.id}}" class="label label-warning pointer" onclick="toggleOnlineStatus(this)">在线</a>
 		                            {% else %}
