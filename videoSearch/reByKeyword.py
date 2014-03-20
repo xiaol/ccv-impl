@@ -231,7 +231,8 @@ def recommend(words, source):
     except Exception,e:
         print 'Not found in ours', ' ',e
     if not videos:
-        videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
+        #videos.extend(recommendByBaidu(words,' '.join(words), source, 101641))
+        pass
     #videos.extend(recommendByYouku(words,' '.join(words), source))
     return videos
 
@@ -589,14 +590,14 @@ def buildVideo(entities, reason, source):
         del entity['_id']
         entity['createTime'] = t
         entity['snapshot'] = 'done'
-        if entity.get('supervised',0) == 0 and (entity.get('channelId',0) == 101641 or entity.get('channelId',0) == 1 or entity.get('channelId',0) == 101758):
+        if entity.get('supervised',0) != 2 and (entity.get('channelId',0) == 101641 or entity.get('channelId',0) == 1 or entity.get('channelId',0) == 101758):
             gateway = JavaGateway()
             resultTags = []
             if entity.get('channelId',0) == 1:
                 hashtag = re.findall(r"#(\S+)#",entity['resourceName'])
                 if  hashtag:
                     resultTags.append(hashtag)
-            if not entity.get('tagList', None):
+            if entity.get('tagList', None):
                 for tag in entity['tagList']:
                     if not tag:
                         continue
@@ -620,7 +621,7 @@ def buildVideo(entities, reason, source):
                         continue
             resultTags = list(set(resultTags) - set(blacklist))
             if  resultTags:
-                clct_resource.update({'_id':entity['resourceId']},{'$set':{'tagList': resultTags, 'supervised':1}})
+                clct_resource.update({'_id':entity['resourceId']},{'$set':{'tagList': resultTags, 'supervised':2}})
 
     return entities
 
@@ -719,7 +720,7 @@ def process(uuid):
 
 
     remainRecommendations = clct_userRecommend.find({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$in':['done','gifDone']}})
-    if remainRecommendations.count() > 7:
+    if remainRecommendations.count() > 1000:
         return
 
     likeItems = retrieveUserLike(ret['uuid'])
@@ -864,7 +865,7 @@ def main():
             print e
 
 if __name__ == '__main__':
-
+    #while True:
     #print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #segmentByNLP(u"孙政才会见中国铁建董事长孟凤朝、总裁张宗言")
