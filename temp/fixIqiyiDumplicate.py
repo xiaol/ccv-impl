@@ -1,3 +1,4 @@
+#coding=utf-8
 __author__ = 'ding'
 import sys
 sys.path += ['/usr/local/apache2/djangoapp/videoCMS']
@@ -28,6 +29,10 @@ def get_videoId(url):
     return tvId+'__'+videoId
 
 
+
+'''
+检查新视频，如果有存在的将重复老视频，就老视频更新为新的videoId，并删除新的
+'''
 def changeNewVideoId():
     result = clct_resource.find({'videoType':'iqiyi'},{'videoId':1,'resourceUrl':1})
     for resource in result:
@@ -35,7 +40,7 @@ def changeNewVideoId():
         if resource['videoId'].find('__') == -1:
             continue
         tvid,videoIdOld = resource['videoId'].split('__')
-        if clct_resource.find_one({'videoType':'iqiyi','videoId':videoIdOld}):
+        if clct_resource.find_one({'videoType':'iqiyi','videoId':videoIdOld},{'_id':1}):
             print videoIdOld,'=>',resource['videoId']
             clct_resource.remove({'videoType':'iqiyi','videoId':resource['videoId']})
             clct_resource.update({'videoType':'iqiyi','videoId':videoIdOld},{'$set':{
@@ -43,7 +48,9 @@ def changeNewVideoId():
             }})
 
 
-
+'''
+检查老视频，如果有url，更新为新视频的
+'''
 def changeOldVideoId_proc(resource):
     print '...'
     if not resource['videoId'] :
@@ -65,11 +72,19 @@ def changeOldVideoId_proc(resource):
         return
 
     print resource['videoId'],'=>',videoId
+    #如果存在新的，删除新的
+    if clct_resource.find_one({'videoType':'iqiyi','videoId':videoId},{'_id':1}):
+        print '删除新视频'
+        clct_resource.remove({'videoType':'iqiyi','videoId':videoId})
+
     clct_resource.update({'videoType':'iqiyi','videoId':resource['videoId']},{'$set':{
              'videoId':videoId
          }})
     return True
 
+'''
+检查新视频
+'''
 def changeOldVideoId():
     result = clct_resource.find({'videoType':'iqiyi'},{'videoId':1,'resourceUrl':1})
     result = list(result)
@@ -79,3 +94,4 @@ def changeOldVideoId():
 
 
 changeOldVideoId()
+#changeNewVideoId()
