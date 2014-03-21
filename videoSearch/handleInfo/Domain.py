@@ -11,3 +11,4 @@ class SnsInfo(DomainBase):
     download = 0
     comment = 0
     discribe = ''
+    createTime = ''
