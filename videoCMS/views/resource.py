@@ -154,7 +154,7 @@ def index(request):
         one['updateTime'] = formatHumanTime(one['updateTime'])
         one['scheduleGoOnline'] = formatHumanTime(one['scheduleGoOnline'])
         if 'v_size' in one and 'v_br' in one:
-            if  one['v_size'] == [0,0]:
+            if  one['v_size'] == [0,0] or one['v_br'] == 0:
                 one['resolution'] = None
             else:
                 one['resolution'] = one['v_size'][0]*one['v_size'][1]/one['v_br']
