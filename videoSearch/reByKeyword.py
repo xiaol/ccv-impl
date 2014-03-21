@@ -228,7 +228,7 @@ def recommend(words, source):
     try:
         html = get_html(url)
         ret = json.loads(html)['response']['docs']
-        videos = buildVideo(ret, ' '.join(words), source)
+        videos = buildVideo(ret, ' '.join(words), source, True)
     except Exception,e:
         print 'Not found in ours', ' ',e
     if not videos:
@@ -579,7 +579,7 @@ def buildResource(url,title,channelId,videoType,videoId,typeType):
 
     return resource.getInsertDict()
 
-def buildVideo(entities, reason, source):
+def buildVideo(entities, reason, source, update=False):
     t = getCurTime()
     for entity in entities:
         entity['recommendSource'] = source
@@ -598,7 +598,7 @@ def buildVideo(entities, reason, source):
                 hashtag = re.findall(r"#(\S+)#",entity['resourceName'])
                 if  hashtag:
                     resultTags.append(hashtag)
-            if not entity.get('tagList', None): #TODO we can't determine weather or not this resource has a human tag.
+            if not entity.get('tagList', None): #TODO we can't determine whether or not this resource has a human tag.
                 for tag in entity['tagList']:
                     if not tag:
                         continue
@@ -624,7 +624,11 @@ def buildVideo(entities, reason, source):
                         continue
             resultTags = list(set(resultTags) - set(blacklist))
             if  resultTags:
-                clct_resource.update({'_id':entity['resourceId']},{'$set':{'tagList': resultTags, 'supervised':supervisedLevel}})
+                if update:
+                    resourceId2 = ObjectId(entity['resourceId'])
+                else:
+                    resourceId2 = entity['resourceId']
+                clct_resource.update({'_id':resourceId2},{'$set':{'tagList': resultTags, 'supervised':supervisedLevel}})
 
     return entities
 
