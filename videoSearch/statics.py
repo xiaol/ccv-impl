@@ -1,4 +1,4 @@
-#code=utf-8
+#coding=utf-8
 
 from setting import clct_userWeibo, clct_userRecommend,clct_resource, clct_playLog, clct_playViewRateLog
 from pprint import pprint
@@ -10,13 +10,14 @@ def meanOfVideosPerWeiboUser():
     mean = total/count
     print mean
 
-startTime = '20140307000000'
-endTime = '20140308000000'
+startTime = '20140309000000'
+endTime = '20140310000000'
+dateTime = '20140321'
 
 def displayRate(newUser=True):
-    totalRets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    totalRets = clct_playViewRateLog.find({'date':dateTime}).sort('uuid', -1)
     print 'total count', totalRets.count()
-    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'date':dateTime}).sort('uuid', -1)
     sum = 0
     f = file('displayRate.log','w')
 
@@ -47,7 +48,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 
 def displayRateRange(newUser=True):
-    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'viewNum':{'$ne':0},'date':dateTime}).sort('uuid', -1)
     sum = 0
     mm = defaultdict(list)
 
@@ -81,7 +82,7 @@ def displayRateRange(newUser=True):
     plt.show()
 
 def quitByFirstSight():
-    rets = clct_playViewRateLog.find({'viewNum':0,'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'viewNum':0,'date':dateTime}).sort('uuid', -1)
     print rets.count()
     newUserCount = 0
     for ret in rets:
@@ -93,7 +94,7 @@ def quitByFirstSight():
     print 'leaved users count : ', newUserCount
 
 def missedUser():
-    rets = clct_playViewRateLog.find({'updateTime':{'$gte':startTime,'$lte': endTime}}).sort('uuid', -1)
+    rets = clct_playViewRateLog.find({'date':dateTime}).sort('uuid', -1)
     print rets.count()
     count = 0
     for ret in rets:
@@ -212,12 +213,46 @@ def getTag():
     rets = clct_user.find({'tagList':{'$exists':True}})
     print rets.count()
 
+
+def draw():
+    from matplotlib.dates import DayLocator, HourLocator,MonthLocator ,WeekdayLocator, DateFormatter, drange
+    from matplotlib.dates import MONDAY
+    import datetime
+
+    mondays   = WeekdayLocator()
+    days = DayLocator(None, 3)
+    months    = MonthLocator()
+    yList = [0]*55
+
+    yList[0] = 0.11; yList[1] = 0.109; yList[2] = 0.108;yList[3] = 0.11; yList[4] = 0.111; yList[5] = 0.109; yList[6] = 0.111; yList[7] = 0.109; yList[8] = 0.108; yList[9] = 0.111; yList[10] = 0.112
+    figure, axes = plt.subplots()
+    startDate = datetime.datetime(2014, 3, 6, 0, 0, 0)
+    endDate = datetime.datetime(2014, 4, 30, 0, 0, 0)
+    delta = datetime.timedelta(hours=24)
+    dates = drange(startDate , endDate, delta)
+    axes.plot_date(dates,  yList,  '-',  marker='.',  linewidth=1)
+    axes.xaxis.set_major_locator(days)
+    axes.xaxis.set_major_formatter( DateFormatter("%b '%d"))
+    axes.xaxis.set_minor_locator(mondays)
+    axes.fmt_xdata = DateFormatter("%b '%d")
+    plt.ylim(0.08,0.20)
+    plt.ylabel('播放率')
+
+    axes.autoscale_view()
+    axes.xaxis.grid(True, 'major')
+    axes.xaxis.grid(True, 'minor')
+    axes.grid(True)
+    figure.autofmt_xdate()
+    plt.show()
+
+
 if __name__ == '__main__':
     #statics()
     #userBehavior()
     #missedUser()
     #quitByFirstSight()
-    getTag()
+    #draw()
+    #getTag()
     getSumOfLikeAndDiscard()
     displayRate(False)
     displayRateRange(False)

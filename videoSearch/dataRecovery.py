@@ -218,14 +218,8 @@ def updateExistTag():
                 if re.match('\d+', tag):
                     print tag
                 gateway.entry_point.POS(tag)
-            for black in blacklist:
-                try:
-                    ret['tagList'].remove(black)
-                except ValueError:
-                    pass
-            try:
-                ret['tagList'].remove('')
-            except ValueError:
+            resultTags = list(set(ret['tagList']) - set(blacklist))
+            if set(resultTags) == set(ret['tagList']):
                 continue
             clct_resource.update({'_id':ret['_id']},{'$set':{'tagList':ret['tagList']}})
 
@@ -288,6 +282,8 @@ def filterRecommendations():
     rets = clct_resource.find({'$or':[{'channelId':101641, 'isOnline':True},{'channelId':101758, 'isOnline':True}]})
     gateway = JavaGateway()
 
+    from reByKeyword import filterVideo
+
     for ret in rets:
         title = ret.get('resourceName',None)
         if title is None:
@@ -295,116 +291,16 @@ def filterRecommendations():
 
         #nerMap = gateway.entry_point.NERTag(title)
         #print nerMap
-
-        if re.search(u'&.{1,6};', title):
-            sTitle =  re.sub(u'&.{1,6};','',title)
-            print sTitle
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'resourceName': sTitle}})
-
-        '''
-        paraTitles =  re.split(u'[ ,.。，:》　」]',title)
-        tParas = re.split(u'[的]', title)
-        dParas = re.split(u'_', title)
-        sParas = re.split(u' ', title)
-
-
-        if re.search(u'[\u4e00-\u9fa5 ]+\d+$', title) and len(title.encode('utf8')) < 32:
+        ret['ti'] = title
+        ret['url'] = ret['resourceUrl']
+        resultR = filterVideo([ret])
+        if resultR:
+            if resultR[0]['ti'] != title:
+                clct_resource.update({'_id':ret['_id']},{'$set':{'resourceName': resultR[0]['ti']}})
+                print resultR[0]['ti']
+        else:
             print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
-
-
-        if re.search('^\d+',title):
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
-
-        if len(paraTitles) == 1 and len(tParas) == 1 and len(title.encode('utf8')) < 32:
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue'''
-
-        '''if re.search(u'[\u4e00-\u9fa5]+县|市|村',title):
-            print title'''
-
-        '''titleSegs =  re.split(u'[^\u4e00-\u9fa5]+',title)
-        stripSegs = [i for j, i in enumerate(titleSegs) if titleSegs[j] != u'']
-
-        if  len(stripSegs) == 1:
-            for titleSeg in stripSegs:
-                sumTitle = len(titleSeg.encode('utf8'))
-                if sumTitle < 20:
-                    if not re.search(u'-|—|——|MV', title, re.IGNORECASE) and len(title.encode('utf8')) - len(titleSeg.encode('utf8')) < 17:
-                        print  title
-                        clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                        continue
-
-        if len(titleSegs) == 1:
-            for onePiece in titleSegs:
-                if len(onePiece) > 20:
-                    print title
-                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue
-
-        lCommonResult =  saApp.longest(title)
-        if lCommonResult == '':
-            continue
-        templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
-        tempResultLen = len(templCommonResult)
-        resultLen = len(lCommonResult)
-        if tempResultLen > 10 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
-            print lCommonResult
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            continue
-
-        titleLen = len(title)
-        if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
-            occurences = saApp.search2(lCommonResult, title)
-            occurencesCount =  len(occurences)
-            if occurencesCount > 2 or resultLen > 3:
-                ratio = float(titleLen)/(len(lCommonResult)*len(occurences))
-                if resultLen > 4 and ratio < 2.8:
-                    print ratio
-                    print lCommonResult
-                    print title
-                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue
-                elif ratio < 3.0:
-                    print ratio
-                    print lCommonResult
-                    print title
-                    clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-                    continue'''
-
-
-        #if re.search(ur'第.集',title) and len(title.encode('utf8'))< 27:
-        #    print title
-
-
-
-
-
-
-        '''if re.search('aipai.com', ret['resourceUrl']):
-            print title
-            clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})'''
-
-
-
-
-
-        '''if re.search('\d{6,}', title) is not None:
-            print title
-            #clct_userRecommend.update({'_id':ret['_id']},{'$set':{'isViewed':'1'}})
-            tempTitle = re.sub('\d{6,}', '', title)
-            if len(tempTitle.encode('utf8')) < 20:
-                clct_resource.update({'_id':ret['_id']}, {'$set':{'isOnline': False}})
-            else:
-                clct_resource.update({'_id':ret['_id']}, {'$set':{'resourceName': tempTitle}})
-            continue'''
-
-
+            clct_resource.update({'_id':ret['_id']},{'$set':{'isOnline':False}})
 
 
 def offlineRecommendations():
@@ -439,7 +335,7 @@ if __name__ == '__main__':
     #updateWeiboUpdateTime()
     #updateTag()
     #updateUserTag()
-    #updateExistTag()
+    updateExistTag()
     #transferVideoInfoTask()
     #feedTag(initial_tags, True, '科幻')
     #updateChannelSnapshot(100256)
