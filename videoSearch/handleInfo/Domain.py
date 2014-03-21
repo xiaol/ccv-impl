@@ -10,3 +10,4 @@ class SnsInfo(DomainBase):
     play = 0
     download = 0
     comment = 0
+    discribe = ''
