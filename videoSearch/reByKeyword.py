@@ -424,7 +424,11 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                     print e
                     continue
         mReasons = reason.split(' ')
-        resultReason = '|'.join(mReasons)
+        mReasons2 = []
+        for mReason in mReasons:
+            if re.match(r"^[^\uFF00-\uFFFF]*$", mReason):
+                mReasons2.append(strQ2B(mReason))
+        resultReason = '|'.join(mReasons2)
         if tagReason:
             resource['tagList'].insert(0, resultReason)
         else:
@@ -606,7 +610,7 @@ def buildVideo(entities, reason, source, update=False):
                     mResult = []
                     for mTag in mTags:
                         if gateway.entry_point.POS(tag):
-                            if re.match("^[A-Za-z]*$", mTag):
+                            if re.match(r"^[^\uFF00-\uFFFF]*$", mTag):
                                 mResult.append(strQ2B(mTag))
                             else: mResult.append(mTag)
                     if mResult:
