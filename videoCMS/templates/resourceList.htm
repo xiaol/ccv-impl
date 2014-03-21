@@ -141,6 +141,9 @@
                                     <li>
                                         <a href="#{{ resource.id }}_3" data-toggle="tab">标签</a>
                                     </li>
+                                    <li>
+                                        <a href="#{{ resource.id }}_4" data-toggle="tab">其他</a>
+                                    </li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -173,7 +176,9 @@
                                             {{ tag }}
                                         {% endfor %}
                                     </div>
-
+                                    <div class="tab-pane" id="{{ resource.id }}_4">
+                                         打回原因：{{ resource.reviewFailMsg.content|safe }}
+                                    </div>
                                 </div>
 
 
@@ -192,33 +197,33 @@
                                     <input id="rj_{{ resource.id }}" type="radio" review="-1" name="review_{{ resource.id }}" {% ifequal resource.review -1 %}checked="checked"{% endifequal %}/>
                                     <label for="rj_{{ resource.id }}">不过</label>
                                     <div class="rejectReason">
-                                        <input type="radio" id="reject_{{ forloop.counter }}_0" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_0">0 地址/截图失效</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_1" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_1">1 截图无事件主体</label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_0" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_0">0 地址/截图失效 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_1" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_1">1 截图无事件主体 </label><br/>
 
-                                        <input type="radio" id="reject_{{ forloop.counter }}_{{ forloop.counter1 }}_2" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_2">2 截图不高请</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_3" name="rejectReason" value=""/>
-                                        <label for="rejec_{{ forloop.counter }}t_3">3 截图黑边</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_4" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_4">4 截图小（可做拼图）</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_5" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_5">5 截图与标题无关</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_6" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_6">6 截图太暗</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_7" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_7">7 标题格式不规范</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_8" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_8">8 标题无重点</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_9" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_9">9 推荐理由无吸引力</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_10" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_10">10 标点符号过多</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_11" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_11">11 描述与标题重复</label><br/>
-                                        <input type="radio" id="reject_{{ forloop.counter }}_12" name="rejectReason" value=""/>
-                                        <label for="reject_{{ forloop.counter }}_12">12 其他</label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_2" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_2">2 截图不高请 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_3" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_3">3 截图黑边 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_4" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_4">4 截图小（可做拼图） </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_5" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_5">5 截图与标题无关 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_6" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_6">6 截图太暗 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_7" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_7">7 标题格式不规范 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_8" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_8">8 标题无重点 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_9" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_9">9 推荐理由无吸引力 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_10" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_10">10 标点符号过多 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_11" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_11">11 描述与标题重复 </label><br/>
+                                        <input type="checkbox" id="reject_{{ forloop.counter }}_12" name="rejectReason" value=""/>
+                                        <label for="reject_{{ forloop.counter }}_12">12 其他 </label><br/>
                                         <textarea name="customReason" rows="3" cols="8"></textarea>
                                         <button onclick="rejectWithReason('{{ resource.id }}',this)">确定</button>
                                     </div>

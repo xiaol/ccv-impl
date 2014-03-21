@@ -173,11 +173,12 @@ function rejectWithReason(resourceId,object)
 {
     var rejectReason = $(object).parent();
     var reason = rejectReason.find('input:checked').next().text();
-    if(reason == "12 其他")
+    if(reason.indexOf("12 其他") != -1)
     {
-        reason = rejectReason.find('[name="customReason"]').val();
+        reason += rejectReason.find('[name="customReason"]').val();
     }
-    review(resourceId,-1,reason);
+    console.log(reason);
+    //review(resourceId,-1,reason);
     console.log(rejectReason.parent('.rejectItem').prev().prev().find('input'));
     rejectReason.prev().prev().find('input').iCheck('check');
     rejectReason.hide();
