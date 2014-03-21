@@ -163,6 +163,11 @@ def index(request):
                 one['br'] = None
             else:
                 one['br'] = one['resourceSize']/one['duration']
+        if review == u'审核悲剧':
+            msg = clct_cmsMessage.find_one({'type':'reviewFail','extras.resourceId':one['id']},sort=[('_id',-1)])
+            if msg:
+                msg['content'] = re.search('\[(.*?)\]',msg['content']).groups()[0]
+                one['reviewFailMsg'] = msg
 
 
     DICT['singleReview'] = True if source=='' or source == 'manual' else False
