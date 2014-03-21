@@ -606,7 +606,9 @@ def buildVideo(entities, reason, source):
                     mResult = []
                     for mTag in mTags:
                         if gateway.entry_point.POS(tag):
-                            mResult.append(mTag)
+                            if re.match("^[A-Za-z]*$", mTag):
+                                mResult.append(strQ2B(mTag))
+                            else: mResult.append(mTag)
                     if mResult:
                         resultTags.append('|'.join(mResult))
             if not resultTags:
