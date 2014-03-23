@@ -101,6 +101,24 @@ def letv(url, videoType, videoId):
     return info.getInsertDict()
 
 
+'''===================== ku6 ===================='''
+p_data = re.compile(r'upcount\s*:\s*"(\d+)",\s*downcount\s*:\s*"(\d+)",\s*count\s*:\s*"(\d+)"')
+
+def ku6(url, videoType, videoId):
+    info = SnsInfo()
+    html = get_html('http://v0.stat.ku6.com/dostatv.do?method=getVideoPlayCount&n=gotPlayCounts&cp=0&v=' + videoId)
+    data = p_data.search(html).groups()
+    info['up'] = int(data[0])
+    info['down'] = int(data[1])
+    info['play'] = int(data[2])
+
+    comment_data = get_html('http://comment.ku6.com/api/list.jhtm?id=%s&vtype=111&type=2&size=10&pn=1' % videoId)
+    comment_info = json.loads(comment_data)['data']
+    info['comment'] = int(comment_info['count'])
+
+    return info.getInsertDict()
+
+
 '''===================== common  ===================='''
 
 handleMap = {
@@ -109,6 +127,7 @@ handleMap = {
     'www.iqiyi.com':iqiyi,
     'v.ifeng.com':ifeng,
     'www.letv.com':letv,
+    'v.ku6.com':ku6,
 }
 p_site = re.compile('http://([^/]+)/')
 
@@ -136,5 +155,6 @@ if __name__ == '__main__':
     #print extra_info('http://v.youku.com/v_show/id_XNjg1NDk0Njgw.html?f=22039479','youku','XNjg1NDk0Njgw')
     #print extra_info('http://www.iqiyi.com/v_19rrh50nj0.html','iqiyi','230201200__866c709dbbfa62f873a7bdb9e3f3951f')
     # print extra_info('http://v.ifeng.com/ent/mingxing/2014003/0114b6d6-5c85-4362-a731-8f690fb1b444.shtml','ifeng','0114b6d6-5c85-4362-a731-8f690fb1b444')
-    print extra_info('http://www.letv.com/ptv/vplay/20024965.html', 'letv', '20024965')
+    # print extra_info('http://www.letv.com/ptv/vplay/20024965.html', 'letv', '20024965')
+    print extra_info('http://v.ku6.com/show/SZp5Oe2BHzyAE7TeSAZkHw...html', 'ku6', 'SZp5Oe2BHzyAE7TeSAZkHw..')
 
