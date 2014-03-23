@@ -88,7 +88,17 @@ def ifeng(url,videoType,videoId):
     return info.getInsertDict()
 
 
+'''===================== letv ===================='''
 
+def letv(url, videoType, videoId):
+    info = SnsInfo()
+    data = get_html('http://stat.letv.com/vplay/queryMmsTotalPCount?vid=' + videoId)
+    d = json.loads(data)
+    #这里没有 up 和 down
+    info['play'] = d['media_play_count']
+    info['comment'] = d['vcomm_count']
+
+    return info.getInsertDict()
 
 
 '''===================== common  ===================='''
@@ -98,7 +108,7 @@ handleMap = {
     'v.youku.com':youku,
     'www.iqiyi.com':iqiyi,
     'v.ifeng.com':ifeng,
-
+    'www.letv.com':letv,
 }
 p_site = re.compile('http://([^/]+)/')
 
@@ -125,4 +135,6 @@ if __name__ == '__main__':
     #print extra_info('http://www.56.com/u77/v_OTQwMTc1OTQ.html','w56','OTQwMTc1OTQ')
     #print extra_info('http://v.youku.com/v_show/id_XNjg1NDk0Njgw.html?f=22039479','youku','XNjg1NDk0Njgw')
     #print extra_info('http://www.iqiyi.com/v_19rrh50nj0.html','iqiyi','230201200__866c709dbbfa62f873a7bdb9e3f3951f')
-    print extra_info('http://v.ifeng.com/ent/mingxing/2014003/0114b6d6-5c85-4362-a731-8f690fb1b444.shtml','ifeng','0114b6d6-5c85-4362-a731-8f690fb1b444')
+    # print extra_info('http://v.ifeng.com/ent/mingxing/2014003/0114b6d6-5c85-4362-a731-8f690fb1b444.shtml','ifeng','0114b6d6-5c85-4362-a731-8f690fb1b444')
+    print extra_info('http://www.letv.com/ptv/vplay/20024965.html', 'letv', '20024965')
+
