@@ -12,7 +12,7 @@ def meanOfVideosPerWeiboUser():
 
 startTime = '20140309000000'
 endTime = '20140310000000'
-dateTime = '20140321'
+dateTime = '20140324'
 
 def displayRate(newUser=True):
     totalRets = clct_playViewRateLog.find({'date':dateTime}).sort('uuid', -1)

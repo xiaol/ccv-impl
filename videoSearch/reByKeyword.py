@@ -889,6 +889,8 @@ if __name__ == '__main__':
     #while True:
     #    print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
-    #segmentByNLP(u"孙政才会见中国铁建董事长孟凤朝、总裁张宗言")
+    #gateway = JavaGateway()
+    #print gateway.entry_point.POS(u"ｅｌｌｅ")
+    #segmentByNLP(u"泰航纸板切切2mm视频 碎纸机 纤维切断机 碎布机")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
 

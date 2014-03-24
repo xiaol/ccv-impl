@@ -329,19 +329,9 @@ def predictDefinition():
             print ret['_id']'''
 
 if __name__ == '__main__':
-    #createOrUpdateTags()
-    #addTag()
-    #setWeiboTag()
-    #updateWeiboUpdateTime()
-    #updateTag()
-    #updateUserTag()
+    if re.match(r"^[^\uFF00-\uFFFF]*$", u'ｎｂａ'):
+        print strQ2B(u'ｎｂａisdfsdf')
     updateExistTag()
-    #transferVideoInfoTask()
-    #feedTag(initial_tags, True, '科幻')
-    #updateChannelSnapshot(100256)
-    #updateResourceWithoutChannel()
-    #stripTag()
-    #predictDefinition()
     #while True:
         #feedUserTag()
         #addTagResource()

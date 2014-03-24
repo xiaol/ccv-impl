@@ -9,7 +9,9 @@ import edu.fudan.nlp.cn.tag.CWSTagger;
 import edu.fudan.nlp.corpus.StopWords;
 import edu.fudan.nlp.cn.tag.POSTagger;
 import java.util.Map;
+import edu.fudan.nlp.cn.tag.NERTagger;
 
+import java.util.HashMap;
 
 // java -classpath .:../../env/share/py4j/py4j0.8.jar:fudannlp.jar:lib/commons-cli-1.2.jar:lib/trove.jar nlp.NLPEntryPoint
 // java -classpath .:/usr/local/python2.7/lib/python2.7/site-packages/py4j-0.8-py2.7.egg/share/py4j/py4j0.8.jar:fudannlp.jar:lib/commons-cli-1.2.jar:lib/trove.jar nlp.NLPEntryPoint
@@ -18,6 +20,7 @@ public class NLPEntryPoint {
     private static CWSTagger seg = null;
     private static AbstractExtractor key = null;
     private static POSTagger tag = null;
+    private static NERTagger  nerTag = null;
 
     public NLPEntryPoint() {
         
@@ -29,6 +32,7 @@ public class NLPEntryPoint {
             seg = new CWSTagger("models/seg.m",new Dictionary("models/dict.txt"));
             key = new WordExtract(seg,sw);
             tag = new POSTagger("models/pos.m");
+            nerTag = new NERTagger("./models/seg.m","./models/pos.m");
         }
     }
 
@@ -63,13 +67,22 @@ public class NLPEntryPoint {
             for(int i = 0; i < s1.length; i++){
                 if(s1[i].equals("副词") || s1[i].equals("形容词") || 
                     s1[i].equals("动词") || s1[i].equals("数词") || s1[i].equals("序数词") 
-                    || s1[i].equals("表情符") || s1[i].equals("限定词")|| s1[i].equals("介词") || s1[i].equals("指示代词")  ){
+                    || s1[i].equals("表情符") || s1[i].equals("限定词")|| s1[i].equals("介词") || s1[i].equals("指示代词")
+                     || s1[i].equals("时间短语") ){
                 }else{
+                    System.out.print(keys[i]+"/"+s1[i]+" ");
                     return true;
                 }
             }
             return false;
         }
+
+    public static HashMap<String, String> NERTag(String sentence) throws Exception{
+           init();
+           HashMap<String, String> map = new HashMap<String, String>();
+           nerTag.tag(sentence,map);
+           return map;
+    }
 
     public static void main(String[] args) throws Exception{
         GatewayServer gatewayServer = new GatewayServer(new NLPEntryPoint());
