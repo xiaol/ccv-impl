@@ -828,6 +828,17 @@ def process(uuid):
         retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
         try:
             if retR is None:
+                if ret.get('tagList', None) is not None:
+                    for subscribeTag in ret.get('tagList',None):
+                        subscribeRecommendVideo = clct_resource.find_one({'tagList':subscribeTag}, sort=[("createTime", -1)])
+                        videos.extend(buildVideo([subscribeRecommendVideo],subscribeTag,subscribeTag))
+        except Exception,e:
+            print e
+
+    if len(videos) == 0:
+        retR = clct_userRecommend.find_one({'uuid':ret['uuid'],'isViewed':-1,'snapshot':{'$regex':'done|gifDone'}})
+        try:
+            if retR is None:
                 random.shuffle(top_tags, random.random)
                 for topTag in top_tags:
                     topRecommendVideo = clct_resource.find_one({'tagList':topTag}, sort=[("createTime", -1)])
