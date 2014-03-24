@@ -27,7 +27,7 @@ youkuSearchUrl = "https://openapi.youku.com/v2/searches/video/by_keyword.json?cl
 baiduSearchUrl = "http://v.baidu.com/v?word=%s&rn=60&ct=905969664&fid=1606&db=0&s=0&fr=videoMultiNeed&ty=0&nf=0&cl=0&du=0&pd=0&sc=0&order=0&pn=0"
 
 supervisedLevel = 2
-blacklist = ['视频','在线','详情','其他','电影',  '视频在线观看',
+blacklist = ['视频','在线','详情','其他','其它', '电影',  '视频在线观看',
              '高清', '高清影视剧', '高清版', '在线观看', '', '新浪视频', '优酷娱乐', '优酷网', '酷6','资讯', '新浪体育', '超清']
 def retrieveUserTag(sinaToken,sinaId):
     page,count = 1,20
@@ -374,8 +374,8 @@ def filterVideo(entities):
     return result
 
 def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101758, viewCount=7000, tagReason = False):
-    updateMap = {'updateTime':getCurTime()}
-    clct_channel.update({'channelId':101641},{'$set':updateMap})
+    #updateMap = {'updateTime':getCurTime()}
+    #clct_channel.update({'channelId':101641},{'$set':updateMap})
     gateway = JavaGateway()
 
     '''入库'''
@@ -405,7 +405,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 if len(videoTagName2.encode('utf8')) < 14 and gateway.entry_point.POS(videoTagName2):
                     strippedVideoTag.append(videoTagName2)
                 else:
-                    strippedVideoTag.append(videoTagName2)
+                    continue
+                strippedVideoTag = list(set(strippedVideoTag) - set(blacklist))
             if strippedVideoTag:
                 resultVideoTag = '|'.join(strippedVideoTag)
                 humanTags.append(resultVideoTag)
@@ -890,7 +891,7 @@ if __name__ == '__main__':
     #    print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #gateway = JavaGateway()
-    #print gateway.entry_point.POS(u"ｅｌｌｅ")
+    #print gateway.entry_point.POS(u"底面")
     #segmentByNLP(u"泰航纸板切切2mm视频 碎纸机 纤维切断机 碎布机")
     #recommendByYouku(["ＩＴ","ＮＢＡ"],"","")
 
