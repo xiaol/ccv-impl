@@ -418,7 +418,8 @@ def buildVideoFromBaidu(entities, reason, source, snapShot = False,channelId=101
                 try:
                     tags = segmentByNLP(resource['resourceName'])
                     if not tags:
-                        tags = [resource['resourceName']]
+                        print 'Cant segment this title' + resource['resourceName']  #TODO maybe there is a better idea.
+                        continue
                     tags = '|'.join(tags)
                     resource['tagList'].append(tags)
                 except Exception,e:
