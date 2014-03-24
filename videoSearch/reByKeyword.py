@@ -768,7 +768,10 @@ def process(uuid):
         total = False
     else: total = False
     for record in records:
-        similarKeywordsDic = similarWords(record['resourceName'],total,True)
+        if record.get('tagList', None) is not None:
+            similarKeywordsDic = similarWords(record['tagList'],total)
+        else:
+            similarKeywordsDic = similarWords(record['resourceName'],total,True)
         titleTags = segment(record['resourceName'], True)
         for (k,v) in similarKeywordsDic.items():
             for tag in v:
