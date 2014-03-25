@@ -127,6 +127,16 @@ def retrieveUserHistory(userId):
         records.append(clct_resource.find_one({'_id': ObjectId(record)}))
     for entity in records:
         retC = clct_channel.find_one({'channelId':entity['channelId']})
+        if retC.get('channelType',None) is not None:
+            if retC['channelType'] == 22:
+                pass
+            if retC['channelType'] == 1 or retC['channelType'] == 4 or retC['channelType'] == 6 or retC['channelType'] == 7 or retC['channelType'] == 8:
+                entity['tagList'] = []
+                if retC['detailDirecter']:
+                    entity['tagList'].append(retC['detailDirecter'])
+                if retC['detailLeadingRole']:
+                    entity['tagList'].extend(retC['detailLeadingRole'][0:3])
+
         entity['resourceName'] = entity['resourceName']
         entity['resourceName'] = re.sub('http://[\w\./]*','',entity['resourceName'])
     return records
