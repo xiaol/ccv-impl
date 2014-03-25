@@ -119,6 +119,42 @@ def ku6(url, videoType, videoId):
     return info.getInsertDict()
 
 
+'''===================== sohu ===================='''
+p_vid = re.compile(r'vid\s*=\s*"(\d+)";')
+p_playlist_id = re.compile(r'playlistId\s*=\s*"(\d+)";')
+p_cid = re.compile(r'cid\s*=\s*"(\d+)";')
+p_tvid = re.compile(r'tvid\s*=\s*"(\d+)";')
+p_cate_code = re.compile(r'cateCode\s*=\s*"(\d+)')
+p_play_count = re.compile(r'\d+')
+p_comment_count = re.compile(r'"allCount"\s*:\s*(\d+)')
+
+def sohu(url, videoType, videoId):
+    info = SnsInfo()
+    html = get_html(url)
+    vid = p_vid.search(html).groups()[0]
+    playlist_id = p_playlist_id.search(html).groups()[0]
+    cid = p_cid.search(html).groups()[0]
+    tvid = p_tvid.search(html).groups()[0]
+    cate_code = p_cate_code.search(html).groups()[0]
+
+    play_info = get_html('http://score.my.tv.sohu.com/digg/get.do?vid=%s&type=%s' % (vid, cid))
+    left = play_info.find('{')
+    right = play_info.rfind('}')+1
+    data = json.loads(play_info[left:right])
+
+    info['up'] = data["upCount"]
+    info['down'] = data["downCount"]
+    t = time.time()
+    play_info = get_html('http://count.vrs.sohu.com/count/stat.do?videoId=%s&tvid=%s&playlistId=%s' % (vid, tvid, playlist_id)
+                         + '&categoryId=%s&catecode=%s&plat=flash&os=Linux&online=0&type=vms&t=%f' % (cid, cate_code, t))
+    info['play'] = int(p_play_count.search(play_info).group())
+
+    comment_info = get_html('http://access.tv.sohu.com/reply/list/%s_%s_%s_0_10.js' % (cid, playlist_id, vid))
+    info['comment'] = int(p_comment_count.search(comment_info).groups()[0])
+
+    return info.getInsertDict()
+
+
 '''===================== common  ===================='''
 
 handleMap = {
@@ -128,6 +164,7 @@ handleMap = {
     'v.ifeng.com':ifeng,
     'www.letv.com':letv,
     'v.ku6.com':ku6,
+    'tv.sohu.com':sohu,
 }
 p_site = re.compile('http://([^/]+)/')
 
@@ -156,5 +193,6 @@ if __name__ == '__main__':
     #print extra_info('http://www.iqiyi.com/v_19rrh50nj0.html','iqiyi','230201200__866c709dbbfa62f873a7bdb9e3f3951f')
     # print extra_info('http://v.ifeng.com/ent/mingxing/2014003/0114b6d6-5c85-4362-a731-8f690fb1b444.shtml','ifeng','0114b6d6-5c85-4362-a731-8f690fb1b444')
     # print extra_info('http://www.letv.com/ptv/vplay/20024965.html', 'letv', '20024965')
-    print extra_info('http://v.ku6.com/show/SZp5Oe2BHzyAE7TeSAZkHw...html', 'ku6', 'SZp5Oe2BHzyAE7TeSAZkHw..')
+    # print extra_info('http://v.ku6.com/show/SZp5Oe2BHzyAE7TeSAZkHw...html', 'ku6', 'SZp5Oe2BHzyAE7TeSAZkHw..')
+    print extra_info('http://tv.sohu.com/20140324/n397067836.shtml', 'sohu', 'http://tv.sohu.com/20140324/n397067836.shtml')
 
