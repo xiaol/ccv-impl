@@ -178,7 +178,7 @@ function rejectWithReason(resourceId,object)
         reason += rejectReason.find('[name="customReason"]').val();
     }
     console.log(reason);
-    //review(resourceId,-1,reason);
+    review(resourceId,-1,reason);
     console.log(rejectReason.parent('.rejectItem').prev().prev().find('input'));
     rejectReason.prev().prev().find('input').iCheck('check');
     rejectReason.hide();
