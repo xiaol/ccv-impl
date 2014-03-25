@@ -206,7 +206,7 @@ def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
         keywords = gateway.entry_point.extractKeywords(sentences, num, True)
     except Exception,e:
         print e
-        return [re.sub(u' ', '', sentences)]
+        return []
     keywordsList = keywords.split(' ')
     for black in blacklist:
         try:
