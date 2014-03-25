@@ -339,9 +339,12 @@ def filterVideo(entities):
                         continue
 
         if len(stripSegs) == 1:
+            onePieceFlag = False
             for onePiece in stripSegs:
                 if len(onePiece) > 20:
-                    continue
+                    onePieceFlag = True
+            if onePieceFlag:
+                continue
 
         if re.search('\d{6,}', entity['ti']) is not None:
             tempTitle = re.sub('\d{6,}', '', entity['ti'])
