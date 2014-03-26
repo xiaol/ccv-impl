@@ -77,21 +77,22 @@ def handle(url, channelId, tvNumber):
     else:
         html = get_html(url)
         tree = etree.HTML(html)
-        videos = tree.xpath('//*[@id="mod_video_content"]/div/ul/li/p')
+        sourceId = tree.xpath('//div[@sourceid]/@sourceid')[0]
+        loadplaylistUrl = 'http://s.video.qq.com/loadplaylist?vkey=%s&vtype=2&otype=json&callback=1'%sourceId
+        print loadplaylistUrl
+        videos = json.loads(get_html(loadplaylistUrl)[2:-1])
+        print videos
+        videos = videos['video_play_list']['playlist']
 
         for video in videos:
-            title = video.xpath('./a/@title')[0]
+            title = video['title']
             if title.find(u"预告") != -1:
                 continue
-            number = int(p_number.search(title).groups()[0])
+            number = int(video['episode_number'])
             if number <= tvNumber:
                 continue
-            url = base_url + video.xpath('./a/@href')[0]
-            subtitle = video.xpath('./span/text()')
-            if subtitle:
-                title += " " + subtitle[0]
+            url = video['url']
             videoId = p_vid.search(url).groups()[0]
-
             item = buildResource(url, title, number, channelId, videoId)
             ret.append(item)
 
@@ -122,4 +123,5 @@ if __name__ == '__main__':
     # pprint.pprint(handle('http://v.qq.com/zt/detail/hml/index.html',1,0))
     # pprint.pprint(handle('http://v.qq.com/zt/detail/index.html',1,0))
     #pprint.pprint(handle('http://v.qq.com/p/tv/zt/lama/index.html',1,0))
-    pprint.pprint(handle('http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html',1,0))
+    #pprint.pprint(handle('http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html',1,0))
+    pprint.pprint(handle('http://v.qq.com/detail/v/vojalbiih5ge13u.html',1,0))
