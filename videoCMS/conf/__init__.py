@@ -103,6 +103,7 @@ searchHandleListAll = [
 (r'http://www.funshion.com/subject/\\d+','search.funshionTv'),
 (r'http://www.letv.com/tv/\\d+.html','search.letvTv'),
 (r'http://www.iqiyi.com/dianshiju/\\w+.html','search.iqiyiTv'),
+(r'http://www.iqiyi.com/a_\\w+.html','search.iqiyiTv'),
 #
 (r'http://tv.sohu.com/s\\d{4}/\\w+/','search.sohuTv'),
 (r'http://tv.sohu.com/s\\d{4}/\\d+/s\\d+','search.sohuTv'),
