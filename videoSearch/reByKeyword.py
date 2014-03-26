@@ -369,13 +369,13 @@ def filterVideo(entities):
 
         lCommonResult =  saApp.longest(entity['ti'])
         resultLen = len(lCommonResult)
-        if lCommonResult != '' and resultLen > 2:
+        if lCommonResult != '' and resultLen >= 2:
             templCommonResult = re.sub(u'[^\u4e00-\u9fa5]+','', lCommonResult)
             tempResultLen = len(templCommonResult)
             if tempResultLen > 10 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
                 continue
             titleLen = len(entity['ti'])
-            if resultLen >= 3 and re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
+            if  re.search(u'[\u4e00-\u9fa5]+', lCommonResult):
                 occurrences = saApp.search2(lCommonResult, entity['ti'])
                 occurrencesCount =  len(occurrences)
                 if occurrencesCount > 5 and resultLen >1:
