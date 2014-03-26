@@ -130,7 +130,8 @@ def retrieveUserHistory(userId):
         if retC.get('channelType',None) is not None:
             if retC['channelType'] == 22:
                 pass
-            if retC['channelType'] == 1 or retC['channelType'] == 4 or retC['channelType'] == 6 or retC['channelType'] == 7 or retC['channelType'] == 8:
+            if retC['channelType'] == 1 or retC['channelType'] == 4 or retC['channelType'] == 6 \
+                or retC['channelType'] == 7 or retC['channelType'] == 8 or retC['channelType'] == 12 or retC['channelType'] == 13:
                 entity['tagList'] = []
                 if retC['detailDirecter']:
                     entity['tagList'].append(retC['detailDirecter'])
@@ -206,9 +207,11 @@ def segment(sentences,isSegment=False):
 
 def segmentByNLP(sentences): #WARNING THROW EXCEPTIONS HERE.
     gateway = JavaGateway()
-    num = len(sentences)/6
+    num = len(sentences)/8
     if num == 0:
         num = 1
+    elif num > 4:
+        num = 4
     if sentences == '':
         return []
     sentences = re.sub(u'[^a-zA-Z\u4e00-\u9fa5]+',' ',sentences)
