@@ -78,9 +78,9 @@ def play(request):
             DICT['videoUrl'] = urls[0]
         else:
             return HttpResponse('无法检测到视频地址，请到原网页观看')
-        return render_to_response('videoPlay.htm',DICT)
+        return render_to_response('videoPlay.htm', DICT)
     #取消截图
-    clct_videoInfoTask.remove({'resourceId': id}, mulit=True)
+    clct_videoInfoTask.remove({'resourceId': resourceId}, mulit=True)
 
     #拼图
     style = int(request.POST['style'])
@@ -94,8 +94,8 @@ def play(request):
 
     sio = StringIO.StringIO()
     img.save(sio,'jpeg',quality=90)
-    file = saveResourceImage(sio.getvalue(),resourceId)
+    file = saveResourceImage(sio.getvalue(), resourceId)
     print file
-    clct_resource.update({'_id':ObjectId(resourceId)},{'$set':{'resourceImageUrl':file,'snapshot': ''}})
+    clct_resource.update({'_id': ObjectId(resourceId)}, {'$set': {'resourceImageUrl': file, 'snapshot': ''}})
 
     return HttpResponseRedirect(request.get_full_path())
