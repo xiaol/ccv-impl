@@ -118,6 +118,7 @@ searchHandleListAll = [
 # ==================综艺================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuZongyi'),
 (r'http://www.iqiyi.com/zongyi/\\w+.html','search.iqiyiZongyi'),
+(r'http://www.iqiyi.com/[av]_\\w+.html','search.iqiyiZongyi'),
 (r'http://tv.sohu.com/\\w+/','search.sohuZongyi'),
 (r'http://www.funshion.com/subject/\\d+','search.funshionZongyi'),
 (r'http://www.pptv.com/page/\\d+.html','search.pptvZongyi'),
