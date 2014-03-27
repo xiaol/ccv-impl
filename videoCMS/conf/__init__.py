@@ -110,6 +110,8 @@ searchHandleListAll = [
 #
 (r'http://www.pptv.com/page/\\d+.html','search.pptvTv'),
 (r'http://v.qq.com/detail/\\w/\\w+.html','search.qqTv'),
+(r'http://v.qq.com/p/tv/zt/\\w+/index.html','search.qqTv'),
+(r'http://v.qq.com/zt/detail/[/\\w]*index.html','search.qqTv'),
 (r'http://v.pps.tv/splay_\\d+.html','search.ppsTv'),
 (r'http://www.wasu.cn/Tele/index/id/\\d+','search.wasuTv'),
 #
