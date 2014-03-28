@@ -638,7 +638,8 @@ def buildVideo(entities, reason, source, update=False):
                     try:
                         tags = segmentByNLP(entity['resourceName'])
                         if not tags:
-                            tags = [entity['resourceName']]
+                            print 'Cant segment this title' + entity['resourceName']  #TODO maybe there is a better idea.
+                            continue
                         tags = '|'.join(tags)
                         resultTags.append(tags)
                     except Exception,e:
@@ -678,8 +679,9 @@ def upload(videos, uuid):
             try:
                 if not retR['tagList']:
                     newTags = segmentByNLP(retR['resourceName'])
-                    clct_resource.update({'_id':retR['_id']},{'$set':{'tagList':newTags}})
-                    videos['tagList'] = newTags
+                    if newTags:
+                        clct_resource.update({'_id':retR['_id']},{'$set':{'tagList':newTags}})
+                        videos['tagList'] = newTags
             except Exception,e:
                 print e
             video['uuid'] = uuid
@@ -761,7 +763,10 @@ def process(uuid):
                 encodedTags = []
                 for mItemTag in itemTags:
                     if len(mItemTag.encode('utf8'))>12:
-                        encodedTags.extend(segmentByNLP(mItemTag))
+                        rItemTag = segmentByNLP(mItemTag)
+                        if not rItemTag:
+                            continue
+                        encodedTags.extend(rItemTag)
                     else:
                         encodedTags.append(mItemTag.encode('utf-8'))
                 source = ' '.join(encodedTags)
