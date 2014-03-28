@@ -31,6 +31,7 @@ clct_statisticsLog = con39.tiercel.statisticsLog
 clct_subscribeLog = con39.tiercel.subscribeLog
 clct_searchLog = con39.tiercel.searchLog
 clct_playLog = con39.tiercel.playLog
+clct_playViewRateLog = con39.tiercel.playViewRateLog
 
 #==================
 try:

@@ -144,6 +144,7 @@ def index(request):
         immm = one['resourceImageUrl']
         one['resourceImageUrl'] = IMG_INTERFACE_FF % (96, 96, immm)
         one['resourceImageUrlOri'] = IMG_INTERFACE_FF % ('*', '*', immm)
+        one['resourceImageUrl_400'] = IMG_INTERFACE_FF % (400, 225, immm)
         channel = clct_channel.find_one({'channelId': one['channelId']})
         if channel == None:
             one['channelName'] = "not found channel:" + str(one['channelId'])
