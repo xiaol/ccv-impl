@@ -28,8 +28,10 @@
                                     </span> &nbsp;
                         <span class="label label-info">
                             播{{ resource.playNumber }}/下{{ resource.downloadNumber }}
-                            {% if resource.r_p %}[播{{ resource.r_p }}/览{{ resource.r_v }}]{% endif %}
-                        </span>
+                         </span>&nbsp;
+                        {% if resource.r_p %}
+                            <span class="label label-primary">播{{ resource.r_p }}/览{{ resource.r_v }} </span>&nbsp;
+                        {% endif %}
                         {% if resource.hasDanmu %}
                             <span class="label label-danger">字幕</span>
                         {% endif %}
