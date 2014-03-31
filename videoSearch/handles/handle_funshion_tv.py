@@ -4,53 +4,43 @@ sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
 from lxml import etree
 import re,pprint
 from common.common import getCurTime
-from pymongo import Connection
 from common.Domain import Resource,Channel
 from common.HttpUtil import get_html,getVideoIdByUrl
 from setting import clct_channel
 
 
-p_number = re.compile(u'/subject/play/\d+/(\d+)')
-
-#=========================================================
-
-
 def handle(url,channelId,tvNumber):
     html = get_html(url)
     tree = etree.HTML(html)
-    videoList = tree.xpath('//div[@class="p-content"]//ul/li/a')
-    number = len(videoList)
-    channel =  clct_channel.find_one({'channelId':channelId})
-    channelType = channel['channelType']
-    channelName = channel['channelName']
-    
-    
+    videoList = tree.xpath('//div[@id="playinfo-container"]/a')
+    channelName = tree.xpath('//title/text()')[0]
+    channelName = channelName.split()[0]
+
+    p_number = re.compile(u'\d+')
     ret = []
     for video in videoList:
-        title =  channelName+ ' '+ video.xpath('./text()')[0]
-        url = 'http://www.funshion.com' +video.xpath('./@href')[0]
-        number = int(p_number.search(url).groups()[0])
-        if number < tvNumber:
+        title = channelName + ' ' + video.xpath('./text()')[0]
+        url = 'http://www.funshion.com' + video.xpath('./@href')[0]
+        number = int(p_number.search(title).group())
+        if number <= tvNumber:
             continue
         print url
         videoId = getVideoIdByUrl(url)
-        item = buildResource(url,title,number,channelId,videoId,channelType)
+        item = buildResource(url, title, number, channelId, videoId)
         ret.append(item)
+
     return ret
     
 
-
-
-def buildResource(url,title,number,channelId,videoId,channelType):
+def buildResource(url,title,number,channelId,videoId):
     resource = Resource()
     resource['resourceName'] = title
     resource['resourceUrl'] = url
     resource['number'] = number
     resource['channelId'] = channelId
-    resource['categoryId'] = channelType
     resource['type'] = 'video'
     resource['videoType'] = 'funshion'
-    resource['videoId'] =  videoId
+    resource['videoId'] = videoId
     resource['createTime'] = getCurTime()
     
     return resource.getInsertDict()
@@ -59,5 +49,5 @@ def buildResource(url,title,number,channelId,videoId,channelType):
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.funshion.com/subject/107354',100550,3))
     #pprint.pprint(handle('http://www.funshion.com/subject/43280/',100550,700))
-    pprint.pprint(handle('http://www.funshion.com/subject/111155/',101759,0))
+    pprint.pprint(handle('http://www.funshion.com/subject/113675/',101759,0))
 
