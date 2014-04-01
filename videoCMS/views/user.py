@@ -17,7 +17,7 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
     channelList = list(clct_channel.find({'editor':uid},{'_id':0,'channelId':1,'channelName':1}))
     channelIdList = [one['channelId'] for one in channelList]
 
-    fieldMap = {'_id':1,'updateTime':1,'source':1,'channelId':1}
+    fieldMap = {'_id': 1, 'updateTime': 1, 'source': 1, 'channelId': 1, 'r_v': 1, 'r_p': 1}
 
     #注意 这里所有的视频都是 属于此uid的，其他作者的不做统计
     resourceList = list(clct_resource.find({'editor':uid,'updateTime':{'$gte':startTime,'$lt':endTime}},fieldMap))
@@ -135,10 +135,16 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         s_channel[channelId]['newNum'] = s_channel[channelId]['resourceManualNum'] + s_channel[channelId]['resourceSpiderNum']
         channel.update(s_channel[channelId])
 
+    '''============== 统计 接口上传 的 播放浏览量 ============'''
+    viewNum = sum(one['r_v'] for one in resourceList)
+    playNum = sum(one['r_p'] for one in resourceList)
+
     if timespan != 1:
         pass
 
-    return daySequence,s_sum,channelList,s_create_sum,len(resourceManualSet),len(resourceSpiderSet),len(resourceSet)
+    return daySequence,s_sum,channelList,s_create_sum,\
+            len(resourceManualSet),len(resourceSpiderSet),len(resourceSet),\
+            viewNum,playNum
 
 
 
@@ -168,7 +174,7 @@ def index(request):
 
     #统计数据
 
-    labels,s_sum,channelList,s_create_sum,newManualNum,newSpiderNum,newNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
+    labels,s_sum,channelList,s_create_sum,newManualNum,newSpiderNum,newNum,viewNum,playNum = staticByUid(uid,t_start,t_end,startTime,endTime,timespan)
 
     #====  通用数据
     DICT['uid'] = uid
@@ -180,6 +186,9 @@ def index(request):
     DICT['newManualNum'] = newManualNum #新增人工视频数量
     DICT['newSpiderNum'] = newSpiderNum #新增爬虫视频数量
     DICT['s_create_sum'] = s_create_sum #新增视频详细统计
+    DICT['viewNum'] = viewNum
+    DICT['playNum'] = playNum
+
 
     #======= 下载/播放 合计统计  =============
     DICT['s_sum'] = json.dumps(s_sum)   # 下载播放合计统计 [[下载(人工)...],[下载(爬虫)...],[播放(人工)...],[播放(爬虫)...]]
