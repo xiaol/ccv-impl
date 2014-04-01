@@ -219,6 +219,7 @@
                                 <td>性别定向</td>
                                 <td>
                                     <select name="gender"  style="width:90px">
+                                        <option value="male" {% ifequal gender "all" %}selected="selected"{% endifequal %}>ALL</option>
                                         <option value="male" {% ifequal gender "male" %}selected="selected"{% endifequal %}>男</option>
                                         <option value="female" {% ifequal gender "female" %}selected="selected"{% endifequal %}>女</option>
                                     </select>
