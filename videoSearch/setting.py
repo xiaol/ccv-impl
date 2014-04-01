@@ -16,6 +16,7 @@ clct_userRecommend = con.tiercel.userRecommend
 clct_user = con.tiercel.user
 clct_tag = con.tiercel.tag
 clct_userDiscard = con.tiercel.UserDiscard
+clct_tagCloud = con.tiercel.tagCloud
 
 
 if not debug:
