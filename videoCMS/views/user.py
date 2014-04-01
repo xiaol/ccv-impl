@@ -136,8 +136,8 @@ def staticByUid(uid,t_start,t_end,startTime,endTime,timespan):
         channel.update(s_channel[channelId])
 
     '''============== 统计 接口上传 的 播放浏览量 ============'''
-    viewNum = sum(one['r_v'] for one in resourceList)
-    playNum = sum(one['r_p'] for one in resourceList)
+    viewNum = sum(one.get('r_v',0) for one in resourceList)
+    playNum = sum(one.get('r_p',0) for one in resourceList)
 
     if timespan != 1:
         pass
