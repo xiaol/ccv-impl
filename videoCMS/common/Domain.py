@@ -34,11 +34,6 @@ class DomainBase():
 
 
 
-
-
-
-
-
 class Resource(DomainBase):
     resourceSize = -1
     resourceUrl = ''
@@ -189,6 +184,7 @@ class Channel(DomainBase):
     snapShotGoOnline = False
     recReason = ''
     editor = -1
+    limit = -1
 
 
 class Tag(DomainBase):
@@ -206,6 +202,7 @@ class VideoInfoTask(DomainBase):
     force = False
     goOnline = False
     type = ''
+    priority = 0
 
 
 class CDNSyncTask(DomainBase):
