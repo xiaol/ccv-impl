@@ -204,6 +204,7 @@ def POST2Resource(request):
     resource['recReason'] = request.POST.get('recReason')
     resource['updateTime'] = request.POST.get('updateTime')
     resource['resolution'] = int(request.POST.get('resolution', -1))
+    resource['gender'] = request.POST.get('gender','')
     try:
         resource['number'] = int(resource['number'])
     except:

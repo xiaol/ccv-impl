@@ -61,10 +61,25 @@ function onSubmit()
     var tagStr = $('[name="tagList"]').val().replace( /^\s+|\s+$/g, '').replace(/，/g,",");
     if(tagStr=="" || tagStr.split(",").length < 3)
     {
-        alert("标签列表至少填写1个标签！");
+        alert("标签列表至少填写3个标签！");
         return false;
     }
     return true;
+}
+
+
+function onIsRecommendChange(object)
+{
+    var self = $(object);
+    if(self.val() == "是")
+    {
+        $('#genderSelect').show();
+         $('#genderSelect select').removeAttr('disabled');
+    }else
+    {
+        $('#genderSelect').hide();
+        $('#genderSelect select').attr('disabled','disabled');
+    }
 }
 
 function checkTextLength()

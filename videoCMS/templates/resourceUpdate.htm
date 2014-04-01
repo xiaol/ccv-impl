@@ -209,9 +209,18 @@
                             <tr>
                                 <td>推荐到Feed</td>
                                 <td>
-                                    <select name="isRecommend"  style="width:90px">
+                                    <select name="isRecommend" onchange="onIsRecommendChange(this)"  style="width:90px">
                                         <option>是</option>
                                         <option {% if not isRecommend %}selected="selected"{% endif %}>否</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="genderSelect" {% if not isRecommend %}style="display: none;"{% endif %}>
+                                <td>性别定向</td>
+                                <td>
+                                    <select name="gender"  style="width:90px">
+                                        <option value="male" {% ifequal gender "male" %}selected="selected"{% endifequal %}>男</option>
+                                        <option value="female" {% ifequal gender "female" %}selected="selected"{% endifequal %}>女</option>
                                     </select>
                                 </td>
                             </tr>
