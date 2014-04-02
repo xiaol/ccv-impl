@@ -47,5 +47,4 @@ def index(request):
         elif p_Android.search(request.META['HTTP_USER_AGENT'].lower()) != None:
             DICT['apkUrl'] = 'http://weiweimeishi.lx.coop.kukuplay.com/PocketPlayer/PocketPlayer_share.apk'
     
-    return render_to_response('share_resource.htm',DICT)
-    
+    return render_to_response('share_resource.htm', DICT)
