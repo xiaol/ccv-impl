@@ -2,8 +2,8 @@
 __author__ = 'ding'
 __doc__ = '''用来分析计算前一天的 播放、浏览数据；并累加到eresource表'''
 import sys, os
-sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
-import  time
+sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))]
+import time
 from videoCMS.conf import clct_resource
 from videoCMS.conf import clct_playViewRateLog
 from collections import defaultdict
