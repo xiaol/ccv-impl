@@ -55,8 +55,8 @@ def style_3(request):
 
     img = Image.new('RGB',(768,432),'white')
     img.paste(img1,(0,0,432,432))
-    img.paste(img2,(436,0,768,213))
-    img.paste(img3,(436,219,768,432))
+    img.paste(img2,(438,0,768,213))
+    img.paste(img3,(438,219,768,432))
     return img
 
 
