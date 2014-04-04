@@ -115,9 +115,15 @@ function checkAlright()
             return true
         }
     }
-    else if ( $('[name="style"]').val() == "2" || $('[name="style"]').val() == "3")
+    else if ( $('[name="style"]').val() == "2" || $('[name="style"]').val() == "3" )
     {
         if($('[name="image1"]').val() != "" && $('[name="image2"]').val() != "" && $('[name="image3"]').val() != "" )
+        {
+            return true
+        }
+    }else if ( $('[name="style"]').val() == "4")
+    {
+        if($('[name="image1"]').val() != "" && $('[name="image2"]').val() != "")
         {
             return true
         }
