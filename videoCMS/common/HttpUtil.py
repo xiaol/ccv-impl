@@ -93,7 +93,8 @@ def getDanmu(videoType,videoId):
     return result
 
 if __name__ =='__main__':
-    httpUtil = HttpUtil()
-    content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
-    print httpUtil.unzip(content)
-    print len(content)
+    # httpUtil = HttpUtil()
+    # content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
+    # print httpUtil.unzip(content)
+    # print len(content)
+    print getDanmu('bilibili','1508911')

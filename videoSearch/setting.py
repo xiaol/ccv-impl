@@ -1,10 +1,6 @@
-from pymongo import Connection
+from pymongo import Connection,MongoClient
 
-debug = False
-if not debug:
-    con = Connection('h37:20010')
-else:
-    con = Connection('60.28.29.37:20010')
+con = MongoClient('60.28.29.37:20010', replicaset='huohuaSet')
 
 clct_category  = con.tiercel.category
 clct_channel  = con.tiercel.channel
@@ -19,10 +15,8 @@ clct_userDiscard = con.tiercel.UserDiscard
 clct_tagCloud = con.tiercel.tagCloud
 
 
-if not debug:
-    logCon = Connection('h39:20010')
-else:
-    logCon = Connection('60.28.29.39:20010')
+logCon = MongoClient('60.28.29.39:20010')
+
 
 clct_playLog = logCon.tiercel.playLog
 clct_searchLog = logCon.tiercel.searchLog
