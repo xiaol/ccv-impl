@@ -22,8 +22,10 @@ def handle(url,channelId,tvNumber):
     videos = []
     if url.startswith("http://www.56.com/p98/list"):
         videos = tree.xpath('//h2[@class="video_title"]/a')
-    else:
-        videos = tree.xpath('//div[@class="bd mod56_video_list_H ent_list_H"]//div[@class="m_v_list_txt"]/h6/a')
+    if not videos:
+        videos = tree.xpath('//div[@class="m_v_list_txt"]/h6/a')
+    if not videos:
+        videos = tree.xpath('//div[@class="txt"]/a')
         
     ret = []
     for video in videos:
@@ -59,4 +61,6 @@ def buildResource(url,title,channelId,videoId):
 if __name__ == '__main__':
     # pprint.pprint(handle('http://ent.56.com/musicInfo/',100055,1))
     # pprint.pprint(handle('http://fun.56.com/znznv2/',100055,1))
-    pprint.pprint(handle('http://www.56.com/p98/list/',100055,1))
+    # pprint.pprint(handle('http://www.56.com/p98/list/',100055,1))
+    pprint.pprint(handle('http://games.56.com/focus/',100055,1))
+    pprint.pprint(handle('http://games.56.com/',100055,1))

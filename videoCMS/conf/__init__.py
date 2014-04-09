@@ -180,7 +180,7 @@ searchHandleListAll = [
 (r'http://www.youku.com/playlist_show/id_\\d+.html','search.youkuPlayList'),
 (r'http://www.56.com/w\\d+/album-aid-\\d+.html','search.56Album'),
 (r'http://www.tudou.com/albumplay/\\w+.html','search.tudouAlbum'),
-(r'http://fun.56.com/\\w+/','search.56list'),
+(r'http://\\w+.56.com/\\w+/','search.56list'),
 (r'http://i.youku.com/u/\\w+/videos','search.youkuIyouku'),
 (r'http://\\w+.youku.com/\\w+','search.youkuList'),
 (r'http://www.tudou.com/cate/[\\w-]+.html','search.tudouCate'),
