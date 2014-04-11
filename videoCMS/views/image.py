@@ -71,7 +71,8 @@ def parseMatch(result): #Html result
 def reco(request):
     from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
     fileUrl = save(request)
-    fileUrl = request.path + fileUrl
+    domain = re.sub(request.path, '', request.build_absolute_uri())
+    fileUrl = domain + fileUrl
     #fileUrl = 'http://vipbook.sinaedge.com/bookcover/pics/55/cover_21d32033a72eb9902d3eba920258a942.jpg'
     data = decode(fileUrl)
     return HttpResponse(json.dumps(data))
