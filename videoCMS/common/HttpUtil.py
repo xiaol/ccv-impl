@@ -72,7 +72,7 @@ def getVideoIdByUrl(url):
     httpUtil = HttpUtil()
     data = {'url':url}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://60.28.29.38:9090/api/getVideoId', data)
+    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/getVideoId', data)
     
     return json.loads(ret)['videoId']
 
@@ -80,7 +80,7 @@ def getVideoUrl(videoType,videoId):
     httpUtil = HttpUtil()
     data = {"request-body":{"getVideoUrl":{"videoType":videoType,"videoId":videoId}}}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://60.28.29.38:9090/api/huohuaId2Url',data)
+    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/huohuaId2Url',data)
     result = json.loads(ret)["response-body"]["getVideoUrl"]
     return result["list"]
 
@@ -88,12 +88,13 @@ def getDanmu(videoType,videoId):
     httpUtil = HttpUtil()
     data = {"videoType":videoType,"videoId":videoId}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://60.28.29.38:9090/api/getDanmu',data)
+    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/getDanmu',data)
     result = json.loads(ret)
     return result
 
 if __name__ =='__main__':
-    httpUtil = HttpUtil()
-    content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
-    print httpUtil.unzip(content)
-    print len(content)
+    # httpUtil = HttpUtil()
+    # content = httpUtil.Get('http://lol.duowan.com/1108/m_178050471525.html')
+    # print httpUtil.unzip(content)
+    # print len(content)
+    print getDanmu('bilibili','1508911')

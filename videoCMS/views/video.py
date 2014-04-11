@@ -30,19 +30,19 @@ def style_2(request):
     img3 = Image.open(getImageStreemIO(request.POST.get('image3')))
 
 
-    img1 = imgconvert(img1,None,248,432)
-    img2 = imgconvert(img2,None,248,432)
-    img3 = imgconvert(img3,None,248,432)
+    img1 = imgconvert(img1,None,252,432)
+    img2 = imgconvert(img2,None,252,432)
+    img3 = imgconvert(img3,None,252,432)
 
     img = Image.new('RGB',(768,432),'white')
-    img.paste(img1,(0,0,248,432))
-    img.paste(img2,(260,0,508,432))
-    img.paste(img3,(520,0,768,432))
+    img.paste(img1,(0,0,252,432))
+    img.paste(img2,(258,0,510,432))
+    img.paste(img3,(516,0,768,432))
     return img
 
 def style_3(request):
     '''
-     1,1,1 拼图
+     1,2 拼图
     '''
     img1 = Image.open(getImageStreemIO(request.POST.get('image1')))
     img2 = Image.open(getImageStreemIO(request.POST.get('image2')))
@@ -50,15 +50,31 @@ def style_3(request):
 
 
     img1 = imgconvert(img1,None,432,432)
-    img2 = imgconvert(img2,None,324,210)
-    img3 = imgconvert(img3,None,324,210)
+    img2 = imgconvert(img2,None,330,213)
+    img3 = imgconvert(img3,None,330,213)
 
     img = Image.new('RGB',(768,432),'white')
     img.paste(img1,(0,0,432,432))
-    img.paste(img2,(444,0,768,210))
-    img.paste(img3,(444,222,768,432))
+    img.paste(img2,(438,0,768,213))
+    img.paste(img3,(438,219,768,432))
     return img
 
+
+def style_4(request):
+    '''
+     1,1,1 拼图
+    '''
+    img1 = Image.open(getImageStreemIO(request.POST.get('image1')))
+    img2 = Image.open(getImageStreemIO(request.POST.get('image2')))
+
+
+    img1 = imgconvert(img1,None,382,432)
+    img2 = imgconvert(img2,None,382,432)
+
+    img = Image.new('RGB',(768,432),'white')
+    img.paste(img1,(0,0,382,432))
+    img.paste(img2,(386,0,768,432))
+    return img
 
 def play(request):
     DICT = {}
@@ -91,6 +107,8 @@ def play(request):
         img = style_2(request)
     elif style == 3:
         img = style_3(request)
+    elif style == 4:
+        img = style_4(request)
 
     sio = StringIO.StringIO()
     img.save(sio,'jpeg',quality=90)

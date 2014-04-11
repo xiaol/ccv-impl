@@ -162,6 +162,7 @@ def POST2Channel(request):
     channel['handleFrequents'] = int(request.POST.get('handleFrequents', ))
     #同步类别的视频类型 到 频道
     channel['videoClass'] = clct_category.find_one({'categoryId': channel['channelType']})['videoClass']
+    channel['limit'] = int(request.POST.get('limit'))
     #检查 字段
     if channel['channelName'] == '':
         raise Exception('频道名 不能为空')
@@ -241,6 +242,7 @@ def add(request):
         DICT['autoOnline'] = True
         DICT['searchHandleListAll'] = json.dumps(searchHandleListAll)
         DICT['editor'] = -1
+        DICT['limit'] = -1
         return render_to_response('channelUpdate.htm', DICT, context_instance=RequestContext(request))
 
     channel = POST2Channel(request)

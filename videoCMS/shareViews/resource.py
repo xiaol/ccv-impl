@@ -45,7 +45,6 @@ def index(request):
         if p_IOS.search(request.META['HTTP_USER_AGENT'].lower()) != None:
             DICT['ipaUrl'] = 'http://mp.weixin.qq.com/mp/redirect?url=https://itunes.apple.com/cn/app/kou-dai-shi-pin-zi-dong-li/id737702962?ls=1&mt=8'
         elif p_Android.search(request.META['HTTP_USER_AGENT'].lower()) != None:
-            DICT['apkUrl'] = 'http://weiweimeishi.lx.coop.kukuplay.com/PocketPlayer/PocketPlayer_share.apk'
+            DICT['apkUrl'] = 'http://weiweimeishi.ws.coop.kukuplay.com/PocketPlayer/PocketPlayer_2_8_share.apk'
     
-    return render_to_response('share_resource.htm',DICT)
-    
+    return render_to_response('share_resource.htm', DICT)

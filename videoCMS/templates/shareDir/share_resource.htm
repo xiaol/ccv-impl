@@ -29,7 +29,7 @@
             <div id="header-logo">
                 <img src="/static/img/share/1.png"/>
                 {% if apkUrl %}
-                    <a class="btn" target="_blank" href="{{ apkUrl }}">下载口袋视频(Android)</a>
+                    <a class="btn downBtn" target="_blank" href="{{ apkUrl }}">下载口袋视频(Android)</a>
                 {% endif %}
                 {% if ipaUrl %}
                     <a class="btn" target="_blank" href="{{ ipaUrl }}">下载口袋视频(IOS)</a>
@@ -37,9 +37,9 @@
             </div>
 
         </div>
-
     </div>
     <div id="body">
+
         <div class="content middle">
             <ul>
                 <li>
@@ -69,13 +69,42 @@
                     </div>
                 </li>
                 <li>
-                    <h3 style="color: gray">Tips：部分视频会被微信阻止，请下载《口袋视频》客户端 或 点击微信右上角按钮在外部浏览器打开观看</h6>
+                    <h3 style="color: gray">Tips：部分视频会被微信阻止，请下载《口袋视频》客户端 或 点击微信右上角按钮在外部浏览器打开观看</h3>
                 </li>
             </ul>
+        </div>
+        <div id="browserTips" class="browser-tips" style="display: none;">
+            <div class="browser-tips-content"><label>微信内无法下载，请点击<span class="font-attention">右上角</span>按钮</label><label
+                    class="line-with-bg">选择<span class="font-attention">「在浏览器中打开」</span>即可正常下载</label>
+
+                <div class="tips-arrow"></div>
+            </div>
+            <div class="browser-tips-mask"></div>
         </div>
     </div>
     <div id="footer">
     </div>
 
 </body>
+<script>
+    $(document).ready(function(){
+        var userAgent = navigator.userAgent;
+        var isWechatBrowser = /micromessenger/i.test(userAgent);
+
+        if(isWechatBrowser)
+        {
+            var downloadBtns = $('.downBtn');
+            downloadBtns.click(function(e) {
+                e.preventDefault();
+                $('#browserTips').show();
+            });
+        }
+
+        $('.browser-tips-mask').click(function(e){
+            $('#browserTips').hide();
+        });
+    });
+
+
+</script>
 </html>

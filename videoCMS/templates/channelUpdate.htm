@@ -36,24 +36,27 @@
     <td>频道ID</td>
     <td>
         <input type="text" name="channelId"  value="{{channelId}}"/>
-                                <span>负责人:
-                                    <input class="input-small" type="text" name="editor"  value="{{editor}}"/>
-                                </span>
+        <span>负责人:
+            <input class="input-small" type="text" name="editor"  value="{{editor}}"/>
+        </span>
     </td>
 </tr>
 <tr>
     <td>频道名称</td>
     <td>
         <input type="text" name="channelName"  value="{{channelName}}"/>
-		                        <span>已更新至:
-                                    <input class="input-small" type="text" name="tvNumber"  value="{{tvNumber}}"/>
-                                </span>
+        <span>已更新至:
+            <input class="input-small" type="text" name="tvNumber"  value="{{tvNumber}}"/>
+        </span>
     </td>
 </tr>
 <tr>
     <td>副标题</td>
     <td>
         <input type="text" name="subtitle"  value="{{subtitle}}"/>
+        <span>限制集数:
+            <input class="input-small" type="text" name="limit"  value="{{limit}}"/>
+        </span>
     </td>
 </tr>
 <tr>
@@ -258,6 +261,23 @@
         </select>
     </td>
 </tr>
+
+<tr>
+    <td>自动截图</td>
+    <td>
+        <select name="snapShot"  style="width:90px">
+            <option>是</option>
+            <option {% if not snapShot %}selected="selected"{% endif %}>否</option>
+        </select>
+
+        截图成功后上线
+
+        <select name="snapShotGoOnline"  style="width:90px">
+            <option>是</option>
+            <option {% if not snapShotGoOnline %}selected="selected"{% endif %}>否</option>
+        </select>
+    </td>
+</tr>
 <tr>
     <td>首次订阅</td>
     <td>
@@ -273,22 +293,6 @@
         <select name="isRecommend"  style="width:90px">
             <option>是</option>
             <option {% if not isRecommend %}selected="selected"{% endif %}>否</option>
-        </select>
-    </td>
-</tr>
-<tr>
-    <td>自动截图</td>
-    <td>
-        <select name="snapShot"  style="width:90px">
-            <option>是</option>
-            <option {% if not snapShot %}selected="selected"{% endif %}>否</option>
-        </select>
-
-        截图成功后上线
-
-        <select name="snapShotGoOnline"  style="width:90px">
-            <option>是</option>
-            <option {% if not snapShotGoOnline %}selected="selected"{% endif %}>否</option>
         </select>
     </td>
 </tr>

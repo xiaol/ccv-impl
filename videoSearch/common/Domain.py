@@ -83,6 +83,7 @@ class Resource(DomainBase):
     review = 0 #0 待审核，-1 审核不通过, 1 审核通过
     supervised = 0 #标签审查级别
     hasDanmu = False
+    gender = ''
 
 
 class Category(DomainBase):
@@ -135,7 +136,7 @@ class Channel(DomainBase):
     handleName = ''
     handleArgs = ''
     handleFrequents = ''
-    autoOnline = True
+    autoOnline = False
     subtitle = ''
     duration = -1
     daysAhead = 2
@@ -182,6 +183,8 @@ class Channel(DomainBase):
     snapShot = False
     snapShotGoOnline = False
     recReason = ''
+    editor = -1
+    limit = -1
 
 
 class Tag(DomainBase):
@@ -248,6 +251,8 @@ class Topic(DomainBase):
     createTime = '00000000000000'
     modifyTime = '00000000000000'
     updateTime = '00000000000000'
+    isIOS = False
+    scheduleGoOnline = ''
 
 
 
@@ -260,6 +265,12 @@ class TopicListPage(DomainBase):
     mongo = ''
     isOnline = False
     sort = ''
+
+
+
+class Setting(DomainBase):
+    hotSearch = []
+    firstTag = ''
 
 
 class Editor(DomainBase):

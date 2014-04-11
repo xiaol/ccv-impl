@@ -3,10 +3,10 @@ import sys,os
 
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
 
-from pymongo import Connection
+from pymongo import Connection,MongoClient
 #import MySQLdb
 
-con = Connection('60.28.29.37:20010')
+con = MongoClient('60.28.29.37:20010', replicaset='huohuaSet')
 #clct_channel  = con.iDown.yChannel
 #clct_resource = con.iDown.yResource
 #clct_tag      = con.iDown.tag
@@ -25,7 +25,7 @@ clct_setting = con.tiercel.setting
 clct_cmsEditor = con.tiercel.cmsEditor
 clct_danmu = con.tiercel.danmu
 
-con39 = Connection('60.28.29.39:20010')
+con39 = MongoClient('60.28.29.39:20010')
 clct_operationLog = con39.tiercel.operationLog
 clct_statisticsLog = con39.tiercel.statisticsLog
 clct_subscribeLog = con39.tiercel.subscribeLog
@@ -180,7 +180,7 @@ searchHandleListAll = [
 (r'http://www.youku.com/playlist_show/id_\\d+.html','search.youkuPlayList'),
 (r'http://www.56.com/w\\d+/album-aid-\\d+.html','search.56Album'),
 (r'http://www.tudou.com/albumplay/\\w+.html','search.tudouAlbum'),
-(r'http://fun.56.com/\\w+/','search.56list'),
+(r'http://\\w+.56.com/\\w+/','search.56list'),
 (r'http://i.youku.com/u/\\w+/videos','search.youkuIyouku'),
 (r'http://\\w+.youku.com/\\w+','search.youkuList'),
 (r'http://www.tudou.com/cate/[\\w-]+.html','search.tudouCate'),
