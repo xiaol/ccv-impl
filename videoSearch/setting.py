@@ -27,6 +27,7 @@ else:
 clct_playLog = logCon.tiercel.playLog
 clct_searchLog = logCon.tiercel.searchLog
 clct_playViewRateLog = logCon.tiercel.playViewRateLog
+clct_netspeed = logCon.tiercel.netspeed
 
 APP_KEY = '3421733539'
 TOKEN = '2.004t5RdCMuAbED17969f330diAZbaC'
