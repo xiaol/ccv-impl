@@ -913,7 +913,7 @@ def main():
 
 if __name__ == '__main__':
     #while True:
-    #    print(process('358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
+    #    print(process('sina_1837408945'))#'358239050730987'))#sina_1837408945'))#352900057858214'))#'))#99000310639035'))#'))#))#)) #huohua_sina_524922ad0cf25568d165cbdd'352900057858214 355882057756233
     main()
     #gateway = JavaGateway()
     #print gateway.entry_point.POS(u"底面")
