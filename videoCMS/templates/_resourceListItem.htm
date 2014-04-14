@@ -62,13 +62,13 @@
                                 <li><a resourceId="{{ resource.id }}" onclick="refreshSnapshot(this)">更新截图</a></li>
                                 <li><a resourceId="{{ resource.id }}" onclick="stopSnapshot(this)">取消截图</a></li>
                                 <li><a resourceId="{{ resource.id }}" onclick="setTobeReview(this)">提交待审</a></li>
-
+                                <li><a resourceId="{{ resource.id }}" onclick="lookupDanmu(this)">查找弹幕</a></li>
                                 {% ifequal role "admin" %}
                                     <li><a onclick="pushResource('{{ resource.id }}','{{ resource.resourceName }}')">Push</a>
                                     </li>
                                     <li><a onclick="deleteResource('{{ resource.id }}')">删除</a></li>
                                 {% endifequal %}
-                                <li></li>
+
                             </ul>
                         </div>
 

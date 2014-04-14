@@ -66,6 +66,32 @@ function refreshSnapshot(object)
 	});
 }
 
+function lookupDanmu(object)
+{
+	var id = $(object).attr('resourceId');
+
+	$.ajax({
+		type:'get',
+		url:'/resource/lookupDanmu',
+		data:{'id':id},
+		success:function(data,textStatus)
+		{
+			if(data != 'ok')
+			{
+				alert('请求失败');
+
+			}else
+			{
+				alert('请求成功');
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown)
+		{
+			alert(errorThrown);
+		}
+	});
+}
+
 
 function stopSnapshot(object)
 {

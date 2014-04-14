@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^resource/pushResource$', 'videoCMS.views.resource.pushResource'),
     url(r'^resource/batch_review$', 'videoCMS.views.resource.batch_review'),
     url(r'^resource/review$', 'videoCMS.views.resource.review'),
+    url(r'^resource/lookupDanmu$', 'videoCMS.views.resource.lookupDanmu'),
 
 
     url(r'^resourceGif/add$', 'videoCMS.views.resource_gif.add'),
