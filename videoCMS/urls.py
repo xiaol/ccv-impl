@@ -97,6 +97,7 @@ urlpatterns = patterns('',
     url(r'^statistics2/search','videoCMS.views.statistics2.search'),
     url(r'^statistics2/playTime','videoCMS.views.statistics2.playTime'),
     url(r'^statistics2/apiFeed','videoCMS.views.statistics2.apiFeed'),
+    url(r'^statistics2/appDownload','videoCMS.views.statistics2.appDownload'),
 
 
     url(r'^about$','videoCMS.views.about.index'),

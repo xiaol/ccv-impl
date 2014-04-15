@@ -2,18 +2,11 @@
 from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-import json,StringIO,re,time
-from videoCMS.conf import clct_resource,clct_category,clct_channel,clct_tag,IMAGE_DIR,IMG_INTERFACE,IMG_INTERFACE_FF,clct_cdnSync
-from videoCMS.conf import clct_playLog
-from videoCMS.conf import CHANNEL_IMAGE_WIDTH,CHANNEL_IMAGE_HEIGHT,clct_videoInfoTask,clct_operationLog,clct_statisticsLog,clct_user,clct_subscribeLog,clct_searchLog
+import json
+from videoCMS.conf import *
 from bson import ObjectId
-from videoCMS.common.Domain import Resource,Tag,CDNSyncTask
-from videoCMS.common.common import Obj2Str,getCurTime
-from videoCMS.common.ImageUtil import imgconvert
-from videoCMS.common.db import getCategoryList
-from videoCMS.views.channel import saveResourceImage
-from videoSearch.common.videoInfoTask import addVideoInfoTask
-import urllib2,copy
+from videoCMS.common.common import *
+import copy
 from videoCMS.common.db import getCategoryNameById,getCategoryIdByName,getCategoryList,getCategoryIdMapName
 from videoCMS.views.login import *
 from cache import Cache
@@ -769,3 +762,32 @@ def playTime(request):
 
 def apiFeed(request):
     return render_to_response("statisticsAPI.htm",{},context_instance=RequestContext(request))
+
+
+
+def appDownload(request):
+    DICT = {}
+    func = '''function(obj, prev)
+                {
+                    prev[obj.appName] = obj.count;
+                }
+               '''
+    AppNames = set()
+    date1 = getCurDate(3600*24*7)
+    ret = clct_statisticsAppLog.group(['date'], None, {}, func,query={"date":{'$gte':date1}})
+    ret.sort(key=lambda a: a['date'], reverse=True)
+    print ret
+    for one in ret:
+        for appName in one:
+            if appName == 'date':
+                continue
+            AppNames.add(appName)
+    AppNames = list(AppNames)
+
+    for one in ret:
+        one['data'] = []
+        for app in AppNames:
+            one['data'].append(one.get(app,0))
+    DICT['data'] = ret
+    DICT['AppNames'] = AppNames
+    return render_to_response("statisticsAPPDownload.htm",DICT,context_instance=RequestContext(request))
