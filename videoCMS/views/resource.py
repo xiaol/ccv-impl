@@ -427,8 +427,17 @@ def stopSnapshot(request):
     clct_videoInfoTask.remove({'resourceId': id}, mulit=True)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@NeedLogin
+def lookupDanmu(request):
+    id = request.GET.get('id')
+    resource = clct_resource.find_one({'_id': ObjectId(id)})
+    danmu = getDanmu(resource['videoType'], resource['videoId'])
+    clct_danmu.insert({'resourceId': str(id), 'content': danmu})
+    clct_resource.update({'_id': ObjectId(id)}, {'$set': {'hasDanmu': True}})
 
-#==============================================================
+    return HttpResponseRedirect('ok')
+
+
 @NeedLogin
 def CdnSync(request):
     sync = CDNSyncTask()

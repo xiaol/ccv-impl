@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from setting import clct_userWeibo, clct_userRecommend,clct_resource, clct_playLog, clct_playViewRateLog
+from setting import clct_userWeibo, clct_netspeed, clct_userRecommend,clct_resource, clct_playLog, clct_playViewRateLog, clct_channel
 from pprint import pprint
-
 def meanOfVideosPerWeiboUser():
+
     users = clct_userWeibo.distinct('sinaId')
     count = len(users)
     total = clct_userWeibo.count()
@@ -12,7 +12,7 @@ def meanOfVideosPerWeiboUser():
 
 startTime = '20140309000000'
 endTime = '20140310000000'
-dateTime = '20140324'
+dateTime = '20140410'
 
 def displayRate(newUser=True):
     totalRets = clct_playViewRateLog.find({'date':dateTime}).sort('uuid', -1)
@@ -246,6 +246,70 @@ def draw():
     plt.show()
 
 
+def playDurationRate():
+    rets = clct_playLog.find({}).limit(10000)
+
+    mm = defaultdict(list)
+    for ret in rets:
+        retR = clct_resource.find_one({'_id': ObjectId(ret['resourceId'])})
+        if retR is None or retR['duration'] == -1 or retR['duration'] == 0:
+            continue
+        retC = clct_channel.find_one({'channelId': retR['channelId']})
+        if retC['channelType'] != 17:
+            continue
+        rate = float(int(ret['playTime'])/1000)/retR['duration']
+        if float('%.1f'%rate) == 0.0:
+            continue
+        mm['%.1f'%rate].append(1)
+
+    sizes = []
+    labels = []
+    for k, v in mm.items():
+        sizes.append(len(v))
+        labels.append(k)
+        # The slices will be ordered and plotted counter-clockwise.
+    explode = [0]*len(sizes)
+    colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+    explode[1] = 0.1
+    explode[-1] = 0.1
+    plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%1.1f%%', shadow=True, startangle=90)
+    # Set aspect ratio to be equal so that pie is drawn as a circle.
+    plt.axis('equal')
+    plt.show()
+
+
+def speedLog():
+    rets = clct_netspeed.find({'operationTime':{'$lte': '20140404000000'}}).limit(1000)
+    mm = defaultdict(list)
+    import ast
+    for ret in rets:
+        speed = ast.literal_eval(ret['msg'])['speedroad']
+        if speed < 10:
+            mm['<10'].append(1)
+        elif speed <30:
+            mm['10-30'].append(1)
+        else:
+            mm['30~'].append(1)
+
+    sizes = []
+    labels = []
+    for k, v in mm.items():
+        sizes.append(len(v))
+        labels.append(k)
+        # The slices will be ordered and plotted counter-clockwise.
+    explode = [0]*len(sizes)
+    colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+    explode[1] = 0.1
+    explode[-1] = 0.1
+    plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%1.1f%%', shadow=True, startangle=90)
+    # Set aspect ratio to be equal so that pie is drawn as a circle.
+    plt.axis('equal')
+    plt.show()
+
+
+
 if __name__ == '__main__':
     #statics()
     #userBehavior()
@@ -253,6 +317,8 @@ if __name__ == '__main__':
     #quitByFirstSight()
     #draw()
     #getTag()
-    getSumOfLikeAndDiscard()
+    #playDurationRate()
+    #getSumOfLikeAndDiscard()
+    speedLog()
     displayRate(False)
     displayRateRange(False)

@@ -328,7 +328,71 @@ def predictDefinition():
         if ret['v_size'][0]>600 and definition < 550 and definition > 450:
             print ret['_id']'''
 
+def tagCloud():
+    from reByKeyword import similarWords
+    from setting import clct_tagCloud
+
+    root_tags = {"体育":[{'screenName':"NBA十佳", 'name':['nba']},{'screenName':"NBA巨星",'name':['nba','科比']},{'screenName':"扣篮集锦",'name':['灌篮', '扣篮']},
+                       {'screenName':"世界杯",'name':['世界杯']},{'screenName':"四大满贯", 'name':['温网', '法网', '澳网', '美网']},
+                       {'screenName':"五大联赛", 'name':['德甲', '西甲', '意甲', '英超', '法甲']}, {'screenName':"经典足球", 'name':['足球']},
+                       {'screenName':"体坛美女", 'name':['体坛', '美女']},{'screenName':"德州扑克",'name':['德州扑克']}],
+                 "游戏":[{'screenName':"游戏资讯", 'name':['游戏']},{'screenName':"英雄联盟", 'name':['英雄联盟']},{'screenName':"单机攻略", 'name':['单机', '游戏']},{'screenName':"炉石传说", 'name':['炉石传说']}],
+                 "美女":[{'screenName':"嫩模", 'name':['嫩模']},{'screenName':"女主播", 'name':['女主播']},{'screenName':"女星", 'name':['女星']},
+                       {'screenName':"萝莉", 'name':['萝莉']}, {'screenName':"熟女", 'name':['熟女']}, {'screenName':"女同", 'name':['同性恋','女性']}],
+                 "精选":[{'screenName':"科幻元素", 'name':['科学', '幻想']},{'screenName':"汽车", 'name':['汽车']},
+                       {'screenName':"数码发烧友", 'name':['数码', '发烧友']} , {'screenName':"技术宅", 'name':['技术宅']},
+                       {'screenName':"历史传奇", 'name':['历史','传奇']}, {'screenName':"军事观察", 'name':['军事']},
+                       {'screenName':"武器装备", 'name':['武器', '装备']}, {'screenName':"中国领导人", 'name':['中国', '领导人']},
+                       {'screenName':"科学揭秘", 'name':['科学', '揭秘']}, {'screenName':"新闻头条追踪", 'name':['新闻', '热点', '头条']}],
+                 "男神":[{'screenName':"花美男", 'name':['花美男']}, {'screenName':"型男", 'name':['型男']}, {'screenName':"正太", 'name':['正太']}],
+                 "时尚娱乐":[{'screenName':"时尚走秀", 'name':['时尚', '走秀']}, {'screenName':"美妆美发",'name':['化妆', '美发']},
+                         {'screenName':"潮人搭配", 'name':['潮人', '搭配']}, {'screenName':"新片预告", 'name':['新片', '预告']},
+                         {'screenName':"日韩偶像MV", 'name':['日本', '韩国', '偶像', 'MV']}, {'screenName':"影视原声", 'name':['影视', '原声']}],
+                 "八卦":[{'screenName':"两性八卦", 'name':['两性', '八卦']}, {'screenName':"国内明星", 'name':['国内', '明星']},
+                       {'screenName':"爆料", 'name':['爆料']}, {'screenName':"耽美BL", 'name':['耽美', 'BL']}],
+                 "生活情感":[{'screenName':"音乐心情", 'name':['音乐', '心情']}, {'screenName':"DIY美食", 'name':['美食', 'DIY']},
+                         {'screenName':"吃遍天下", 'name': ['吃遍天下']}, {'screenName':"减肥塑形", 'name':['减肥', '塑形']},
+                         {'screenName':"环球旅行", 'name':['环球', '旅行']},{'screenName':"恋爱诀窍", 'name':['恋爱', '诀窍']},
+                         {'screenName':"星座运势", 'name':['星座', '运势']}, {'screenName':"养生健康", 'name':['养生', '健康']}]}
+    for (root, leaves) in root_tags:
+        retRoot = clct_tagCloud.find_one({'name':root})
+        entities =  []
+        if retRoot is None:
+            for leaf in leaves:
+                entity = tagEntity([root], root, leaf)
+                entities.append(entity)
+
+        for leaf in leaves:
+            cloudDic = similarWords(leaf['name'], True, False)
+            if len(cloudDic) == 1:
+                print leaf
+                continue
+            for (k, v) in cloudDic.items():
+                entity = tagEntity(leaf['name'], leaf['screenName'], v)
+                entities.append(entity)
+        uploadTagCloud(entities)
+
+def uploadTagCloud(entities):
+    from setting import clct_tagCloud
+    for entity in entities:
+        try:
+            clct_tagCloud.insert(entity)
+        except Exception,e:
+            print e
+
+def tagEntity(nameList, screenName, leafName):
+    t = getCurTime()
+    entity = {}
+    entity['name'] = nameList
+    entity['screenName'] = screenName
+    entity['leafName'] = leafName
+    entity['createTime'] = t
+    entity['modifyTime'] = t
+
 if __name__ == '__main__':
+    from reByKeyword import filterVideo
+
+    filterVideo([{'url':'abc', 'ti':u'幼儿舞蹈律动亲子操早操幼儿园大小中班早操舞蹈大全视频儿童舞蹈'}])
     if re.match(r"^[^\uFF00-\uFFFF]*$", u'ｎｂａ'):
         print strQ2B(u'ｎｂａisdfsdf')
     updateExistTag()
