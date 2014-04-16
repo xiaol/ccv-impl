@@ -153,6 +153,7 @@ searchHandleListAll = [
 (r'http://tops.wasu.cn/show/cid/\\d+','search.wasuTop'),
 (r'http://hot.weibo.com/.*?v=\\d+','search.weiboHot'),
 (r'http://www.m1905.com/rank/top/\\d+','search.m1905Top'),
+(r'http://v.qq.com/news','search.qqNews'),
 #
 # ============ 纪录片 ====================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuJilupian'),
