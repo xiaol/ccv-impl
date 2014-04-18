@@ -48,6 +48,9 @@ IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/inter
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
 
 
+
+VIDEO_DETECT_HOST = 'http://37.weiweimeishi.com:9090'
+
 IMAGE_DIR = '/data/img'
 
 
