@@ -214,6 +214,7 @@ searchHandleListAll = [
 (r'http://www.v1.cn/roll/1001/1.shtml','search.v1Paike'),
 (r'http://www.v1.cn/roll/\\d+/1.shtml','search.v1List'),
 (r'http://www.m1905.com/video/list/c\\d+.html','search.m1905List'),
+(r'http://my.tv.sohu.com/pl/\\d+/\\w+.shtml','search.sohuList'),
 #
 #
 # ============== 主页视频 =======================

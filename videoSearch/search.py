@@ -300,6 +300,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
     elif handleName == 'sohuBaby':
         startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
+    elif handleName == 'sohuList':
+        startSearch('handles.handle_sohu_list', url, channelId, snapShot=snapShot)
     elif handleName == 'sohuTrends':
         startSearch('handles.handle_sohu_trends', url, channelId,snapShot = snapShot)
     elif handleName == 'ppsIpd':
