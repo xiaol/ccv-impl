@@ -203,6 +203,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sohu_top', url, channelId, snapShot=snapShot)
     elif handleName == 'wasuTop':
         startSearch('handles.handle_wasu_top', url, channelId, snapShot=snapShot)
+    elif handleName == 'qqNews':
+        startSearch('handles.handle_qq_news', url, channelId, snapShot=snapShot)
         '''============ 纪录片 ===================='''
     elif handleName == 'youkuJilupian':
         startSearch('handles.handle_youku_jilupian', url, channelId,snapShot = snapShot)
@@ -298,6 +300,8 @@ def handle(channelId,handleName,url):
         startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
     elif handleName == 'sohuBaby':
         startSearch('handles.handle_sohu_cate', url, channelId,snapShot=snapShot)
+    elif handleName == 'sohuList':
+        startSearch('handles.handle_sohu_list', url, channelId, snapShot=snapShot)
     elif handleName == 'sohuTrends':
         startSearch('handles.handle_sohu_trends', url, channelId,snapShot = snapShot)
     elif handleName == 'ppsIpd':

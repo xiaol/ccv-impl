@@ -6,7 +6,7 @@ import time
 import traceback
 import gzip
 import json
-
+from  videoCMS.conf import VIDEO_DETECT_HOST
 
 class HttpUtil():
     def __init__(self,proxy = None):
@@ -68,11 +68,13 @@ def get_raw_data(url):
     content = httpUtil.Get(url)
     return content
 
+
+
 def getVideoIdByUrl(url):
     httpUtil = HttpUtil()
     data = {'url':url}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/getVideoId', data)
+    ret = httpUtil.Post(VIDEO_DETECT_HOST + '/api/getVideoId', data)
     
     return json.loads(ret)['videoId']
 
@@ -80,7 +82,7 @@ def getVideoUrl(videoType,videoId):
     httpUtil = HttpUtil()
     data = {"request-body":{"getVideoUrl":{"videoType":videoType,"videoId":videoId}}}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/huohuaId2Url',data)
+    ret = httpUtil.Post(VIDEO_DETECT_HOST + '/api/huohuaId2Url',data)
     result = json.loads(ret)["response-body"]["getVideoUrl"]
     return result["list"]
 
@@ -88,7 +90,7 @@ def getDanmu(videoType,videoId):
     httpUtil = HttpUtil()
     data = {"videoType":videoType,"videoId":videoId}
     data = json.dumps(data)
-    ret = httpUtil.Post('http://video.video.weiweimeishi.com:9090/api/getDanmu',data)
+    ret = httpUtil.Post(VIDEO_DETECT_HOST + '/api/getDanmu',data)
     result = json.loads(ret)
     return result
 

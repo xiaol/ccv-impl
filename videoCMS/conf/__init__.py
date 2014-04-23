@@ -32,6 +32,7 @@ clct_subscribeLog = con39.tiercel.subscribeLog
 clct_searchLog = con39.tiercel.searchLog
 clct_playLog = con39.tiercel.playLog
 clct_playViewRateLog = con39.tiercel.playViewRateLog
+clct_statisticsAppLog = con39.tiercel.statisticsAppLog
 
 #==================
 try:
@@ -46,6 +47,9 @@ except Exception,e:
 IMG_INTERFACE = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/96/96/'
 IMG_INTERFACE_FF = 'http://47.weiweimeishi.com/huohua_v2/imageinterfacev2/api/interface/image/disk/get/%s/%s/%s'
 
+
+
+VIDEO_DETECT_HOST = 'http://37.weiweimeishi.com:9090'
 
 IMAGE_DIR = '/data/img'
 
@@ -153,6 +157,7 @@ searchHandleListAll = [
 (r'http://tops.wasu.cn/show/cid/\\d+','search.wasuTop'),
 (r'http://hot.weibo.com/.*?v=\\d+','search.weiboHot'),
 (r'http://www.m1905.com/rank/top/\\d+','search.m1905Top'),
+(r'http://v.qq.com/news','search.qqNews'),
 #
 # ============ 纪录片 ====================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuJilupian'),
@@ -209,6 +214,7 @@ searchHandleListAll = [
 (r'http://www.v1.cn/roll/1001/1.shtml','search.v1Paike'),
 (r'http://www.v1.cn/roll/\\d+/1.shtml','search.v1List'),
 (r'http://www.m1905.com/video/list/c\\d+.html','search.m1905List'),
+(r'http://my.tv.sohu.com/pl/\\d+/\\w+.shtml','search.sohuList'),
 #
 #
 # ============== 主页视频 =======================

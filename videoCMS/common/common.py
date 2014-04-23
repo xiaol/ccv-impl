@@ -26,13 +26,13 @@ def myLocaltime(sec=None):
     return time.struct_time(tl)
 '''
 
-def getCurTime():
-    return time.strftime("%Y%m%d%H%M%S",time.localtime())
+def getCurTime(offset=0):
+    return time.strftime("%Y%m%d%H%M%S",time.localtime(time.time()+offset))
 
 
 
-def getCurDate():
-    return time.strftime("%Y%m%d",time.localtime())
+def getCurDate(offset=0):
+    return time.strftime("%Y%m%d",time.localtime(time.time()+offset))
 
 def Obj2Str(dic):
     dic['id'] = str(dic['_id'])
