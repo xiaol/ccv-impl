@@ -328,9 +328,11 @@ def predictDefinition():
         if ret['v_size'][0]>600 and definition < 550 and definition > 450:
             print ret['_id']'''
 
+from reByKeyword import similarWords
+from setting import clct_tagCloud
+hot_tags = ["世界杯","汽车","原声","型男","NBA","短片","科幻", "正太","微电影", "DIY","二次元", "萌", "吻戏","恋爱诀窍"]
 def tagCloud():
-    from reByKeyword import similarWords
-    from setting import clct_tagCloud
+    depth = 10
 
     root_tags = {"体育":[{'screenName':"NBA十佳", 'name':['nba']},{'screenName':"NBA巨星",'name':['nba','科比']},{'screenName':"扣篮集锦",'name':['灌篮', '扣篮']},
                        {'screenName':"世界杯",'name':['世界杯']},{'screenName':"四大满贯", 'name':['温网', '法网', '澳网', '美网']},
@@ -352,31 +354,72 @@ def tagCloud():
                        {'screenName':"爆料", 'name':['爆料']}, {'screenName':"耽美BL", 'name':['耽美', 'BL']}],
                  "生活情感":[{'screenName':"音乐心情", 'name':['音乐', '心情']}, {'screenName':"DIY美食", 'name':['美食', 'DIY']},
                          {'screenName':"吃遍天下", 'name': ['吃遍天下']}, {'screenName':"减肥塑形", 'name':['减肥', '塑形']},
-                         {'screenName':"环球旅行", 'name':['环球', '旅行']},{'screenName':"恋爱诀窍", 'name':['恋爱', '诀窍']},
+                         {'screenName':"恋爱诀窍", 'name':['恋爱']},
                          {'screenName':"星座运势", 'name':['星座', '运势']}, {'screenName':"养生健康", 'name':['养生', '健康']}]}
-    for (root, leaves) in root_tags:
+    for root, leaves in root_tags.iteritems():
         retRoot = clct_tagCloud.find_one({'name':root})
         entities =  []
         if retRoot is None:
+            leafList = []
             for leaf in leaves:
-                entity = tagEntity([root], root, leaf)
-                entities.append(entity)
+                leafList.append(leaf['screenName'])
+            entity = tagEntity([root], root, leafList)
+            entities.append(entity)
 
         for leaf in leaves:
-            cloudDic = similarWords(leaf['name'], True, False)
-            if len(cloudDic) == 1:
-                print leaf
+            cloudDic = similarWords([' '.join(leaf['name'])], True, False)
+            if len(cloudDic.values()[0]) == 1:
                 continue
             for (k, v) in cloudDic.items():
-                entity = tagEntity(leaf['name'], leaf['screenName'], v)
+                entity = tagEntity(leaf['name'], leaf['screenName'], v[:10])
                 entities.append(entity)
         uploadTagCloud(entities)
+
+
+gateway = JavaGateway()
+def tagCloud2():
+
+    for hotTag in hot_tags:
+        entities = []
+        ret = clct_tagCloud.find_one({'screenName':hotTag})
+        if ret is not None and hotTag != '汽车':
+            continue
+        if re.match("^[A-Za-z]*$", hotTag):
+            hotTag = strB2Q(hotTag)
+        entities.extend(_tagCloud(hotTag))
+        uploadTagCloud(entities)
+
+def _tagCloud(tag, depth=2):
+    entities = []
+    if depth <= 0:
+        return entities
+    cloudDic = similarWords(tag, True, False)
+    if len(cloudDic.values()[0]) == 1:
+        return entities
+    for (k, v) in cloudDic.items():
+        leafList = []
+        for item in v:
+            try:
+                if not gateway.entry_point.POS(item):
+                    continue
+            except Exception,e:
+                print e
+                continue
+            leafList.append(item)
+            entities.extend(_tagCloud(item, depth -1))
+        if re.match(r"^[^\uFF00-\uFFFF]*$", k):
+            k = strQ2B(k)
+        entity = tagEntity([k],k, leafList)
+        entities.append(entity)
+    return entities
+
+
 
 def uploadTagCloud(entities):
     from setting import clct_tagCloud
     for entity in entities:
         try:
-            clct_tagCloud.insert(entity)
+            clct_tagCloud.update({'screenName':entity['screenName']}, entity,True)
         except Exception,e:
             print e
 
@@ -389,19 +432,17 @@ def tagEntity(nameList, screenName, leafName):
     entity['createTime'] = t
     entity['modifyTime'] = t
 
-if __name__ == '__main__':
-    from reByKeyword import filterVideo
+    return entity
 
-    filterVideo([{'url':'abc', 'ti':u'幼儿舞蹈律动亲子操早操幼儿园大小中班早操舞蹈大全视频儿童舞蹈'}])
-    if re.match(r"^[^\uFF00-\uFFFF]*$", u'ｎｂａ'):
-        print strQ2B(u'ｎｂａisdfsdf')
-    updateExistTag()
+if __name__ == '__main__':
+    tagCloud2()
+    #updateExistTag()
     #while True:
         #feedUserTag()
         #addTagResource()
         #updateUsrTag()
     #updateSnapshot()
-    filterRecommendations()
+    #filterRecommendations()
     #offlineRecommendationsByTime()
     #offlineRecommendations()
     #    time.sleep(12*60*60)

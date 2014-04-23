@@ -85,7 +85,7 @@ def save(request):
     fileUrl = saveToDisk(sio.getvalue(), imageId)
     return fileUrl
 
-IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
+#IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
 def saveToDisk(img, id):
     date = getCurTime()[:8]
     filename = '%s/%s.jpg' % (date, id + getCurTime())

@@ -174,7 +174,12 @@ def similarWords(words,total=False,isSegment=False):
                 else:
                     segmentNTags.append(segmentTag)
             tags_str = " ".join(segmentNTags)
-        temp = distance.similar('',tags_str.encode('utf8'))
+        try:
+            temp = distance.similar('',tags_str.encode('utf8'))
+        except Exception,e:
+            print e
+            return result
+
         if temp[0] == '':
             result[tags_str] = [word.encode('utf8')]
             continue
