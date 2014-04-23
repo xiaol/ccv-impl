@@ -105,6 +105,7 @@ def saveToDisk(img, id):
 
     with open(fullpath, 'wb') as f:
         f.write(img)
+    f.close()
     return '/media/'+filename
 
 
