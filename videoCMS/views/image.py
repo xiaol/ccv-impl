@@ -9,29 +9,34 @@ from videoCMS.views.resource import saveResourceImage
 from videoCMS.common.common import getCurTime
 from bs4 import BeautifulSoup
 
-headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166')]
+headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 AppEngine-Google;'), ('Accept-Language', 'zh-TW,zh;q=0.8,en;q=0.6')]
 p_1 = re.compile('>(.*)</a>')
 def decode(imageUrl):
     httpUtil = HttpUtil({'http': 'http://127.0.0.1:8087'})
     httpUtil.opener.addheaders = headers
     mainRes = {}
     try:
-        url = 'http://images.google.com/searchbyimage?image_url=%s'%imageUrl
+        url = 'http://images.google.com/searchbyimage?image_url=%s&hl=zh-TW&lr=lang_zh-TW'%imageUrl
+        print url
         content = httpUtil.Get(url)
+        text_file = open("Output.html", "w")
+	text_file.write(content)
+	text_file.close()
         if content:
             result = content.decode('utf-8','ignore')
         else:
             result = ''
     except Exception,e:
-        print e.message + 'GET url Failed.'
-        mainRes['msg'] = e.message + ' GET url failed.'
+        import traceback
+        print traceback.format_exc()
+        mainRes['msg'] = ' GET url failed.'
 
     try:
         soup = BeautifulSoup(result)
         topStuff = soup.find(id="topstuff")
         topStuff.style.decompose()
         topList = topStuff.find_all("a", class_="qb-b")
-        if topList is not None:
+        if topList is not None and len(topList) != 0:
             topMatch = topList[0].text
             mainRes['topMatch'] = topMatch
 
@@ -44,7 +49,7 @@ def decode(imageUrl):
         for li in listHtml:
             entity = {}
             entity['title'] = li.h3.a.text
-            entity['thImg'] = li.find_all("div",class_="th _bk")[0].img['src']
+            entity['thImg'] = li.find_all("div",class_="th")[0].img['src']
             entity['url'] = li.cite.text
             spans = li.find_all("span", class_="st")[0]
             spans.span.decompose()
@@ -52,8 +57,9 @@ def decode(imageUrl):
             mainRes['list'].append(entity)
 
     except Exception,e:
-        print e.message + 'Parse failed.'
-        mainRes['msg'] = e.message + ' Parse failed.'
+        import traceback
+        print traceback.format_exc()
+        mainRes['msg'] = ' Parse failed.'
 
     return mainRes
 
@@ -73,6 +79,7 @@ def reco(request):
     fileUrl = save(request)
     domain = re.sub(request.path, '', request.build_absolute_uri())
     fileUrl = domain + fileUrl
+    print fileUrl
     #fileUrl = 'http://vipbook.sinaedge.com/bookcover/pics/55/cover_21d32033a72eb9902d3eba920258a942.jpg'
     data = decode(fileUrl)
     return HttpResponse(json.dumps(data))
@@ -86,6 +93,7 @@ def save(request):
     return fileUrl
 
 #IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
+IMAGE_DIR = '/root/videocms/videoCMS/static'
 def saveToDisk(img, id):
     date = getCurTime()[:8]
     filename = '%s/%s.jpg' % (date, id + getCurTime())
@@ -98,7 +106,7 @@ def saveToDisk(img, id):
 
     with open(fullpath, 'wb') as f:
         f.write(img)
-    return '/static/'+filename
+    return '/media/'+filename
 
 
 def parse(url_or_data):
