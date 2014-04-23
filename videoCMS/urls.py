@@ -8,6 +8,7 @@ handler404 = 'videoCMS.views.channel.index'
 
 urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'templates').replace('\\','/')}),
+    url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'static').replace('\\','/')}),
     url(r'^admin/(.*)$','admin.site.root'),
     url(r'^$','videoCMS.views.channel.index'),
     url(r'^login$', 'videoCMS.views.login.login'),
