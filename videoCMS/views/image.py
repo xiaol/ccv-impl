@@ -5,12 +5,14 @@ __author__ = 'Ivan liu'
 import re,os,json
 from videoCMS.common.HttpUtil import get_html,HttpUtil,get_raw_data
 import base64,Image,StringIO
-from videoCMS.views.resource import saveResourceImage
 from videoCMS.common.common import getCurTime
 from bs4 import BeautifulSoup
 
-headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 AppEngine-Google;'), ('Accept-Language', 'zh-TW,zh;q=0.8,en;q=0.6')]
+headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 AppEngine-Google;'),
+           ('Accept-Language', 'zh-TW,zh;q=0.8,en;q=0.6'), ("Accept-Encoding", "gzip")]
 p_1 = re.compile('>(.*)</a>')
+import gzip
+
 def decode(imageUrl):
     httpUtil = HttpUtil({'http': 'http://127.0.0.1:8087'})
     httpUtil.opener.addheaders = headers
@@ -19,9 +21,12 @@ def decode(imageUrl):
         url = 'http://images.google.com/searchbyimage?image_url=%s&hl=zh-TW&lr=lang_zh-TW'%imageUrl
         print url
         content = httpUtil.Get(url)
+        buf = StringIO.StringIO(content)
+        f = gzip.GzipFile(fileobj=buf)
+        content = f.read()
         text_file = open("Output.html", "w")
-	text_file.write(content)
-	text_file.close()
+        text_file.write(content)
+        text_file.close()
         if content:
             result = content.decode('utf-8','ignore')
         else:
@@ -92,8 +97,8 @@ def save(request):
     fileUrl = saveToDisk(sio.getvalue(), imageId)
     return fileUrl
 
-#IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
-IMAGE_DIR = '/root/videocms/videoCMS/static'
+IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
+#IMAGE_DIR = '/root/videocms/videoCMS/static'
 def saveToDisk(img, id):
     date = getCurTime()[:8]
     filename = '%s/%s.jpg' % (date, id + getCurTime())
@@ -106,6 +111,7 @@ def saveToDisk(img, id):
 
     with open(fullpath, 'wb') as f:
         f.write(img)
+    f.close()
     return '/media/'+filename
 
 
