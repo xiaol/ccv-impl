@@ -10,7 +10,7 @@ from common.HttpUtil import get_html
 
 p_vids = [re.compile('"videoId":"([^"]+)"'),
          re.compile('videoid="([^"]+)"')]
-p_tvId = re.compile(r'tvId:\s+?(\d+)')
+p_tvId = re.compile(r'tvId:\s*(\d+)')
 p_number = re.compile('(\d+)')
 
 
