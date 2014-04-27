@@ -128,6 +128,7 @@ searchHandleListAll = [
 (r'http://www.funshion.com/subject/\\d+','search.funshionZongyi'),
 (r'http://www.pptv.com/page/\\d+.html','search.pptvZongyi'),
 (r'http://v.qq.com/variety/column/column_\\d+.html','search.qqZongyi'),
+(r'http://www.letv.com/zongyi/\\d+.html','search.letvZongyi'),
 #
 # ==================动漫================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuDongman'),
@@ -208,7 +209,6 @@ searchHandleListAll = [
 (r'http://v.qq.com/cover/\\d+/\\w+.html','search.qqCover'),
 (r'http://ent.sina.com.cn/bn/.*','search.sinaEntList'),
 (r'http://list.letv.com/list/.*.html','search.letvList'),
-(r'http://so.letv.com/variety/\\d+.html','search.letvVar'),
 (r'http://www.wasu.cn/Column/show/column/\\d+','search.wasuList'),
 (r'http://www.wasu.cn/list/index/cid/\\d+','search.wasuList'),
 (r'http://www.v1.cn/roll/1001/1.shtml','search.v1Paike'),
