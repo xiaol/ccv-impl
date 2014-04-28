@@ -130,6 +130,7 @@ searchHandleListAll = [
 (r'http://www.pptv.com/page/\\d+.html','search.pptvZongyi'),
 (r'http://v.qq.com/variety/column/column_\\d+.html','search.qqZongyi'),
 (r'http://www.letv.com/zongyi/\\d+.html','search.letvZongyi'),
+(r'http://so.letv.com/variety/\\d+.html','search.letvVar'),
 #
 # ==================动漫================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuDongman'),
