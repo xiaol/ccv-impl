@@ -47,7 +47,7 @@ def decode(imageUrl):
 
         searchResult = soup.find(id="search")
         searchResult.style.decompose()
-        searchResult.find(id="imagebox_bigimages").decompose()
+        similarContent = searchResult.find(id="imagebox_bigimages").extract()
         listHtml = searchResult.find_all("li")
 
         mainRes['list'] = []
@@ -60,6 +60,18 @@ def decode(imageUrl):
             spans.span.decompose()
             entity['des'] = spans.text
             mainRes['list'].append(entity)
+
+        similarList = similarContent.find_all("li")
+        mainRes['similar'] = []
+        for li in similarList:
+            entity = {}
+            entity['url'] = li.img['title']
+            divList = li.find_all('div')
+            detail = json.loads(divList[-1].text)
+            entity['thImg'] = detail['ou']
+            entity['title'] = detail['pt']
+            mainRes['similar'].append(entity)
+
 
     except Exception,e:
         import traceback
@@ -121,4 +133,4 @@ def parse(url_or_data):
 
 if __name__ == '__main__':
     fileUrl = 'http://vipbook.sinaedge.com/bookcover/pics/55/cover_21d32033a72eb9902d3eba920258a942.jpg'
-    decode(fileUrl)
+    print decode(fileUrl)
