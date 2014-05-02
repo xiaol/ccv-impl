@@ -347,7 +347,9 @@ def handle(channelId,handleName,url):
     elif handleName == 'letvList':
         startSearch('handles.handle_letv_list', url, channelId, snapShot=snapShot)
     elif handleName == 'letvVar':
-        startSearch('handles.handle_letv_variety', url, channelId, snapShot=snapShot,updateTvNumber=True)
+        startSearch('handles.handle_letv_zongyi', url, channelId, snapShot=snapShot, updateTvNumber=True)
+    elif handleName == 'letvZongyi':
+        startSearch('handles.handle_letv_zongyi', url, channelId, snapShot=snapShot,updateTvNumber=True)
     elif handleName == 'yinyuetaiMV':
         startSearch('handles.handle_yinyuetai_mv', url, channelId, snapShot=snapShot)
     elif handleName == '163Open':

@@ -14,7 +14,7 @@ from common.Domain import Resource
 from common.HttpUtil import get_html
 
 
-p_vid = re.compile('id_([\w=]+?).html')
+p_vid = re.compile('id_(\w+).html')
 p_title = re.compile(r'title="(.*?)" href=')
 
 def handle(url, channelId, tvNumber):
@@ -53,7 +53,7 @@ def handle(url, channelId, tvNumber):
         for video in videos:
             title = video.xpath('./text()')[0]
             url = video.xpath('./@href')[0]
-            if urls.get(url, None):
+            if urls.get(url, None) or not url.startswith("http://v.youku.com/v_show/id_"):
                 continue
             urls[url] = 1
             video_id = p_vid.search(url).groups()[0]
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     # pprint.pprint(handle('http://fun.youku.com/',10000, 1))
     # pprint.pprint(handle('http://travel.youku.com/food/',10000, 1))
     # pprint.pprint(handle('http://travel.youku.com/gossip/',10000, 1))
-    # pprint.pprint(handle('http://fashion.youku.com/',10000, 1))
+    pprint.pprint(handle('http://fashion.youku.com/',10000, 1))
     pprint.pprint(handle('http://index.youku.com/protop/5',10000, 1))
     pprint.pprint(handle('http://index.youku.com/protop/6',10000, 1))
 

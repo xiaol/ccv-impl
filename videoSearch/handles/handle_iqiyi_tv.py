@@ -10,7 +10,7 @@ from common.HttpUtil import get_html
 
 p_vids = [re.compile('"videoId":"([^"]+)"'),
          re.compile('videoid="([^"]+)"')]
-p_tvId = re.compile(r'tvId:(\d+)')
+p_tvId = re.compile(r'tvId:\s*(\d+)')
 p_number = re.compile('(\d+)')
 
 
@@ -75,5 +75,6 @@ def buildResource(url,title,number,channelId,videoId):
 if __name__ == '__main__':
     #pprint.pprint(handle('http://www.iqiyi.com/dianshiju/mwdxn.html',100540,1))
     #pprint.pprint(handle('http://www.iqiyi.com/dianshiju/hxsxd.html',100540,1))
-    pprint.pprint(handle('http://www.iqiyi.com/a_19rrgi9xtd.html', 100540, 1))
+    #pprint.pprint(handle('http://www.iqiyi.com/a_19rrgi9xtd.html', 100540, 1))
+    pprint.pprint(handle('http://www.iqiyi.com/a_19rrgi6x25.html', 100540, 1))
 

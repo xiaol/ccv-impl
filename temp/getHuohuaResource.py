@@ -7,4 +7,4 @@ resourceList = clct_resource.find({'videoType':'huohua','isOnline':True})
 
 
 for resource in resourceList:
-    print 'http://cdn.video.weiweimeishi.com'+resource['videoId']
+    print 'http://cdn.video.weiweimeishi.com/'+resource['videoId']

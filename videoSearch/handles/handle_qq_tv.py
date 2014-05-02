@@ -51,7 +51,7 @@ def handle(url, channelId, tvNumber):
         '''检测完结'''
         if not p_update.search(html):
             ret.append("over")
-    elif url.find("/p/tv/zt/") != -1:
+    elif url.find("/p/tv/") != -1:
         html = get_html(url)
         tree = etree.HTML(html)
         videos = tree.xpath('//div[@class="mod_video_fragments"]//ul/li/strong/a')
@@ -124,4 +124,4 @@ if __name__ == '__main__':
     # pprint.pprint(handle('http://v.qq.com/zt/detail/index.html',1,0))
     #pprint.pprint(handle('http://v.qq.com/p/tv/zt/lama/index.html',1,0))
     #pprint.pprint(handle('http://v.qq.com/detail/f/fgcbe05ey1wfc7k.html',1,0))
-    pprint.pprint(handle('http://v.qq.com/detail/v/vojalbiih5ge13u.html',1,0))
+    pprint.pprint(handle('http://v.qq.com/p/tv/detail/zonglihewo/index.html',1,0))

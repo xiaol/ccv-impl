@@ -116,6 +116,7 @@ searchHandleListAll = [
 (r'http://www.pptv.com/page/\\d+.html','search.pptvTv'),
 (r'http://v.qq.com/detail/\\w/\\w+.html','search.qqTv'),
 (r'http://v.qq.com/p/tv/zt/\\w+/index.html','search.qqTv'),
+(r'http://v.qq.com/p/tv/detail/\\w+/index.html','search.qqTv'),
 (r'http://v.qq.com/zt/detail/[/\\w]*index.html','search.qqTv'),
 (r'http://v.pps.tv/splay_\\d+.html','search.ppsTv'),
 (r'http://www.wasu.cn/Tele/index/id/\\d+','search.wasuTv'),
@@ -128,6 +129,8 @@ searchHandleListAll = [
 (r'http://www.funshion.com/subject/\\d+','search.funshionZongyi'),
 (r'http://www.pptv.com/page/\\d+.html','search.pptvZongyi'),
 (r'http://v.qq.com/variety/column/column_\\d+.html','search.qqZongyi'),
+(r'http://www.letv.com/zongyi/\\d+.html','search.letvZongyi'),
+(r'http://so.letv.com/variety/\\d+.html','search.letvVar'),
 #
 # ==================动漫================
 (r'http://www.youku.com/show_page/id_\\w+.html','search.youkuDongman'),
@@ -208,7 +211,6 @@ searchHandleListAll = [
 (r'http://v.qq.com/cover/\\d+/\\w+.html','search.qqCover'),
 (r'http://ent.sina.com.cn/bn/.*','search.sinaEntList'),
 (r'http://list.letv.com/list/.*.html','search.letvList'),
-(r'http://so.letv.com/variety/\\d+.html','search.letvVar'),
 (r'http://www.wasu.cn/Column/show/column/\\d+','search.wasuList'),
 (r'http://www.wasu.cn/list/index/cid/\\d+','search.wasuList'),
 (r'http://www.v1.cn/roll/1001/1.shtml','search.v1Paike'),

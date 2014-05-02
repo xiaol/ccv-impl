@@ -14,10 +14,13 @@ from common.Domain import Resource
 from common.HttpUtil import get_html
 
 
-p_pid = re.compile(r'/variety/(\d+)\.html')
+p_pid = re.compile(r'/zongyi/(\d+)\.html')
 
 ''' 默认只获取最新一年的视频 '''
 def handle(url, channelId, tvNumber):
+    if url.startswith("http://so.letv.com/variety/"):
+        url = url.replace("so.letv.com/variety", "www.letv.com/zongyi")
+
     ret = []
     videos = []
     if p_pid.search(url):
@@ -59,5 +62,6 @@ def buildResource(url, title, number, channelId, videoId):
 
 
 if __name__ == '__main__':
-    pprint.pprint(handle('http://so.letv.com/variety/52231.html',100055,-1))
+    # pprint.pprint(handle('http://www.letv.com/zongyi/52231.html',100055,-1))
+    pprint.pprint(handle('http://so.letv.com/variety/95040.html',100055,-1))
 
