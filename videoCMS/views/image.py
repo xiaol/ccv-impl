@@ -3,9 +3,9 @@
 __author__ = 'Ivan liu'
 
 import re,os,json
-from common.HttpUtil import get_html,HttpUtil,get_raw_data
+from videoCMS.common.HttpUtil import get_html,HttpUtil,get_raw_data
 import base64,Image,StringIO
-from common.common import getCurTime
+from videoCMS.common.common import getCurTime
 from bs4 import BeautifulSoup
 
 headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 AppEngine-Google;'),
@@ -18,7 +18,7 @@ def decode(imageUrl):
     httpUtil.opener.addheaders = headers
     mainRes = {}
     try:
-        url = 'http://images.google.com/searchbyimage?image_url=%s&hl=zh-TW&lr=lang_zh-TW'%imageUrl
+        url = 'http://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN'%imageUrl
         print url
         content = httpUtil.Get(url)
         buf = StringIO.StringIO(content)
