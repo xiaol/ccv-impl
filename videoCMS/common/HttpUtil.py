@@ -13,7 +13,8 @@ class HttpUtil():
         #proxy = {'http': 'http://210.14.143.53:7620'}
         if proxy != None:
             proxy_handler = urllib2.ProxyHandler(proxy)
-            self.opener = urllib2.build_opener(proxy_handler,urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+            auth = urllib2.HTTPBasicAuthHandler()
+            self.opener = urllib2.build_opener(proxy_handler,auth,urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
         else:
             self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
 
@@ -21,11 +22,16 @@ class HttpUtil():
                                 ]
 
 
-    def Get(self,url,times=1,timeout=30):
-
-        resp = self.opener.open(url,timeout=timeout)
-        return resp.read()
-
+    def Get(self,url,times=2,timeout=30):
+        for i in range(times):
+            try:
+                resp =  self.opener.open(url,timeout=timeout)
+        	return resp.read()
+            except:
+                time.sleep(1)
+                print traceback.format_exc()
+                continue
+        return None
     
     def Post(self,url,data,times=1, timeout=30):
         for i in range(times):

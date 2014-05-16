@@ -2,7 +2,7 @@
 
 __author__ = 'Ivan liu'
 
-import re,os,json
+import re,os,json, urllib2
 from videoCMS.common.HttpUtil import get_html,HttpUtil,get_raw_data
 import base64,Image,StringIO
 from videoCMS.common.common import getCurTime
@@ -13,20 +13,29 @@ headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/
 p_1 = re.compile('>(.*)</a>')
 import gzip
 
-def decode(imageUrl):
-    httpUtil = HttpUtil({'http': 'http://127.0.0.1:8087'})
+def decode(imageUrl, queryStr=''):
+    #httpUtil = HttpUtil({'https': 'https://127.0.0.1:8087'})
+    #httpUtil = HttpUtil({'https': 'https://213.184.97.221:56745'})
+    httpUtil = HttpUtil({'https': 'https://xiao:green423TREE@hongkong.wonderproxy.com:11000'})
+    #httpUtil = HttpUtil({'https': 'https://94.205.49.41:80'})
     httpUtil.opener.addheaders = headers
     mainRes = {}
     try:
-        url = 'http://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN'%imageUrl
-        print url
+        if queryStr == '':
+            queryStr = urllib2.quote(queryStr)+ urllib2.quote('site:taobao.com')
+        else:
+            queryStr = urllib2.quote(queryStr)+ urllib2.quote(' OR  site:taobao.com')
+        imageUrl = urllib2.quote(imageUrl)
+        url = 'https://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN&cr=countryCN&oq=%s'%(imageUrl, queryStr)
+	print url
         content = httpUtil.Get(url)
-        buf = StringIO.StringIO(content)
-        f = gzip.GzipFile(fileobj=buf)
-        content = f.read()
         text_file = open("Output.html", "w")
         text_file.write(content)
         text_file.close()
+
+        buf = StringIO.StringIO(content)
+        f = gzip.GzipFile(fileobj=buf)
+        content = f.read()
         if content:
             result = content.decode('utf-8','ignore')
         else:
@@ -39,14 +48,16 @@ def decode(imageUrl):
     try:
         soup = BeautifulSoup(result)
         topStuff = soup.find(id="topstuff")
-        topStuff.style.decompose()
+        if topStuff.sytle is not None:
+            topStuff.style.decompose()
         topList = topStuff.find_all("a", class_="qb-b")
         if topList is not None and len(topList) != 0:
             topMatch = topList[0].text
             mainRes['topMatch'] = topMatch
 
         searchResult = soup.find(id="search")
-        searchResult.style.decompose()
+        if searchResult.style is not None:
+       	    searchResult.style.decompose()
         similarContent = searchResult.find(id="imagebox_bigimages").extract()
         listHtml = searchResult.find_all("li")
 
@@ -54,10 +65,14 @@ def decode(imageUrl):
         for li in listHtml:
             entity = {}
             entity['title'] = li.h3.a.text
-            entity['thImg'] = li.find_all("div",class_="th")[0].img['src']
+            tmp = li.find_all("div", class_="th")
+            if not tmp:
+		continue
+            entity['thImg'] = tmp[0].img['src']
             entity['url'] = li.h3.a['href']
             spans = li.find_all("span", class_="st")[0]
-            spans.span.decompose()
+            if spans.span is not None:
+            	spans.span.decompose()
             entity['des'] = spans.text
             mainRes['list'].append(entity)
 
@@ -91,23 +106,68 @@ def parseMatch(result): #Html result
     print match[0]
     return match
 
+wordsDict = {}
+def initWords():
+    words = open("videoCMS/samples/image-net-2012.words")
+    i = 0
+    for line in words.readlines():
+	wordList = line.split(',')
+	wordsDict[i] = line
+	i += 1
+
+
 def reco(request):
     from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
-    fileUrl = save(request)
+    import cnnclassify
+    import timeit
+    fileUrl, fullpath = save(request)
     domain = re.sub(request.path, '', request.build_absolute_uri())
     fileUrl = domain + fileUrl
     print fileUrl
+    start = timeit.default_timer()
     #fileUrl = 'http://vipbook.sinaedge.com/bookcover/pics/55/cover_21d32033a72eb9902d3eba920258a942.jpg'
-    data = decode(fileUrl)
+    results =  cnnclassify.cnnclassify(fullpath.encode('utf8'), "videoCMS/samples/image-net-2012.sqlite3".encode('utf8'))
+    #cnnclassify.end()
+    stop = timeit.default_timer()
+    print stop - start 
+    if not wordsDict:
+	initWords()
+    matches = []
+    sortedKeys = sorted(results.keys(), reverse=True)
+    for key in sortedKeys:
+        matches.append(wordsDict[results[key]])# "%.6f" % v
+    start = timeit.default_timer()
+    queryStr = ''
+    for i in range(0,len(sortedKeys)-1):
+        if sortedKeys[i] > 0.1:
+            if i != 0:
+                queryStr = queryStr+' OR '  
+            queryStr = queryStr + '('+' OR'.join(matches[i].replace('\n','').split(',')) + ')'
+    print queryStr
+    if sortedKeys[0] > 0.1:  
+    	data = decode(fileUrl,queryStr)
+    else: data = decode(fileUrl)
+    stop = timeit.default_timer()
+    print stop - start
+    data['matches'] = matches
+    data['matchConfidences'] = sortedKeys
     return HttpResponse(json.dumps(data))
 
 def save(request):
-    img = Image.open(parse(request.FILES.get('image')))
+    print request.body
+    print request
+    print request.REQUEST
+    if request.META.get('HTTP_ACCEPT', None) == 'gzip':
+        buf = parse(request.FILES.get('image'))
+        f = gzip.GzipFile(fileobj=buf)
+        content = f
+    else: content = parse(request.FILES.get('image'))
+    img = Image.open(content)
     sio = StringIO.StringIO()
     img.save(sio,'jpeg',quality=90)
     imageId = "rainbow"
-    fileUrl = saveToDisk(sio.getvalue(), imageId)
-    return fileUrl
+    fileUrl,fullpath = saveToDisk(sio.getvalue(), imageId)
+    return fileUrl, fullpath
 
 #IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
 IMAGE_DIR = '/root/videocms/videoCMS/static'
@@ -124,10 +184,11 @@ def saveToDisk(img, id):
     with open(fullpath, 'wb') as f:
         f.write(img)
     f.close()
-    return '/media/'+filename
+    return '/media/'+filename, fullpath
 
 
 def parse(url_or_data):
+    print url_or_data
     image_file = StringIO.StringIO(url_or_data.read())
     return image_file
 
