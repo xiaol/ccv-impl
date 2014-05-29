@@ -13,10 +13,13 @@ headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/
 p_1 = re.compile('>(.*)</a>')
 import gzip
 
+httpUtils = []
 def decode(imageUrl, queryStr=''):
-    #httpUtil = HttpUtil({'https': 'https://127.0.0.1:8087'})
-    #httpUtil = HttpUtil({'https': 'https://213.184.97.221:56745'})
-    httpUtil = HttpUtil({'https': 'https://xiao:green423TREE@hongkong.wonderproxy.com:11000'})
+    httpUtil = HttpUtil({'https': 'https://127.0.0.1:8087'})
+    #httpUtil1 = HttpUtil({'https': 'https://213.184.97.221:56745'})
+    httpUtil1 = HttpUtil({'https': 'https://xiao:green423TREE@hongkong.wonderproxy.com:11000'})
+    httpUtils.append(httpUtil)
+    httpUtils.append(httpUtil1)
     #httpUtil = HttpUtil({'https': 'https://94.205.49.41:80'})
     httpUtil.opener.addheaders = headers
     mainRes = {}
@@ -24,15 +27,18 @@ def decode(imageUrl, queryStr=''):
         if queryStr == '':
             queryStr = urllib2.quote(queryStr)+ urllib2.quote('site:taobao.com')
         else:
-            queryStr = urllib2.quote(queryStr)+ urllib2.quote(' OR  site:taobao.com')
+            queryStr = urllib2.quote(queryStr)#+ urllib2.quote(' OR site:taobao.com')
         imageUrl = urllib2.quote(imageUrl)
-        url = 'https://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN&cr=countryCN&oq=%s'%(imageUrl, queryStr)
+        url = 'https://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN&cr=countryCN&q=%s&oq=%s'%(imageUrl, queryStr, queryStr)
 	print url
-        content = httpUtil.Get(url)
-        text_file = open("Output.html", "w")
-        text_file.write(content)
-        text_file.close()
-
+        for i in range(2):
+            for util in httpUtils:
+       	        content = util.Get(url)
+                if content is not None:
+                    break
+            if content is not None:
+		break
+        
         buf = StringIO.StringIO(content)
         f = gzip.GzipFile(fileobj=buf)
         content = f.read()
@@ -40,6 +46,10 @@ def decode(imageUrl, queryStr=''):
             result = content.decode('utf-8','ignore')
         else:
             result = ''
+        text_file = open("Output.html", "w")
+        text_file.write(content)
+        text_file.close()
+
     except Exception,e:
         import traceback
         print traceback.format_exc()
@@ -58,33 +68,47 @@ def decode(imageUrl, queryStr=''):
         searchResult = soup.find(id="search")
         if searchResult.style is not None:
        	    searchResult.style.decompose()
-        similarContent = searchResult.find(id="imagebox_bigimages").extract()
-        listHtml = searchResult.find_all("li")
+        similarContent = searchResult.find(id="imagebox_bigimages")
+ 	similarList = []
+        if similarContent is not None:
+            similarContent.extract()
+            similarList = similarContent.find_all("li")
 
+        listHtml = searchResult.find_all("li")
         mainRes['list'] = []
+	import re
         for li in listHtml:
             entity = {}
             entity['title'] = li.h3.a.text
             tmp = li.find_all("div", class_="th")
             if not tmp:
-		continue
-            entity['thImg'] = tmp[0].img['src']
+	        continue
+            entity['thImg'] = re.sub(r'https://encrypted-tbn\d','http://t3', tmp[0].img['src'])
+            print entity['thImg']
+
             entity['url'] = li.h3.a['href']
-            spans = li.find_all("span", class_="st")[0]
+            spans = li.find_all("span", class_="st")[0	]
             if spans.span is not None:
             	spans.span.decompose()
             entity['des'] = spans.text
             mainRes['list'].append(entity)
-
-        similarList = similarContent.find_all("li")
+          
+       
         mainRes['similar'] = []
         for li in similarList:
             entity = {}
             entity['url'] = li.img['title']
             divList = li.find_all('div')
             detail = json.loads(divList[-1].text)
-            entity['thImg'] = detail['ou']
+            entity['thImg'] = re.sub(r'https://encrypted-tbn\d','http://t3', detail['tu'])
+            print entity['thImg']
             entity['title'] = detail['pt']
+            '''if 'MB' in detail['os']:
+		continue
+	    elif 'KB' in detail['os']:
+                detail['os'] = detail['os'].replace('KB','')
+		if float(detail['os']) > 100.0 or float(detail['os']) < 5.0:
+                   continue'''
             mainRes['similar'].append(entity)
 
 
@@ -139,7 +163,7 @@ def reco(request):
     start = timeit.default_timer()
     queryStr = ''
     for i in range(0,len(sortedKeys)-1):
-        if sortedKeys[i] > 0.1:
+        if sortedKeys[i] > 0.1 and i == 0:
             if i != 0:
                 queryStr = queryStr+' OR '  
             queryStr = queryStr + '('+' OR'.join(matches[i].replace('\n','').split(',')) + ')'
