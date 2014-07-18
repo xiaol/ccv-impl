@@ -132,5 +132,4 @@ urlpatterns = patterns('',
     url(r'^user/list$','videoCMS.views.user.list_'),
 
     url(r'^image/reco$','videoCMS.views.image.reco'),
-    url(r'^weixin/index', 'videoCMS.views.weixin.index')
 )

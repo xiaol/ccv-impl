@@ -31,6 +31,23 @@ class DomainBase():
         return self.data
 
 
+class TextMsg(DomainBase):
+    ToUserName = ''
+    FromUserName = ''
+    CreateTime = 0
+    MsgType = 'text'
+    Content = ''
+    MsgId = ''
+
+class ImageMsg(DomainBase):
+    ToUserName = ''
+    FromUserName = ''
+    CreateTime = 0
+    MsgType = 'image'
+    PicUrl = ''
+    MediaId = ''
+    MsgId = ''
+
 
 
 

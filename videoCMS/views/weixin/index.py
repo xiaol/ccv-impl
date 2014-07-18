@@ -3,6 +3,23 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from videoCMS.common.xml_dict import xml2dict
+from eventHandles import subscribe, unsubscribe, default
+from infoHandles import text, image
+
+handleMap = {
+    'event': {
+        'subscribe': subscribe,
+        'unsubscribe': unsubscribe,
+        'SCAN': default,
+        'LOCATION': default,
+        'CLICK': default,
+        'VIEW': default,
+
+    },
+    'text': text,
+    'image': image
+}
+
 
 def index(request):
     if request.method == 'GET':

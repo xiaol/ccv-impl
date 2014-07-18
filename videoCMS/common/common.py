@@ -1,5 +1,6 @@
 #coding=utf-8
 import time
+from videoCMS.conf import clct_setting
 import md5
 import os
 '''
@@ -55,3 +56,7 @@ def validateTimeStr(s):
         return True
     except:
         return False
+
+
+def getWeixinToken():
+    return clct_setting.find_one()['wx_access_token']

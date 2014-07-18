@@ -31,7 +31,7 @@ def decode(imageUrl, queryStr=''):
             queryStr = urllib2.quote(queryStr)#+ urllib2.quote(' OR site:taobao.com')
         imageUrl = urllib2.quote(imageUrl)
         url = 'https://images.google.com/searchbyimage?image_url=%s&hl=zh-CN&lr=lang_zh-CN&cr=countryCN&q=%s&oq=%s'%(imageUrl, queryStr, queryStr)
-	print url
+        print url
         for i in range(2):
             for util in httpUtils:
        	        content = util.Get(url)
