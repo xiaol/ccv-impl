@@ -1,4 +1,6 @@
 lxml
 pymongo
-pp
+#pp
 py4j
+django
+beautifulsoup4

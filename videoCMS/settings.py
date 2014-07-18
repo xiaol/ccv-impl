@@ -1,8 +1,8 @@
 # Django settings for videoCMS project.
 import os,sys
 sys.path += [os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]
-
-DEBUG = False
+sys.path.append('/home/azureuser/caffe/python')
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -25,7 +25,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','115.28.229.167', 'www.demo4us.com', 'demo4us.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','115.28.229.167', 'www.demo4us.com', 'demo4us.com', 'spaceshuttle.cloudapp.net', 'www.spaceshuttle.cloudapp.net']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -131,7 +131,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'videoCMS'
+    'videoCMS',
+    'haystack',
+    'sekizai',
     #'django_cron',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
@@ -178,4 +180,14 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'videoCMS.views.login.custom_proc',
+    'sekizai.context_processors.sekizai',
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8080/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
+}

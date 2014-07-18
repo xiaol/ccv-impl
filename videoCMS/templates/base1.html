@@ -1,0 +1,225 @@
+{% load sekizai_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}This is my new project home page{% endblock title %}</title>
+    {% render_block "css" %}
+    <style type="text/css">
+        .nav {
+            padding-left: 0;
+        }
+        .nav li {
+            display: inline;
+            list-style-type: none;
+            padding-right: 20px;
+        }
+        
+	._Gj {
+background-color: #fff;
+float: left;
+overflow: hidden;
+margin-top: 4px;
+position: relative;
+}
+.th {
+border: 1px solid #ebebeb;
+}
+a {
+ text-decoration: none;
+}
+a:link {
+ cursor:pointer;
+}
+ol li {
+list-style: none;
+}
+
+.rgsep {
+background-color: rgba(0,0,0,0.07);
+border-width: 0;
+color: rgba(0,0,0,0.07);
+height: 1px;
+margin: 0 -8px 16px -8px;
+}
+
+li {
+margin-top: 0;
+margin-bottom: 23px;
+}
+
+body, td, div, .p, a {
+font-family: arial,sans-serif;
+}
+span{
+ font-size: small; 
+}
+.g {
+ font-size: small; 
+}
+
+
+h4 {
+display: block;
+overflow: hidden;
+text-overflow: ellipsis;
+-webkit-text-overflow: ellipsis;
+white-space: nowrap;
+font-size: 20px!important;
+font-weight: normal;
+margin: 0;
+line-height: 1;
+
+}
+
+.a, cite, cite a:link, cite a:visited, .cite, .cite:link, #_BG>i, .bc a:link {
+color: #006621;
+font-style: normal;
+font-size: 13px;
+}
+
+em, .rbt b, .c b, #mbEnd b {
+color: #dd4b39;
+font-style: normal;
+font-weight: normal;
+}
+.f, .f a:link {
+color: #808080;
+}
+
+.hdtb-tl {
+border: 1px solid transparent;
+display: inline-block;
+min-width: 54px;
+text-align: center;
+border-radius: 2px;
+padding: 4px 8px;
+line-height: 19px;
+margin-left: 9px;
+cursor: pointer;
+margin-right: 24px;
+color: #777;
+text-decoration: none;
+}
+
+.jfk-button {
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
+cursor: default;
+font-size: 11px;
+font-weight: bold;
+text-align: center;
+white-space: nowrap;
+margin-right: 4px;
+height: 27px;
+line-height: 32px;
+min-width: 54px;
+outline: 0;
+padding: 2px 8px 2px;
+}
+.jfk-button-standard {
+-webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none;
+background-color: #f5f5f5;
+background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+color: #444;
+border: 1px solid #dcdcdc;
+border: 1px solid rgba(0,0,0,0.1);
+}
+
+.goog-inline-block {
+ position: relative; 
+display: -moz-inline-box;
+ display: inline-block; 
+}
+
+.goog-flat-menu-button-caption {
+vertical-align: top;
+white-space: nowrap;
+}
+.vjs-default-skin .vjs-control-bar { font-size: 10% }
+
+.vjs-default-skin .vjs-big-play-button
+{
+width:25%;
+height:35%;
+filter: alpha(opacity=30);
+-moz-opacity:0.3;
+opacity: 0.3;
+}
+.vjs-default-skin .vjs-big-play-button:before {
+line-height: 1.8em;
+}
+.vjs-default-skin .vjs-control {
+width: 3em;
+}
+
+.vjs-volume-control {
+display:none;
+}
+.vjs-fullscreen-control {
+ float: left; 
+}
+tr {
+float:left;
+min-height:40px;
+}
+.clearfix {
+display: block;
+}
+.piclist {
+padding: 0 0 10px;
+}
+
+.list_pic_list li {
+float: left;
+display: inline;
+width: 80px;
+height: 80px;
+margin: 0 0 5px 5px;
+overflow: hidden;
+}
+
+.list_pic_list {
+display: inline-block;
+vertical-align: top;
+width: 320px;
+overflow: hidden;
+}
+.face {
+float: left;
+display: inline;
+width: 50px;
+padding: 3px 0 6px;
+}
+.content {
+font-size: 14px;
+margin: 0 0 0 60px;
+line-height: 22px;
+}
+
+.W_linkb a, a.W_linkb {
+color: #9abbc8;
+}
+
+.info a.date {
+margin: 0 10px 0 0;
+}
+
+.helptext {
+color: #969494
+}
+</style>
+</head>
+<body>
+    {% block content %}
+    {% endblock content %}
+</div>
+{% render_block "js" %}
+</body>
+</html>

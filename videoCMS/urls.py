@@ -10,7 +10,9 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'templates').replace('\\','/')}),
     url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.join(os.path.dirname(__file__),'static').replace('\\','/')}),
     url(r'^admin/(.*)$','admin.site.root'),
-    url(r'^$','videoCMS.views.channel.index'),
+    #url(r'^$','videoCMS.views.channel.index'),
+    url(r'^$', 'videoCMS.views.weixin.index.index'),
+    url(r'^search/$', include('haystack.urls')),
     url(r'^login$', 'videoCMS.views.login.login'),
     url(r'^logout$', 'videoCMS.views.login.logout'),
     
@@ -130,4 +132,5 @@ urlpatterns = patterns('',
     url(r'^user/list$','videoCMS.views.user.list_'),
 
     url(r'^image/reco$','videoCMS.views.image.reco'),
+    url(r'^weixin/index', 'videoCMS.views.weixin.index')
 )

@@ -3,6 +3,29 @@ import sys,os
 
 sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(__file__)))]
 
+# WX_ID = 'gh_f71ea7667114'
+# WX_APP_ID = 'wx54ec140d4d99d555'
+# WX_APP_SECRET = 'adcbc2df710327bcb5856c12f178af37'
+# TOKEN = "Nz4dTn37ut8AWSgd1jVWbQaB2e_CmWPTGO-H1bHDEiYbP7awNKt0IFulq-KJ4yqvvS_UeDgGTgkLX52Md-iGiw0PRFVjOkCSQ8iFVQJ2k-IbGQgxj9pOqJgygMu4fARvVbQvD7O0gxD-F3OrsFY-sQ"
+
+#WX_ID = 'gh_845909237d0f'
+WX_APP_ID = 'wx6745afe24824daad'
+WX_APP_SECRET = '87183276da0330d7cf9b6f21bc00b758'
+
+WX_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s"
+
+WX_GET_USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN"
+
+WX_MENU_CREATE = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s"
+
+WX_MESSAGE_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s"
+
+WX_WEB_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code"
+WX_AUTHORIZE_URL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+WX_AUTHORIZE_BASE_URL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=1#wechat_redirect'
+
+FOLLOW_PAGE = 'http://mp.weixin.qq.com/s?__biz=MzA3MDc0ODQxMg==&mid=200239692&idx=1&sn=f3294cd929bb35a19b61b4a3befb54c7#rd'
+
 from pymongo import Connection,MongoClient
 #import MySQLdb
 
@@ -24,6 +47,8 @@ clct_topic = con.tiercel.topic
 clct_setting = con.tiercel.setting
 clct_cmsEditor = con.tiercel.cmsEditor
 clct_danmu = con.tiercel.danmu
+
+clct_setting = con.tiercel.setting
 
 con39 = MongoClient('60.28.29.39:20010')
 clct_operationLog = con39.tiercel.operationLog

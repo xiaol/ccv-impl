@@ -1,0 +1,160 @@
+*** Starting uWSGI 2.0.4 (64bit) on [Fri Jul 18 04:40:37 2014] ***
+compiled with version: 4.8.2 on 29 May 2014 09:33:02
+os: Linux-3.13.0-24-generic #46-Ubuntu SMP Thu Apr 10 19:11:08 UTC 2014
+nodename: spaceshuttle
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/azureuser/ccv-impl/videoCMS
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 13217
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :80 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:37394 (port auto-assigned) fd 3
+Python version: 2.7.6 (default, Mar 22 2014, 23:03:41)  [GCC 4.8.2]
+Python main interpreter initialized at 0xe2c160
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 415200 bytes (405 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+ImportError: No module named videoCMS.wsgi
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1469)
+spawned uWSGI worker 1 (pid: 1470, cores: 2)
+spawned uWSGI worker 2 (pid: 1471, cores: 2)
+spawned uWSGI worker 3 (pid: 1472, cores: 2)
+spawned uWSGI worker 4 (pid: 1473, cores: 2)
+spawned uWSGI http 1 (pid: 1474)
+unable to stat() /tmp/uwsgi, events will be triggered as soon as the file is created
+--- no python application found, check your startup logs for errors ---
+[pid: 1472|app: -1|req: -1/1] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:40:40 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1471|app: -1|req: -1/2] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:40:42 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1472|app: -1|req: -1/3] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:41:41 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+Fri Jul 18 04:42:13 2014 - *** /tmp/uwsgi has been touched... grace them all !!! ***
+gateway "uWSGI http 1" has been buried (pid: 1474)
+...gracefully killing workers...
+Gracefully killing worker 1 (pid: 1470)...
+Gracefully killing worker 2 (pid: 1471)...
+Gracefully killing worker 3 (pid: 1472)...
+Gracefully killing worker 4 (pid: 1473)...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+binary reloading uWSGI...
+chdir() to /home/azureuser/ccv-impl/videoCMS
+closing all non-uwsgi socket fds > 2 (max_fd = 1024)...
+found fd 3 mapped to socket 0 (127.0.0.1:37394)
+running /usr/local/bin/uwsgi
+*** Starting uWSGI 2.0.4 (64bit) on [Fri Jul 18 04:42:14 2014] ***
+compiled with version: 4.8.2 on 29 May 2014 09:33:02
+os: Linux-3.13.0-24-generic #46-Ubuntu SMP Thu Apr 10 19:11:08 UTC 2014
+nodename: spaceshuttle
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/azureuser/ccv-impl/videoCMS
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 13217
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :80 fd 5
+uwsgi socket 0 bound to TCP address 127.0.0.1:41069 (port auto-assigned) fd 4
+Python version: 2.7.6 (default, Mar 22 2014, 23:03:41)  [GCC 4.8.2]
+Python main interpreter initialized at 0x15b3070
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 415200 bytes (405 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+ImportError: No module named videoCMS.wsgi
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 1469)
+spawned uWSGI worker 1 (pid: 1551, cores: 2)
+spawned uWSGI worker 2 (pid: 1552, cores: 2)
+spawned uWSGI worker 3 (pid: 1553, cores: 2)
+spawned uWSGI worker 4 (pid: 1554, cores: 2)
+spawned uWSGI http 1 (pid: 1555)
+--- no python application found, check your startup logs for errors ---
+[pid: 1552|app: -1|req: -1/1] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:42:15 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1553|app: -1|req: -1/2] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:42:16 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1552|app: -1|req: -1/3] 124.64.101.4 () {40 vars in 707 bytes} [Fri Jul 18 04:43:06 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+Fri Jul 18 04:43:21 2014 - *** /tmp/uwsgi has been touched... grace them all !!! ***
+gateway "uWSGI http 1" has been buried (pid: 1555)
+...gracefully killing workers...
+Gracefully killing worker 1 (pid: 1551)...
+Gracefully killing worker 2 (pid: 1552)...
+Gracefully killing worker 3 (pid: 1553)...
+Gracefully killing worker 4 (pid: 1554)...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+binary reloading uWSGI...
+chdir() to /home/azureuser/ccv-impl/videoCMS
+closing all non-uwsgi socket fds > 2 (max_fd = 1024)...
+found fd 4 mapped to socket 0 (127.0.0.1:41069)
+running /usr/local/bin/uwsgi
+*** Starting uWSGI 2.0.4 (64bit) on [Fri Jul 18 04:43:22 2014] ***
+compiled with version: 4.8.2 on 29 May 2014 09:33:02
+os: Linux-3.13.0-24-generic #46-Ubuntu SMP Thu Apr 10 19:11:08 UTC 2014
+nodename: spaceshuttle
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/azureuser/ccv-impl/videoCMS
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your processes number limit is 13217
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :80 fd 5
+uwsgi socket 0 bound to TCP address 127.0.0.1:50805 (port auto-assigned) fd 3
+Python version: 2.7.6 (default, Mar 22 2014, 23:03:41)  [GCC 4.8.2]
+Python main interpreter initialized at 0x173a070
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 415200 bytes (405 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+ImportError: No module named videoCMS.wsgi
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 1469)
+spawned uWSGI worker 1 (pid: 1581, cores: 2)
+spawned uWSGI worker 2 (pid: 1582, cores: 2)
+spawned uWSGI worker 3 (pid: 1583, cores: 2)
+spawned uWSGI worker 4 (pid: 1584, cores: 2)
+spawned uWSGI http 1 (pid: 1585)
+--- no python application found, check your startup logs for errors ---
+[pid: 1584|app: -1|req: -1/1] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:43:23 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1581|app: -1|req: -1/2] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:43:30 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 1584|app: -1|req: -1/3] 124.64.101.4 () {40 vars in 708 bytes} [Fri Jul 18 04:44:58 2014] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+Fri Jul 18 04:56:30 2014 - uWSGI worker 1 screams: UAAAAAAH my master disconnected: i will kill myself !!!

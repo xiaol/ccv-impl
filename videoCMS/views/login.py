@@ -79,7 +79,8 @@ def custom_proc(request):
 
     print DICT
 
-    msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['uid']]},'readed':{'$exists':False}}).count()
+    #msgCount = clct_cmsMessage.find({'to':{'$in':['',DICT['uid']]},'readed':{'$exists':False}}).count()
+    msgCount = 0
     DICT['MSG_COUNT'] = msgCount
 
     return DICT

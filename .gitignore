@@ -9,6 +9,8 @@
 videoCMS/session/
 vidoeCMS/static/
 *.o
+data/
+imagenet/
 
 #################
 ## Eclipse

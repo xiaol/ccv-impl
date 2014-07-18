@@ -1,5 +1,4 @@
-#coding=utf-8
-
+#coding=utf-8 
 __author__ = 'Ivan liu'
 
 import re,os,json, urllib2
@@ -7,15 +6,17 @@ from videoCMS.common.HttpUtil import get_html,HttpUtil,get_raw_data
 import base64,Image,StringIO
 from videoCMS.common.common import getCurTime
 from bs4 import BeautifulSoup
-
+from textblob import TextBlob
 headers = [('User-agent','Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19 AppEngine-Google;'),
            ('Accept-Language', 'zh-TW,zh;q=0.8,en;q=0.6'), ("Accept-Encoding", "gzip")]
 p_1 = re.compile('>(.*)</a>')
 import gzip
 
+IMAGE_DIR = '/home/azureuser/ccv-impl/videoCMS/static'
 httpUtils = []
 def decode(imageUrl, queryStr=''):
-    httpUtil = HttpUtil({'https': 'https://127.0.0.1:8087'})
+    httpUtil = HttpUtil()
+    #httpUtil = HttpUtil({'https': 'https://127.0.0.1:8087'})
     #httpUtil1 = HttpUtil({'https': 'https://213.184.97.221:56745'})
     httpUtil1 = HttpUtil({'https': 'https://xiao:green423TREE@hongkong.wonderproxy.com:11000'})
     httpUtils.append(httpUtil)
@@ -25,7 +26,7 @@ def decode(imageUrl, queryStr=''):
     mainRes = {}
     try:
         if queryStr == '':
-            queryStr = urllib2.quote(queryStr)+ urllib2.quote('site:taobao.com')
+            queryStr = urllib2.quote(queryStr)#+ urllib2.quote('site:taobao.com')
         else:
             queryStr = urllib2.quote(queryStr)#+ urllib2.quote(' OR site:taobao.com')
         imageUrl = urllib2.quote(imageUrl)
@@ -83,7 +84,10 @@ def decode(imageUrl, queryStr=''):
             tmp = li.find_all("div", class_="th")
             if not tmp:
 	        continue
-            entity['thImg'] = re.sub(r'https://encrypted-tbn\d','http://t3', tmp[0].img['src'])
+            import urlparse
+          
+            parsed = urlparse.urlparse(tmp[0].a['href'])
+            entity['thImg'] = urlparse.parse_qs(parsed.query)['imgurl'][0]#re.sub(r'https://encrypted-tbn\d','https://t3', tmp[0].img['src'])
             print entity['thImg']
 
             entity['url'] = li.h3.a['href']
@@ -100,15 +104,16 @@ def decode(imageUrl, queryStr=''):
             entity['url'] = li.img['title']
             divList = li.find_all('div')
             detail = json.loads(divList[-1].text)
-            entity['thImg'] = re.sub(r'https://encrypted-tbn\d','http://t3', detail['tu'])
+            #entity['thImg'] = re.sub(r'https://encrypted-tbn\d','https://t3', detail['tu'])
+            entity['thImg'] = detail['ou']
             print entity['thImg']
             entity['title'] = detail['pt']
-            '''if 'MB' in detail['os']:
+            if 'MB' in detail['os']:
 		continue
 	    elif 'KB' in detail['os']:
                 detail['os'] = detail['os'].replace('KB','')
 		if float(detail['os']) > 100.0 or float(detail['os']) < 5.0:
-                   continue'''
+                   continue
             mainRes['similar'].append(entity)
 
 
@@ -132,25 +137,68 @@ def parseMatch(result): #Html result
 
 wordsDict = {}
 def initWords():
-    words = open("videoCMS/samples/image-net-2012.words")
+    words = open("data/ilsvrc12/synset_words.txt")
     i = 0
     for line in words.readlines():
 	wordList = line.split(',')
-	wordsDict[i] = line
+        #blob = TextBlob(line[10:])
+        #zh_blob = blob.translate(to="zh") 
+        #print zh_blob
+	#wordsDict[i] = str(zh_blob)
+	wordsDict[i] = line[10:]
 	i += 1
 
+import caffe
 
+caffe_root = '../'  # this file is expected to be in {caffe_root}/examples
+
+# Set the right path to your model definition file, pretrained model weights,
+# and the image you would like to classify.
+MODEL_FILE = 'imagenet/imagenet_deploy.prototxt'
+PRETRAINED = 'imagenet/caffe_reference_imagenet_model'
+IMAGE_FILE = 'images/cat.jpg'
+
+from initNet import net
 def reco(request):
     from django.http import HttpRequest,HttpResponse,HttpResponseRedirect
-    import cnnclassify
     import timeit
-    fileUrl, fullpath = save(request)
-    domain = re.sub(request.path, '', request.build_absolute_uri())
-    fileUrl = domain + fileUrl
+    if request.REQUEST.get('q', '') != '':
+        print 'q:'+request.REQUEST.get('q', '')
+        date = getCurTime()[:8]
+    	filename = '%s/%s.jpg' % (date, 'rainbow' + getCurTime())
+    	fullpath = IMAGE_DIR + '/' + filename
+        fileUrl = request.REQUEST['q']
+        import urllib
+        try:
+            urllib.urlretrieve(fileUrl, fullpath)
+        except Exception,e:
+            print e
+            return
+    else:
+    	if not hasattr(request, 'FILES') or request.FILES.get('image',None) is None: 
+            return 
+    #import cnnclassify
+    	fileUrl, fullpath = save(request)
+    	absoluteUrl = re.sub('http://','',request.build_absolute_uri())
+    	domain = re.sub(request.path, '', absoluteUrl)
+    	print request.path, ' ', request.build_absolute_uri()
+    	print domain
+    	fileUrl = 'http://'+domain + fileUrl
     print fileUrl
+   
     start = timeit.default_timer()
-    #fileUrl = 'http://vipbook.sinaedge.com/bookcover/pics/55/cover_21d32033a72eb9902d3eba920258a942.jpg'
-    results =  cnnclassify.cnnclassify(fullpath.encode('utf8'), "videoCMS/samples/image-net-2012.sqlite3".encode('utf8'))
+    input_image = caffe.io.load_image(fullpath.encode('utf8'))
+    prediction = net.predict([input_image]) 
+    print 'prediction shape:', prediction[0].shape
+    maxScore = -1
+    maxIndice = -1
+    for i in range(0,len(prediction[0])-1):
+        entity = prediction[0][i]
+        if maxScore < entity:
+            maxScore = entity
+            maxIndice = i
+    print maxIndice, maxScore
+    results =  {str(maxScore):maxIndice}#cnnclassify.cnnclassify(fullpath.encode('utf8'), "videoCMS/samples/image-net-2012.sqlite3".encode('utf8'))
     #cnnclassify.end()
     stop = timeit.default_timer()
     print stop - start 
@@ -159,28 +207,32 @@ def reco(request):
     matches = []
     sortedKeys = sorted(results.keys(), reverse=True)
     for key in sortedKeys:
-        matches.append(wordsDict[results[key]])# "%.6f" % v
+        matches.append(wordsDict[results[key]]) 
     start = timeit.default_timer()
     queryStr = ''
-    for i in range(0,len(sortedKeys)-1):
-        if sortedKeys[i] > 0.1 and i == 0:
+    print sortedKeys
+    for i in range(0,len(sortedKeys)):
+        if float(sortedKeys[i]) > 0.3 and i == 0:
             if i != 0:
                 queryStr = queryStr+' OR '  
             queryStr = queryStr + '('+' OR'.join(matches[i].replace('\n','').split(',')) + ')'
-    print queryStr
-    if sortedKeys[0] > 0.1:  
+    print 'query ',queryStr
+    if float(sortedKeys[0]) > 0.6:  
     	data = decode(fileUrl,queryStr)
     else: data = decode(fileUrl)
     stop = timeit.default_timer()
     print stop - start
-    data['matches'] = matches
-    data['matchConfidences'] = sortedKeys
+    data['matches'] = [] 
+    for j in range(0, len(matches)):
+	data['matches'].append({'match':matches[j], 'confidence':sortedKeys[j]})
+    #data['matchConfidences'] = sortedKeys
+    data['imageUrl'] = fileUrl
     return HttpResponse(json.dumps(data))
 
 def save(request):
-    print request.body
-    print request
-    print request.REQUEST
+    #print request.body
+    #print request
+    #print request.REQUEST
     if request.META.get('HTTP_ACCEPT', None) == 'gzip':
         buf = parse(request.FILES.get('image'))
         f = gzip.GzipFile(fileobj=buf)
@@ -194,7 +246,7 @@ def save(request):
     return fileUrl, fullpath
 
 #IMAGE_DIR = '/Users/liuivan/Workspace/huohua/videocms/videoCMS/static'
-IMAGE_DIR = '/root/videocms/videoCMS/static'
+#IMAGE_DIR = '/root/videocms/videoCMS/static'
 def saveToDisk(img, id):
     date = getCurTime()[:8]
     filename = '%s/%s.jpg' % (date, id + getCurTime())

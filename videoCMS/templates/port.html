@@ -1,0 +1,70 @@
+{% extends 'base1.html' %}
+{% block content %}
+           {% if query %}
+           {% endif %}
+
+                <form action="." method="post" enctype="multipart/form-data"> 
+        <table style="max-width: 1200px;
+margin-left:100px;
+padding: 0;
+background: #fff;">
+                   {{ form.as_table }}
+            <tr style="float:left">
+                <td>&nbsp;</td>
+                <td>
+                   <input type="file" name="image" />
+		   <input type="submit" value="Search the Image" style="padding: .3em .6em;
+box-shadow: 0 2px 1px rgba(0,0,0,0.3),0 1px 0 rgba(255,255,255,0.4) inset;
+background-color: #eaeaea;
+border: 1px solid #000 !important;
+border-radius: 3px;
+text-decoration: none;">
+		</td>
+            </tr>
+       </table>
+               </form>
+       {% if matches %}
+       <div style="max-width: 1200px;
+margin-left:100px;
+padding: 0;
+background: #fff;">
+
+       <div > <img src={{ imageUrl }} > </div>
+       <ol>
+              {% if topMatch %}
+             <li><div>Top Match: {{ topMatch }} </div></li>
+              {% endif %}
+           {%for match in matches %}
+           <li>
+             <div > Match: {{match.match}}          Confidence: {{             match.confidence}}</div>
+           </li>
+           {% endfor %}
+       </ol>
+       </div>
+       <div style="max-width: 1200px;
+margin-left:100px;
+padding: 0;
+background: #fff;">
+
+
+       <ol > 
+            {% for result in page.object_list %} 
+                <li> 
+                    <div> 
+                        <h4 style="line-height: 1"><a href="{{ result.url }}">{{ result.title }}</a></h4> 
+                      <div> 
+                        <!--div><div class= "th _Gj"><a><img height="150" width="90" src="{{ result.thImg}}"></a></div></div-->    
+                        <div style="margin-left:100px"> 
+                            <cite>{{ result.url }}</cite> 
+                            <div style="margin-top:10px"> 
+                            <span>{{ result.des }}</span> </div>
+                        </div>
+                       </div> 
+                        <div style="clear:left"></div> 
+                   </div>
+               </li>
+            {% endfor %}
+       </ol>
+       </div>
+       {% endif %}
+{% endblock %}

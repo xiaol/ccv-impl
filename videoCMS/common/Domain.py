@@ -282,3 +282,9 @@ class Editor(DomainBase):
     lastLoginIp = ''
     avatar = ''
     email = ''
+
+class Setting(DomainBase):
+    wx_access_token = ''
+    wx_access_token_time = 0
+
+
