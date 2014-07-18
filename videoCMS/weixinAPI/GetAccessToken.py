@@ -1,13 +1,9 @@
-import sys
-import os
-
-sys.path += [os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))]
 import urllib2
 import json
-from conf import WX_APP_ID,WX_APP_SECRET,WX_ACCESS_TOKEN_URL
-from conf import clct_setting
-from common.Domain import Setting
-from common.common import getCurTime
+from videoCMS.conf import WX_APP_ID,WX_APP_SECRET,WX_ACCESS_TOKEN_URL
+from videoCMS.conf import clct_setting
+from videoCMS.common.Domain import Setting
+from videoCMS.common.common import getCurTime
 
 
 def GetAccessToken():
