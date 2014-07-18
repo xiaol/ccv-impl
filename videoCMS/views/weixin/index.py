@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from videoCMS.common.xml_dict import xml2dict
 from eventHandles import subscribe, unsubscribe, default
-from infoHandles import text, image
+from infoHandles import text, news
 
 handleMap = {
     'event': {
@@ -17,7 +17,7 @@ handleMap = {
 
     },
     'text': text,
-    'image': image
+    'image': news
 }
 
 
@@ -37,4 +37,4 @@ def index(request):
                 raise Exception('Event %s ' % msg['Event'])
             return HttpResponse(handleMap['event'][msg['Event']](msg))
         else:
-            return HttpResponse(handleMap[msg['MsgType']](msg))
+            return HttpResponse(handleMap[msg['MsgType']](msg, request))

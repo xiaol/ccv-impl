@@ -48,6 +48,28 @@ class ImageMsg(DomainBase):
     MediaId = ''
     MsgId = ''
 
+class NewsMsg(DomainBase):
+    ToUserName = ''
+    FromUserName = ''
+    CreateTime = 0
+    MsgType = 'news'
+    ArticleCount = 0
+    Articles = []
+'''
+<item>
+<Title><![CDATA[title1]]></Title> 
+<Description><![CDATA[description1]]></Description>
+<PicUrl><![CDATA[picurl]]></PicUrl>
+<Url><![CDATA[url]]></Url>
+</item>
+<item>
+<Title><![CDATA[title]]></Title>
+<Description><![CDATA[description]]></Description>
+<PicUrl><![CDATA[picurl]]></PicUrl>
+<Url><![CDATA[url]]></Url>
+</item>
+'''
+ 
 
 
 
