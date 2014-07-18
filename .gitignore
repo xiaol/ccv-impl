@@ -11,6 +11,7 @@ vidoeCMS/static/
 *.o
 data/
 imagenet/
+videoCMS/static/
 
 #################
 ## Eclipse
