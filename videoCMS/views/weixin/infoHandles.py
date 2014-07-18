@@ -5,6 +5,7 @@ from videoCMS.common.xml_dict import dict2xml,xml_tostring
 from videoCMS.common.HttpUtil import get_html
 from videoCMS.common.common import getWeixinToken
 import json
+from urllib2 import quote
 
 def text(msg):
     openid = msg['FromUserName']
@@ -29,7 +30,9 @@ def image(msg):
 
     imageUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s' % (getWeixinToken(), msg['MediaId'])
     print imageUrl
-    result = json.loads(get_html(imageUrl))
+    apiUrl = 'http://127.0.0.1/image/reco?q=' + quote(imageUrl)
+    print(apiUrl)
+    result = json.loads(get_html(apiUrl))
     res = TextMsg()
     res['ToUserName'] = openid
     res['FromUserName'] = myid
